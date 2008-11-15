@@ -1,22 +1,33 @@
 This is a port of the Affy R/Bioconductor package to BIOLIB - in particular
 of the RMA normalization routines (http://biolib.open-bio.org/)
 
-For a description see ./src/biolib_affy.c and the API documentation.
+Affy allows some transformations on Affymetrix microarray data. Most of
+the work, however, is handled in the preprocess core package.
 
-For more information see http://biolib.open-bio.org/
+At this point the Affy package is not changed by BioLib.
+
+For a description see ./src/biolib_affy.c and the API documentation.
 
 Notes:
 
-- RMA with background correction is default behaviour in R/Bioconductor, without MM information.
-- The Affy rma method has two modes of operation:
+* RMA with background correction is default behaviour in R/Bioconductor,
+  without MM information.
+
+* The Affy rma method has two modes of operation:
 	. rma_c_complete       (destructive)
 	. rma_c_complete_copy  (keep original data)
-- These functions are defined in rma2.c, and provide a thin layer, in turn
+
+* These functions are defined in rma2.c, and provide a thin layer, in turn
 	calling rma_bg_correct background correction, qnorm_c and median polish from
-	the preprocessCore module (bg correct first, qnorm second and median polish last).
-- Only one type of background correction, rma_bg_correct is used (despite
+	the preprocessCore module (bg correct first, qnorm second and median polish
+	last).
+
+* Only one type of background correction, rma_bg_correct is used (despite
 	switch for bg_type in rma2.c)
-- At this point it is not clear whether the Affy module will be retained in 
+
+* At this point it is not clear whether the Affy module will be retained in 
 	BioLib - the only significant part is the background correction
+
+For more information see http://biolib.open-bio.org/
 
 Pjotr Prins
