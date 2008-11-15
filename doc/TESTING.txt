@@ -1,0 +1,14 @@
+= BioLib Testing =
+
+== Unit testing ==
+
+Every language binding comes with unit testing, which is invoked from
+cmake.
+
+== Stubs for large data blobs ==
+
+Large data objects, like microarrays, are stored as a stub in the
+source repository. See for example the microarray files in
+./src/test/data/microarray/affy/test/.
+
+
