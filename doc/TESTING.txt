@@ -8,7 +8,10 @@ cmake.
 == Stubs for large data blobs ==
 
 Large data objects, like microarrays, are stored as a stub in the
-source repository. See for example the microarray files in
+source repository to prevent the source repository from getting too
+large. See for example the microarray files in
 ./src/test/data/microarray/affy/test/.
 
+The code for downloading the blob objects is in ./src/biolib/language.
+Downloading blobs only happens during the first test run.
 
