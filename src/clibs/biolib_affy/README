@@ -1,0 +1,8 @@
+= biolib_affy module =
+
+The biolib_affy module calls into the preprocessCore module to 
+normalize Affymetrix microarrays using RMA.
+
+See http://biolib.open-bio.org/
+
+Pjotr Prins
