@@ -4,6 +4,8 @@
 
 $: << '../../../../biolib/ruby'
 
+p $:
+
 require 'affyio'
 require 'test/biolibtest'
 require 'test/unit/testcase'

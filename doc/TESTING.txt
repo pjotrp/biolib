@@ -2,8 +2,25 @@
 
 == Unit testing ==
 
-Every language binding comes with unit testing, which is invoked from
-cmake.
+Unit testing falls into two categories. First there is a range of
+unit tests executed from cmake. These have an integrative testing
+purpose and should run relatively fast. From the root:
+
+  cmake .
+	make
+	make test
+
+Cmake can also be run at subdirectory level, assuming dependent
+libraries have been built in other parts of the tree - reducing the
+number of tests considerably.
+
+Next there may separate test runners which are collected in
+directories named 'test'. These are development testers.
+
+== Regression testing ==
+
+Regression tests have not been implemented yet, but will become
+another category of tests.
 
 == Stubs for large data blobs ==
 
