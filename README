@@ -1,0 +1,26 @@
+= BIOLIB =
+
+Biolib is an OpenBio initiative to provide shared libraries for the major Bio*
+languages - Perl, Ruby, Python and R. The basic idea is to provide
+infrastructure that allows sharing code rather than reinventing the wheel every
+time between different language implementations.
+
+Biolib provides a minimalistic layer to external C and C++ libraries - using
+SWIG as the primary interface provider. 
+
+The first edition of Biolib aims to provide basic microarray data handling
+facilities - as these are lacking in most Bio* languages.
+
+For more information see:
+
+  http://biolib.open-bio.org/
+
+The release notes are in ./doc/RELEASE_NOTES.txt
+
+For dependencies see ./doc/DEPENDENCIES.txt
+
+If you wish to contribute contact pjotr.public01 .at. thebird.nl
+
+Pjotr Prins
+
+

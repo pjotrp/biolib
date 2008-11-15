@@ -1,0 +1,14 @@
+citEntry(entry = "Article",
+         "author" = "Laurent Gautier and Leslie Cope and Benjamin M. Bolstad and Rafael A. Irizarry",
+         "title" = "affy---analysis of Affymetrix GeneChip data at the probe level",
+         journal = "Bioinformatics",
+         volume = "20",
+         number = "3",
+         year = "2004",
+         issn = "1367-4803",
+         pages = "307--315",
+         doi = "http://dx.doi.org/10.1093/bioinformatics/btg405",
+         publisher = "Oxford University Press",
+         address = "Oxford, UK",
+         textVersion = "Gautier, L., Cope, L., Bolstad, B. M., and Irizarry, R. A. 2004. affy---analysis of Affymetrix GeneChip data at the probe level. Bioinformatics 20, 3 (Feb. 2004), 307-315."
+) 

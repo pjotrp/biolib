@@ -1,0 +1,67 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>BioLib</sitename>
+    <base>http://biolib.open-bio.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.13.2</generator>
+    <case>first-letter</case>
+      <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">BioLib</namespace>
+      <namespace key="5">BioLib talk</namespace>
+      <namespace key="6">Image</namespace>
+      <namespace key="7">Image talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Interesting libraries</title>
+    <id>6</id>
+    <revision>
+      <id>113</id>
+      <timestamp>2008-08-28T12:38:55Z</timestamp>
+      <contributor>
+        <username>Pjotrp</username>
+        <id>2</id>
+      </contributor>
+      <comment>/* Algebra/matrix */</comment>
+      <text xml:space="preserve">The following source code libraries have been located that may be of interest for biolib mappings:
+
+== Sequence analysis ==
+
+* [http://www.seqan.de/ SeqAn], an open source C++ library of efficient algorithms and data structures for the analysis of sequences with the focus on biological data
+* [http://kimura.univ-montp2.fr/BioPP Bio++], a set of Object Oriented libraries written in C++
+* [http://www.ebi.ac.uk/emboss/ EMBOSS] tools and libraries ([[NIX]] package exists)
+* [http://www.ncbi.nlm.nih.gov/IEB/ToolBox/ NCBI] tools and libraries ([[NIX]] package exists)
+
+== Data formats ==
+
+* Affymetrix Fusion SDK (see Bioconductor affyparser)
+* Bioconductor microarray loaders
+
+== Algebra/matrix ==
+
+* [http://gmplib.org/ The GNU MP Bignum Library (GMP)], arbitrary precision arithmetic, operating on signed integers, rational numbers, and floating point numbers
+* [http://gslwrap.sourceforge.net/index.html The GNU Scientific Library (GSL)], a numerical library for C and C++ programmers
+* [http://math.nist.gov/tnt/ The Template Numerical Toolkit (TNT)], a collection of interfaces and reference implementations of numerical objects useful for scientific computing in C++
+* [http://www.netlib.org/lapack/ LAPACK -- Linear Algebra PACKage]
+* [http://en.wikipedia.org/wiki/Blitz%2B%2B blitz++] high performance array/matrix library - optimized for CPU cache pipelining
+* [http://pixelglow.com/macstl/ MacSTL] high performance array/matrix library - optimized for within CPU parallel processing (also for Intel)
+* [http://www.math.uiowa.edu/~dstewart/meschach/FAQ.meschach Meschach] a fast C library - with support for sparse matrices
+
+Map these functionalities to BioPerl, BioRuby, BioPython, Bioconductor etc.! It can be done.
+Feel free to notify us of interesting libraries.</text>
+    </revision>
+  </page>
+</mediawiki>

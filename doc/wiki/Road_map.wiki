@@ -1,0 +1,95 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>BioLib</sitename>
+    <base>http://biolib.open-bio.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.13.2</generator>
+    <case>first-letter</case>
+      <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">BioLib</namespace>
+      <namespace key="5">BioLib talk</namespace>
+      <namespace key="6">Image</namespace>
+      <namespace key="7">Image talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Road map</title>
+    <id>5</id>
+    <revision>
+      <id>109</id>
+      <timestamp>2008-08-18T00:32:41Z</timestamp>
+      <contributor>
+        <username>Pjotrp</username>
+        <id>2</id>
+      </contributor>
+      <comment>/* Future */</comment>
+      <text xml:space="preserve">= 2008 =
+
+== Plumbing ==
+
+* Provide example SWIG bindings in SVN with unit test infrastructure (Pjotr)
+  [x] Example Ruby mapping, build, test
+  [x] Example Python mapping, build, test
+  [x] Example Perl mapping, build, test
+  [x] cmake 2.6 builder
+  [x] build and install libaries with cmake 2.6
+  [x] unit test runner
+  [x] package biolib in Nix
+  [ ] package biolib in Debian
+
+== Adding functionality ==
+
+* Support for reading Affymetrix microarrays using BioConductor modules (Pjotr)
+  [x] Create cmake for Ben Bolstad's affyio
+  [x] Create functions for reading CEL file w. Ruby
+  [x] Create functions for reading CDF file w. Ruby
+  [x] Create documentation for Affyio module (Doxygen)
+  [x] Map PM intensities to simple native array type w. Ruby
+  [+] Package Ruby version for BioRuby
+  [+] RMA and quantum normalization using Affy module
+  [ ] Map JAVA to affy stuff (with Richard)
+  [ ] Map Python and Perl to affy stuff
+* Create first official source package available for download
+* Tutorial how to add a module to biolib (Pjotr)
+  [x] Add a C module
+  [x] Create a Ruby mapping
+  [ ] Create a JAVA mapping
+  [ ] Create a Python mapping
+  [ ] Create a Perl mapping
+* Efficient in-memory matrix access/mapping (Pjotr)
+  [ ] Provide efficient direct C array access (like Ruby's narray)
+* Quantum normalization (Pjotr/Vicky)
+* Reduce memory foot print of Affyio (Pjotr)
+* Support for generic matrix reading and writing (Pjotr)
+* Buffered matrix access - using disk access rather than RAM - similar to Ben Bolstad's BufferedMatrix package (Pjotr)
+
+== More ==
+
+Create examples for different packaging tools:
+
+  [x] Ruby gem support (Pjotr)
+  [ ] Python egg support (who?)
+  [ ] Perl CPAN support (who?)
+  [ ] Bioconductor support (who?)
+  [ ] biolib Nix tutorial
+
+= Future =
+
+* [[Generator]] to map to the different languages automatically
+* Check the list of [[Interesting libraries]] which, potentially, deserve a place in biolib.</text>
+    </revision>
+  </page>
+</mediawiki>

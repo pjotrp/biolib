@@ -1,0 +1,23 @@
+= PACKAGING WITH CMAKE
+
+BioLib uses CMake to support cross-platform builds. CMake is easier to
+work with than the autoconf tools (configure and friends) and more
+coherent. The native build support is described in ./INSTALL and
+./doc/BUILD.txt.
+
+For packaging the build can be made into a 'build' directory with:
+
+  cmake .
+  make
+	make DESTDIR=./build
+
+which will store the full directory structure in ./build.
+
+Note there is also a prefix which overrides building in /usr/local
+with:
+
+  cmake -DCMAKE_INSTALL_PREFIX=/opt/biolib .
+	make 
+	make DESTDIR=./build
+
+

@@ -1,0 +1,81 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>BioLib</sitename>
+    <base>http://biolib.open-bio.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.13.2</generator>
+    <case>first-letter</case>
+      <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">BioLib</namespace>
+      <namespace key="5">BioLib talk</namespace>
+      <namespace key="6">Image</namespace>
+      <namespace key="7">Image talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Add Ruby Module</title>
+    <id>12</id>
+    <revision>
+      <id>102</id>
+      <timestamp>2008-08-02T20:02:57Z</timestamp>
+      <contributor>
+        <username>Pjotrp</username>
+        <id>2</id>
+      </contributor>
+      <text xml:space="preserve">= Adding a Ruby module to BioLib =
+
+After adding a C library (for instructions see [[Add C Library]]) a
+CMake command file has to be written for the Ruby module that creates
+a shared library out of the C library, calls SWIG to generate
+bindings, and (optionally) handles installing and testing. Create a
+module in:
+
+  ./src/bindings/swig/ruby/package/
+
+An example can be found in:
+
+  ./src/bindings/swig/ruby/affyio/
+
+One SWIG file needs to be written which names the module and includes
+the main swig definition. For example ruby_affyio.i has:
+
+  %module biolib_ruby_affyio
+  %include ../../affyio.i
+
+Create a CMakeLists.txt file (see also [[CMake]]). For example:
+
+  SET (M_NAME affyio)
+  SET (M_VERSION 1.8)
+  SET (INTERFACE ruby_${M_NAME}.i)
+  SET (USE_RLIB TRUE)
+  FIND_PACKAGE(BioLibRuby)
+  ADD_TEST(TestRubyAffyio ${RUBY_EXECUTABLE} -I../${M_NAME} ./../test/test_${M_NAME}.rb)
+  INSTALL(TARGETS ${M_MODULE}
+    LIBRARY DESTINATION ${RUBY_LIB_PATH}
+  )
+
+(see the BioLib source code for a recent edition).
+
+And when the CMakeLists.txt file is complete and correct you should be
+able to execute:
+
+  cmake .
+  make 
+  make test
+  make install</text>
+    </revision>
+  </page>
+</mediawiki>

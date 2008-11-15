@@ -1,0 +1,15 @@
+= Ruby GEMS with BioLib =
+
+It would be nice to provide a GEM for BioLib. But, the native GEM
+build methods duplicate most of what CMake already does.
+
+The advantage of having a GEM for download is that most Ruby-ists know how to
+install it. GEMs are destructive - they overwrite older versions with the same
+naming - but it is still a help.
+
+What is needed is a GEM package containing all C and Ruby sources which can be
+built and installed with CMake. Ugly, since CMake ignores most of Ruby's
+installation facilities and may get it wrong, but probably the best option. It
+requires users to install CMake >2.6 though.
+
+

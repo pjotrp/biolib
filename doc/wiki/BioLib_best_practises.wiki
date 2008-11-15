@@ -1,0 +1,79 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>BioLib</sitename>
+    <base>http://biolib.open-bio.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.13.2</generator>
+    <case>first-letter</case>
+      <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">BioLib</namespace>
+      <namespace key="5">BioLib talk</namespace>
+      <namespace key="6">Image</namespace>
+      <namespace key="7">Image talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>BioLib best practises</title>
+    <id>4</id>
+    <revision>
+      <id>69</id>
+      <timestamp>2008-06-21T10:48:39Z</timestamp>
+      <contributor>
+        <username>Pjotrp</username>
+        <id>2</id>
+      </contributor>
+      <comment>/* Readable code */</comment>
+      <text xml:space="preserve">Best practices are a wide topic. With regard to best practises the main goals are portability of the code to different languages and maintainability of the code base. The following is not meant as a full guide on best practices, but rather an overview of some basic principles. With BioLib a long-term view is taken, rather than the quick hack approach to writing code. Badly written code should not make it into STABLE.
+
+'''NOTE: the content of this page is open for discussion!'''
+
+== GOALS ==
+
+The following goals set the direction. Biolib should aim for being (in order of importance):
+
+# correct
+# replicable
+# multi-language
+# high performance
+
+== Simple interfaces ==
+
+Simple [[http://en.wikipedia.org/wiki/Interface_%28computer_science%29, interfaces]] are key for portability using a limited number of [[supported data types]]. Rather than few functions with rich parameters - one function representing many types of actions as Bioconductor does - BioLib aims for many functions with simple parameters. For some third party code BioLib may provide simplified wrapper interfaces.
+
+== Few basic data types ==
+
+See [[supported data types]]
+
+== Functional programming ==
+
+Ideally the libraries are functional - avoiding state and mutable data within the libraries ([[http://en.wikipedia.org/wiki/Functional_programming,more info]]). For performance reasons it may well be data is retained in memory - any library/function that does so should be clearly marked.
+
+== Readable code ==
+
+Code should be clear and readable. Some interface documentation may be needed, but in general we are not of the school of documenting every line. A line should document itself. [http://www.doxygen.org/ Doxygen] is used to generate HTML pages of the 'C' API. See the [[Main Page]] for a link to a recent version.
+
+== Testing ==
+
+Unit tests rule. Every interface should have at least one unit test.
+
+== Dependencies ==
+
+BioLib may depend on other libraries, or even languages. Nevertheless any dependency should be clearly visible and probably rolled into a separate library for deployment. The NIX build system gives immediate visibility of dependencies.
+
+More?</text>
+    </revision>
+  </page>
+</mediawiki>

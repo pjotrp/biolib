@@ -1,0 +1,43 @@
+###ask laurent: whats wrong with CDF.example
+----> For some (mysterious) reasons, save(..., ascii=TRUE) is behaving wrong on my linux box
+at home. I saved it  with ascii=FALSE (portability could be .....)   LG
+###why not have a slot in cel.container denoting the default Cdf
+###then change all functions so that one does not need to pass Cdf
+###with this and some methods we maybe able to get rid of Plobs entirely 
+###maybe this is a version 2.0 task.
+----> Yep... mentioned in the file TODO for some time now...
+
+
+Yo, Laurentz takin' the mike now:
+
+- fixed a problem with CDF.example.RData
+- updated the documentation for the normalize functions
+(should keep 'R CMD check happy')
+- introduced a generic method 'normalize.methods' (Plob and Cel.container)
+- variables related to normalize.methods (normalize.Cel.container.methods and
+normalize.Plob.methods) are created.
+- changed the methods names 'normalize.Cel.XYZ' to 'normalize.Cel.container.XYZ'
+(more consistent). Documentation shoudlhave been updated accordingly.
+- removed image.Cel.Rd
+- fixed the method image for Cel-class. Added better ways of asking the function
+to mask areas. updated the documentation accordingly.
+- did a bit more with affy.Rnw (in inst/doc/). Now it goes through Sweave ok.
+- update the file 'TODO'
+
+
+
+still talkin'...:
+
+- cleaned read_cdffile.c (no more warnings)
+- made something usable for the documentation of 'normalize' (hopefully)
+- various fixes in the documentation
+- Did a bit more with affy.Rnw
+- the example in generateExprSet-methods.Rd is commented out... seems to work
+on the command line but fails through 'R CMD check' (??!?!!!?)
+- the 'normalize' part being done (apart of possible bugs), we reached the version
+number 0.8.0
+- started to finish the part about generateExprSet
+
+- accessor function sd in Cel moved to spotsd 
+
+	

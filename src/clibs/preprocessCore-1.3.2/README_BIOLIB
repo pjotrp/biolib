@@ -1,0 +1,14 @@
+This is a port of the R/Bioconductor package to BIOLIB - supporting the 
+affy package.
+
+For a description see ./src/biolib_affy.c and the API documentation.
+
+For more information see http://biolib.open-bio.org/
+
+Notes:
+
+- This module performs the actual calculations for qnorm, background correction and median polish.
+- It uses Pthreads - which looks a bit hairy (and is background correction really a performance 
+  bottleneck?)
+
+Pjotr Prins

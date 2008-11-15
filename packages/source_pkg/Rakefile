@@ -1,0 +1,61 @@
+# Rake file for managing Ruby gems
+#
+# rake                # build test with cmake
+
+PROJECT_NAME = "biolib"
+BIOLIB_VERSION = `cat VERSION`.chop
+packagename=PROJECT_NAME+'-'+BIOLIB_VERSION
+
+desc "Package BioLib"
+task :default => [:clean, :package]
+ 
+task :package do
+  raise 'Run from source root only!' if !File.exist?('cmake_modules')
+	packagedir=packagename
+	mkdir packagedir
+  patterns = [
+		'scripts/*',
+    'doc/*.txt',
+    'Rakefile',
+    'LICENSE', 'README', 'VERSION', 'INSTALL', 'TODO',
+		'**/CMakeLists.txt',
+		'cmake_modules/*',
+		'doc/*.txt',
+		'src/clibs/biolib*/**/*.{h,c,txt}',
+		'src/clibs/example-*/*.{h,c,txt}',
+		'src/clibs/affyio-*/src/*.{h,c,txt}',
+		'src/biolib/**/*.rb',
+		'src/bindings/swig/*.i',
+		'src/bindings/swig/ruby/**/*.{rb,i}',
+		# 'src/test/**/*',
+  ]
+
+  files = patterns.map {|p| Dir.glob(p) }.flatten
+
+	files.each do | fn |
+	  dir = packagedir+'/'+File.dirname(fn) 
+		# p [fn,dir]
+		`mkdir -p #{dir}` if !File.exist?(dir)
+    cp fn,dir
+  end
+	print `tar cvzf #{packagename}.tgz #{packagedir}`
+	print `tar cvjf #{packagename}.tar.bz2 #{packagedir}`
+	print `zip -r #{packagename}.zip #{packagedir}`
+end
+
+task :test do
+  chdir(packagename) do 
+		system "cmake -DBUILD_LIBS:BOOLEAN=TRUE -DCMAKE_INSTALL_PREFIX=./test ."
+    system "make"
+    system "make test"
+		system "make install"
+		system "ls -l test/lib/*"
+	end
+end
+
+task :clean do
+  desc "Clean up everything"
+	rm_rf packagename
+end
+ 
+

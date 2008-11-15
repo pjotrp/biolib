@@ -1,0 +1,2 @@
+PKG_CPPFLAGS += -DHAVE_ZLIB
+PKG_LIBS += -lRzlib

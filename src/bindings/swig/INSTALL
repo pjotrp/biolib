@@ -1,0 +1,7 @@
+Build the libraries from the top of the tree or individual modules
+from within the language libraries with:
+
+cmake .
+make
+make test
+

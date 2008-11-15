@@ -1,0 +1,50 @@
+* INTRODUCTION
+
+To create bindings for a new module follow the addition of an example 
+package (SWIG's exmample.c).
+
+
+* GENERIC
+
+First we create a new folder in ./src/clibs:
+
+  mkdir ./src/clibs/example
+
+perhaps it a version number is there for a contributed library that
+is expected to be modified
+
+  mkdir ./src/clibs/example-1.0
+
+if it is contributed, but will remain unmodified move the folder into
+./contrib e.g.
+
+  mkdir ./contrib/example-1.0
+
+and have ./src contain your mappings only:
+
+	mkdir ./src/clibs/examples
+
+next we add the code (see ./src/clibs/example example.c).  Includes go
+into:
+
+	mkdir ./src/clibs/examples/include
+
+The language bindings go into ./src/bindings/swig - with the swig
+input file ./src/bindings/swig/example.i in place for the module.
+
+Next we get the language specific stuff...
+
+
+* PYTHON
+
+In ./src/bindings/swig/python/biolib_swig_python the building of
+Python linked libraries is handled with tests in
+./src/bindings/swig/python/test.
+
+To build the python bindings you need the development version of
+Python (/usr/include/python2.x/python.h should be on your system).
+
+
+* RUBY
+
+See ./src/bindings/swig/ruby/biolib_swig_ruby

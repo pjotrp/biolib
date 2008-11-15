@@ -1,0 +1,3 @@
+Nov 29, 2005 - Initial importation of existing C source code from the affy and makecdfenv packages.
+
+Dec 1, 2005 - comment cleaning in C source code. Add read.cdffile.list.R, check.cdf.type.R 

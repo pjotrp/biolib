@@ -1,0 +1,56 @@
+= Using biolib Ruby
+
+  cmake .
+	make
+	make test
+	make install (as root)
+
+will copy the shared libraries into the Ruby tree, for example the
+directory /usr/lib/ruby/1.8/i486-linux/.
+
+From here you can run Ruby and require, for example,
+'biolib_ruby_example'. 
+
+  ruby src/bindings/swig/ruby/test/test_example.rb 
+
+should show Biolib_ruby_example.my_mod(7,3) renders 1 
+
+See the other test scripts in ./src/bindings/swig/ruby/test.
+
+= Using another Ruby location
+
+The current packaging (gem and CMake) default to the first Ruby
+interpreter in the path. To change this you may try:
+
+ cmake -DRUBY_EXECUTABLE=/usr/local/bin/myruby -DBUILD_RUBY:BOOLEAN=TRUE . 
+
+= Trouble shooting
+
+== libR.so error
+
+The error: biolib_ruby_affyio.so: libR.so: cannot open shared object file: No such file or directory
+
+Is due to the runtime dynamic library loader not finding libR.so. See
+if you can fix it by something like:
+
+  /lib/ld-linux.so.2 --library-path /usr/lib/R/lib /usr/bin/ruby test_affyio.rb
+
+if this works you can add /usr/lib/R/lib ni /etc/ld.so.conf and build
+the cache with ldconfig -v
+
+
+== SWIG: Warning(801): Wrong class name (corrected to 
+
+The Ruby module will give this warning when structures are named
+starting with lowercase. It is harmless.
+
+
+== cannot open shared object file
+
+The following error can occur when BioLib and Ruby are compiled with different gcc compilers (the libstdc++.so library is a mismatch):
+
+../affyio/affyio.so: libstdc++.so.6: cannot open shared object file: No such file or directory - ../affyio/affyio.so (LoadError)
+        from ./../test/test_affyio.rb:5
+
+with NIX it is possible to create profiles with different Ruby/gcc
+combinations - which is ideal for testing different dependencies.

@@ -1,0 +1,9 @@
+/*! \mainpage BioLib API Documentation
+ *
+ *  These pages describe the BioLib low-level 'C' API.
+ *
+ *  This API is used to implement the Bio* interfaces. For more information
+ *  see the Bio* projects, like BioPerl, BioPython, BioRuby, BioJAVA, etc.
+ *
+ *  For more information on the BioLib project and sources, see http://biolib.open-bio.org/
+ */

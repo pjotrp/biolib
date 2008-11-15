@@ -1,0 +1,27 @@
+* NIX
+
+Nix is a package management system that lives on top of other systems
+- but acts independently (all Nix files live in /nix).
+
+One of the nice features of Nix is that it has a clean build
+environment. Any dependency will show up during builds! A bit similar
+to creating a clean virtual machine for package building. But it is
+even better - with conflicts, like libraries with the same name (e.g.
+zlib.so occurs with several packages), Nix will always complain. We
+use Nix to test for dependencies and test/use different versions of
+compilers and interpreters.
+
+** NIX TROUBLESHOOTING
+
+When you get an error like:
+
+libstdc++.so.6: cannot open shared object file: No such file or directory - ./example.so (LoadError)
+        from ../test/test_example.rb:3
+
+most likely you are using different versions of gcc/ld - in
+particular a Ruby/Python/Perl interpreter may have been built with
+Nix gcc, but you are trying to test with a local gcc.
+
+To fix this either use the correct Nix gcc, or remove the Nix version
+of ruby (and libraries) to match the combination on the underlying
+system. These dependencies get printed when running a clean cmake .

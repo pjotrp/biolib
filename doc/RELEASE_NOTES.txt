@@ -1,0 +1,18 @@
+====================
+BIOLIB RELEASE NOTES
+====================
+
+---------------------------------------------------------------------
+BIOLIB 0.01 r119                                         Sep 21, 2008
+---------------------------------------------------------------------
+
+This is the first trial release of BioLib - shared libraries for the
+different languages like Perl, Python and Ruby. 0.01 only has Ruby
+mappings for reading and accessing Affymetrix files using the Affyio
+library and RMA normalization (under development) - the other two
+languages will be supported in the next version. See
+./doc/DEPENDENCIES.txt for current dependencies.
+
+This release can be downloaded, built and tested for Ruby. Affymetrix
+CEL and CDF can be read for probes and probesets.
+

@@ -1,0 +1,46 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>BioLib</sitename>
+    <base>http://biolib.open-bio.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.13.2</generator>
+    <case>first-letter</case>
+      <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">BioLib</namespace>
+      <namespace key="5">BioLib talk</namespace>
+      <namespace key="6">Image</namespace>
+      <namespace key="7">Image talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>CMake</title>
+    <id>14</id>
+    <revision>
+      <id>98</id>
+      <timestamp>2008-08-02T15:08:01Z</timestamp>
+      <contributor>
+        <username>Pjotrp</username>
+        <id>2</id>
+      </contributor>
+      <comment>New page: CMake is used for multiplatform build support of BioLib. Rather than the venerable automake tools ('configure' and friends). We want to keep things simple and proof is with the CMake file ...</comment>
+      <text xml:space="preserve">CMake is used for multiplatform build support of BioLib. Rather than the venerable automake tools ('configure' and friends). We want to keep things simple and proof is with the CMake file in [[Add C Library]]. CMake allows a modular system for generating Makefiles. Ultimately CMake is a simple macro language, with lots of configuration tools out of the box. CMake only requires a C-compiler to build itself, so it is light on requirements. To build BioLib you need to install CMake 2.6, or later, on your system. All Linux distributions come with CMake - as KDE uses it.
+
+For more instructions on getting and installing cmake, see http://www.cmake.org/.
+
+Note: as CMake generates Makefiles and other supporting files you need to remove those when you want to change configurations. A script file exists for that in ./scripts/cleanup.sh.</text>
+    </revision>
+  </page>
+</mediawiki>

@@ -1,0 +1,15 @@
+= BUILDING BIOLIB =
+
+BioLib uses cmake for multiplatform support and building, which is
+basically:
+
+  cmake .
+	make
+	make test
+	make install
+
+For more information on build options see ./INSTALL
+
+
+
+

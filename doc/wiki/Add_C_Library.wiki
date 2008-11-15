@@ -1,0 +1,115 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>BioLib</sitename>
+    <base>http://biolib.open-bio.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.13.2</generator>
+    <case>first-letter</case>
+      <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">BioLib</namespace>
+      <namespace key="5">BioLib talk</namespace>
+      <namespace key="6">Image</namespace>
+      <namespace key="7">Image talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Add C Library</title>
+    <id>11</id>
+    <revision>
+      <id>101</id>
+      <timestamp>2008-08-02T20:01:02Z</timestamp>
+      <contributor>
+        <username>Pjotrp</username>
+        <id>2</id>
+      </contributor>
+      <text xml:space="preserve">= Adding a C library to BioLib =
+
+== Creating a module ==
+
+Adding a C library is straightforward. When your library is called
+'package' unpack the source tree in:
+  
+  ./contrib/package-version
+
+The BioLib API is added to:
+
+  ./src/clibs/package-version
+
+== Create a CMake file ==
+
+BioLib uses [[CMake]] to generate makefiles. These tend to be simple because of BioLib modules included. An affyio example:
+
+  PROJECT(Biolib_affyio)
+  # ---- Include the modules:
+  FIND_PACKAGE(RLibs)
+  FIND_PACKAGE(BioLib)
+  # ---- Library name:
+  SET(LIBNAME biolib_affyio-${BIOLIB_VERSION})
+  # ---- Location for include files (.h)
+  INCLUDE_DIRECTORIES(.)
+  INCLUDE_DIRECTORIES(${R_INCLUDE_PATH})
+  # ---- Create a shared library from .c files
+  ADD_LIBRARY(${LIBNAME} SHARED
+     biolib_affyio.c 
+  )
+
+For the latest version see the BioLib source tree.
+
+== Create the API ==
+
+Creating the API is up to the module author. SWIG allows harvesting all definitions in .h include files - to make things simple. Often it may be desirable to roll an interface for BioLib. See the Affyio for an example. The original interface was meant for R/Bioconductor and was changed for BioLib in biolib_affyio.h.
+
+
+== Define SWIG bindings ==
+
+The shared API bindings for those functions that get called from the scripting
+languages (like Perl, Python, Ruby etc.) go into
+
+  ./src/bindings/swig/package.i
+
+Typically the API bindings get generated from an include file in
+./src/clibs named biolib_package.h. For example the affyio package has
+for biolib_affyio.i
+
+  %{
+    #include &lt;biolib_affyio.h&gt;
+  %}
+  %include &lt;biolib_affyio.h&gt;
+
+which includes the callable API and data structures that can be
+accessed by the scripting languages. 
+
+
+== Create Language Binding for Ruby, Python, Perl, Java... ==
+
+To create a specific language binding see:
+
+* [[Add Ruby Module]]
+* [[Add Python Module]]
+* [[Add Perl Module]]
+* [[Add JAVA Module]]
+* [[Add R Module]]
+
+== Other ==
+
+=== C++ bindings? ===
+
+An API consists of C functions and data structures. It is possible to
+call into C++ with SWIG, but to keep things simple use C mappings for 
+the API (using extern 'C'). See also [[BioLib_best_practises]].</text>
+    </revision>
+  </page>
+</mediawiki>

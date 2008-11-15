@@ -1,0 +1,92 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>BioLib</sitename>
+    <base>http://biolib.open-bio.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.13.2</generator>
+    <case>first-letter</case>
+      <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">BioLib</namespace>
+      <namespace key="5">BioLib talk</namespace>
+      <namespace key="6">Image</namespace>
+      <namespace key="7">Image talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>NIX</title>
+    <id>9</id>
+    <revision>
+      <id>126</id>
+      <timestamp>2008-10-05T11:08:00Z</timestamp>
+      <contributor>
+        <username>Pjotrp</username>
+        <id>2</id>
+      </contributor>
+      <text xml:space="preserve">Biolib uses NIX packaging for managing and distributing complicated source builds and pre-built binaries of recent bioinformatics software (NOTE: '''NIX packaging will move into a separate project not to confuse matters'''). NIX packages work on *any* Linux distribution as it is an independent packaging system. Provided packages are:
+
+* emboss toolset and libraries
+* ncbi tools (incl. blast)
+* ARB software
+* mrbayes
+* paml
+* r-lang (R-language) with Bioconductor
+* pal2nal
+* gsl (GNU Science library)
+
+For the current list check the [http://github.com/pjotrp/bionix/tree/master/ BioNix] repository.
+
+= Introducing NIX =
+
+Nix is a packaging system that allows the installation of software that is
+
+# correct
+# replicable
+# multi-language
+# multi-version
+# independent of existing package managers
+# easy to use
+
+These are important points for software management in the sciences. For our deployment multi-version support is incredibly effective - we can run several versions of packages next to each other, while guaranteeing correctness. This means, over time, we can replicate our results at any moment. Furthermore it is easy to tranfer packages from one system to another. Lastly the use of 'profiles' allows one to compile newly developed software against different compilers, dependencies etc., without having to use virtual machines.
+
+= Biolib installation instructions =
+
+(Planned)
+
+= BioLib extra binary packages =
+
+Apart from packages directly related to Biolib we provide the following binary packages using Nix:
+
+Existing software packages, amongst others:
+
+(see above)
+
+Planned software packages:
+
+* clustalw2
+
+Planned software libraries:
+
+* seqan
+
+Latest packages can be found in the science/biology section of the
+[https://svn.nixos.org/websvn/nix/nixpkgs/trunk/pkgs/applications/science/biology/#_nixpkgs_trunk_pkgs_applications_science_biology_  Nix WebSVN] package resource.
+
+For more information on Nix see the [http://nixos.org/ Nix home page].
+
+Note: other packages for biolib will also be available in time - in particular Debian (i386 and AMD64).</text>
+    </revision>
+  </page>
+</mediawiki>

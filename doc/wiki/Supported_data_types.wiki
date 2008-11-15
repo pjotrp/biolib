@@ -1,0 +1,59 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>BioLib</sitename>
+    <base>http://biolib.open-bio.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.13.2</generator>
+    <case>first-letter</case>
+      <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">BioLib</namespace>
+      <namespace key="5">BioLib talk</namespace>
+      <namespace key="6">Image</namespace>
+      <namespace key="7">Image talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Supported data types</title>
+    <id>3</id>
+    <revision>
+      <id>31</id>
+      <timestamp>2008-06-01T11:22:29Z</timestamp>
+      <contributor>
+        <username>Pjotrp</username>
+        <id>2</id>
+      </contributor>
+      <text xml:space="preserve">While in principle many data types can be supported (by SWIG), it is good practice for BioLib only to allow simple datatypes exposed through the interfaces. This facilitates easier porting to many high-level languages. Note that internally there are no restrictions on the use of complex types - and naturally the high level languages can do whatever they please with the interfaces BioLib provides. Also, at this point, only C-functions are exposed, rather than C++.
+
+So called 'native' data types are supported by SWIG in the higher languages. 'Mapped' data types need an indirect mapping mechanism.  In the case of array an added mapped version may be required for efficient memory handling.
+
+Supported types:
+
+* char (native)
+* int (native)
+* float (native)
+* double (native)
+* array (native and mapped)
+* matrix (mapped)
+
+and maybe later
+
+* list
+* hash
+
+see also [[BioLib best practises]]</text>
+    </revision>
+  </page>
+</mediawiki>
