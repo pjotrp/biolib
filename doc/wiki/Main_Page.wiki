@@ -29,13 +29,13 @@
     <title>Main Page</title>
     <id>1</id>
     <revision>
-      <id>128</id>
-      <timestamp>2008-10-08T09:36:30Z</timestamp>
+      <id>131</id>
+      <timestamp>2008-11-15T09:51:29Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* PACKAGING */</comment>
+      <comment>/* MILESTONES */</comment>
       <text xml:space="preserve">= BioLib: libraries for the Bio* languages =
 
 BioLib brings together a set of opensource libraries written in
@@ -46,6 +46,7 @@ BioRuby, BioPython, BioJAVA and Bioconductor. BioLib aims to provide libraries a
 
 == MILESTONES ==
 
+* The source repository has moved to [http://github.com/pjotrp/biolib/ github]. The latest changelog is [http://github.com/pjotrp/biolib/commits/master here] (November 2008)
 * BioRuby is the first project to benefit from BioLib's Affy support. See the [http://github.com/pjotrp/bioruby/tree/master/lib/bio/db/microarray/affymetrix Ruby source code] on Github (September 2008)
 * BioLib builds for Ruby on Linux - both Ruby gem and a [[NIX]] package (August 2008)
 * '''Affyio library''' runs for Ruby reading Affymetrix cel and cdf info correctly - see also [[BioLib Affymetrix]] (June 2008)
@@ -80,18 +81,18 @@ For more information see the [[Road map]].
 
 == DOWNLOADING ==
 
-See the latest [http://code.open-bio.org/svnweb/index.cgi/biolib/view/trunk/doc/RELEASE_NOTES.txt RELEASE NOTES].
+See the latest [http://github.com/pjotrp/biolib/tree/master%2Fdoc%2FRELEASE_NOTES.txt?raw=true RELEASE NOTES].
 
 BioLib releases can be downloaded from:
 
-http://bio3.xparrot.eu/download/nix-biology/
+http://bio3.biobeat.org/download/nix-biology/
 
-For the latest SVN access to the source code see
+For the latest git access to the BioLib source repository see
 
-* [http://code.open-bio.org/svnweb/index.cgi/biolib/browse/trunk Biolib websvn]
-* Anonymous [http://subversion.tigris.org/ SVN] access use:
+* [http://github.com/pjotrp/biolib/tree/master Biolib on github]
+* To clone the repository use:
 
-  svn co svn://code.open-bio.org/biolib/trunk biolib
+  git clone git://github.com/pjotrp/biolib.git
 
 == BIOLIB MODULES ==
 
