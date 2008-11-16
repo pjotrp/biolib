@@ -13,7 +13,7 @@ require 'optparse'
 require 'ostruct'
 
 $test_cwd = File.dirname(__FILE__)
-$: << $test_cwd << $test_cwd+'/..' 
+$: << $test_cwd << $test_cwd+'/..' << '../affyio'
 
 options = OpenStruct.new()
 opts = OptionParser.new() { |opts|
