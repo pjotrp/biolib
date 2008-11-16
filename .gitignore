@@ -24,3 +24,4 @@ html
 pkg
 *.gem
 *.tgz
+doc/examples/c/affy
