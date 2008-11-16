@@ -1,4 +1,8 @@
 
+#ifdef BIOLIB
+  #include <biolib_R_map.h>
+#endif
+
 #include <zlib.h>
 
 /******

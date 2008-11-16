@@ -4,6 +4,25 @@ Problems - to be fixed before release 0.9:
 - RMA unit tests
 - R library errors not caught properly (biolib-core handler is not
 	found)
+	Program received signal SIGSEGV, Segmentation fault.
+0x00000000 in ?? ()
+(gdb) backtrace
+#0  0x00000000 in ?? ()
+#1  0xb7e76937 in R_WriteConsole () from /usr/lib/R/lib/libR.so
+#2  0xb7dd3508 in REvprintf () from /usr/lib/R/lib/libR.so
+#3  0xb7dd3687 in REprintf () from /usr/lib/R/lib/libR.so
+#4  0xb7d321ae in Rf_jump_to_toplevel () from /usr/lib/R/lib/libR.so
+#5  0xb7d313b7 in Rf_errorcall () from /usr/lib/R/lib/libR.so
+#6  0xb7d3187a in Rf_error () from /usr/lib/R/lib/libR.so
+#7  0xb7f627ef in isTextCelFile ()
+   from /home/wrk/izip/git/opensource/biolib/src/clibs/affyio-1.8/src/libbiolib_affyio-0.0.1.so
+#8  0xb7f6b0d2 in read_cel_file ()
+   from /home/wrk/izip/git/opensource/biolib/src/clibs/affyio-1.8/src/libbiolib_affyio-0.0.1.so
+#9  0xb7f5ffee in open_celfile ()
+   from /home/wrk/izip/git/opensource/biolib/src/clibs/affyio-1.8/src/libbiolib_affyio-0.0.1.so
+#10 0x0804869a in main (argc=1, argv=0xbfd2d4e8)
+    at /home/wrk/izip/git/opensource/biolib/doc/examples/c/affy.c:16
+
 - Python and Perl now broken - need to locate biolib.so
 
 Features:

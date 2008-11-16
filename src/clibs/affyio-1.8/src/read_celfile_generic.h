@@ -1,6 +1,10 @@
 #ifndef READ_CELFILE_GENERIC_H
 #define READ_CELFILE_GENERIC_H
 
+#ifdef BIOLIB
+  #include <biolib_R_map.h>
+#endif
+
 #include "read_abatch.h"
 
 int isGenericCelFile(const char *filename);
