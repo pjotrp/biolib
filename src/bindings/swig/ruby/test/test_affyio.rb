@@ -2,9 +2,7 @@
 #
 # Author: Pjotr Prins
 
-$: << '../../../../biolib/ruby'
-
-p $:
+$: << '../../../../biolib/ruby' << '../affyio'
 
 require 'affyio'
 require 'test/biolibtest'

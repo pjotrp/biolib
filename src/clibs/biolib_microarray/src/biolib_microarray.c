@@ -1,4 +1,4 @@
 
-#include <biolib_affy.h>
+#include <biolib_microarray.h>
 
 

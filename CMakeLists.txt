@@ -55,7 +55,13 @@ endif(NOT BUILD_DOCS)
 message("  Biolib libraries")
 FIND_PACKAGE(BioLib)
 
-# SET(CMAKE_BUILD_TYPE Debug)
+# SET(CMAKE_BUILD_TYPE Debug)  Release is on by default
+if(DEBUG)
+  SET(CMAKE_BUILD_TYPE Debug)
+else(DEBUG)
+  SET(CMAKE_BUILD_TYPE Release)
+endif(DEBUG)
+message("  Build type=${CMAKE_BUILD_TYPE}")
 SET(DEFAULT_BUILD_SHARED_LIBS ON)
 SET(BUILD_SHARED_LIBS ${DEFAULT_BUILD_SHARED_LIBS} CACHE BOOL "Building shared or static libraries")
 

@@ -8,6 +8,10 @@ basically:
 	make test
 	make install
 
+To add debug info to compiled objects use:
+
+  cmake -DDEBUG=1 .
+
 For more information on build options see ./INSTALL
 
 
