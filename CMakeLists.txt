@@ -87,3 +87,4 @@ add_subdirectory (src)
 include(src)
 
 
+message("  Build type=${CMAKE_BUILD_TYPE}")

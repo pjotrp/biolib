@@ -22,6 +22,8 @@ ADD_LIBRARY(${LIBNAME} SHARED
      read_cdf_xda.c 
      read_cdffile2.c 
      fread_functions.c 
+     read_generic.c
+     read_celfile_generic.c
 )
 
 INSTALL(TARGETS ${LIBNAME}

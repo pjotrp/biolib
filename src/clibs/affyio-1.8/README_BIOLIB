@@ -27,6 +27,7 @@ Modifications on the R source are:
 - Moved CEL definition into header file read_abatch.h
 - Moved CDF definition into header file read_cdf.h
 - Some previously static functions exported in read_cdf.h
+- stdint.h is default
 
 See http://biolib.open-bio.org/
 

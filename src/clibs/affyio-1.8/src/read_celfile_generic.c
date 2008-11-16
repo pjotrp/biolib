@@ -29,6 +29,7 @@
 #include <Rmath.h>
 #include <Rinternals.h>
 
+#define HAVE_STDINT_H 1
 #ifdef HAVE_STDINT_H
 #include <stdint.h>
 #elif HAVE_INTTYPES_H
