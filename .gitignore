@@ -3,13 +3,14 @@
 tags
 CMakeFiles
 CMakeCache.txt
-*.cmake
 Makefile
 *.log
 *.swp
 *.status
 Makevars
 svn.ignore
+cmake_install.cmake
+CTestTestfile.cmake
 *.pyc
 *.o
 *.so
