@@ -14,6 +14,8 @@ ENDIF(NOT BUILD_LIBS)
 SET (USE_ZLIB TRUE)
 SET (USE_INCLUDE io_lib)
 
+INCLUDE(CMakeBackwardCompatibilityC)
+
 FIND_PACKAGE(BioLibRuby)
 
 # ADD_TEST(TestRubyAffyio ${RUBY_EXECUTABLE} -I../${M_NAME} ./../test/test_${M_NAME}.rb)
