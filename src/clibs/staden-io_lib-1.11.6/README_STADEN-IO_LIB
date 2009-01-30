@@ -6,13 +6,13 @@ programmer simply calls the (eg) read_reading to create a "Read" C structure
 with the data loaded into memory.  It has been compiled and tested on a variety
 of unix systems, MacOS X and MS Windows.
 
-BioLib adds interfaces to programmign languages using the SWIG interface.
-Currently Ruby and Perl are being tested.
-
 == Notes ==
 
 * Only the relevant library modules were included
-* The ./io_lib directory was split in ./include and ./src
+* One immediate benefit is Staden io_lib now is a shared library
+
+BioLib adds interfaces to programming languages using the SWIG interface.
+Currently Ruby and Perl are being tested.
 
 See http://biolib.open-bio.org/
 
