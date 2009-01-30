@@ -1,0 +1,21 @@
+This is a port of the Staden io_lib package to BIOLIB (http://biolib.open-bio.org/)
+
+The Staden io_lib is a library of file reading and writing code to provide a
+general purpose trace file (and Experiment File) reading interface.  The
+programmer simply calls the (eg) read_reading to create a "Read" C structure
+with the data loaded into memory.  It has been compiled and tested on a variety
+of unix systems, MacOS X and MS Windows.
+
+BioLib adds interfaces to programmign languages using the SWIG interface.
+Currently Ruby and Perl are being tested.
+
+== Notes ==
+
+* Only the relevant library modules were included
+* The ./io_lib directory was split in ./include and ./src
+
+See http://biolib.open-bio.org/
+
+Pjotr Prins
+
+
