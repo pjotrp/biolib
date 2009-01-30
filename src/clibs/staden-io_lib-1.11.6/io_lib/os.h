@@ -260,10 +260,6 @@ typedef int mode_t;
 #    error Both BIG and LITTLE endian defined. Fix os.h and/or Makefile
 #endif
 
-#if !defined(SP_BIG_ENDIAN) && !defined(SP_LITTLE_ENDIAN)
-#    error Neither BIG nor LITTLE endian defined. Fix os.h and/or Makefile
-#endif
-
 /* Override the endian settings from above using the 'configure' results. */
 #if defined(WORDS_BIGENDIAN) || defined(__BIG_ENDIAN__)
 #undef SP_LITTLE_ENDIAN
@@ -271,6 +267,10 @@ typedef int mode_t;
 #else
 #undef SP_BIG_ENDIAN
 #define SP_LITTLE_ENDIAN
+#endif
+
+#if !defined(SP_BIG_ENDIAN) && !defined(SP_LITTLE_ENDIAN)
+#    error Neither BIG nor LITTLE endian defined. Fix os.h and/or Makefile
 #endif
 
 
