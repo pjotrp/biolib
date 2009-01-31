@@ -21,6 +21,18 @@ slightly more risky:
 
 rm CMakeCache.txt ; cmake .
 
+=== Naming modules ===
+
+The way BioLib uses CMake and SWIG depends on a strict naming
+convention of modules. There is no freedom. The location of C sources
+for a C library with name 'module' and version 1.0 is in:
+
+  ./src/clibs/module-1.0
+
+The Ruby mapping module is in:
+
+  ./src/bindings/swig/ruby/module
+
 === Debugging CMake ===
 
 CMake can be run at any level in the tree. Start from the
@@ -59,6 +71,17 @@ Every relevant shared library has to be run in its folder. So:
   cd src/clibs/module-1.0/src
 	cmake .
 	make
+
+It may also be necessary to remove the shared libraries installed in
+your Ruby/Perl/Python etc. tree. Unfortunately, because of naming
+conventions, it is hard to version those, so make sure they don't link
+in by accident. Typically:
+
+  rm /usr/lib/ruby/1.8/i486-linux/biolib/example.so
+
+or
+
+	rm /usr/lib/ruby/1.8/i486-linux/biolib/*
 
 As a convention the shared libraries are built in
 ./src/clibs/module-1.0/build, so the mapper can find them easily. E.g.
@@ -99,4 +122,17 @@ been built:
 Or the shared library name does not match the module name. Typically
 there will be a mismatch between the names in
 ./src/clibs/module-version and the build/libmodule-version.so names.
+
+=== undefined symbol Init_module ===
+
+A message like:
+
+  ../stadenio/staden_io_lib.so: ../stadenio/staden_io_lib.so: undefined symbol: Init_staden_io_lib - ../stadenio/staden_io_lib.so (LoadError)
+
+indicates another naming problem. A grep in the module gives:
+
+  ruby_staden_io_libRUBY_wrap.cxx:#define SWIG_init    Init_stadenio
+
+which shows the Init function naming does not match the module
+(stadenio rather than staden_io_lib).
 
