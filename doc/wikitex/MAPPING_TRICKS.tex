@@ -1,0 +1,102 @@
+= Mapping tricks =
+
+== Introduction ==
+
+This document documents a number of mapping tricks for the BioLib
+development environment. The term 'mapping' is used here for the
+build-time creation of Ruby/Perl/Python (etc.) modules against a
+shared C library.
+
+== Using CMake ==
+
+CMake is the default choice for BioLib - and, so far, it has worked
+raather well. However, CMake has its oddities and one can waste a lot
+of time on trying to figure out what happens.
+
+CMake caches data it generates and reuses the cache the next time.
+This can lead to confusion when updating CMake configuration files. I
+really don't see why it has to be this way, but the best way around it
+is to either run the ./scripts/cleanup.sh script, every time, or
+slightly more risky:
+
+rm CMakeCache.txt ; cmake .
+
+=== Debugging CMake ===
+
+CMake can be run at any level in the tree. Start from the
+smallest unit after running the ./scripts/cleanup.sh script.
+
+The best way to debug CMake is by using MESSAGE statements
+breaking, or not, with a FATAL_ERROR attribute. E.g.
+
+  IF(NOT IS_DIRECTORY ${MODULE_SOURCE_PATH})
+    MESSAGE(FATAL_ERROR "${MODULE_SOURCE_PATH} does not exist")
+  ENDIF(NOT IS_DIRECTORY ${MODULE_SOURCE_PATH})
+
+To print a list:
+
+  # this is used when searching for include files e.g. using the FIND_PATH() command.
+  MESSAGE( STATUS "CMAKE_INCLUDE_PATH: " ${CMAKE_INCLUDE_PATH} )
+
+  # this is used when searching for libraries e.g. using the FIND_LIBRARY() command.
+  MESSAGE( STATUS "CMAKE_LIBRARY_PATH: " ${CMAKE_LIBRARY_PATH} )
+
+% $
+
+To check whether code should not reach a place:
+
+  MESSAGE(FATAL_ERROR "should not be here!")
+
+=== Building shared libraries ===
+
+In principle cmake can be run at all folder levels. When creating a
+mapping - say to Ruby - first make sure the relevant shared libraries
+are built correctly. To prevent existing libraries from linking bump
+the number in ./VERSION first and run sh ./scripts/cleanup.sh.
+
+Every relevant shared library has to be run in its folder. So:
+
+  cd src/clibs/module-1.0/src
+	cmake .
+	make
+
+As a convention the shared libraries are built in
+./src/clibs/module-1.0/build, so the mapper can find them easily. E.g.
+
+  SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../build)
+
+=== Mapping shared libraries ===
+
+
+
+=== Include files ===
+
+Include files visible to the mapping process are located by default in
+./src/clibs/module-1.0/(src|include). For different locations the
+USE_INCLUDE parameter needs to be set.
+
+== Troube shooting ==
+
+=== BIOLIB_LIBRARY-NOTFOUND ===
+
+This means either the BioLib core library has not been built:
+
+  cd ./src/clibs/biolib_core/src
+	cmake .
+	make
+	ls ../build
+
+=== MODULE_LIBRARY=MODULE_LIBRARY-NOTFOUND ===
+
+This means eigher the module library (against which you are mapping) has not
+been built:
+
+  cd ./src/clibs/module-version/src
+	cmake .
+	make
+	ls ../build
+
+Or the shared library name does not match the module name. Typically
+there will be a mismatch between the names in
+./src/clibs/module-version and the build/libmodule-version.so names.
+
