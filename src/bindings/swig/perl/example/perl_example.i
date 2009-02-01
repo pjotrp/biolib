@@ -1,3 +1,3 @@
-%module biolib_perl_example
+%module example
 
 %include ../../example.i
