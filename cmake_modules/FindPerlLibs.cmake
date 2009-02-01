@@ -5,6 +5,7 @@
 #
 #  PERL_INCLUDE_PATH = path to where perl.h is found
 #  PERL_LIB_PATH     = path where to install modules
+#  PERL_SLIB_PATH    = path where to install shared libraries (auto)
 #  PERL_EXECUTABLE   = full path to the perl binary
 #
 
@@ -25,22 +26,23 @@ IF(PERL_EXECUTABLE)
   EXECUTE_PROCESS(COMMAND ${PERL_EXECUTABLE} -MConfig -e "print \$Config{archname}" OUTPUT_VARIABLE PARCH)
   
   SET(PERL_POSSIBLE_INCLUDE_PATHS
+    /usr/lib/perl/5.8/CORE
+    /usr/lib/perl5/5.8/CORE
     /usr/lib/perl5/${PVERSION}/${PARCH}/CORE
     /usr/lib/perl/${PVERSION}/${PARCH}/CORE
 		/usr/lib/perl/${PVERSION}/CORE
 		/usr/lib/perl5/${PVERSION}/CORE
-    /usr/lib/perl/5.8/CORE
-    /usr/lib/perl5/5.8/CORE
    )
   
   FIND_PATH(PERL_INCLUDE_PATH perl.h  ${PERL_POSSIBLE_INCLUDE_PATHS})
 	get_filename_component(PERL_LIB_PATH ${PERL_INCLUDE_PATH} PATH)
-	SET(PERL_LIB_PATH "${PERL_LIB_PATH}/auto")
+	SET(PERL_SLIB_PATH ${PERL_LIB_PATH})
   
 ENDIF(PERL_EXECUTABLE)
 
 message(STATUS "PERL_INCLUDE_PATH=${PERL_INCLUDE_PATH}")
 message(STATUS "PERL_LIB_PATH=${PERL_LIB_PATH}")
+message( STATUS "PERL_SLIB_PATH=${PERL_SLIB_PATH}")
 # message(STATUS "PERL_LIBRARY=${PERL_LIBRARY}")
 
 MARK_AS_ADVANCED(
