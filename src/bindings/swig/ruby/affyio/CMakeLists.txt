@@ -1,4 +1,4 @@
-# Make biolib_ruby_affyio.so
+# Make Affyio module for Ruby
 
 cmake_minimum_required(VERSION 2.6)
 ENABLE_TESTING()
@@ -13,6 +13,7 @@ ENDIF(NOT BUILD_LIBS)
 
 SET (USE_RLIB TRUE)
 SET (USE_ZLIB TRUE)
+SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
 
 FIND_PACKAGE(BioLibRuby)
 

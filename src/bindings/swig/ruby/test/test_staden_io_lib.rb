@@ -1,5 +1,5 @@
 
-require 'staden_io_lib'
+require 'biolib/staden_io_lib'
 
 # $top_builddir/progs/srf2fasta $outdir/proc.srf > $outdir/slx.fasta 
 
@@ -11,4 +11,5 @@ p result.format
 p result.NBases
 p result.base
 
+raise 'Test failed' if result.NBases != 766
 exit 0

@@ -4,7 +4,7 @@
 
 $: << '../../../../biolib/ruby' << '../affyio'
 
-require 'affyio'
+require 'biolib/affyio'
 require 'test/biolibtest'
 require 'test/unit/testcase'
 
