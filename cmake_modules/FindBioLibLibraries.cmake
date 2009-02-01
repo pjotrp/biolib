@@ -28,4 +28,11 @@ IF(USE_BIOLIBCORE)
   endif(NOT BUILD_LIBS)
 ENDIF(USE_BIOLIBCORE)
 
+IF(USE_RLIB)
+  # handle the QUIETLY and REQUIRED arguments and set RLIBS_FOUND to TRUE if 
+  # all listed variables are TRUE
+  INCLUDE(FindPackageHandleStandardArgs)
+  FIND_PACKAGE_HANDLE_STANDARD_ARGS(RLibs DEFAULT_MSG BIOLIB_VERSION)
+ENDIF(USE_RLIB)
+
 
