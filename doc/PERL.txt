@@ -1,0 +1,14 @@
+= BioLib for Perl =
+
+At this point the example module builds and installs on Perl. It
+installs:
+
+-- Installing: /usr/lib/perl/5.8/example.so
+-- Installing: /usr/lib/perl/5.8/biolib/example.pm
+
+which works on my perl 5.8.8 edition. The example.so should
+go into the auto directory, but that prevents Perl from finding it.
+If anyone has a suggestion... The search magic happens in 
+
+  ./cmake_modules/FindPerlLibs.cmake 
+
