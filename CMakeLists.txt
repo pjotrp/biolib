@@ -8,14 +8,18 @@
 #
 #   Build the libraries without language interfaces:
 #
-#   cmake -DBUILD_LIBS:BOOLEAN=ON .
-#   cmake -DBUILD_DOCS:BOOLEAN=ON .
+#   cmake -DBUILD_LIBS:BOOLEAN=TRUE .
+#   cmake -DBUILD_DOCS:BOOLEAN=TRUE .
 #
 #   Build the Ruby/Python/Perl interface and libraries:
 #
-#   cmake -DBUILD_RUBY:BOOLEAN=ON .
-#   cmake -DBUILD_PYTHON:BOOLEAN=ON .
-#   cmake -DBUILD_PERL:BOOLEAN=ON .
+#   cmake -DBUILD_RUBY:BOOLEAN=TRUE .
+#   cmake -DBUILD_PYTHON:BOOLEAN=TRUE .
+#   cmake -DBUILD_PERL:BOOLEAN=TRUE .
+#
+#   To build specific libraries
+#
+#   cmake -DSTADEN_LIB:BOOLEAN=TRUE
 
 cmake_minimum_required(VERSION 2.6)
 
@@ -52,7 +56,23 @@ if(NOT BUILD_DOCS)
   endif(NOT BUILD_LIBS)
 endif(NOT BUILD_DOCS)
 
+set(BLD_BIOLIB  TRUE)
+set(BLD_STADEN  TRUE)
+set(BLD_EXAMPLE TRUE)
+set(BLD_AFFYIO  TRUE)
+
+if (STADEN_LIB)
+  set(BLD_STADEN  TRUE)
+  set(BLD_AFFYIO   FALSE)
+  set(BLD_EXAMPLE FALSE)
+  set(BLD_BIOLIB  FALSE)
+endif (STADEN_LIB)
+
 message("  Biolib libraries")
+message(STATUS "Install Affyio ${BLD_AFFYIO}")
+message(STATUS "Install Staden ${BLD_STADEN}")
+message(STATUS "Install Example ${BLD_EXAMPLE}")
+
 FIND_PACKAGE(BioLib)
 
 # SET(CMAKE_BUILD_TYPE Debug)  Release is on by default

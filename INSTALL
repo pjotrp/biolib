@@ -6,7 +6,7 @@ The following makes the default libraries:
   make
   make test
 
-To install BioLib with Ruby support simply execute rake:
+To install BioLib with Ruby support one can simply execute rake:
 
   rake build
 	rake test
@@ -19,17 +19,21 @@ For installations specific to Perl, Python etc. see below.
 
 Install or build the following tools on your system
 
-  gcc    >  3.3.x
-  cmake  >= 2.6
-  swig   >= 1.3.33
-  python >= 2.4   (if you want Python support)
-  ruby   >= 1.8.6 (if you want Ruby support)
-  perl   >= 5.8.8 (if you want Perl support)
+  gcc    >  3.3.x  (usually default on Linux)
+  cmake  >= 2.6    (2008 distributions - needed for SWIG support)
+  swig   >= 1.3.33 (2008 distributions)
+  python >= 2.4    (if you want Python support)
+  ruby   >= 1.8.6  (if you want Ruby support)
+  perl   >= 5.8.8  (if you want Perl support)
 
 see also ./doc/DEPENDENCIES.txt for runtime libraries. cmake 2.6 is available
 in Debian testing and etch-backports. 
 
-To build all Bio* biolib modules:
+To build all Bio* biolib modules use:
+
+        ./install.sh
+
+which executes
 
         cmake .
         make
@@ -44,9 +48,9 @@ or,
 
         ruby -I ./src/bindings/swig/ruby/example/ src/bindings/swig/ruby/test/test_example.rb
 
-biolib installs its shared C libraries by default in /usr/lib/biolib - as
+biolib installs its shared C libraries by default in /usr/lib - as
 defined in ./cmake_modules/FindBioLib.cmake. To have your programs find the
-shared libraries you may have to add '/usr/lib/biolib/lib' to ld.so.conf or add
+shared libraries you may have to add '/usr/lib' to ld.so.conf or add
 it the LD_LIBRARY_PATH.
 
 To change the default installation path use, for example:
@@ -54,6 +58,8 @@ To change the default installation path use, for example:
         cmake -DCMAKE_INSTALL_PREFIX=/opt/biolib .
         make
         make install
+
+which puts the shared libraries in /opt/biolib/lib.
 
 Ruby libraries get installed in the Ruby module path.
 
@@ -86,7 +92,17 @@ To build BioLib PERL libraries:
         cmake -DBUILD_PERL:BOOLEAN=TRUE .
         make
         ctest
-        
+
+** Build specific libraries only
+
+Some libraries may have dependencies that are not relevant to your needs. For 
+example you may want to install the Staden for Perl only you can pass parameters:
+
+  sh scripts/cleanup.sh
+  cmake -DSTADEN_LIB:BOOLEAN=TRUE -DBUILD_PERL:BOOLEAN=TRUE .
+	make
+	su -c make install
+
 
 ** APIDOC
 
@@ -97,7 +113,7 @@ To build the API documentation (low-level 'C')
 
 ** TROUBLE SHOOTING
 
-When switching between builds make sure to remove the CMakeCache.txt file in
-all directories.  This can be achieved with sh ./scripts/cleanup.sh.
+When switching between build parameters make sure to remove the CMakeCache.txt
+file in all directories.  This can be achieved with sh ./scripts/cleanup.sh.
 
 
