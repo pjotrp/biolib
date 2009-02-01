@@ -1,3 +1,17 @@
+# This CMake script tries to locate the clib module and shared library
+# in the source tree and 
+#
+# It uses
+#
+#   M_NAME
+#   M_VERSION
+#   USE_INCLUDE_PATH
+#
+# to return
+#
+#   MODULE_SOURCE_PATH
+#   MODULE_LIBRARY
+
 # ---- Find the shared library include and lib path
 SET (MODULE_SOURCE_PATH ${BIOLIB_CLIBS_PATH}/${M_NAME}-${M_VERSION})
 
@@ -24,4 +38,8 @@ IF(USE_INCLUDEPATH)
   INCLUDE_DIRECTORIES(${MODULE_SOURCE_PATH}/${USE_INCLUDEPATH})
 ENDIF(USE_INCLUDEPATH)
 
+MARK_AS_ADVANCED(
+  MODULE_SOURCE_PATH
+	MODULE_LIBRARY
+)
 

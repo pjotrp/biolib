@@ -1,3 +1,12 @@
+# CMake script to locate external libraries for BioLib
+#
+# Using
+#
+#   USE_RLIB
+#   USE_ZLIB
+#   USE_BIOLIBCORE
+#
+
 # ---- Using libraries
 
 IF(USE_RLIB)
