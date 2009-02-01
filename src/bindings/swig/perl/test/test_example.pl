@@ -1,4 +1,6 @@
-use biolib_perl_example;
+use biolib::example;
 
-my $result = biolib_perl_example::my_mod(7,3);
+my $result = example::my_mod(7,3);
 print "my_mod returns $result!\n";
+
+exit ($result != 1);
