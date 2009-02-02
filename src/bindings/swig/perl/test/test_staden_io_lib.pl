@@ -1,4 +1,4 @@
-use staden_io_lib;
+use biolib::staden_io_lib;
 
 $datadir = '../../../../test/data/trace';
 
