@@ -31,7 +31,7 @@ ADD_CUSTOM_COMMAND(
   COMMAND ${CMAKE_COMMAND} -E copy ${M_NAME}.pm biolib/${M_NAME}.pm
 )
 
-ADD_TEST(TestPerlExample ${PERL_EXECUTABLE} -I../${M_NAME}/biolib ./../test/test_${M_NAME}.pl)
+ADD_TEST(TestPerlStadenIOLib ${PERL_EXECUTABLE} -I../${M_NAME}/biolib ./../test/test_${M_NAME}.pl)
 
 INSTALL(TARGETS ${M_MODULE}
   LIBRARY DESTINATION ${PERL_SLIB_PATH}

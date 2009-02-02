@@ -14,4 +14,4 @@ print("\nbase=",staden_io_libc::Read_base_get($result));
 
 croak('Test failed') if staden_io_libc::Read_NBases_get($result) != 766;
 
-exit ($result != 1);
+exit 0;
