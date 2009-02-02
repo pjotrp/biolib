@@ -1,5 +1,3 @@
-# Affyio methods
-#
 
 %{
   #include <Read.h>
