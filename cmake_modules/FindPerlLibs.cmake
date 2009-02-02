@@ -24,20 +24,23 @@ message(STATUS "PERL_EXECUTABLE=${PERL_EXECUTABLE}")
 IF(PERL_EXECUTABLE)
   EXECUTE_PROCESS(COMMAND ${PERL_EXECUTABLE} -MConfig -e "print \$Config{version}" OUTPUT_VARIABLE PVERSION)
   EXECUTE_PROCESS(COMMAND ${PERL_EXECUTABLE} -MConfig -e "print \$Config{archname}" OUTPUT_VARIABLE PARCH)
-  
+
+  # ---- Find perl.h and set PERL_INCLUDE_PATH
   SET(PERL_POSSIBLE_INCLUDE_PATHS
-    /usr/lib/perl/5.8/CORE
-    /usr/lib/perl5/5.8/CORE
-    /usr/lib/perl5/${PVERSION}/${PARCH}/CORE
-    /usr/lib/perl/${PVERSION}/${PARCH}/CORE
-		/usr/lib/perl/${PVERSION}/CORE
-		/usr/lib/perl5/${PVERSION}/CORE
-   )
-  
-  FIND_PATH(PERL_INCLUDE_PATH perl.h  ${PERL_POSSIBLE_INCLUDE_PATHS})
+					/usr/lib/perl/5.8/CORE
+					/usr/lib/perl5/5.8/CORE
+					/usr/lib/perl5/${PVERSION}/${PARCH}/CORE
+					/usr/lib/perl/${PVERSION}/${PARCH}/CORE
+					/usr/lib/perl/${PVERSION}/CORE
+					/usr/lib/perl5/${PVERSION}/CORE
+  )
+
+	FIND_PATH(PERL_INCLUDE_PATH perl.h  ${PERL_POSSIBLE_INCLUDE_PATHS})
 	get_filename_component(PERL_LIB_PATH ${PERL_INCLUDE_PATH} PATH)
-	SET(PERL_SLIB_PATH ${PERL_LIB_PATH})
-  
+					
+	# ---- Find location for installing shared libraries
+  SET(PERL_LIB_PATH /usr/local/lib/perl/${PVERSION})  
+  SET(PERL_SLIB_PATH /usr/local/lib/perl/${PVERSION})  
 ENDIF(PERL_EXECUTABLE)
 
 message(STATUS "PERL_INCLUDE_PATH=${PERL_INCLUDE_PATH}")
