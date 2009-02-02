@@ -2,7 +2,7 @@
   <siteinfo>
     <sitename>BioLib</sitename>
     <base>http://biolib.open-bio.org/wiki/Main_Page</base>
-    <generator>MediaWiki 1.13.2</generator>
+    <generator>MediaWiki 1.13.3</generator>
     <case>first-letter</case>
       <namespaces>
       <namespace key="-2">Media</namespace>
@@ -29,74 +29,87 @@
     <title>Main Page</title>
     <id>1</id>
     <revision>
-      <id>131</id>
-      <timestamp>2008-11-15T09:51:29Z</timestamp>
+      <id>140</id>
+      <timestamp>2009-02-02T10:45:37Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* MILESTONES */</comment>
+      <comment>/* DOWNLOADING */</comment>
       <text xml:space="preserve">= BioLib: libraries for the Bio* languages =
 
-BioLib brings together a set of opensource libraries written in
-C/C++ and makes them available for all Bio* languages: BioPerl,
-BioRuby, BioPython, BioJAVA and Bioconductor. BioLib aims to provide libraries and functionality available for all languages.
+''BioLib'' brings together a set of opensource C/C++ libraries and makes them, in principle, available to all Bio* languages: BioPerl,
+BioRuby, BioPython, BioJAVA and Bioconductor. 
 
-'''IMPORTANT NOTICE: BioLib is currently in pre-release testing'''.
+'''IMPORTANT NOTICE: BioLib is currently in testing'''.
 
 == MILESTONES ==
 
+* ''Perl'' and ''Ruby'' mappings provided for the '''Staden [http://sourceforge.net/projects/staden/ io_lib] library''', for reading of trace files in many formats (January 2009)
 * The source repository has moved to [http://github.com/pjotrp/biolib/ github]. The latest changelog is [http://github.com/pjotrp/biolib/commits/master here] (November 2008)
-* BioRuby is the first project to benefit from BioLib's Affy support. See the [http://github.com/pjotrp/bioruby/tree/master/lib/bio/db/microarray/affymetrix Ruby source code] on Github (September 2008)
-* BioLib builds for Ruby on Linux - both Ruby gem and a [[NIX]] package (August 2008)
-* '''Affyio library''' runs for Ruby reading Affymetrix cel and cdf info correctly - see also [[BioLib Affymetrix]] (June 2008)
-* An '''example library''' gets built for Python, Ruby and Perl using SWIG and cmake 2.6 (June 2008)
+* ''BioRuby'' is the first to benefit from BioLib's Affy support. See the [http://github.com/pjotrp/bioruby/tree/master/lib/bio/db/microarray/affymetrix Ruby source code] on Github (September 2008)
+* BioLib builds for ''Ruby'' on Linux - both Ruby gem and a [[NIX]] package (August 2008)
+* '''Affyio library''' runs for ''Ruby'' reading Affymetrix cel and cdf info correctly - see also [[BioLib Affymetrix]] (June 2008)
+* An '''example library''' gets built for ''Python'', ''Ruby'' and ''Perl'' using SWIG and cmake 2.6 (June 2008)
 
 see also the [[Road map]]. There is potential for other languages like JAVA, R and OCaml.
 
 == INTRODUCTION ==
 
 BioLib pools resources and provide the mechanisms for having one code
-base for all languages with a STABLE and DEVELOPMENT branch. STABLE
-includes software that has proven itself to be solid, builds on all
-supported platforms and comes with unit testing.  All other libraries
-live in DEVELOPMENT.
+base for all important programming languages.
 
 The primary mapping mechanism to the Bio* languages is [[SWIG]]. SWIG has
 come a long way in the last years and maps to all modern high-level
-languages. We are planning a [[Generator]] for automated mappings. While
-SWIG supports complex datatypes it is a good idea to provide simple
+languages. We are planning a [[Generator]] for automated mappings.
+Even while SWIG supports complex datatypes it is a good idea to provide simple
 types to the outside world using C call libraries and leave it to the
 high-level languages to provide more complex interfaces. 
-See also [[supported data types]] and [[BioLib best practises]].
+See also [[supported data types]] and [[BioLib best practices]].
 
 The primary objective of BioLib is compatibility between languages and
 multi-platform support. The secondary objective of BioLib is
 efficiency - both of CPU and RAM (why bother to write in C,
 otherwise).  Think of BioLib as a kernel for low-level processing and
 analysis of biological data. End-users are not expected to use BioLib
-directly - unless someone thinks up a BioC library. BioLib was incepted at the Biohackathlon in Tokyo, 2008.
+directly - unless someone thinks up a BioC library. BioLib was incepted at the 
+Tokyio Biohackathon 2008.
 
 For more information see the [[Road map]].
 
 == DOWNLOADING ==
 
-See the latest [http://github.com/pjotrp/biolib/tree/master%2Fdoc%2FRELEASE_NOTES.txt?raw=true RELEASE NOTES].
+For the latest version of ''BioLib'' see the latest [http://github.com/pjotrp/biolib/tree/master%2Fdoc%2FRELEASE_NOTES.txt?raw=true RELEASE NOTES].
 
-BioLib releases can be downloaded from:
+BioLib releases (tgz, tar.bz2 and zip) can be downloaded from:
 
 http://bio3.biobeat.org/download/nix-biology/
 
-For the latest git access to the BioLib source repository see
+For the direct access to the latest source tree use
 
 * [http://github.com/pjotrp/biolib/tree/master Biolib on github]
-* To clone the repository use:
+* And clone the (master) repository with:
 
   git clone git://github.com/pjotrp/biolib.git
+
+== INSTALLATION ==
+
+
+Quick instructions : after downloading the source run
+
+  ./install.sh
+
+to install a subset, e.g. Staden-io-lib for Perl:
+
+  ./install.sh -DSTADEN_LIB:BOOLEAN=TRUE -DBUILD_PERL:BOOLEAN=TRUE
+
+For more information read the [http://github.com/pjotrp/biolib/tree/master/INSTALL INSTALL] file.
+
 
 == BIOLIB MODULES ==
 
 * [[BioLib Affymetrix]] support
+* [[BioLib Staden_io_lib]] support
 
 == API DOCUMENTION ==
 
@@ -112,21 +125,22 @@ A recent online edition can be found [http://thebird.nl/apidoc/biolib/index.html
 
 All developers writing low-level bioinformatics libraries are
 encouraged to contribute. For a HOWTO read [[Add C Library]]. If you feel you have something that can be
-shared by other developers sign up to the BioLib mailing list (see below). Don't
-worry about the complexity of multi-language support. We will help -
-it is the reason for having the BioLib project. Check out [[Interesting libraries]].
+shared by other developers sign up to the BioLib mailing list (see below).
 
 Unit testing is a critical part of BioLib. Unit tests are conveniently
 written in high-level languages.
 
 The multiplatform build system is based on [[CMake]]. The source trees are
-being migrated to [http://git.or.cz/ git] distributed version control.
+maintained with [http://git.or.cz/ git] distributed version control.
+
+== MAILING LIST ==
+
+Subscribe to the BioLib mailing list [http://lists.open-bio.org/mailman/listinfo/biolib-dev here].
 
 == PACKAGING ==
 
 Packaging is not really a responsibility of BioLib. General support for major
-platforms is aimed for, including 32-bit and 64-bit Linux, OS X, *BSD, Solaris and Windows. The packaging itself, however, belongs with
-software distributions.
+platforms is aimed for, including 32-bit and 64-bit Linux, OS X, *BSD, Solaris and Windows. The packaging itself, however, belongs with software distributions.
 
 Nevertheless, BioLib will be packaged on the academic [[NIX]] system, which
 provides multi-platform build testing on an automated build farm. NIX
@@ -134,15 +148,7 @@ provides a one-click installer for many Unix installations, including
 OS X and 64-bit Linux. NIX (BioNix) provides packages for biology applications like R Bioconductor,
 ClustalX, MrBayes etc. Check the list of packages [http://github.com/pjotrp/bionix/tree/master/ here]. There are good reasons for using NIX in
 science: the most important one is reproducibility of results. Another is that a Nix package will run on any flavour of Linux.  For
-more information see [[NIX]].
-
-== MAILING LIST ==
-
-Subscribe to the BioLib mailing list [http://lists.open-bio.org/mailman/listinfo/biolib-dev here].
-
-== CONTACT ==
-
-Write to Pjotr Prins (pjotr\.public01@thebird\.nl).</text>
+more information see [[NIX]].</text>
     </revision>
   </page>
 </mediawiki>
