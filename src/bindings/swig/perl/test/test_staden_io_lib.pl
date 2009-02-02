@@ -9,9 +9,9 @@ print "\nTT_ZTR=",$staden_io_lib::TT_ZTR;
 $result = staden_io_lib::read_reading($procsrffn,$staden_io_lib::TT_ANY);
 
 print("\nformat=",staden_io_libc::Read_format_get($result));
-print("\nNBases=",staden_io_libc::Read_NBases_get($result));
+print("\nNBases=",$result->{NBases});
 print("\nbase=",staden_io_libc::Read_base_get($result));
 
-croak('Test failed') if staden_io_libc::Read_NBases_get($result) != 766;
+croak('Test failed') if $result->{NBases} != 766;
 
 exit 0;
