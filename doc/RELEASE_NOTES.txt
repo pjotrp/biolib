@@ -3,6 +3,17 @@ BIOLIB RELEASE NOTES
 ====================
 
 ---------------------------------------------------------------------
+BIOLIB 0.02  b981a7ee7431640e2936efd7869bd59cab1f4f10    Feb 02, 2009
+---------------------------------------------------------------------
+
+The mappings of Perl and Ruby appear to work and the Staden io_lib
+library was added. What we have now is:
+
+  Staden io_lib module with Ruby and Perl mappings
+	Affyio module with Ruby mapping
+	Example module with Ruby and Perl mappings
+
+---------------------------------------------------------------------
 BIOLIB 0.01 r119                                         Sep 21, 2008
 ---------------------------------------------------------------------
 

@@ -60,14 +60,16 @@ END
   patterns = [
     'Rakefile',
 		'**/CMakeLists.txt',
-    'LICENSE', 'README', 'VERSION', 'INSTALL', 'TODO',
+    'LICENSE', 'README', 'VERSION', 'INSTALL', 'TODO', 'install.sh',
 		'cmake_modules/*',
 		'doc/*.txt',
 		'src/clibs/biolib*/**/*.{h,c,txt}',
 		'src/clibs/example-*/*.{h,c,txt}',
 		'src/clibs/affyio-*/src/*.{h,c,txt}',
+		'src/clibs/staden_io_lib-*/io_lib/*.{h,c,txt}',
 		'src/bindings/swig/*.i',
 		'src/bindings/swig/ruby/**/*.{rb,i}',
+		'src/bindings/swig/perl/**/*.{pl,i}',
 		'src/test/**/*'
   ]
  

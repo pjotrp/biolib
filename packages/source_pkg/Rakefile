@@ -17,6 +17,7 @@ task :package do
 		'scripts/*',
     'doc/*.txt',
     'Rakefile',
+		'install.sh',
     'LICENSE', 'README', 'VERSION', 'INSTALL', 'TODO',
 		'**/CMakeLists.txt',
 		'cmake_modules/*',
@@ -24,10 +25,13 @@ task :package do
 		'src/clibs/biolib*/**/*.{h,c,txt}',
 		'src/clibs/example-*/*.{h,c,txt}',
 		'src/clibs/affyio-*/src/*.{h,c,txt}',
+		'src/clibs/staden_io_lib-*/io_lib/*.{h,c,txt}',
 		'src/biolib/**/*.rb',
+		'src/biolib/**/*.pl',
 		'src/bindings/swig/*.i',
 		'src/bindings/swig/ruby/**/*.{rb,i}',
-		# 'src/test/**/*',
+		'src/bindings/swig/perl/**/*.{pl,i}',
+		'src/test/data/**/*/*/*'
   ]
 
   files = patterns.map {|p| Dir.glob(p) }.flatten
