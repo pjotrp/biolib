@@ -53,6 +53,9 @@ ztr.c
 ztr_translate.c
 )
 
+# ---- The following may be required for OSX
+TARGET_LINK_LIBRARIES(${LIBNAME} ${ZLIB_NAME})
+
 INSTALL(TARGETS ${LIBNAME}
   LIBRARY DESTINATION lib
 )
