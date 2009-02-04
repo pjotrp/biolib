@@ -1,0 +1,12 @@
+= Reporting Bugs =
+
+No software is without problems, and an integration environment like
+the Biolib build system is guaranteed to show problems on different
+platforms. 
+
+If you have a problem at build time do:
+
+  cmake . > cmake.out   (with your options)
+	make VERBOSE=1 > make.out
+
+and send us the two output files with a description of your problem.
