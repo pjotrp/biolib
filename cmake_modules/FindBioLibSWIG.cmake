@@ -34,16 +34,8 @@ MESSAGE( STATUS "CMAKE_LIBRARY_PATH=" ${CMAKE_LIBRARY_PATH} )
 
 IF(APPLE)
   # Hack!
-  SET(CMAKE_SHARED_MODULE_CREATE_C_FLAGS 
-   "${CMAKE_SHARED_MODULE_CREATE_C_FLAGS} -Wl,-flat_namespace")
-  FOREACH(symbol
-    _fread_abi
-    _fread_alf
-  )
-  SET(CMAKE_SHARED_MODULE_CREATE_C_FLAGS 
-    "${CMAKE_SHARED_MODULE_CREATE_C_FLAGS},-U,${symbol}")
-  ENDFOREACH(symbol)
-
+  SET(CMAKE_SHARED_MODULE_CREATE_CXX_FLAGS 
+   "${CMAKE_SHARED_MODULE_CREATE_CXX_FLAGS} -Wl,-flat_namespace -Wl,-undefined -Wl,warning")
 ENDIF(APPLE)
 
 INCLUDE(FindPackageHandleStandardArgs)
