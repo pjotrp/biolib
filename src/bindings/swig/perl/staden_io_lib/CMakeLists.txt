@@ -36,8 +36,8 @@ IF(APPLE)
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy ${M_NAME}.so ${M_NAME}.dylib
   )
+  INSTALL(FILES ${M_MODULE}.dylib DESTINATION ${PERL_LIB_PATH} )
 ENDIF(APPLE)
-
 
 ADD_TEST(TestPerlStadenIOLib ${PERL_EXECUTABLE} -I../${M_NAME}/biolib ./../test/test_${M_NAME}.pl)
 
