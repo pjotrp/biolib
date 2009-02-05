@@ -8,5 +8,8 @@ If you have a problem at build time do:
 
   cmake . > cmake.out   (with your options)
 	make VERBOSE=1 > make.out
+	perl -V > perl.out
+	zip bioliblog.zip *.out
 
-and send us the two output files with a description of your problem.
+and send us the bioliblog.zip file with a description of your problem.
+
