@@ -29,12 +29,14 @@
     <title>Add C Library</title>
     <id>11</id>
     <revision>
-      <id>101</id>
-      <timestamp>2008-08-02T20:01:02Z</timestamp>
+      <id>146</id>
+      <timestamp>2009-02-05T19:10:52Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
+      <minor/>
+      <comment>/* Define SWIG bindings */</comment>
       <text xml:space="preserve">= Adding a C library to BioLib =
 
 == Creating a module ==
@@ -78,7 +80,7 @@ Creating the API is up to the module author. SWIG allows harvesting all definiti
 The shared API bindings for those functions that get called from the scripting
 languages (like Perl, Python, Ruby etc.) go into
 
-  ./src/bindings/swig/package.i
+  ./src/mappings/swig/package.i
 
 Typically the API bindings get generated from an include file in
 ./src/clibs named biolib_package.h. For example the affyio package has
@@ -90,8 +92,7 @@ for biolib_affyio.i
   %include &lt;biolib_affyio.h&gt;
 
 which includes the callable API and data structures that can be
-accessed by the scripting languages. 
-
+accessed by the scripting languages.
 
 == Create Language Binding for Ruby, Python, Perl, Java... ==
 

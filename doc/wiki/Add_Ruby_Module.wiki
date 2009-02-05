@@ -29,12 +29,13 @@
     <title>Add Ruby Module</title>
     <id>12</id>
     <revision>
-      <id>102</id>
-      <timestamp>2008-08-02T20:02:57Z</timestamp>
+      <id>147</id>
+      <timestamp>2009-02-05T19:11:23Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
+      <comment>/* Adding a Ruby module to BioLib */</comment>
       <text xml:space="preserve">= Adding a Ruby module to BioLib =
 
 After adding a C library (for instructions see [[Add C Library]]) a
@@ -43,11 +44,11 @@ a shared library out of the C library, calls SWIG to generate
 bindings, and (optionally) handles installing and testing. Create a
 module in:
 
-  ./src/bindings/swig/ruby/package/
+  ./src/mappings/swig/ruby/package/
 
 An example can be found in:
 
-  ./src/bindings/swig/ruby/affyio/
+  ./src/mappings/swig/ruby/affyio/
 
 One SWIG file needs to be written which names the module and includes
 the main swig definition. For example ruby_affyio.i has:

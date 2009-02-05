@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
 	<head>
@@ -77,24 +78,24 @@ var wgRestrictionMove = [];
 This includes "talk" pages, pages about BioLib, minimal "stub" pages, redirects, and others that probably do not qualify as content pages.
 Excluding those, there are <b>10</b> pages that are probably legitimate content pages.
 </p><p><b>0</b> files have been uploaded.
-</p><p>There have been a total of <b>2,636</b> page views, and <b>140</b> page edits since BioLib was setup.
-That comes to <b>8.75</b> average edits per page, and <b>18.83</b> views per edit.
+</p><p>There have been a total of <b>2,673</b> page views, and <b>147</b> page edits since BioLib was setup.
+That comes to <b>9.19</b> average edits per page, and <b>18.18</b> views per edit.
 </p><p>The <a href="http://www.mediawiki.org/wiki/Manual:Job_queue" class="external text" title="http://www.mediawiki.org/wiki/Manual:Job_queue" rel="nofollow">job queue</a> length is <b>0</b>.
 </p>
 <a name="User_statistics"></a><h2> <span class="mw-headline">User statistics</span></h2>
 <p>There are <b>5</b> registered <a href="/wiki/Special:ListUsers" title="Special:ListUsers">users</a>, of which <b>3</b> (or <b>60.00%</b>) have <a href="/w/index.php?title=BioLib:Administrators&amp;action=edit&amp;redlink=1" class="new" title="BioLib:Administrators (not yet written)">Sysops</a> rights.
 </p>
 <a name="Most_viewed_pages"></a><h2> <span class="mw-headline">Most viewed pages</span></h2>
-<ul><li> <a href="/wiki/Main_Page" title="Main Page">Main Page</a> (883)
-</li><li> <a href="/wiki/BioLib_Affymetrix" title="BioLib Affymetrix">BioLib Affymetrix</a> (385)
-</li><li> <a href="/wiki/Add_C_Library" title="Add C Library">Add C Library</a> (330)
-</li><li> <a href="/wiki/NIX" title="NIX">NIX</a> (185)
-</li><li> <a href="/wiki/Road_map" title="Road map">Road map</a> (184)
+<ul><li> <a href="/wiki/Main_Page" title="Main Page">Main Page</a> (902)
+</li><li> <a href="/wiki/BioLib_Affymetrix" title="BioLib Affymetrix">BioLib Affymetrix</a> (386)
+</li><li> <a href="/wiki/Add_C_Library" title="Add C Library">Add C Library</a> (332)
+</li><li> <a href="/wiki/Road_map" title="Road map">Road map</a> (188)
+</li><li> <a href="/wiki/NIX" title="NIX">NIX</a> (187)
 </li><li> <a href="/wiki/Interesting_libraries" title="Interesting libraries">Interesting libraries</a> (136)
-</li><li> <a href="/wiki/SWIG" title="SWIG">SWIG</a> (114)
-</li><li> <a href="/wiki/BioLib_best_practises" title="BioLib best practises">BioLib best practises</a> (106)
+</li><li> <a href="/wiki/SWIG" title="SWIG">SWIG</a> (115)
+</li><li> <a href="/wiki/BioLib_best_practises" title="BioLib best practises">BioLib best practises</a> (108)
 </li><li> <a href="/wiki/Supported_data_types" title="Supported data types">Supported data types</a> (86)
-</li><li> <a href="/wiki/CMake" title="CMake">CMake</a> (64)
+</li><li> <a href="/wiki/CMake" title="CMake">CMake</a> (65)
 </li></ul>
 <div class="printfooter">
 Retrieved from "<a href="http://biolib.open-bio.org/wiki/Special:Statistics">http://biolib.open-bio.org/wiki/Special:Statistics</a>"</div>
@@ -168,4 +169,4 @@ Retrieved from "<a href="http://biolib.open-bio.org/wiki/Special:Statistics">htt
 </div>
 
 		<script type="text/javascript">if (window.runOnloadHook) runOnloadHook();</script>
-<!-- Served in 0.132 secs. --></body></html>
+<!-- Served in 0.128 secs. --></body></html>

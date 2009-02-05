@@ -29,13 +29,13 @@
     <title>Road map</title>
     <id>5</id>
     <revision>
-      <id>109</id>
-      <timestamp>2008-08-18T00:32:41Z</timestamp>
+      <id>144</id>
+      <timestamp>2009-02-05T19:08:32Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* Future */</comment>
+      <comment>/* Adding functionality */</comment>
       <text xml:space="preserve">= 2008 =
 
 == Plumbing ==
@@ -58,11 +58,23 @@
   [x] Create functions for reading CDF file w. Ruby
   [x] Create documentation for Affyio module (Doxygen)
   [x] Map PM intensities to simple native array type w. Ruby
-  [+] Package Ruby version for BioRuby
+  [x] Package Ruby version for BioRuby
   [+] RMA and quantum normalization using Affy module
-  [ ] Map JAVA to affy stuff (with Richard)
-  [ ] Map Python and Perl to affy stuff
-* Create first official source package available for download
+  [x] Perl mapping
+  [ ] Python mapping
+  [ ] Java mapping
+* Add Staden io_lib library (Pjotr)
+  [x] Compile library
+  [ ] Document C library
+  [x] Ruby mapping
+  [x] Perl mapping
+  [ ] Python mapping
+  [ ] Java mapping
+* Create first official source package available for download (Pjotr)
+  [x] Packaging scripts
+  [ ] Generate documentation for Ruby
+  [ ] Generate documentation for Perl
+  [ ] Generate documentation for Java
 * Tutorial how to add a module to biolib (Pjotr)
   [x] Add a C module
   [x] Create a Ruby mapping
@@ -71,7 +83,7 @@
   [ ] Create a Perl mapping
 * Efficient in-memory matrix access/mapping (Pjotr)
   [ ] Provide efficient direct C array access (like Ruby's narray)
-* Quantum normalization (Pjotr/Vicky)
+* Quantile normalization (Pjotr/Vicky)
 * Reduce memory foot print of Affyio (Pjotr)
 * Support for generic matrix reading and writing (Pjotr)
 * Buffered matrix access - using disk access rather than RAM - similar to Ben Bolstad's BufferedMatrix package (Pjotr)
