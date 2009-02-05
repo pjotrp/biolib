@@ -2,6 +2,7 @@
 .hg
 .hgignore
 tags
+build
 CMakeFiles
 CMakeCache.txt
 Makefile

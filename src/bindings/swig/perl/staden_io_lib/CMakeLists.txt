@@ -30,6 +30,14 @@ ADD_CUSTOM_COMMAND(
   POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy ${M_NAME}.pm biolib/${M_NAME}.pm
 )
+IF(APPLE)
+  ADD_CUSTOM_COMMAND(
+    TARGET ${M_MODULE}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy ${M_NAME}.so ${M_NAME}.dylib
+  )
+ENDIF(APPLE)
+
 
 ADD_TEST(TestPerlStadenIOLib ${PERL_EXECUTABLE} -I../${M_NAME}/biolib ./../test/test_${M_NAME}.pl)
 

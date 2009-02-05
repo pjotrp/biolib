@@ -36,3 +36,11 @@ Can't locate loadable object for module staden_io_lib in @INC (@INC contains: .
 failed in require.
 
   indicates the staden_io_lib.so library is not found.
+
+Set:
+
+  export PERL_DL_DEBUG=1
+
+and try again. This should display all the search paths of the
+dynamic loader. See if it matches one of the locations.
+
