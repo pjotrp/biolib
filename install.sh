@@ -2,9 +2,13 @@
 #
 # You can pass parameters to CMake. E.g.
 #
-#   ./install.sh -DSTADEN_LIB:BOOLEAN=TRUE -DBUILD_PERL:BOOLEAN=TRUE .
+# to build for Perl:
 #
-# will build the Staden libraries for Perl only...
+#   ./install.sh -DBUILD_PERL:BOOLEAN=TRUE .
+#
+# to build one library mapping for Perl:
+#
+#   ./install.sh -DSTADEN_LIB:BOOLEAN=TRUE -DBUILD_PERL:BOOLEAN=TRUE .
 #
 
 if [ ! -d cmake_modules ]; then
