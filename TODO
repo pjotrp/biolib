@@ -1,5 +1,6 @@
 Problems - to be fixed before release 0.9:
 
+- Affyio tests use /tmp
 - RMA completion
 - RMA unit tests
 - R library errors not caught properly (biolib-core handler is not

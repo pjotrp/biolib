@@ -19,6 +19,7 @@ if (! -e $cdffilename) {
 $cdf = affyio::open_cdffile($cdffilename);
 $probesets = affyio::cdf_num_probesets($cdf);
 
-print "CDFinfo probesets=",$probesets;
+print "CDFinfo probesets=",$probesets,"\n";
+croak('Test failed') if $probesets != 22293;
 
-exit ($probesets==22293); 
+exit (0); 
