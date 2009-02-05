@@ -1,0 +1,45 @@
+# Builds the Perl biolib_affyio library after resolving paths.
+#
+
+cmake_minimum_required(VERSION 2.6)
+
+ENABLE_TESTING()
+
+SET (M_NAME affyio)
+SET (M_VERSION 1.8)
+SET (INTERFACE perl_${M_NAME}.i)
+
+IF(NOT BUILD_LIBS)
+  SET (CMAKE_MODULE_PATH ../../../../../cmake_modules)
+ENDIF(NOT BUILD_LIBS)
+# SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
+
+SET (USE_ZLIB TRUE)
+SET (USE_RLIB TRUE)
+
+INCLUDE(CMakeBackwardCompatibilityC)
+
+FIND_PACKAGE(BioLibPerl REQUIRED)
+
+ADD_CUSTOM_COMMAND(
+  TARGET ${M_MODULE}
+  POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy ${M_NAME}.pm biolib/${M_NAME}.pm
+)
+IF(APPLE)
+  ADD_CUSTOM_COMMAND(
+    TARGET ${M_MODULE}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy ${M_NAME}.so ${M_NAME}.dylib
+  )
+  INSTALL(FILES ${M_MODULE}.dylib DESTINATION ${PERL_LIB_PATH} )
+ENDIF(APPLE)
+
+ADD_TEST(TestPerlAffyio ${PERL_EXECUTABLE} -I../${M_NAME}/biolib ./../test/test_${M_NAME}.pl)
+
+INSTALL(TARGETS ${M_MODULE}
+  LIBRARY DESTINATION ${PERL_SLIB_PATH}
+)
+
+INSTALL(FILES ${M_MODULE}.pm DESTINATION ${PERL_LIB_PATH}/biolib )
+

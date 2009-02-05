@@ -5,7 +5,7 @@
 
 module BiolibTest
 
-  DATA_REPOSITORY = 'http://bio3.xparrot.eu/download/biolib/data/'
+  DATA_REPOSITORY = 'http://bio3.biobeat.org/download/biolib/data/'
 
   # Fetch and unzip files for unit testing. Uses wget and zcat.
   def BiolibTest::fetch fn, unzip=false

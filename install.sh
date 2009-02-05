@@ -4,11 +4,11 @@
 #
 # to build for Perl:
 #
-#   ./install.sh -DBUILD_PERL:BOOLEAN=TRUE .
+#   ./install.sh -DBUILD_PERL:BOOLEAN=TRUE 
 #
 # to build one library mapping for Perl:
 #
-#   ./install.sh -DSTADEN_LIB:BOOLEAN=TRUE -DBUILD_PERL:BOOLEAN=TRUE .
+#   ./install.sh -DSTADEN_LIB:BOOLEAN=TRUE -DBUILD_PERL:BOOLEAN=TRUE 
 #
 
 if [ ! -d cmake_modules ]; then
