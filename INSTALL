@@ -42,11 +42,11 @@ which executes
 
 Now see if you can run the following:
 
-        ruby src/bindings/swig/ruby/test/test_example.rb
+        ruby src/mappings/swig/ruby/test/test_example.rb
 
 or,
 
-        ruby -I ./src/bindings/swig/ruby/example/ src/bindings/swig/ruby/test/test_example.rb
+        ruby -I ./src/mappings/swig/ruby/example/ src/mappings/swig/ruby/test/test_example.rb
 
 biolib installs its shared C libraries by default in /usr/lib - as
 defined in ./cmake_modules/FindBioLib.cmake. To have your programs find the

@@ -10,13 +10,13 @@ generates a library named biolib-affyio.so.
 Language specific stuff is put in separate dynamically linked
 libraries for each language in
 
-  ./src/bindings/
+  ./src/mappings/
 
-so, Ruby lives in ./src/bindings/swig/ruby - and building the
+so, Ruby lives in ./src/mappings/swig/ruby - and building the
 interface requires both SWIG and the Ruby development libraries and
 generates biolib-ruby.so.
 
-SWIG .i files go into ./src/bindings/
+SWIG .i files go into ./src/mappings/
 
 
 

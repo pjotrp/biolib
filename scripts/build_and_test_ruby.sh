@@ -10,5 +10,5 @@ cmake -DBUILD_RUBY:BOOLEAN=TRUE -DRUBY_EXECUTABLE=/usr/bin/ruby .
 make 
 make test
 
-cd ./src/bindings/swig/ruby/test
+cd ./src/mappings/swig/ruby/test
 ruby -I../affyio runner.rb

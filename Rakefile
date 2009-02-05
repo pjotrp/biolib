@@ -67,9 +67,9 @@ END
 		'src/clibs/example-*/*.{h,c,txt}',
 		'src/clibs/affyio-*/src/*.{h,c,txt}',
 		'src/clibs/staden_io_lib-*/io_lib/*.{h,c,txt}',
-		'src/bindings/swig/*.i',
-		'src/bindings/swig/ruby/**/*.{rb,i}',
-		'src/bindings/swig/perl/**/*.{pl,i}',
+		'src/mappings/swig/*.i',
+		'src/mappings/swig/ruby/**/*.{rb,i}',
+		'src/mappings/swig/perl/**/*.{pl,i}',
 		'src/test/**/*'
   ]
  

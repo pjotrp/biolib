@@ -11,11 +11,11 @@ directory /usr/lib/ruby/1.8/i486-linux/.
 From here you can run Ruby and require, for example,
 'biolib_ruby_example'. 
 
-  ruby src/bindings/swig/ruby/test/test_example.rb 
+  ruby src/mappings/swig/ruby/test/test_example.rb 
 
 should show Biolib_ruby_example.my_mod(7,3) renders 1 
 
-See the other test scripts in ./src/bindings/swig/ruby/test.
+See the other test scripts in ./src/mappings/swig/ruby/test.
 
 = Using another Ruby location
 

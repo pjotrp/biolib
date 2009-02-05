@@ -5,7 +5,7 @@
 A successful installation can be tested from the test directory. For
 example:
 
-  cd src/bindings/swig/perl/test
+  cd src/mappings/swig/perl/test
   perl test_staden_io_lib.pl
 
 This should find the .pm and .so or .dylib files. See below for
@@ -30,14 +30,14 @@ anyone has a suggestion... The search 'magic' happens in
 
 When testing:
 
-perl src/bindings/swig/perl/test/test_staden_io_lib.pl
+perl src/mappings/swig/perl/test/test_staden_io_lib.pl
 
 Something like:
 
 Can't locate biolib/staden_io_lib.pm in @INC (@INC contains:
 /opt/local/lib/perl5/5.8.9/darwin-2level /opt/local/lib/perl5/5.8.9 ...
 /opt/local/lib/perl5/vendor_perl/5.8.9 /opt/local/lib/perl5/vendor_perl .) at
-src/bindings/swig/perl/test/test_staden_io_lib.pl line 1.
+src/mappings/swig/perl/test/test_staden_io_lib.pl line 1.
 
   indicates a path problem with the .pm file. Try and relocate it.
 
