@@ -32,6 +32,11 @@ include(CheckIncludeFiles)
 
 message("Building biolib:")
 
+if(BUILD_ALL)
+	set(BUILD_RUBY TRUE)
+	set(BUILD_PERL TRUE)
+endif(BUILD_ALL)
+
 if(BUILD_RUBY)
   message("  Ruby interface")
 	set(BUILD_LIBS TRUE)
@@ -66,13 +71,15 @@ if (EXAMPLE_LIB)
   set(BLD_AFFYIO  FALSE)
   set(BLD_EXAMPLE TRUE)
   set(BLD_BIOLIB  FALSE)
-endif (EXMPLE_LIB)
+endif (EXAMPLE_LIB)
+
 if (AFFYIO_LIB)
   set(BLD_STADEN  FALSE)
   set(BLD_AFFYIO  TRUE)
   set(BLD_EXAMPLE FALSE)
   set(BLD_BIOLIB  FALSE)
 endif (AFFYIO_LIB)
+
 if (STADEN_LIB)
   set(BLD_STADEN  TRUE)
   set(BLD_AFFYIO  FALSE)
