@@ -32,6 +32,20 @@ MESSAGE( STATUS "CMAKE_INCLUDE_PATH=" ${CMAKE_INCLUDE_PATH} )
 # this is used when searching for libraries e.g. using the FIND_LIBRARY() command.
 MESSAGE( STATUS "CMAKE_LIBRARY_PATH=" ${CMAKE_LIBRARY_PATH} )
 
+IF(APPLE)
+  # Hack!
+  SET(CMAKE_SHARED_MODULE_CREATE_C_FLAGS 
+   "${CMAKE_SHARED_MODULE_CREATE_C_FLAGS} -Wl,-flat_namespace")
+  FOREACH(symbol
+    _fread_abi
+    _fread_alf
+  )
+  SET(CMAKE_SHARED_MODULE_CREATE_C_FLAGS 
+    "${CMAKE_SHARED_MODULE_CREATE_C_FLAGS},-U,${symbol}")
+  ENDFOREACH(symbol)
+
+ENDIF(APPLE)
+
 INCLUDE(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS("all SWIG prerequisites for ${USE_LANGUAGE}" DEFAULT_MSG USE_LANGUAGE USE_LANGUAGE_LIBRARY)
 
