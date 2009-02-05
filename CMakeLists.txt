@@ -106,6 +106,8 @@ SET(THIRD_PARTY_INCLUDE_PATH "" CACHE PATH "Default search path for third-party 
 add_subdirectory (src)
 include(src)
 
-message("  Build type=${CMAKE_BUILD_TYPE}")
+message("CMake: ${CMAKE_CACHE_MAJOR_VERSION}.${CMAKE_CACHE_MINOR_VERSION}-${CMAKE_CACHE_RELEASE_VERSION}")
+message("System: ${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_VERSION}")
+message("  Build type: ${CMAKE_BUILD_TYPE} for ${CMAKE_HOST_SYSTEM_PROCESSOR}")
 EXECUTE_PROCESS(COMMAND /bin/date)
 

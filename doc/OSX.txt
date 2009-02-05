@@ -6,7 +6,22 @@ ports:
   port install cmake
 	port install swig -perl -ruby
 
+set the path:
+
+  PATH=/opt/local/bin:$PATH
+
+test:
+
+  swig -version
+    SWIG Version 1.3.38
+
+== Trouble shooting ==
+
+=== Shared libraries ===
+
 OSX is fussy with shared libraries at build time, compared to Linux.
 If you get an error during the build about 'undefined symbols' most
 likely a library is missing in the CMake build scripts. Please report
-the problem showing the output of the make.
+the problem showing the output of the make as described in
+
+  ./doc/REPORTING_BUGS.txt

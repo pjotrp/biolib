@@ -16,4 +16,4 @@ sh scripts/cleanup.sh
 cmake $* .
 make
 make test
-echo "-- Run 'make install' to complete the installation"
+echo "-- No errors? Run 'make install' to complete the installation"

@@ -10,13 +10,16 @@
 #
 
 SET(PERL_POSSIBLE_LIB_PATHS
-  /usr/lib  )
+  /usr/lib
+	/opt/local/lib
+	)
 
 FIND_PROGRAM(PERL_EXECUTABLE
   NAMES perl
   PATHS
   /usr/bin
   /usr/local/bin
+  /opt/local/bin
   )
 
 message(STATUS "PERL_EXECUTABLE=${PERL_EXECUTABLE}")
@@ -27,12 +30,16 @@ IF(PERL_EXECUTABLE)
 
   # ---- Find perl.h and set PERL_INCLUDE_PATH
   SET(PERL_POSSIBLE_INCLUDE_PATHS
-					/usr/lib/perl/5.8/CORE
-					/usr/lib/perl5/5.8/CORE
 					/usr/lib/perl5/${PVERSION}/${PARCH}/CORE
 					/usr/lib/perl/${PVERSION}/${PARCH}/CORE
-					/usr/lib/perl/${PVERSION}/CORE
 					/usr/lib/perl5/${PVERSION}/CORE
+					/usr/lib/perl/${PVERSION}/CORE
+					/usr/lib/perl5/5.8/CORE
+					/usr/lib/perl/5.8/CORE
+					/opt/local/lib/perl5/${PVERSION}/${PARCH}/CORE
+					/opt/local/lib/perl/${PVERSION}/${PARCH}/CORE
+					/opt/local/lib/perl5/${PVERSION}/CORE
+					/opt/local/lib/perl/${PVERSION}/CORE
   )
 
 	FIND_PATH(PERL_INCLUDE_PATH perl.h  ${PERL_POSSIBLE_INCLUDE_PATHS})
