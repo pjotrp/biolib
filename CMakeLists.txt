@@ -107,6 +107,7 @@ include(src)
 
 # Some status information at build time
 message("CMake: ${CMAKE_CACHE_MAJOR_VERSION}.${CMAKE_CACHE_MINOR_VERSION}-${CMAKE_CACHE_RELEASE_VERSION}")
+message("SWIG: ${SWIG_EXECUTABLE} ${SWIG_VERSION}")
 message("System: ${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_VERSION}")
 message("  Build type: ${CMAKE_BUILD_TYPE} for ${CMAKE_HOST_SYSTEM_PROCESSOR}")
 EXECUTE_PROCESS(COMMAND /bin/date)
