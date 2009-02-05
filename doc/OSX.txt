@@ -21,8 +21,10 @@ test:
 === Shared libraries ===
 
 OSX is fussy with shared libraries at build time, compared to Linux.
-If you get an error during the build about 'undefined symbols' most
-likely a library is missing in the CMake build scripts. Please report
-the problem showing the output of the make as described in
+If you get an error during the build about 'undefined symbols' and,
+most likely, a library is missing in the CMake build scripts. Please
+check your LANGUAGE.txt file first (e.g. ./doc/PERL.txt). If you fail
+to locate the problem report it showing the output of the make as
+described in
 
   ./doc/REPORTING_BUGS.txt

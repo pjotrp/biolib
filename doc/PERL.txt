@@ -1,5 +1,18 @@
 = BioLib for Perl =
 
+== Testing an installation ==
+
+A successful installation can be tested from the test directory. For
+example:
+
+  cd src/bindings/swig/perl/test
+  perl test_staden_io_lib.pl
+
+This should find the .pm and .so or .dylib files. See below for
+trouble shooting the Perl search paths.
+
+== Module locations ==
+
 At this point the example module builds and installs on Perl. It
 installs:
 
@@ -13,7 +26,7 @@ anyone has a suggestion... The search 'magic' happens in
 
   ./cmake_modules/FindPerlLibs.cmake 
 
-= Trouble shooting =
+== Trouble shooting ==
 
 When testing:
 
