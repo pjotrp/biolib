@@ -29,3 +29,4 @@ pkg
 *.tgz
 doc/examples/c/affy
 biolib-*
+*.tmp
