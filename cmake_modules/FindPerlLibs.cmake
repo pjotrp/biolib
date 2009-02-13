@@ -1,8 +1,8 @@
 # - Find Perl libraries
 #
 # This module finds if PERL is installed and determines where the include files
-# and libraries are. It also determines what the name of the library is. This
-# code sets the following variables:
+# and libraries are (using the Config module first). It also determines what
+# the name of the library is. This code sets the following variables:
 #
 #  PERL_INCLUDE_PATH = path to where perl.h is found
 #  PERL_LIB_PATH     = path where to install modules
