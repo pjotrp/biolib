@@ -8,11 +8,15 @@ basically:
 	make test
 	make install
 
-To add debug info to compiled objects use:
+To add debug info to compiled objects use, for example:
 
   cmake -DDEBUG=1 .
 
-For more information on build options see ./INSTALL
+or
+
+  cmake -DPERL_INCLUDE_PATH=/foo/bar .
+
+For more information on build options see ./INSTALL and ./install.sh
 
 
 
