@@ -1,4 +1,5 @@
 # - Find Perl libraries
+#
 # This module finds if PERL is installed and determines where the include files
 # and libraries are. It also determines what the name of the library is. This
 # code sets the following variables:
@@ -9,13 +10,20 @@
 #  PERL_EXECUTABLE   = full path to the perl binary
 #
 
-FIND_PROGRAM(PERL_EXECUTABLE
+# ---- find the perl interpreter on the PATH
+FIND_PROGRAM(PERL_EXECUTABLE perl)
+
+IF (NOT PERL_EXECUTABLE)
+  FIND_PROGRAM(PERL_EXECUTABLE
   NAMES perl
   PATHS
   /usr/bin
   /usr/local/bin
   /opt/local/bin
   )
+ELSE (NOT PERL_EXECUTABLE)
+  message("Found Perl on PATH")
+ENDIF (NOT PERL_EXECUTABLE)
 
 message(STATUS "PERL_EXECUTABLE=${PERL_EXECUTABLE}")
 
