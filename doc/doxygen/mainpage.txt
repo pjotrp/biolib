@@ -1,9 +1,32 @@
 /*! \mainpage BioLib API Documentation
  *
- *  These pages describe the BioLib low-level 'C' API.
+ *  These pages describe the BioLib low-level API (as generated from
+ *  the source code). You can use these functions directly from the
+ *  mapped BioLib languages as listed in ./doc/RELEASE_NOTES.txt.
+ *  Using the mapped functions is straightforward. For example
+ *  the method read_reading is listed in this API as:
  *
- *  This API is used to implement the Bio* interfaces. For more information
- *  see the Bio* projects, like BioPerl, BioPython, BioRuby, BioJAVA, etc.
+ *  \code
+ *    // C method:
+ *    Read *read_reading(char *fn, int format);
+ *  \endcode
+ *
+ *  In Perl the method can be accessed with:
+ *
+ *  \code
+ *    // Perl mapping:
+ *    $result = staden_io_lib::read_reading($procsrffn,$staden_io_lib::TT_ANY);
+ *  \endcode
+ *
+ *  In Ruby the method can be accessed with:
+ *
+ *   \code
+ *     // Ruby mapping:
+ *     result = Biolib::Staden_io_lib.read_reading(procsrffn,Biolib::Staden_io_lib::TT_ANY)
+ *   \endcode
+ *
+ *  The C API is generated straight from the source code, so it is
+ *  most up-to-date. 
  *
  *  For more information on the BioLib project and sources, see http://biolib.open-bio.org/
  */
