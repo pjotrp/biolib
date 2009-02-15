@@ -10,6 +10,7 @@
  * Biology, Hills Road, Cambridge, CB2 2QH, United Kingdom.
  *
  * MRC disclaims all warranties with regard to this software.
+ *
  */
 
 #ifndef _Read_h_
@@ -23,7 +24,11 @@
  * Last update:	June  14 1994
  */
 
-/*
+/*! \defgroup staden Staden io_lib */
+
+/*@{*/
+/*! \file Read.h
+ *
  * This module encodes the `Read' sequence data structure.
  *
  * A `Read' contains information about bases and traces which are laid
@@ -38,6 +43,7 @@
  *
  * The behaviour of these routines is undefined if given NULLRead or
  * an undefined sequence.
+ *
  */
 
 #include "io_lib/os.h"
@@ -79,7 +85,7 @@ extern "C" {
 
 #define NULLRead     ((Read *)NULL)
 
-/* Trace file formats */
+/*! Trace file formats */
 #define TT_ERR -1
 #define TT_UNK 0
 #define TT_SCF 1
@@ -109,8 +115,9 @@ extern "C" {
  *-----------------------------------------------------------------------------
  */
 
-typedef uint_2 TRACE;        /* for trace heights */
+typedef uint_2 TRACE;        /*! for trace heights */
 
+/*! Read compound structure used for reading and writing trace files */
 typedef struct
 {
     int		format;	     /* Trace file format */
@@ -225,7 +232,7 @@ Read *read_allocate(int num_points, int num_bases);
 Read* read_dup( Read* src, const char* new_name );
 
 
-/*
+/*!
  * Free memory allocated to a sequence by read_allocate().
  */
 void read_deallocate(Read *read);
@@ -270,5 +277,7 @@ int read_sections(int sec);
 #ifdef __cplusplus
 }
 #endif
+
+/*@}*/
 
 #endif /* _Read_h_ */

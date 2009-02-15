@@ -1,7 +1,11 @@
 /*! BIOLIB 'C' interface to affyio - for linking against the Bio* languages
  *
+ * \defgroup affyio AffyIO
+ *
+ *
  * Author: Pjotr Prins 2008
  */
+/*@{*/
 
 #include <stdlib.h>
 #include <string.h>
@@ -396,3 +400,4 @@ double cel_mm(CELOBJECT *celobject, CDFOBJECT *cdfobject, unsigned int probeset,
   return -1;
 }
 
+/*@}*/

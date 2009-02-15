@@ -1,10 +1,11 @@
 /*! \mainpage BioLib API Documentation
  *
- *  These pages describe the BioLib low-level API (as generated from
- *  the source code). You can use these functions directly from the
- *  mapped BioLib languages as listed in ./doc/RELEASE_NOTES.txt.
+ *  These pages describe the BioLib API as generated from
+ *  the source code. This API can be used directly from Perl and 
+ *  Ruby.
+ *
  *  Using the mapped functions is straightforward. For example
- *  the method read_reading is listed in this API as:
+ *  the method read_reading is listed in the Staden io_lib API as:
  *
  *  \code
  *    // C method:
@@ -25,8 +26,8 @@
  *     result = Biolib::Staden_io_lib.read_reading(procsrffn,Biolib::Staden_io_lib::TT_ANY)
  *   \endcode
  *
- *  The C API is generated straight from the source code, so it is
- *  most up-to-date. 
+ *  Thanks to BioLib's use of SWIG. The documentation of the C API is
+ *  generated straight from the source code, so it is most up-to-date. 
  *
- *  For more information on the BioLib project and sources, see http://biolib.open-bio.org/
+ *  For more information on the BioLib project and language mappings, see http://biolib.open-bio.org/
  */

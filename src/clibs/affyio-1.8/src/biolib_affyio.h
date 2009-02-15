@@ -1,5 +1,7 @@
 /*! \file biolib_affyio.h 
  *
+ * \ingroup affyio
+ *
  * BIOLIB 'C' interface to affyio - for linking against the Bio* languages
  *
  * These functions provide access to Affymetrix probe values (CEL files) and
@@ -27,6 +29,8 @@
  * @see open_cdffile
  *
  */
+
+/*@{*/
 
 #ifdef BIOLIB
   #include <biolib_R_map.h>
@@ -122,3 +126,4 @@ double cel_mm(CELOBJECT *celobject, CDFOBJECT *cdfobject, unsigned int probeset,
 }
 #endif
 
+/*@}*/

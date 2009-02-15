@@ -10,16 +10,20 @@
  * Biology, Hills Road, Cambridge, CB2 2QH, United Kingdom.
  *
  * MRC disclaims all warranties with regard to this software.
+ *
  */
 
+/*! \ingroup staden */
+/*@{*/
+
 /* 
- * File: 	Read.c
  * Purpose:	Performs read/write IO on the Read data stucture.
  * Last update: 01/09/94
  */
 
 
-/*
+/*! \file Read.c
+ 
     The Read data type is designed so that it can hold a varying degree
     of information about sequences, yet have a single set of calls
     to access the data.
@@ -74,7 +78,7 @@
 #include "io_lib/misc.h"
 #include "io_lib/open_trace_file.h"
 
-/*
+/*!
  * Read a sequence from a file "fnin" of format "format". If "format" is 0
  * (ANY_FORMAT), we automatically determine the correct format.
  * Returns:
@@ -123,7 +127,7 @@ Read *read_reading(char *fn, int format) {
     return read;
 }
 
-/*
+/*!
  * Read a sequence from a FILE *fp of format "format". If "format" is 0
  * (ANY_FORMAT), we automatically determine the correct format.
  * We still pass a filename 'fn' although this isn't used other than for
@@ -266,7 +270,7 @@ Read *fread_reading(FILE *fp, char *fn, int format) {
     return mfread_reading(mfreopen(fn, "rb", fp), fn, format);
 }
 
-/*
+/*!
  * Write a sequence to a FILE *fp of format "format". If "format" is 0,
  * we choose our favourite - SCF.
  *
@@ -407,7 +411,7 @@ int fwrite_reading(FILE *fp, Read *read, int format) {
     return ret;
 }
 
-/*
+/*!
  * Write a sequence to a file "fn" of format "format". If "format" is 0,
  * we choose our favourite - SCF.
  *
@@ -552,4 +556,5 @@ void exp_print_file(FILE *fp, Exp_info *e) {
     mf->fp = NULL; /* Don't want this closed here */
     mfclose(mf);
 }
+/*@}*/
 #endif

@@ -1,3 +1,5 @@
+# This Cmake module generates the Doxygen API docs from the C sources
+
 FIND_PACKAGE(Doxygen)
 
 IF (DOXYGEN_FOUND)
@@ -16,11 +18,11 @@ ADD_CUSTOM_COMMAND(
 
 ADD_CUSTOM_TARGET(apidoc ALL DEPENDS ${DOXYGEN_OUTPUT})
 
-ADD_CUSTOM_TARGET(apidoc_forced
-  COMMAND ${CMAKE_COMMAND} -E echo_append "Building API Documentation..."
-  COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_INPUT}
-  COMMAND ${CMAKE_COMMAND} -E echo "Done."
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+# ADD_CUSTOM_TARGET(apidoc_forced
+#   COMMAND ${CMAKE_COMMAND} -E echo_append "Building API Documentation..."
+#   COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_INPUT}
+#   COMMAND ${CMAKE_COMMAND} -E echo "Done."
+#  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 ENDIF (DOXYGEN_FOUND)
 
