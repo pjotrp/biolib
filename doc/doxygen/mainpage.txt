@@ -16,19 +16,19 @@
  *  The <b>Perl</b> mapping
  *
  *  \code
- *    $result = staden_io_lib::read_reading($procsrffn,$staden_io_lib::TT_ANY);
- *    print $result->{NBases}
+ *    $result = staden_io_lib::read_reading($fn,$staden_io_lib::TT_ANY);
+ *    print $result->{NBases};
  *  \endcode
  *
  *  The <b>Ruby</b> mapping
  *
  *  \code
  *    require 'biolib/staden_io_lib'
- *    result = Biolib::Staden_io_lib.read_reading(procsrffn,Biolib::Staden_io_lib::TT_ANY)
- *    p result.NBases
+ *    result = Biolib::Staden_io_lib.read_reading(fn,Biolib::Staden_io_lib::TT_ANY)
+ *    print result.NBases
  *  \endcode
  *
- *  Thanks to BioLib's SWIG mapping from C. The documentation of the C API is
+ *  This is thanks to BioLib's SWIG mapping from C. The documentation of the C API is
  *  generated straight from the source code, so it should be up-to-date. 
  *
  *  For more information on the BioLib project and language mappings, see http://biolib.open-bio.org/
