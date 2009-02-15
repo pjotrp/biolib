@@ -23,13 +23,6 @@
 
 
 /*! \file Read.c
- 
-    The Read data type is designed so that it can hold a varying degree
-    of information about sequences, yet have a single set of calls
-    to access the data.
-
-    There are plenty of assumptions around that both the number of
-    bases and the number of points will fit into an int_2, a short.
 
 */
 
@@ -127,7 +120,7 @@ Read *read_reading(char *fn, int format) {
     return read;
 }
 
-/*!
+/* \cond SKIP
  * Read a sequence from a FILE *fp of format "format". If "format" is 0
  * (ANY_FORMAT), we automatically determine the correct format.
  * We still pass a filename 'fn' although this isn't used other than for
@@ -270,7 +263,7 @@ Read *fread_reading(FILE *fp, char *fn, int format) {
     return mfread_reading(mfreopen(fn, "rb", fp), fn, format);
 }
 
-/*!
+/*
  * Write a sequence to a FILE *fp of format "format". If "format" is 0,
  * we choose our favourite - SCF.
  *
@@ -396,6 +389,14 @@ int mfwrite_reading(mFILE *fp, Read *read, int format) {
     return r;
 }
 
+/*! 
+ * Write a sequence to a FILE *fp of format "format". If "format" is 0,
+ * we choose our favourite - SCF.
+ *
+ * Returns:
+ *   0 for success
+ *  -1 for failure
+ */
 int fwrite_reading(FILE *fp, Read *read, int format) {
     int ret;
     mFILE *mf = mfreopen(NULL, "wbx", fp);
@@ -411,6 +412,7 @@ int fwrite_reading(FILE *fp, Read *read, int format) {
     return ret;
 }
 
+/// \endcond 
 /*!
  * Write a sequence to a file "fn" of format "format". If "format" is 0,
  * we choose our favourite - SCF.
@@ -430,7 +432,7 @@ int write_reading(char *fn, Read *read, int format) {
     return ret;
 }
 
-/*
+/* \cond SKIP
  * Old style stub interfaces implemented simply as redirection through
  * fread_reading and frwrite_reading.
  */
@@ -556,5 +558,6 @@ void exp_print_file(FILE *fp, Exp_info *e) {
     mf->fp = NULL; /* Don't want this closed here */
     mfclose(mf);
 }
-/*@}*/
+/* \endcond
+ * @} */
 #endif

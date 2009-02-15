@@ -12,7 +12,8 @@
  * MRC disclaims all warranties with regard to this software.
  */
 
-/* 
+/*! \file read_alloc.c
+ * \ingroup staden
  * File: 	read_alloc.c
  * Purpose:	Performs the allocation/freeing of Read structures
  * Last update: 01/09/94
@@ -39,7 +40,7 @@
 #include "io_lib/misc.h"
 #include "io_lib/Read.h"
 
-/*
+/* \cond SKIP
  * Allocate a new sequence, with the given sizes.
  * Returns:
  *   "Read *" for success
@@ -127,8 +128,9 @@ Read *read_allocate(int num_points, int num_bases) {
     return seq;
 }
 
+/// \endcond
 
-/*
+/*!
  * Free memory allocated to a sequence by read_allocate().
  */
 void read_deallocate(Read *read)
@@ -179,7 +181,7 @@ void read_deallocate(Read *read)
 
 
 
-/*
+/*!
  * Duplicates the read structure and optionally gives it a new filename.
  * The following fields are not duplicated:
  *    
