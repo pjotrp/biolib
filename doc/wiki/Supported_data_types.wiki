@@ -2,7 +2,7 @@
   <siteinfo>
     <sitename>BioLib</sitename>
     <base>http://biolib.open-bio.org/wiki/Main_Page</base>
-    <generator>MediaWiki 1.13.3</generator>
+    <generator>MediaWiki 1.13.4</generator>
     <case>first-letter</case>
       <namespaces>
       <namespace key="-2">Media</namespace>

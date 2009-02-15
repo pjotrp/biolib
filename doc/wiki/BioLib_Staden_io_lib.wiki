@@ -26,57 +26,37 @@
     </namespaces>
   </siteinfo>
   <page>
-    <title>Add Ruby Module</title>
-    <id>12</id>
+    <title>BioLib Staden io lib</title>
+    <id>16</id>
     <revision>
-      <id>147</id>
-      <timestamp>2009-02-05T19:11:23Z</timestamp>
+      <id>153</id>
+      <timestamp>2009-02-15T13:17:20Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* Adding a Ruby module to BioLib */</comment>
-      <text xml:space="preserve">= Adding a Ruby module to BioLib =
+      <text xml:space="preserve">Staden io_lib is the support library for the [http://staden.sourceforge.net/ Staden assembly programs] (like gap4, trace, makescf...). BioLib maps the read and write functions for different trace formats as defined in the Read.h file:
 
-After adding a C library (for instructions see [[Add C Library]]) a
-CMake command file has to be written for the Ruby module that creates
-a shared library out of the C library, calls SWIG to generate
-bindings, and (optionally) handles installing and testing. Create a
-module in:
+  /* Trace file formats */
+  #define TT_ERR -1
+  #define TT_UNK 0
+  #define TT_SCF 1
+  #define TT_ABI 2
+  #define TT_ALF 3
+  #define TT_PLN 4
+  #define TT_EXP 5
+  #define TT_CTF 6
+  #define TT_ZTR 7
+  #define TT_ZTR1 8
+  #define TT_ZTR2 9
+  #define TT_ZTR3 10
+  #define TT_BIO 11
+  #define TT_SFF 12
+  #define TT_ANY TT_UNK
 
-  ./src/mappings/swig/ruby/package/
+so any format can be read, or converted to another using the Bio* languages.
 
-An example can be found in:
-
-  ./src/mappings/swig/ruby/affyio/
-
-One SWIG file needs to be written which names the module and includes
-the main swig definition. For example ruby_affyio.i has:
-
-  %module biolib_ruby_affyio
-  %include ../../affyio.i
-
-Create a CMakeLists.txt file (see also [[CMake]]). For example:
-
-  SET (M_NAME affyio)
-  SET (M_VERSION 1.8)
-  SET (INTERFACE ruby_${M_NAME}.i)
-  SET (USE_RLIB TRUE)
-  FIND_PACKAGE(BioLibRuby)
-  ADD_TEST(TestRubyAffyio ${RUBY_EXECUTABLE} -I../${M_NAME} ./../test/test_${M_NAME}.rb)
-  INSTALL(TARGETS ${M_MODULE}
-    LIBRARY DESTINATION ${RUBY_LIB_PATH}
-  )
-
-(see the BioLib source code for a recent edition).
-
-And when the CMakeLists.txt file is complete and correct you should be
-able to execute:
-
-  cmake .
-  make 
-  make test
-  make install</text>
+* For the current API see [[Main Page#API DOCUMENTION]]</text>
     </revision>
   </page>
 </mediawiki>

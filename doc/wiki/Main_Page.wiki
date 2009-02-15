@@ -2,7 +2,7 @@
   <siteinfo>
     <sitename>BioLib</sitename>
     <base>http://biolib.open-bio.org/wiki/Main_Page</base>
-    <generator>MediaWiki 1.13.3</generator>
+    <generator>MediaWiki 1.13.4</generator>
     <case>first-letter</case>
       <namespaces>
       <namespace key="-2">Media</namespace>
@@ -29,19 +29,24 @@
     <title>Main Page</title>
     <id>1</id>
     <revision>
-      <id>145</id>
-      <timestamp>2009-02-05T19:10:05Z</timestamp>
+      <id>157</id>
+      <timestamp>2009-02-15T13:29:58Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* PACKAGING */</comment>
+      <comment>/* BioLib: libraries for the Bio* languages */</comment>
       <text xml:space="preserve">= BioLib: libraries for the Bio* languages =
 
 ''BioLib'' brings together a set of opensource C/C++ libraries and makes them, in principle, available to all Bio* languages: BioPerl,
 BioRuby, BioPython, BioJAVA and Bioconductor. 
 
-'''IMPORTANT NOTICE: BioLib is currently in testing'''.
+'''Currently supported languages: Perl and Ruby'''.
+
+== BIOLIB MODULES ==
+
+* [[BioLib Affymetrix]] support (Affyio package for reading .CEL and .CDF files)
+* [[BioLib Staden_io_lib]] support (read/write routines for trace files)
 
 == MILESTONES ==
 
@@ -78,6 +83,10 @@ Tokyio Biohackathon 2008.
 
 For more information see the [[Road map]].
 
+== DOCUMENTION ==
+
+The API of included BioLib modules can be found in the [http://thebird.nl/apidoc/biolib/index.html API Documentation]. This documentation is generated straight from the source code. Translating the API to the mapped Perl or Ruby methods is straightforward. One example is [http://thebird.nl/apidoc/biolib/index.html here], others are in the test files (for [http://github.com/pjotrp/biolib/tree/master/src/mappings/swig/perl/test Perl] and [http://github.com/pjotrp/biolib/tree/master/src/mappings/swig/ruby/test Ruby]).
+
 == DOWNLOADING ==
 
 For the latest version of ''BioLib'' see the latest [http://github.com/pjotrp/biolib/tree/master%2Fdoc%2FRELEASE_NOTES.txt?raw=true RELEASE NOTES].
@@ -105,22 +114,6 @@ to install a subset, e.g. Staden-io-lib for Perl:
   ./install.sh -DSTADEN_LIB:BOOLEAN=TRUE -DBUILD_PERL:BOOLEAN=TRUE
 
 For more information read the [http://github.com/pjotrp/biolib/tree/master/INSTALL INSTALL] file.
-
-
-== BIOLIB MODULES ==
-
-* [[BioLib Affymetrix]] support
-* [[BioLib Staden_io_lib]] support
-
-== API DOCUMENTION ==
-
-The low-level 'C' API documentation can be generated from the source tree by
-
-  cmake .
-  make apidoc
-  ls ./doc/apidoc/html/
-
-A recent online edition can be found [http://thebird.nl/apidoc/biolib/index.html here]. Note: this describes the low-level API. The user API for the different Bio* languages can be found with the implementations - which is usually much nicer!
 
 == CONTRIBUTING ==
 
