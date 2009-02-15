@@ -259,11 +259,25 @@ Read *mfread_reading(mFILE *fp, char *fn, int format) {
     return read;
 }
 
+/* \endcond */
+/*!
+ * Read a sequence from a FILE *fp of format "format". If "format" is 0
+ * (ANY_FORMAT), we automatically determine the correct format.
+ * We still pass a filename 'fn' although this isn't used other than for
+ * filling in the read->trace_name field.
+ *
+ * NB this function should NOT be used when Biolims support is required
+ * (as biolims readings are not stored in a file)
+ *
+ * Returns:
+ *   Read *   for success
+ *   NULLRead for failure
+ */
 Read *fread_reading(FILE *fp, char *fn, int format) {
     return mfread_reading(mfreopen(fn, "rb", fp), fn, format);
 }
 
-/*
+/* \cond SKIP
  * Write a sequence to a FILE *fp of format "format". If "format" is 0,
  * we choose our favourite - SCF.
  *
@@ -389,6 +403,7 @@ int mfwrite_reading(mFILE *fp, Read *read, int format) {
     return r;
 }
 
+/* \endcond */
 /*! 
  * Write a sequence to a FILE *fp of format "format". If "format" is 0,
  * we choose our favourite - SCF.
@@ -412,7 +427,7 @@ int fwrite_reading(FILE *fp, Read *read, int format) {
     return ret;
 }
 
-/// \endcond 
+// \endcond 
 /*!
  * Write a sequence to a file "fn" of format "format". If "format" is 0,
  * we choose our favourite - SCF.

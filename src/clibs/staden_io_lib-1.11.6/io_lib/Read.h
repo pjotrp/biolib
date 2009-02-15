@@ -136,7 +136,7 @@ extern "C" {
 /// ANYTR is specifically any *trace* type and not EXP or PLN format 
 #define TT_ANYTR 13
 
-/// \cond SKIP
+// \cond SKIP
 #define READ_BASES	(1<<0)
 #define READ_SAMPLES	(1<<1)
 #define READ_COMMENTS	(1<<2)
@@ -148,7 +148,7 @@ extern "C" {
  *-----------------------------------------------------------------------------
  */
 
-/// \endcond
+// \endcond
 /// for trace heights 
 typedef uint_2 TRACE;        
 
@@ -223,7 +223,7 @@ typedef struct
     int private_size;        
 } Read;
 
-/// \cond SKIP
+// \cond SKIP
 
 /*
  *-----------------------------------------------------------------------------
@@ -287,14 +287,14 @@ Read *read_allocate(int num_points, int num_bases);
 Read* read_dup( Read* src, const char* new_name );
 
 
-/// \endcond
+// \endcond
 
 /*!
  * Free memory allocated to a sequence by read_allocate().
  */
 void read_deallocate(Read *read);
 
-/// \cond SKIP
+// \cond SKIP
 /* unix specific file deletion routine */
 
 int remove_file(char *fn);
@@ -336,7 +336,7 @@ int read_sections(int sec);
 }
 #endif
 
-/// \endcond
+// \endcond
 /*@}*/
 
 #endif /* _Read_h_ */

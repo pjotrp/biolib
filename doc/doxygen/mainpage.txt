@@ -7,27 +7,29 @@
  *  Using the mapped functions is straightforward. For example
  *  the method read_reading is listed in the Staden io_lib API as:
  *
+ *  The <b>C</b> method
+ *
  *  \code
- *    // C method:
  *    Read *read_reading(char *fn, int format);
  *  \endcode
  *
- *  In Perl the method can be accessed with:
+ *  The <b>Perl</b> mapping
  *
  *  \code
- *    // Perl mapping:
  *    $result = staden_io_lib::read_reading($procsrffn,$staden_io_lib::TT_ANY);
+ *    print $result->{NBases}
  *  \endcode
  *
- *  In Ruby the method can be accessed with:
+ *  The <b>Ruby</b> mapping
  *
- *   \code
- *     // Ruby mapping:
- *     result = Biolib::Staden_io_lib.read_reading(procsrffn,Biolib::Staden_io_lib::TT_ANY)
- *   \endcode
+ *  \code
+ *    require 'biolib/staden_io_lib'
+ *    result = Biolib::Staden_io_lib.read_reading(procsrffn,Biolib::Staden_io_lib::TT_ANY)
+ *    p result.NBases
+ *  \endcode
  *
- *  Thanks to BioLib's use of SWIG. The documentation of the C API is
- *  generated straight from the source code, so it is most up-to-date. 
+ *  Thanks to BioLib's SWIG mapping from C. The documentation of the C API is
+ *  generated straight from the source code, so it should be up-to-date. 
  *
  *  For more information on the BioLib project and language mappings, see http://biolib.open-bio.org/
  */
