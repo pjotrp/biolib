@@ -13,5 +13,11 @@ p result.format
 p result.NBases
 p result.base
 
-raise 'Test failed' if result.NBases != 766
+raise 'Read test failed' if result.NBases != 766
+
+# Now write test SCF file
+wresult = Biolib::Staden_io_lib.write_reading('test.scf', result, 0);
+raise 'Write test failed' if wresult!=0 or !File.exist?('test.scf')
+File.unlink('test.scf')
+
 exit 0
