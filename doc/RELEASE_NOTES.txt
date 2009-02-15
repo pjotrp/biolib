@@ -2,8 +2,15 @@
 BIOLIB RELEASE NOTES
 ====================
 
-- OSX support added
+
+---------------------------------------------------------------------
+BIOLIB 0.03  dd8b2ac9dd2c9745b68640dd568b40e937622871    Feb 15, 2009
+---------------------------------------------------------------------
+
+- OS/X support added
+- Perl interpreter is found through the PATH first
 - Affyio has both Ruby and Perl mappings
+- Added examples for Staden io_lib write functions
 
 ---------------------------------------------------------------------
 BIOLIB 0.02  b981a7ee7431640e2936efd7869bd59cab1f4f10    Feb 02, 2009
