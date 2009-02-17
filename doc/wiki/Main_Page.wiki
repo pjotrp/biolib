@@ -29,13 +29,14 @@
     <title>Main Page</title>
     <id>1</id>
     <revision>
-      <id>157</id>
-      <timestamp>2009-02-15T13:29:58Z</timestamp>
+      <id>170</id>
+      <timestamp>2009-02-17T07:44:36Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* BioLib: libraries for the Bio* languages */</comment>
+      <minor/>
+      <comment>/* MODULES */</comment>
       <text xml:space="preserve">= BioLib: libraries for the Bio* languages =
 
 ''BioLib'' brings together a set of opensource C/C++ libraries and makes them, in principle, available to all Bio* languages: BioPerl,
@@ -43,10 +44,12 @@ BioRuby, BioPython, BioJAVA and Bioconductor.
 
 '''Currently supported languages: Perl and Ruby'''.
 
-== BIOLIB MODULES ==
+== MODULES ==
 
-* [[BioLib Affymetrix]] support (Affyio package for reading .CEL and .CDF files)
-* [[BioLib Staden_io_lib]] support (read/write routines for trace files)
+* [[BioLib Affymetrix]] reads Affymetrix microarray .CEL and .CDF formats
+* [[BioLib Staden io_lib]] reads/writes sequencer trace files, including SFF, ABI, SCF, ALF and PLN formats
+
+If you require a different module for your computer language please use the [[Biolib Poll]]!
 
 == MILESTONES ==
 
@@ -62,28 +65,23 @@ see also the [[Road map]]. There is potential for other languages like JAVA, R a
 
 == INTRODUCTION ==
 
-BioLib pools resources and provide the mechanisms for having one code
+BioLib pools resources and provides the mechanisms for having one code
 base for all important programming languages.
 
 The primary mapping mechanism to the Bio* languages is [[SWIG]]. SWIG has
 come a long way in the last years and maps to all modern high-level
-languages. We are planning a [[Generator]] for automated mappings.
-Even while SWIG supports complex datatypes it is a good idea to provide simple
-types to the outside world using C call libraries and leave it to the
-high-level languages to provide more complex interfaces. 
-See also [[supported data types]] and [[BioLib best practices]].
+languages. See also [[supported data types]] and [[BioLib best practices]].
 
 The primary objective of BioLib is compatibility between languages and
 multi-platform support. The secondary objective of BioLib is
 efficiency - both of CPU and RAM (why bother to write in C,
-otherwise).  Think of BioLib as a kernel for low-level processing and
-analysis of biological data. End-users are not expected to use BioLib
-directly - unless someone thinks up a BioC library. BioLib was incepted at the 
+otherwise).  Think of BioLib as a repository, or kernel, for low-level processing and
+analysis of biological data. BioLib was incepted at the 
 Tokyio Biohackathon 2008.
 
 For more information see the [[Road map]].
 
-== DOCUMENTION ==
+== DOCUMENTATION ==
 
 The API of included BioLib modules can be found in the [http://thebird.nl/apidoc/biolib/index.html API Documentation]. This documentation is generated straight from the source code. Translating the API to the mapped Perl or Ruby methods is straightforward. One example is [http://thebird.nl/apidoc/biolib/index.html here], others are in the test files (for [http://github.com/pjotrp/biolib/tree/master/src/mappings/swig/perl/test Perl] and [http://github.com/pjotrp/biolib/tree/master/src/mappings/swig/ruby/test Ruby]).
 
@@ -109,11 +107,15 @@ Quick instructions : after downloading the source run
 
   ./install.sh
 
-to install a subset, e.g. Staden-io-lib for Perl:
+to install a subset, for example Staden-io-lib for Perl use
 
   ./install.sh -DSTADEN_LIB:BOOLEAN=TRUE -DBUILD_PERL:BOOLEAN=TRUE
 
 For more information read the [http://github.com/pjotrp/biolib/tree/master/INSTALL INSTALL] file.
+
+== REQUESTING MODULES ==
+
+If you need a C/C++/FORTRAN/R module or library linked against one of the popular scripting languagues, please make that known through the [[Biolib Poll]].
 
 == CONTRIBUTING ==
 
