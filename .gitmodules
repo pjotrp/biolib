@@ -1,0 +1,3 @@
+[submodule "src/clibs/rqtl"]
+	path = src/clibs/rqtl
+	url = git@github.com:pjotrp/rqtl.git
