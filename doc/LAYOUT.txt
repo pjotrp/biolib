@@ -1,3 +1,7 @@
+= BIOLIB Tree Layout =
+
+== clib C/C++ modules ==
+
 Biolib uses SWIG to generate interfaces to the scripting languages.
 This can be to external libraries, or to modified or unique libraries
 built from
@@ -6,6 +10,12 @@ built from
 
 For example the affyio library in ./src/clibs/affyio
 generates a library named biolib-affyio.so.
+
+Included modules can be copied into the tree, or the git submodule
+feature can be used to add a 'live' tree from another git repository
+- like is done with ./src/clibs/rqtl.
+
+== Language Mappings ==
 
 Language specific stuff is put in separate dynamically linked
 libraries for each language in
@@ -16,7 +26,7 @@ so, Ruby lives in ./src/mappings/swig/ruby - and building the
 interface requires both SWIG and the Ruby development libraries and
 generates biolib-ruby.so.
 
-SWIG .i files go into ./src/mappings/
+SWIG .i files, shared by all languages, go into ./src/mappings/
 
 
 
