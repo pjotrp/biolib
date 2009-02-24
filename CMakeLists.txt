@@ -17,9 +17,12 @@
 #   cmake -DBUILD_PYTHON:BOOLEAN=TRUE .
 #   cmake -DBUILD_PERL:BOOLEAN=TRUE .
 #
-#   To build specific libraries
+#   To build specific libraries, for example
 #
 #   cmake -DSTADEN_LIB:BOOLEAN=TRUE
+#   cmake -DRQTL_LIB:BOOLEAN=TRUE
+#
+# See ./INSTALL for more information
 
 cmake_minimum_required(VERSION 2.6)
 
@@ -63,11 +66,13 @@ endif(NOT BUILD_DOCS)
 
 set(BLD_BIOLIB  TRUE)
 set(BLD_STADEN  TRUE)
+set(BLD_RQTL    TRUE)
 set(BLD_EXAMPLE TRUE)
 set(BLD_AFFYIO  TRUE)
 
 if (EXAMPLE_LIB)
   set(BLD_STADEN  FALSE)
+  set(BLD_RQTL    FALSE)
   set(BLD_AFFYIO  FALSE)
   set(BLD_EXAMPLE TRUE)
   set(BLD_BIOLIB  FALSE)
@@ -75,6 +80,7 @@ endif (EXAMPLE_LIB)
 
 if (AFFYIO_LIB)
   set(BLD_STADEN  FALSE)
+  set(BLD_RQTL    FALSE)
   set(BLD_AFFYIO  TRUE)
   set(BLD_EXAMPLE FALSE)
   set(BLD_BIOLIB  FALSE)
@@ -82,16 +88,24 @@ endif (AFFYIO_LIB)
 
 if (STADEN_LIB)
   set(BLD_STADEN  TRUE)
+  set(BLD_RQTL    FALSE)
   set(BLD_AFFYIO  FALSE)
   set(BLD_EXAMPLE FALSE)
   set(BLD_BIOLIB  FALSE)
 endif (STADEN_LIB)
 
-
+if (RQTL_LIB)
+  set(BLD_RQTL    TRUE)
+  set(BLD_STADEN  FALSE)
+  set(BLD_AFFYIO  FALSE)
+  set(BLD_EXAMPLE FALSE)
+  set(BLD_BIOLIB  FALSE)
+endif (STADEN_LIB)
 
 message("  Biolib libraries")
 message(STATUS "Install Affyio ${BLD_AFFYIO}")
 message(STATUS "Install Staden ${BLD_STADEN}")
+message(STATUS "Install RQTL ${BLD_RQTL}")
 message(STATUS "Install Example ${BLD_EXAMPLE}")
 
 FIND_PACKAGE(BioLib)
