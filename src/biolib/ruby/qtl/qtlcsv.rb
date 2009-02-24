@@ -4,7 +4,7 @@
 class QtlCsv < QtlDataset
 
   def initialize fn, alleles=['A','B'], genotypes=['A','H','B','D','C'], na=['-','NA']
-    super()
+    super(alleles, genotypes, na)
     File.open(fn) do | f |  
       # parse the file header
       l1 = f.gets.chomp.split(/,/) # markers
@@ -23,13 +23,13 @@ class QtlCsv < QtlDataset
       # Check for distance row
       line = f.gets
       l3 = line.chomp.split(/,/) # (optional) cM
-      @haspos = l3[0] == ''
+      hasposrow = l3[0] == ''
       # Now set marker names and attributes
       (0..l1.size-phenotypenum-1).each do | mid |
         col = mid+phenotypenum
-        set_marker(mid,l1[col],l2[col],(@haspos?l3[col]:nil))
+        set_marker(mid,l1[col],l2[col],(hasposrow ? l3[col]:nil))
       end
-      line = f.gets if @haspos 
+      line = f.gets if hasposrow 
       # Read rest of the rows
       i = 0
       loop {
