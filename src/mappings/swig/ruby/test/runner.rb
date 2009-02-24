@@ -46,5 +46,6 @@ end
 # require 'libcfenjin/test/regression'
 # Cfruby.regressiontest_create(options.create)
 
-require 'test_affyio'
+require 'test_rqtl'
+# require 'test_affyio'
 

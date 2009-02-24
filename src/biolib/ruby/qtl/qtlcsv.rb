@@ -46,7 +46,7 @@ class QtlCsv < QtlDataset
         i += 1
       }
     end
-    p self
+    # p self
   end
 
 end
