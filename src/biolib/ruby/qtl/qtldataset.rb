@@ -1,23 +1,23 @@
 require 'qtl/qtlmarker'
 require 'qtl/qtlphenotype'
+require 'qtl/qtlindividual'
 
 class QtlDataset
   # attr_reader :individuals, :phenotypes, :markers
   NA = '-'
 
   def initialize alleles, genotypes, na
-    @used_alleles      = alleles
-    @used_genotypes    = genotypes
-    @used_na           = na
-    @individuals       = []
-    @markers           = []
-    @genotypes         = []
-    @phenotypecolumns  = []
-    @phenotypes        = []
+    @allowed_alleles      = alleles
+    @allowed_genotypes    = genotypes
+    @allowed_na           = na
+
+    @individuals          = []
+    @markers              = []
+    @phenotypes           = []
   end
 
   def set_phenotypecolumn column, name
-    @phenotypecolumns[column] = QtlPhenotype.new(name)
+    @phenotypes[column] = QtlPhenotype.new(name)
   end
 
   def phenotypecolumn column
@@ -25,9 +25,8 @@ class QtlDataset
   end
 
   def set_phenotype ind, pid, value
-    @phenotypes[pid] = [] if @phenotypes[pid] == nil
-    value = NA if @used_na.include?(value)
-    @phenotypes[pid][ind] = value
+    value = NA if @allowed_na.include?(value)
+    individual(ind).phenotypes[pid] = value
   end
 
   def set_marker mid, name, chromosome, pos
@@ -36,10 +35,14 @@ class QtlDataset
 
   def set_genotype ind, mid, value
     # test if it has legal value
-    raise "Genotype error for individual #{ind}, marker #{mid}, value #{value}" if !@used_na.include?(value) and !@used_genotypes.include?(value)
-    @genotypes[mid] = [] if @genotypes[mid] == nil
-    value = NA if @used_na.include?(value)
-    @genotypes[mid][ind] = value
+    raise "Genotype error for individual #{ind}, marker #{mid}, value #{value}" if !@allowed_na.include?(value) and !@allowed_genotypes.include?(value)
+    value = NA if @allowed_na.include?(value)
+    individual(ind).genotypes[mid] = value
+  end
+
+  def individual ind
+    @individuals[ind] = QtlIndividual.new if @individuals[ind] == nil
+    @individuals[ind]
   end
 
   # Return phenotype +num+ of individual +pid+
