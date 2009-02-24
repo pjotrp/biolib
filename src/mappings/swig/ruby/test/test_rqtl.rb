@@ -17,6 +17,11 @@ class Test_Biolib_RQtl < Test::Unit::TestCase
   def test_info
     assert_equal('F2 intercross',d.type)
     assert_equal(120,d.individuals.size)
+    assert_equal(120,d.nind)
+    assert_equal(2,d.nphe)
+    assert_equal(133,d.ntotmar)
+    assert_equal(20,d.nchr)
+    assert_equal({'1'=>13,'2'=>6},d.nmar)
   end
 
   def test_markers
@@ -31,6 +36,7 @@ class Test_Biolib_RQtl < Test::Unit::TestCase
     assert_equal(20,d.chromosomes.size)
     assert_equal(19,d.chromosomes.autosomes.size)
     assert_equal('X',d.chromosomes.x.name)
+    assert_equal(13,d.chromosomes[1].markers.size)
   end
 
   def test_phenotypecolumns
