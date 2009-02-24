@@ -9,6 +9,8 @@
 # >> ruby -w tc_Number2.rb --name test_method
 # Loaded suite tc_Number2
 #
+# Note: this runner script is not used in the cmake build framework
+#
 require 'optparse'
 require 'ostruct'
 
