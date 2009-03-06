@@ -28,6 +28,16 @@ generates biolib-ruby.so.
 
 SWIG .i files, shared by all languages, go into ./src/mappings/
 
+=== Test files ===
 
+Each mapping comes with tests which are under
+./src/mappings/swig/language/test. Modules invoke these tests
+individually.
 
+== 'Extra' developments ==
+
+Projects that provide functionality specific to a language go into
+./src/extra/language/. This are acts as a portal for functionality
+that may move into another project later. A typical example is a nice
+Ruby/Perl or Python OOP wrapper for one of the libraries.
 
