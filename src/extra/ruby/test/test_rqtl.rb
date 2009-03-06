@@ -1,74 +1,69 @@
+# Ruby DocTest
 
-$: << '../../../../biolib/ruby'
-# require 'biolib/rqtl'
-require 'qtl/qtl'
+=begin
 
-TESTDATADIR = '../../../../test/data/qtl'
-LISTERIAFN  = TESTDATADIR+'/listeria.csv'
+Here we load the R/QTL Listeria dataset (from a CSV) and verify the
+resulting information matches that of the R version.
 
-require 'test/unit/testcase'
+Find the special classes for loading QTL input files (part of BioLib 'extra').
 
-class Test_Biolib_RQtl < Test::Unit::TestCase
+  >> $: << '..'
+  >> require 'qtl/qtl'
 
-  def setup
-    @qtl = QTL.new(LISTERIAFN)
-  end
+Locate the Listeria input file
+ 
+  >> TESTDATADIR = '../../../test/data/qtl'
+  >> LISTERIA  = TESTDATADIR+'/listeria.csv'
+  >> File.exist?(LISTERIA)
+  => true
 
-  def test_info
-    assert_equal('F2 intercross',d.type)
-    assert_equal(120,d.individuals.size)
-    assert_equal(120,d.nind)
-    assert_equal(2,d.nphe)
-    assert_equal(133,d.ntotmar)
-    assert_equal(20,d.nchr)
-    assert_equal({'1'=>13,'2'=>6},d.nmar)
-  end
+Load the Listeria CSV file into a QTL object
 
-  def test_markers
-    d = @qtl.data
-    assert_equal('D10M44',d.marker(0).name)
-    assert_equal('2',d.marker(14).chromosome)
-    assert_equal(133,d.markers.size)
-  end
+  >> qtl = QTL.new(LISTERIA)
 
-  def test_chromosomes
-    d = @qtl.data
-    assert_equal(20,d.chromosomes.size)
-    assert_equal(19,d.chromosomes.autosomes.size)
-    assert_equal('X',d.chromosomes.x.name)
-    assert_equal(13,d.chromosomes[1].markers.size)
-  end
+Fetch the loaded data and check the type (unknown at this point)
 
-  def test_phenotypecolumns
-    d = @qtl.data
-    assert_equal('T264',d.phenotypecolumn(0).name)
-    assert_equal(2,d.phenotypecolumns.size)
-  end
+  >> d = qtl.data
+  >> d.type
+  => 'F2 intercross'
 
-  def test_phenotype
-    d = @qtl.data
-    assert_equal([96.7, 100],d.perc_phenotyped)
-  end
+Return the number of individuals
 
-  def test_genotype
-    d = @qtl.data
-    assert_equal(88.5,d.perc_genotyped)
-  end
+  >> d.individuals.size
+  => 120
 
-end
+The short notation - get number of individuals
 
-if $0 == __FILE__
+  >> d.nind
+  => 120
 
-  fn = LISTERIAFN
+Number of phenotypes
 
-  raise 'File not found error' if !File.exist?(fn)
+  >> d.nphe
+  => 3
 
-  qtl = QTL.new(fn)
-  # These are some simple tests to see if the build system worked...
-  raise 'Read test failed' if qtl.data.phenotype(0) != 118.317
-  raise 'Read test failed' if qtl.data.marker(0).name != 'D10M44'
-  raise 'Read test failed' if qtl.data.marker(13).chromosome != 2
+Number of markers
 
-  print "Success!"
-  exit 0
-end
+  d.totmar
+  => 133
+
+Number of chromosomes
+
+  d.nchr
+  => 20
+
+  {'1'=>13,'2'=>6},d.nmar)
+  'D10M44',d.marker(0).name)
+  '2',d.marker(14).chromosome)
+  133,d.markers.size)
+  20,d.chromosomes.size)
+  19,d.chromosomes.autosomes.size)
+  'X',d.chromosomes.x.name)
+  13,d.chromosomes[1].markers.size)
+  'T264',d.phenotypecolumn(0).name)
+  2,d.phenotypecolumns.size)
+  [96.7, 100],d.perc_phenotyped)
+
+  88.5,d.perc_genotyped)
+=end
+

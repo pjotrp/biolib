@@ -4,6 +4,7 @@ require 'qtl/qtlindividual'
 
 class QtlDataset
   # attr_reader :individuals, :phenotypes, :markers
+  attr_reader :individuals
   NA = '-'
 
   def initialize alleles, genotypes, na
@@ -45,13 +46,28 @@ class QtlDataset
     @individuals[ind]
   end
 
+  def nind
+    @individuals.size
+  end
+
   # Return phenotype +num+ of individual +pid+
   def phenotype pid, num=0
     @phenotypes[pid]
+  end
+
+  # Number of phenotypes
+  def nphe
+    @phenotypes.size + 1
   end
 
   # Return the information of marker +mid+
   def marker mid 
     @markers[mid]
   end
+
+  # Return the type of the experiment as a string
+  def type
+    nil
+  end
+
 end
