@@ -68,5 +68,7 @@ esac
 echo $language: $plang
 echo $library: $plib
 
+sh scripts/cleanup.sh
+
 echo cmake $plang $plib $* . 
 cmake $plang $plib $* . 
