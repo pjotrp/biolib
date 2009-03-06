@@ -21,11 +21,12 @@ Load the Listeria CSV file into a QTL object
 
   >> qtl = QTL.new(LISTERIA)
 
-Fetch the loaded data and check the type (unknown at this point)
+Fetch the loaded data and check the type (defaults to F2 at this point)
+R/QTL makes it an F2 intercross based on the number of genotypes
 
   >> d = qtl.data
   >> d.type
-  => 'F2 intercross'
+  => 'F2'
 
 Return the number of individuals
 
@@ -37,33 +38,59 @@ The short notation - get number of individuals
   >> d.nind
   => 120
 
-Number of phenotypes
+Number of phenotypes (T264. R/QTL adds sex and pgm automagically)
 
   >> d.nphe
-  => 3
+  => 1
 
 Number of markers
 
-  d.totmar
+  >> d.totmar
   => 133
 
 Number of chromosomes
 
-  d.nchr
+  >> d.nchr
   => 20
 
-  {'1'=>13,'2'=>6},d.nmar)
-  'D10M44',d.marker(0).name)
-  '2',d.marker(14).chromosome)
-  133,d.markers.size)
-  20,d.chromosomes.size)
-  19,d.chromosomes.autosomes.size)
-  'X',d.chromosomes.x.name)
-  13,d.chromosomes[1].markers.size)
-  'T264',d.phenotypecolumn(0).name)
-  2,d.phenotypecolumns.size)
-  [96.7, 100],d.perc_phenotyped)
+Markers per chromosome
 
-  88.5,d.perc_genotyped)
+  >> d.nmar.sort
+  => [["1", 13], ["10", 5], ["11", 6], ["12", 6], ["13", 12], ["14", 4], ["15", 8], ["16", 4], ["17", 4], ["18", 4], ["19", 4], ["2", 6], ["3", 6], ["4", 4], ["5", 13], ["6", 13], ["7", 6], ["8", 6], ["9", 7], ["X", 2]]
+
+  >> d.marker(0).name
+  => 'D10M44'
+
+  >>  d.marker(14).chromosome
+  => '2'
+
+  >> d.markers.size
+  => 133
+
+Chromosome info
+
+  >> d.chromosomes.size
+  => 20
+  >> d.chromosomes.autosomes.size
+  => 19
+  >> d.chromosomes.x.name
+  => 'X'
+  >> d.chromosomes[1].markers.size
+  => 13
+
+Phenotype column info
+
+  >> d.phenotypecolumn(0).name
+  => 'T264'
+  >> d.phenotypecolumns.size
+  => 2
+
+Get statistics
+
+  >> d.perc_phenotyped
+  => [96.7, 100]
+  >> d.perc_genotyped
+  => 88.5
+
 =end
 
