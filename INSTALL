@@ -1,10 +1,28 @@
 * QUICK INSTRUCTIONS:
 
+The configure script is a convenience wrapper. For a Perl build of biolib:
+
+  ./configure
+	make
+	make test
+	make install
+
+For a Ruby build:
+
+  ./configure --with-ruby
+	make
+	make test
+	make install
+
+** Using CMake directly
+
 The following makes the default libraries:
 
   cmake .
   make
   make test
+
+** Using Rake (with Ruby)
 
 To install BioLib with Ruby support one can simply execute rake:
 
@@ -13,7 +31,6 @@ To install BioLib with Ruby support one can simply execute rake:
 	rake install
 
 For installations specific to Perl, Python etc. see below.
-
 
 * INSTALL biolib
 
