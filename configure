@@ -69,3 +69,4 @@ echo $language: $plang
 echo $library: $plib
 
 echo cmake $plang $plib $* . 
+cmake $plang $plib $* . 
