@@ -1,0 +1,71 @@
+#! /bin/bash
+# 
+# This is a simple dropin for configure - so as to make life easier
+# for newcomers to cmake.
+#
+# A number of switches gets translated use ./configure with:
+#
+#   --with-perl       : build biolib for Perl (default)
+#   --with-ruby       : build biolib for Ruby
+#   --with-python     : build biolib for Python
+#
+# In addition libraries can be specified
+
+#   --with-staden     : see the BioLib docs
+#   --with-affyio
+#   --with-rqtl
+#
+
+if [ ! -d ./src ]; then
+	echo "FATAL: run from the root of the Biolib tree"
+	exit 1
+fi
+
+language=$1
+
+case $language in
+  '--help')
+	echo "See the ./INSTALL document for configuration options"
+	exit 1
+	;;
+  '--with-perl')
+	plang="-DBUILD_PERL:BOOLEAN=TRUE"
+	shift
+	;;
+  '--with-ruby')
+	plang="-DBUILD_RUBY:BOOLEAN=TRUE"
+	shift
+	;;
+  *)
+  echo "BioLib defaulting to Perl build"
+	plang="-DBUILD_PERL:BOOLEAN=TRUE"
+	library=$language
+esac
+
+if [ -z $library ]; then
+  library=$1
+	shift
+fi
+
+case $library in
+  '--with-staden')
+	plib="-DSTADEN_LIB:BOOLEAN=TRUE"
+	shift
+	;;
+  '--with-affyio')
+	plib="-DAFFYIO_LIB:BOOLEAN=TRUE"
+	shift
+	;;
+  '--with-rqtl')
+	plib="-DRQTL_LIB:BOOLEAN=TRUE"
+	shift
+	;;
+  *)
+  echo "BioLib building all libraries"
+	plib=""
+esac
+
+echo $language: $plang
+echo $library: $plib
+
+echo cmake $plang $plib $* . 
