@@ -2,10 +2,10 @@
 #
 # Author: Pjotr Prins
 
-$: << '../../../../biolib/ruby' << '../affyio'
+$: << '../../../../extra/ruby' << '../affyio'
 
 require 'biolib/affyio'
-require 'support/biolibtest'
+require 'biolib/biolibtest'
 require 'test/unit/testcase'
 
 class Test_Biolib_Affyio < Test::Unit::TestCase
