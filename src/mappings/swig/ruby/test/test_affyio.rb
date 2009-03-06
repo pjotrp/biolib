@@ -5,7 +5,7 @@
 $: << '../../../../biolib/ruby' << '../affyio'
 
 require 'biolib/affyio'
-require 'test/biolibtest'
+require 'support/biolibtest'
 require 'test/unit/testcase'
 
 class Test_Biolib_Affyio < Test::Unit::TestCase
