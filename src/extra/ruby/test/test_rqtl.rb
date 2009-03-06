@@ -71,7 +71,7 @@ Chromosome info
 
   >> d.chromosomes.size
   => 20
-  >> d.chromosomes.autosomes.size
+  >> d.chromosomes.autosomes
   => 19
   >> d.chromosomes.x.name
   => 'X'
@@ -94,3 +94,77 @@ Get statistics
 
 =end
 
+
+$: << '..'
+require 'qtl/qtl'
+require 'test/unit'
+
+TESTDATADIR = '../../../test/data/qtl'
+LISTERIAFN  = TESTDATADIR+'/listeria.csv'
+
+# require 'test/unit/testcase'
+
+class TestBiolibRQtl < Test::Unit::TestCase
+
+  def setup
+    @qtl = QTL.new(LISTERIAFN)
+  end
+
+  def test_info
+    d = @qtl.data
+    assert_equal('F2',d.type)
+    assert_equal(120,d.individuals.size)
+    assert_equal(120,d.nind)
+    assert_equal(1,d.nphe)
+    assert_equal(133,d.totmar)
+    assert_equal(20,d.nchr)
+    assert_equal([["1", 13], ["10", 5], ["11", 6], ["12", 6], ["13", 12], ["14", 4], ["15", 8], ["16", 4], ["17", 4], ["18", 4], ["19", 4], ["2", 6], ["3", 6], ["4", 4], ["5", 13], ["6", 13], ["7", 6], ["8", 6], ["9", 7], ["X", 2]],d.nmar.sort)
+  end
+
+  def test_markers
+    d = @qtl.data
+    assert_equal('D10M44',d.marker(0).name)
+    assert_equal('2',d.marker(14).chromosome)
+    assert_equal(133,d.markers.size)
+  end
+
+  def test_chromosomes
+    d = @qtl.data
+    assert_equal(20,d.chromosomes.size)
+    assert_equal(19,d.chromosomes.autosomes.size)
+    # assert_equal('X',d.chromosomes.x.name)
+    # assert_equal(13,d.chromosomes[1].markers.size)
+  end
+
+  def test_phenotypecolumns
+    d = @qtl.data
+    assert_equal('T264',d.phenotypecolumn(0).name)
+    assert_equal(2,d.phenotypecolumns.size)
+  end
+
+  def test_phenotype
+    d = @qtl.data
+    assert_equal([96.7, 100],d.perc_phenotyped)
+  end
+
+  def test_genotype
+    d = @qtl.data
+    assert_equal(88.5,d.perc_genotyped)
+  end
+
+end
+
+if $0 == __FILE__
+
+  fn = LISTERIAFN
+
+  raise 'File not found error' if !File.exist?(fn)
+
+  qtl = QTL.new(fn)
+  # These are some simple tests to see if the build system worked...
+  # raise 'Read test failed' if qtl.data.phenotype(0) != 118.317
+  # raise 'Read test failed' if qtl.data.marker(0).name != 'D10M44'
+  # raise 'Read test failed' if qtl.data.marker(13).chromosome != 2
+
+  print "Success!"
+end

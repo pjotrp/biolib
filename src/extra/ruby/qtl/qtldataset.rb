@@ -3,7 +3,7 @@ require 'qtl/qtlphenotype'
 require 'qtl/qtlindividual'
 
 class QtlDataset
-  attr_reader :individuals, :markers, :phenotypes
+  attr_reader :individuals, :markers, :phenotypes, :chromosomes
   NA = '-'
 
   def initialize alleles, genotypes, na
@@ -14,6 +14,7 @@ class QtlDataset
     @individuals          = []
     @markers              = []
     @phenotypes           = []
+    @chromosomes          = QTLChromosomes.new(@markers)
   end
 
   def set_phenotypecolumn column, name
@@ -21,7 +22,11 @@ class QtlDataset
   end
 
   def phenotypecolumn column
-    @phenotypecolumns[column]
+    @phenotypes[column]
+  end
+
+  def phenotypecolumns
+    @phenotypes
   end
 
   def set_phenotype ind, pid, value
@@ -94,4 +99,38 @@ class QtlDataset
     'F2'
   end
 
+end
+
+class QTLChromosomes
+
+  def initialize markers
+    @markers = markers
+  end
+
+  def chromosomes
+    chr = {}
+    @markers.each do | marker |
+      chr[marker.chromosome] = 0 if !chr[marker.chromosome]
+      chr[marker.chromosome] += 1
+    end
+    chr
+  end
+
+  def hasX?
+    chromosomes['X'] != nil
+  end
+
+  def size
+    chromosomes.size
+  end
+
+  def autosomes
+    res = chromosomes.reject {|k,v| k=='X'}
+    # size - (hasX? ? 1:0)
+    res
+  end
+
+  def markers
+    @markers
+  end
 end
