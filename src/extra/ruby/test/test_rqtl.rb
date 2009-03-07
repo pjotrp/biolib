@@ -1,4 +1,7 @@
 # Ruby DocTest
+#
+# Run with ./runner.rb
+# Documentation with rd2 -r rd/rd2html-lib *.rb
 
 =begin
 
@@ -66,13 +69,6 @@ Markers per chromosome
 
   >> d.markers.size
   => 133
-
-NYI the following:
-
-  !>> d.chromosomes.x.name
-  !=> 'X'
-  !>> d.chromosomes[1].markers.size
-  !=> 13
 
 =end
 
@@ -167,6 +163,58 @@ Get statistics
     assert_equal(88.5,d.perc_genotyped)
   end
 
+=begin
+
+The R equivalent is:
+
+    > mr = scanone(data,method='mr')
+      Warning message:
+      Dropping 4 individuals with missing phenotypes.
+        in: checkcovar(cross, pheno.col, addcovar, intcovar, perm.strata,  
+
+    > mr
+              chr      pos         lod
+      D10M44    1  0.00000 0.457256443
+      D1M3      1  0.99675 0.687377692
+      D1M75     1 24.84773 0.244500303
+      D1M215    1 40.41361 0.070120158
+      (...)
+      D19M117  19 16.36398 0.436675089
+      D19M65   19 32.82935 0.007363598
+      D19M10   19 44.49432 0.000000000
+      DXM186    X  0.00000 0.678435461
+      DXM64     X 42.34593 0.002756074
+
+Execute single QTL mapping using R/QTL's marker regression
+
+    >> mr = @qtl.scanone(:method => 'mr')
+
+Return the marker name, chromosome, position and lod score:
+
+    >> mr[0].to_a
+    => ['D10M44','1',0.0,0.457256443]
+
+or per attribute:
+
+    >> mr[3].name
+    => 'D1M215'
+    >> mr[3].chromosome
+    => '1'
+    >> mr[3].pos
+    => 40.41361 
+    >> mr[3].lod
+    => 0.070120158
+
+=end
+
+  def test_scanone
+    mr = @qtl.scanone(:method => 'mr')
+    assert_equal('D1M215',mr[3].name) 
+    assert_equal('1',mr[3].chr) 
+    assert_equal(40.41361,mr[3].pos) 
+    assert_equal(0.070120158,mr[3].lod) 
+    assert_equal(['D10M44','1',0.0,0.457256443],mr[0].to_a)
+  end
 end
 
 if $0 == __FILE__
