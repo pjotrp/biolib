@@ -75,6 +75,7 @@ Markers per chromosome
 
 $: << '..'
 require 'qtl/qtl'
+require 'qtl/rqtl'
 require 'test/unit'
 
 TESTDATADIR = '../../../test/data/qtl'
@@ -185,9 +186,15 @@ The R equivalent is:
       DXM186    X  0.00000 0.678435461
       DXM64     X 42.34593 0.002756074
 
-Execute single QTL mapping using R/QTL's marker regression
+Execute single QTL mapping using R/QTL's marker regression passing in
+the @qtl dataset. We need the RQTL convenience class to map against biolib:
 
-    >> mr = @qtl.scanone(:method => 'mr')
+    >> require 'qtl/rqtl'
+    >> rqtl = RQTL.new(@qtl)
+
+Now execute QTL mapping with scanone
+
+    >> mr = rqtl.scanone(:method => 'mr')
 
 Return the marker name, chromosome, position and lod score:
 
@@ -208,7 +215,8 @@ or per attribute:
 =end
 
   def test_scanone
-    mr = @qtl.scanone(:method => 'mr')
+    rqtl = RQTL.new(@qtl)
+    mr = rqtl.scanone(:method => 'mr')
     assert_equal('D1M215',mr[3].name) 
     assert_equal('1',mr[3].chr) 
     assert_equal(40.41361,mr[3].pos) 
