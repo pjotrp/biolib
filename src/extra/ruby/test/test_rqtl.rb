@@ -3,6 +3,8 @@
 # Run with ./runner.rb
 # Documentation with rd2 -r rd/rd2html-lib *.rb
 
+$: << '../../../mappings/swig/ruby/rqtl/'
+
 =begin
 
 Here we load the R/QTL Listeria dataset (from a CSV) and verify the

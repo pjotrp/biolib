@@ -100,7 +100,7 @@ if (RQTL_LIB)
   set(BLD_AFFYIO  FALSE)
   set(BLD_EXAMPLE FALSE)
   set(BLD_BIOLIB  FALSE)
-endif (STADEN_LIB)
+endif (RQTL_LIB)
 
 message("  Biolib libraries")
 message(STATUS "Install Affyio ${BLD_AFFYIO}")

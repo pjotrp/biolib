@@ -22,6 +22,9 @@ if [ ! -d ./src ]; then
 fi
 
 language=$1
+if [ -z $language ]; then
+  language='--with-perl'
+fi
 
 case $language in
   '--help')
