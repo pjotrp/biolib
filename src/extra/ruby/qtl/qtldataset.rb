@@ -99,6 +99,29 @@ class QtlDataset
     'F2'
   end
 
+  def perc_phenotyped
+    tot_phenotypes = @individuals[0].phenotypes.size * @individuals.size
+    countph = []
+    @individuals.each do | ind |
+      ind.phenotypes.each_with_index do | ph, i |
+        countph[i] = 0 if countph[i] == nil
+        countph[i] +=1 if ph != nil and ph != NA
+      end
+    end
+    countph.map { | c | (c*1000.0/tot_phenotypes).round/10.0 }
+  end
+
+  def perc_genotyped
+    tot_genotypes = @individuals[0].genotypes.size * @individuals.size
+    c = 0
+    @individuals.each_with_index do | ind, i |
+      ind.genotypes.each do | g |
+        c +=1 if g != nil and g != NA
+      end
+    end
+    (c*1000.0/tot_genotypes).round/10.0
+  end
+
 end
 
 class QTLChromosomes

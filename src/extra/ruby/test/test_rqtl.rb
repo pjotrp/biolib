@@ -3,7 +3,7 @@
 =begin
 
 Here we load the R/QTL Listeria dataset (from a CSV) and verify the
-resulting information matches that of the R version.
+resulting information matches that of the R version (see RQTL book page 46).
 
 Find the special classes for loading QTL input files (part of BioLib 'extra').
 
@@ -67,30 +67,12 @@ Markers per chromosome
   >> d.markers.size
   => 133
 
-Chromosome info
+NYI the following:
 
-  >> d.chromosomes.size
-  => 20
-  >> d.chromosomes.autosomes
-  => 19
-  >> d.chromosomes.x.name
-  => 'X'
-  >> d.chromosomes[1].markers.size
-  => 13
-
-Phenotype column info
-
-  >> d.phenotypecolumn(0).name
-  => 'T264'
-  >> d.phenotypecolumns.size
-  => 2
-
-Get statistics
-
-  >> d.perc_phenotyped
-  => [96.7, 100]
-  >> d.perc_genotyped
-  => 88.5
+  !>> d.chromosomes.x.name
+  !=> 'X'
+  !>> d.chromosomes[1].markers.size
+  !=> 13
 
 =end
 
@@ -128,6 +110,17 @@ class TestBiolibRQtl < Test::Unit::TestCase
     assert_equal(133,d.markers.size)
   end
 
+=begin
+
+Chromosome info
+
+  >> d.chromosomes.size
+  => 20
+  >> d.chromosomes.autosomes.size
+  => 19
+
+=end
+
   def test_chromosomes
     d = @qtl.data
     assert_equal(20,d.chromosomes.size)
@@ -136,15 +129,37 @@ class TestBiolibRQtl < Test::Unit::TestCase
     # assert_equal(13,d.chromosomes[1].markers.size)
   end
 
+=begin
+
+Phenotype column info
+
+  >> d.phenotypecolumn(0).name
+  => 'T264'
+  >> d.phenotypecolumns.size
+  => 1
+
+=end
+
   def test_phenotypecolumns
     d = @qtl.data
     assert_equal('T264',d.phenotypecolumn(0).name)
-    assert_equal(2,d.phenotypecolumns.size)
+    assert_equal(1,d.phenotypecolumns.size)
   end
+
+=begin
+
+Get statistics
+
+  >> d.perc_phenotyped
+  => [96.7]
+  >> d.perc_genotyped
+  => 88.5
+
+=end
 
   def test_phenotype
     d = @qtl.data
-    assert_equal([96.7, 100],d.perc_phenotyped)
+    assert_equal([96.7],d.perc_phenotyped)
   end
 
   def test_genotype
