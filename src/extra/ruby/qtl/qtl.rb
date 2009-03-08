@@ -9,10 +9,10 @@ class QTL
 
   def initialize fn
     if fn =~ /(CSV|csv)$/
-      @dataset = QtlCsv.new(fn)
+      @data = QtlCsv.new(fn)
     end
-    raise "Cannot determine format of #{fn}" if !@dataset
-    @dataset.normalize
+    raise "Cannot determine format of #{fn}" if !@data
+    @data.normalize
   end
 
 end

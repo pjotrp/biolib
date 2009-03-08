@@ -32,6 +32,7 @@ class RQTL
 =end
       res = Biolib::rqtl.R_scanone_mr()
     end
+    res
   end
 
 end

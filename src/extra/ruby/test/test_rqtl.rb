@@ -17,8 +17,8 @@ Find the special classes for loading QTL input files (part of BioLib 'extra').
 
 Locate the Listeria input file
  
-  >> TESTDATADIR = '../../../test/data/qtl'
-  >> LISTERIA  = TESTDATADIR+'/listeria.csv'
+  >> DIR = '../../../test/data/qtl'
+  >> LISTERIA  = DIR+'/listeria.csv'
   >> File.exist?(LISTERIA)
   => true
 
