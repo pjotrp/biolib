@@ -122,6 +122,17 @@ class QtlDataset
     (c*1000.0/tot_genotypes).round/10.0
   end
 
+  # Normalize the dataset (nyi) - called automatically after reading the data
+  # from some file - like QTLCsv.
+
+  def normalize
+    # It should check for NA fields
+    # It should convert genotypes to numeric values
+    # It should convert phenotypes to numeric values
+    # It should find out the experimental type
+    # It should find out the sex and pgm phenotypes
+  end
+
 end
 
 class QTLChromosomes

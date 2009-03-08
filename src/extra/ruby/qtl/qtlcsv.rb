@@ -20,7 +20,7 @@ class QtlCsv < QtlDataset
       (0..phenotypenum-1).each do | pid |
         set_phenotypecolumn(pid,l1[pid])
       end
-      # Check for distance row
+      # Check for map distance row
       line = f.gets
       l3 = line.chomp.split(/,/) # (optional) cM
       hasposrow = l3[0] == ''
