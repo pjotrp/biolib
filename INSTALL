@@ -14,6 +14,13 @@ For a Ruby build:
 	make test
 	make install
 
+For a Perl build:
+
+  ./configure --with-perl
+	make
+	make test
+	make install
+
 ** Using CMake directly
 
 The following makes the default libraries:
@@ -43,8 +50,12 @@ Install or build the following tools on your system
   ruby   >= 1.8.6  (if you want Ruby support)
   perl   >= 5.8.8  (if you want Perl support)
 
-see also ./doc/DEPENDENCIES.txt for runtime libraries. cmake 2.6 is available
-in Debian testing and etch-backports. 
+So for Debian you can do:
+
+  apt-get install g++ cmake swig r-base zlib1g-dev python ruby perl
+
+see also ./doc/DEPENDENCIES.txt for more information on runtime libraries.
+cmake 2.6 is available in Debian testing and etch-backports. 
 
 To build all Bio* biolib modules use:
 

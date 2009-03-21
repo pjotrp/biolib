@@ -2,7 +2,7 @@
 
 BioLib currently depends on the shared R libraries and zlib for
 parsing Affy files, memory management and error messaging. The R
-dependecy will probably be removed in the future.
+dependency will probably be removed in the future.
 
 BioLib depends on external libraries and tools for building and
 running tools and libraries. The following list may not be complete,
@@ -10,5 +10,7 @@ but hopefully helps resolve runtime and build issues. Package names
 are Debian names (for now) with the build time dependency between
 braces.
 
-affyio: zlib (zlib1g-dev)
-affyio, affy: r-base
+The following shared libraries:
+
+affyio: zlib (zlib1g-dev on Debian)
+affyio, affy: Rlib (r-base on Debian)
