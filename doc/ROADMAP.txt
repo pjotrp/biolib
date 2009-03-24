@@ -1,0 +1,25 @@
+= ROADMAP =
+
+== MODULES ==
+
+* Affymetrix microarrays using BioConductor modules
+  [+] RMA and quantile normalization using Affy module
+  [ ] fix error messages through Rlib
+* R/QTL
+  [ ] Map module - requires preprocessing of QTL files
+  [ ] Add MQM module
+* GSL (GNU Scientific library)
+  [ ] Map module
+* NCBI Tools
+  [ ] Proof-of-concept mapping
+
+== GENERAL ==
+
+* Build system
+  [ ] Provide recent builds
+  [ ] Add Python support
+  [ ] Add JAVA support
+  [ ] Add R support
+  [ ] Create BioPerl CORE modules (Chris)
+  [ ] Automated documentation through SWIG
+
