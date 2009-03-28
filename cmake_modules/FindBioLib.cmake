@@ -15,6 +15,9 @@ ENDIF(WIN32)
 
 EXEC_PROGRAM(${cat_prog} ARGS ${BIOLIB_ROOT}/VERSION OUTPUT_VARIABLE BIOLIB_VERSION)
 
+# ---- Add a predefinde build variable
+add_definitions(-DBIOLIB_BUILD)
+
 # ---- Set default installation prefix
 
 IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
