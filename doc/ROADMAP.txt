@@ -16,7 +16,7 @@
 == GENERAL ==
 
 * Build system
-  [ ] Provide recent builds
+  [ ] Provide recent builds (also on github? mod wiki)
   [ ] Add Python support
   [ ] Add JAVA support
   [ ] Add R support
