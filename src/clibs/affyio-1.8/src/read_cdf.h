@@ -6,7 +6,6 @@
  ** 
  ******************************************************************/
 
-
 /*****************************************************************
  ** Textual CDF formats
  **
@@ -340,7 +339,7 @@ typedef struct {
 
 
 
-int check_xda_file(const char *filename);
+// int check_xda_file(const char *filename);
 int isTextCDFFile(const char *filename);
 int read_cdf_text(const char *filename, cdf_text *mycdf);
 void dealloc_cdf_text(cdf_text *my_cdf);

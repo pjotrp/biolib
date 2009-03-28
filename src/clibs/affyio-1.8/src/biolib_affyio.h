@@ -32,6 +32,10 @@
 
 /*@{*/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifdef BIOLIB
   #include <biolib_R_map.h>
 #endif
@@ -49,10 +53,6 @@ typedef struct {
   /// Outlier indices
   short *outliers;
 } CELOBJECT;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 CELOBJECT *open_celfile(const char *celfilename);
 void close_celfile(CELOBJECT *object);
