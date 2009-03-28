@@ -1,3 +1,3 @@
-%module staden_io_lib
+%module affyio
 
-%include ../../staden_io_lib.i
+%include ../../affyio.i

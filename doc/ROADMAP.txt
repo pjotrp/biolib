@@ -3,7 +3,7 @@
 == MODULES ==
 
 * Affymetrix microarrays using BioConductor modules
-  [+] RMA and quantile normalization using Affy module
+  [+] RMA and quantile normalization using Affy module (RMA branch)
   [ ] fix error messages through Rlib
 * R/QTL
   [ ] Map module - requires preprocessing of QTL files
@@ -17,7 +17,7 @@
 
 * Build system
   [ ] Provide recent builds (also on github? mod wiki)
-  [ ] Add Python support
+  [+] Add Python support (staden branch)
   [ ] Add JAVA support
   [ ] Add R support
   [ ] Create BioPerl CORE modules (Chris)
