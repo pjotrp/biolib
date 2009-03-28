@@ -1,3 +1,3 @@
-%module biolib_python_example
+%module example
 
 %include ../../example.i

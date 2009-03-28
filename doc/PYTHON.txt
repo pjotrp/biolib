@@ -1,0 +1,7 @@
+= Trouble shooting
+
+== CMake Error: The following variables are used in this project, but they are set to NOTFOUND
+
+When you see a missing PYTHON_INCLUDE_PATH (ADVANCED) make sure
+Python is installed with the development Python.h (python-dev package
+in Debian)
