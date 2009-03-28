@@ -4,7 +4,7 @@ import sys
 sys.path += ['../example']
 print sys.path
 
-import example
+import biolib.example as example
 
 result = example.my_mod(7,3)
 print result
