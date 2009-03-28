@@ -4,8 +4,8 @@ cmake_minimum_required(VERSION 2.6)
 
 ENABLE_TESTING()
 
-SET (M_NAME staden_io_lib)
-SET (M_VERSION 1.11.6)
+SET (M_NAME affyio)
+SET (M_VERSION 1.8)
 SET (INTERFACE python_${M_NAME}.i)
 
 IF(NOT BUILD_LIBS)
@@ -13,9 +13,8 @@ IF(NOT BUILD_LIBS)
 ENDIF(NOT BUILD_LIBS)
 
 SET (USE_ZLIB TRUE)
-SET (USE_INCLUDEPATH io_lib)
+SET (USE_RLIB TRUE)
 
-INCLUDE(CMakeBackwardCompatibilityC)
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
 
 FIND_PACKAGE(BioLibPython REQUIRED)
@@ -28,7 +27,7 @@ ADD_CUSTOM_COMMAND(
   COMMAND python -m compileall biolib/
 )
 
-ADD_TEST(TestPythonStadenIOLib ${PYTHON_EXECUTABLE} ./../test/test_${M_NAME}.py)
+ADD_TEST(TestPythonAffyIO ${PYTHON_EXECUTABLE} ./../test/test_${M_NAME}.py)
 
 INSTALL(TARGETS _${M_MODULE}
   LIBRARY DESTINATION ${PYTHON_LIB_PATH}
