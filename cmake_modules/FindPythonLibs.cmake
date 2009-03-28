@@ -23,8 +23,9 @@
 #
 #  PYTHON_EXECUTABLE   = full path to the python binary
 #  PYTHON_INCLUDE_PATH = path to where python.h can be found
-#  PYTHON_LIBRARY = path to where libpython.so* can be found
-#  PYTHON_LFLAGS = python compiler options for linking
+#  PYTHON_LIBRARY      = path to where libpython.so* can be found
+#  PYTHON_LIB_PATH     = install location for libraries
+#  PYTHON_LFLAGS       = python compiler options for linking
 
 IF(PYTHON_FOUND)
    # Already in cache, be silent
@@ -50,15 +51,15 @@ IF(PYTHON_EXECUTABLE)
     )
   
   message("PYTHON_INC_DIR="${PYTHON_INC_DIR})
-
-  EXECUTE_PROCESS(
-    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import *; print get_config_var('LIBPL')"
-    OUTPUT_VARIABLE PYTHON_POSSIBLE_LIB_PATH
-    )
-  
+ 
   EXECUTE_PROCESS(
     COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import *; print get_config_var('LINKFORSHARED')"
     OUTPUT_VARIABLE PYTHON_LFLAGS
+    )
+  
+  EXECUTE_PROCESS(
+    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import *; print get_python_lib()"
+    OUTPUT_VARIABLE PYTHON_POSSIBLE_LIB_PATH
     )
   
   # remove the new lines from the output by replacing them with empty strings
@@ -81,13 +82,13 @@ IF(PYTHON_EXECUTABLE)
   ENDIF(PYTHON_LIBRARY AND PYTHON_INCLUDE_PATH)
 
   message("PYTHON_EXECUTABLE="${PYTHON_EXECUTABLE})
-  message("PYTHON_INCLUCE_PATH="${PYTHON_INCLUDE_PATH})
-  message("PYTHON_LIBRARY="${PYTHON_LIBRARY})
+  message("PYTHON_INCLUDE_PATH="${PYTHON_INCLUDE_PATH})
+  message("PYTHON_LIB_PATH="${PYTHON_LIB_PATH})
 
   MARK_AS_ADVANCED(
     PYTHON_EXECUTABLE
     PYTHON_INCLUDE_PATH
-    PYTHON_LIBRARY
+    PYTHON_LIB_PATH
     PYTHON_LFLAGS
     )
   
