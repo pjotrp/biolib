@@ -1,7 +1,7 @@
 /*! \mainpage BioLib API Documentation
  *
  *  These pages describe the BioLib API as generated from
- *  the source code. This API can be used directly from Perl and 
+ *  the source code. This API can be used directly from Perl, Python and 
  *  Ruby.
  *
  *  Using the mapped functions is straightforward. For example
@@ -18,6 +18,14 @@
  *  \code
  *    $result = staden_io_lib::read_reading($fn,$staden_io_lib::TT_ANY);
  *    print $result->{NBases};
+ *  \endcode
+ *
+ *  The <b>Python</b> mapping
+ *
+ *  \code
+ *    import biolib.staden_io_lib as io_lib
+ *    result = io_lib.read_reading(fn,io_lib.TT_ANY)
+ *    print result.NBases
  *  \endcode
  *
  *  The <b>Ruby</b> mapping

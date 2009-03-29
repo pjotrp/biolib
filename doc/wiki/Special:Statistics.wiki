@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta name="generator" content="MediaWiki 1.13.4" />
+		<meta name="generator" content="MediaWiki 1.13.5" />
 		<meta name="robots" content="noindex,nofollow" />
 		<meta name="keywords" content="Special:Statistics,Main Page,SWIG,Supported data types,BioLib best practises,Road map,Interesting libraries,NIX,Add C Library,BioLib Affymetrix,CMake" />
 		<link rel="shortcut icon" href="/favicon.ico" />
@@ -46,7 +46,7 @@ var wgUserLanguage = "en";
 var wgContentLanguage = "en";
 var wgBreakFrames = false;
 var wgCurRevisionId = 0;
-var wgVersion = "1.13.4";
+var wgVersion = "1.13.5";
 var wgEnableAPI = true;
 var wgEnableWriteAPI = false;
 var wgRestrictionEdit = [];
@@ -74,28 +74,28 @@ var wgRestrictionMove = [];
 			<div id="contentSub"></div>
 									<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>			<!-- start content -->
 			<a name="BioLib_statistics"></a><h2> <span class="mw-headline">BioLib statistics</span></h2>
-<p>There are <b>17</b> total pages in the database.
+<p>There are <b>18</b> total pages in the database.
 This includes "talk" pages, pages about BioLib, minimal "stub" pages, redirects, and others that probably do not qualify as content pages.
-Excluding those, there are <b>11</b> pages that are probably legitimate content pages.
+Excluding those, there are <b>10</b> pages that are probably legitimate content pages.
 </p><p><b>0</b> files have been uploaded.
-</p><p>There have been a total of <b>2,867</b> page views, and <b>170</b> page edits since BioLib was setup.
-That comes to <b>10.00</b> average edits per page, and <b>16.86</b> views per edit.
+</p><p>There have been a total of <b>3,628</b> page views, and <b>185</b> page edits since BioLib was setup.
+That comes to <b>10.28</b> average edits per page, and <b>19.61</b> views per edit.
 </p><p>The <a href="http://www.mediawiki.org/wiki/Manual:Job_queue" class="external text" title="http://www.mediawiki.org/wiki/Manual:Job_queue" rel="nofollow">job queue</a> length is <b>0</b>.
 </p>
 <a name="User_statistics"></a><h2> <span class="mw-headline">User statistics</span></h2>
 <p>There are <b>5</b> registered <a href="/wiki/Special:ListUsers" title="Special:ListUsers">users</a>, of which <b>3</b> (or <b>60.00%</b>) have <a href="/w/index.php?title=BioLib:Administrators&amp;action=edit&amp;redlink=1" class="new" title="BioLib:Administrators (not yet written)">Sysops</a> rights.
 </p>
 <a name="Most_viewed_pages"></a><h2> <span class="mw-headline">Most viewed pages</span></h2>
-<ul><li> <a href="/wiki/Main_Page" title="Main Page">Main Page</a> (1,004)
-</li><li> <a href="/wiki/BioLib_Affymetrix" title="BioLib Affymetrix">BioLib Affymetrix</a> (402)
-</li><li> <a href="/wiki/Add_C_Library" title="Add C Library">Add C Library</a> (340)
-</li><li> <a href="/wiki/Road_map" title="Road map">Road map</a> (196)
-</li><li> <a href="/wiki/NIX" title="NIX">NIX</a> (192)
-</li><li> <a href="/wiki/Interesting_libraries" title="Interesting libraries">Interesting libraries</a> (141)
-</li><li> <a href="/wiki/SWIG" title="SWIG">SWIG</a> (124)
-</li><li> <a href="/wiki/BioLib_best_practises" title="BioLib best practises">BioLib best practises</a> (110)
-</li><li> <a href="/wiki/Supported_data_types" title="Supported data types">Supported data types</a> (90)
-</li><li> <a href="/wiki/CMake" title="CMake">CMake</a> (70)
+<ul><li> <a href="/wiki/Main_Page" title="Main Page">Main Page</a> (1,262)
+</li><li> <a href="/wiki/BioLib_Affymetrix" title="BioLib Affymetrix">BioLib Affymetrix</a> (452)
+</li><li> <a href="/wiki/Add_C_Library" title="Add C Library">Add C Library</a> (370)
+</li><li> <a href="/wiki/Road_map" title="Road map">Road map</a> (271)
+</li><li> <a href="/wiki/NIX" title="NIX">NIX</a> (247)
+</li><li> <a href="/wiki/Interesting_libraries" title="Interesting libraries">Interesting libraries</a> (203)
+</li><li> <a href="/wiki/SWIG" title="SWIG">SWIG</a> (155)
+</li><li> <a href="/wiki/BioLib_best_practises" title="BioLib best practises">BioLib best practises</a> (140)
+</li><li> <a href="/wiki/Supported_data_types" title="Supported data types">Supported data types</a> (119)
+</li><li> <a href="/wiki/CMake" title="CMake">CMake</a> (89)
 </li></ul>
 <div class="printfooter">
 Retrieved from "<a href="http://biolib.open-bio.org/wiki/Special:Statistics">http://biolib.open-bio.org/wiki/Special:Statistics</a>"</div>
@@ -169,4 +169,4 @@ Retrieved from "<a href="http://biolib.open-bio.org/wiki/Special:Statistics">htt
 </div>
 
 		<script type="text/javascript">if (window.runOnloadHook) runOnloadHook();</script>
-<!-- Served in 0.118 secs. --></body></html>
+<!-- Served in 0.469 secs. --></body></html>

@@ -2,7 +2,7 @@
   <siteinfo>
     <sitename>BioLib</sitename>
     <base>http://biolib.open-bio.org/wiki/Main_Page</base>
-    <generator>MediaWiki 1.13.4</generator>
+    <generator>MediaWiki 1.13.5</generator>
     <case>first-letter</case>
       <namespaces>
       <namespace key="-2">Media</namespace>
@@ -29,79 +29,13 @@
     <title>Road map</title>
     <id>5</id>
     <revision>
-      <id>144</id>
-      <timestamp>2009-02-05T19:08:32Z</timestamp>
+      <id>182</id>
+      <timestamp>2009-03-24T10:08:21Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* Adding functionality */</comment>
-      <text xml:space="preserve">= 2008 =
-
-== Plumbing ==
-
-* Provide example SWIG bindings in SVN with unit test infrastructure (Pjotr)
-  [x] Example Ruby mapping, build, test
-  [x] Example Python mapping, build, test
-  [x] Example Perl mapping, build, test
-  [x] cmake 2.6 builder
-  [x] build and install libaries with cmake 2.6
-  [x] unit test runner
-  [x] package biolib in Nix
-  [ ] package biolib in Debian
-
-== Adding functionality ==
-
-* Support for reading Affymetrix microarrays using BioConductor modules (Pjotr)
-  [x] Create cmake for Ben Bolstad's affyio
-  [x] Create functions for reading CEL file w. Ruby
-  [x] Create functions for reading CDF file w. Ruby
-  [x] Create documentation for Affyio module (Doxygen)
-  [x] Map PM intensities to simple native array type w. Ruby
-  [x] Package Ruby version for BioRuby
-  [+] RMA and quantum normalization using Affy module
-  [x] Perl mapping
-  [ ] Python mapping
-  [ ] Java mapping
-* Add Staden io_lib library (Pjotr)
-  [x] Compile library
-  [ ] Document C library
-  [x] Ruby mapping
-  [x] Perl mapping
-  [ ] Python mapping
-  [ ] Java mapping
-* Create first official source package available for download (Pjotr)
-  [x] Packaging scripts
-  [ ] Generate documentation for Ruby
-  [ ] Generate documentation for Perl
-  [ ] Generate documentation for Java
-* Tutorial how to add a module to biolib (Pjotr)
-  [x] Add a C module
-  [x] Create a Ruby mapping
-  [ ] Create a JAVA mapping
-  [ ] Create a Python mapping
-  [ ] Create a Perl mapping
-* Efficient in-memory matrix access/mapping (Pjotr)
-  [ ] Provide efficient direct C array access (like Ruby's narray)
-* Quantile normalization (Pjotr/Vicky)
-* Reduce memory foot print of Affyio (Pjotr)
-* Support for generic matrix reading and writing (Pjotr)
-* Buffered matrix access - using disk access rather than RAM - similar to Ben Bolstad's BufferedMatrix package (Pjotr)
-
-== More ==
-
-Create examples for different packaging tools:
-
-  [x] Ruby gem support (Pjotr)
-  [ ] Python egg support (who?)
-  [ ] Perl CPAN support (who?)
-  [ ] Bioconductor support (who?)
-  [ ] biolib Nix tutorial
-
-= Future =
-
-* [[Generator]] to map to the different languages automatically
-* Check the list of [[Interesting libraries]] which, potentially, deserve a place in biolib.</text>
+      <text xml:space="preserve">See the ./doc/[http://github.com/pjotrp/biolib/blob/master/doc/ROADMAP.txt ROADMAP]</text>
     </revision>
   </page>
 </mediawiki>
