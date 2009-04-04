@@ -1,6 +1,3 @@
 * GSL
 
-There are quite a few mappings around for the GSL libraries. Both
-Python and Perl have SWIG mapped editions. The Ruby version is 'hand'
-mapped. 
-
+The GSL is being mapped into ASciLib (A Science Lib).
