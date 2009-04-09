@@ -1,0 +1,126 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>BioLib</sitename>
+    <base>http://biolib.open-bio.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.13.5</generator>
+    <case>first-letter</case>
+      <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">BioLib</namespace>
+      <namespace key="5">BioLib talk</namespace>
+      <namespace key="6">Image</namespace>
+      <namespace key="7">Image talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>ASciLib</title>
+    <id>19</id>
+    <revision>
+      <id>198</id>
+      <timestamp>2009-04-09T21:48:54Z</timestamp>
+      <contributor>
+        <username>Pjotrp</username>
+        <id>2</id>
+      </contributor>
+      <text xml:space="preserve">= ASciLib: ''A Science Library'' =
+
+A Science Lib (ASciLib) brings together a set of opensource C/C++ libraries and makes them available to the common high level languages: Perl, Ruby, Python, JAVA and R.
+
+ASciLib is a sister project of BioLib - where functionality of interest to a broader community of scientists is included. Currently the GNU Science Library (GSL) is being mapped to Perl and Ruby (using the original Perl Math::GSL SWIG mappings by Jonathan Leto).
+
+See [http://github.com/pjotrp/ascilib/ Github ASciLib] for more.
+
+== MODULES ==
+
+* GNU Science Library GSL module
+
+== MILESTONES ==
+
+* GSL support is added to the new [[ASciLib]] (A Science Lib) (April 2009)
+
+== INTRODUCTION ==
+
+Why use ASciLib? ASciLib pools resources and provides the mechanisms for having one code
+base for all important programming languages. Rather then having three different mapping efforts for Perl, Ruby and Python, there now may be one. Also ASciLib solves deployment problems of these mapping efforts and delivers both stability and a recent version of the GSL by including the full GSL source base as a git submodule. So:
+
+* Easier maintenance of code
+* Easier deployment
+* The latest version of included libraries
+
+The primary mapping mechanism is [[SWIG]]. SWIG has come a long way in the last years and maps to all modern high-level languages.
+
+== DOCUMENTATION ==
+
+== DOWNLOADING ==
+
+For the latest version of ''ASciLib'' see the latest [http://github.com/pjotrp/ascilib/tree/master%2Fdoc%2FRELEASE_NOTES.txt?raw=true RELEASE NOTES].
+
+BioLib releases (tgz, tar.bz2 and zip) can be downloaded from:
+
+http://bio3.biobeat.org/download/nix-biology/
+
+For the direct access to the latest source tree use
+
+* [http://github.com/pjotrp/ascilib/tree/master ASciLib on github]
+* And clone the (master) repository with:
+
+  git clone git://github.com/pjotrp/ascilib.git 
+
+== INSTALLATION ==
+
+Quick instructions : after downloading the source run
+
+  ./configure
+  make
+  make test
+  make install
+
+which, by default, creates the ''Perl'' bindings. Configuration parameters are:
+
+  ./configure --with-ruby
+
+or
+
+  ./configure --with-python
+
+For more information read the [http://github.com/pjotrp/ascilib/tree/master/INSTALL INSTALL] file.
+
+== REQUESTING MODULES ==
+
+If you need a C/C++/FORTRAN/R module or library linked against one of the popular scripting languages, please make that known through the [[Biolib Poll]]. See also [[Interesting_libraries]].
+
+== CONTRIBUTING ==
+
+All developers writing low-level bioinformatics libraries are
+encouraged to contribute. For a HOWTO read [[Add C Library]]. If you feel you have something that can be
+shared by other developers sign up to the BioLib mailing list (see below).
+
+Unit testing is a critical part of ASciLib. Unit tests are conveniently
+written in high-level languages.
+
+The multiplatform build system is based on [[CMake]]. The source trees are
+maintained with [http://git.or.cz/ git] distributed version control.
+
+== MAILING LIST ==
+
+Subscribe to the BioLib mailing list [http://lists.open-bio.org/mailman/listinfo/biolib-dev here].
+
+== PACKAGING ==
+
+General support for major platforms is aimed for, including 32-bit and 64-bit Linux, OS X, *BSD, Solaris and Windows.</text>
+    </revision>
+  </page>
+</mediawiki>

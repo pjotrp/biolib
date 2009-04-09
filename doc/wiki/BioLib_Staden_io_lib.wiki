@@ -29,13 +29,18 @@
     <title>BioLib Staden io lib</title>
     <id>16</id>
     <revision>
-      <id>158</id>
-      <timestamp>2009-02-15T16:53:29Z</timestamp>
+      <id>186</id>
+      <timestamp>2009-03-28T18:56:50Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <text xml:space="preserve">Staden io_lib is the support library for the [http://staden.sourceforge.net/ Staden assembly programs] (like gap4, trace, makescf...). BioLib maps the read and write functions for different trace formats as defined in the Read.h file:
+      <text xml:space="preserve">Staden io_lib is the support library for the [http://staden.sourceforge.net/ Staden assembly programs] (like gap4, trace, makescf...). 
+
+The call examples for ''Perl'', ''Python'' and ''Ruby'' can be found in the
+[http://thebird.nl/apidoc/biolib/index.html apidoc].
+
+BioLib maps the read and write functions for different trace formats as defined in the Read.h file:
 
   /* Trace file formats */
   #define TT_ERR -1

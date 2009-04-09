@@ -29,13 +29,16 @@
     <title>BioLib Affymetrix</title>
     <id>13</id>
     <revision>
-      <id>159</id>
-      <timestamp>2009-02-15T16:53:45Z</timestamp>
+      <id>187</id>
+      <timestamp>2009-03-28T18:57:36Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
       <text xml:space="preserve">BioLib reads Affy CEL and CDF files using Ben Bolstad's Affyio package and comes with RMA and quantile normalization (the same implementation as R/Bioconductor).
+
+The call examples for ''Perl'', ''Python'' and ''Ruby'' can be found in the
+[http://thebird.nl/apidoc/biolib/index.html apidoc].
 
 == API reading ==
 

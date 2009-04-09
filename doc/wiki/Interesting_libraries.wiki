@@ -29,8 +29,8 @@
     <title>Interesting libraries</title>
     <id>6</id>
     <revision>
-      <id>113</id>
-      <timestamp>2008-08-28T12:38:55Z</timestamp>
+      <id>193</id>
+      <timestamp>2009-04-06T20:51:55Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
@@ -52,8 +52,12 @@
 
 == Algebra/matrix ==
 
+
+Libraries with a wider audience may go into [http://github.com/pjotrp/ascilib/ A Science Library] - [[ASciLib]], the sister project to BioLib.
+
+* [http://gslwrap.sourceforge.net/index.html The GNU Scientific Library (GSL)], a numerical library for C and C++ programmers (mapping in progress in [[ASciLib]])
+
 * [http://gmplib.org/ The GNU MP Bignum Library (GMP)], arbitrary precision arithmetic, operating on signed integers, rational numbers, and floating point numbers
-* [http://gslwrap.sourceforge.net/index.html The GNU Scientific Library (GSL)], a numerical library for C and C++ programmers
 * [http://math.nist.gov/tnt/ The Template Numerical Toolkit (TNT)], a collection of interfaces and reference implementations of numerical objects useful for scientific computing in C++
 * [http://www.netlib.org/lapack/ LAPACK -- Linear Algebra PACKage]
 * [http://en.wikipedia.org/wiki/Blitz%2B%2B blitz++] high performance array/matrix library - optimized for CPU cache pipelining

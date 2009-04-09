@@ -29,13 +29,13 @@
     <title>Main Page</title>
     <id>1</id>
     <revision>
-      <id>185</id>
-      <timestamp>2009-03-28T18:50:51Z</timestamp>
+      <id>200</id>
+      <timestamp>2009-04-09T21:50:16Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* INSTALLATION */</comment>
+      <comment>/* MILESTONES */</comment>
       <text xml:space="preserve">= BioLib: libraries for the Bio* languages =
 
 ''BioLib'' brings together a set of opensource C/C++ libraries and makes them available to all Bio* languages: BioPerl,
@@ -53,6 +53,7 @@ If you have a requirement not listed here: please use the [[Biolib Poll]]!
 
 == MILESTONES ==
 
+* GNU Science Library (GSL) support is added to the new [[ASciLib]] (A Science Lib) project (April 2009)
 * ''Python'' mappings provided for Affyio and Staden (March 2009)
 * BioLib supports OSX; Affyio mapped to ''Perl'' (February 2009)
 * ''Perl'' and ''Ruby'' mappings provided for the '''Staden [http://sourceforge.net/projects/staden/ io_lib] library''', for reading of trace files in many formats (January 2009)
@@ -127,7 +128,7 @@ For more information read the [http://github.com/pjotrp/biolib/tree/master/INSTA
 
 == REQUESTING MODULES ==
 
-If you need a C/C++/FORTRAN/R module or library linked against one of the popular scripting languagues, please make that known through the [[Biolib Poll]].
+If you need a C/C++/FORTRAN/R module or library linked against one of the popular scripting languages, please make that known through the [[Biolib Poll]]. See also [[Interesting_libraries]].
 
 == CONTRIBUTING ==
 
