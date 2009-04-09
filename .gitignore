@@ -30,3 +30,5 @@ pkg
 doc/examples/c/affy
 biolib-*
 *.tmp
+src/mappings/swig/*/*/biolib
+src/mappings/swig/python/*/*py

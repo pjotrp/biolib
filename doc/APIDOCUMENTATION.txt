@@ -1,0 +1,92 @@
+= API Documentation =
+
+Generating good API documentation for multiple languages is a problem.  Ideally
+we would use the C/C++ code base to expose the interface for all mapped
+languages - if possible including generated example code for every language
+(!). SWIG has little support for that (there have been attempts in the past,
+but apparently dropped). Unfortunately the code SWIG generates does not lend
+itself to the native scripting language documentation generators.
+
+What SWIG can do is generate XML. The C function:
+
+  int my_mod(int x, int y);
+
+gets output like the (simplified):
+
+  <cdecl>
+    <attributelist>
+      <attribute name="sym_name" value="my_mod">
+      <attribute name="name" value="my_mod">
+      <attribute name="decl" value="f(int,int).">
+      <parmlist>
+        <parm>
+          <attributelist>
+            <attribute name="name" value="x">
+            <attribute name="type" value="int">
+          </attributelist>
+        </parm>
+        <parm>
+          <attributelist>
+            <attribute name="name" value="y">
+            <attribute name="type" value="int">
+          </attributelist>
+        </parm>
+      </parmlist>
+      <attribute name="kind" value="function">
+      <attribute name="type" value="int">
+    </attributelist>
+  </cdecl>
+
+Which allows transforming the function definitions into some other
+format. Likewise there are facilities for structs etc.
+
+Still this does not solve sharing function descriptions and/or
+examples. It would also be nice to have languages use the native
+documentation generators - as these are what users are comfortable
+with and allows Biolib inclusion into CPAN etc.
+
+BioLib opts for a new generator 'docigen' (the 'i' for interpreted
+languages) which can create Perl POD files, Python Pydoc, Ruby rdoc
+etc. - and examples using doctests (for the untyped languages).  The
+Doxygen C/C++ documentation is linked in to (as this may include extra
+information on a method or structure).  This does away of handling
+complex data types - Doxygen does a good job there.
+
+Above XML can be a starting point for creating a list of methods with 
+parameters for every function.
+
+The input for this docgen is a list of methods and parameters, as
+well as descriptions, used variables, return values and examples. A
+YAML like interface could be:
+
+module: example
+# int my_mod(int x, int y);
+method:
+  name: my_mod
+  type: int
+  parameters:
+    - name: x
+      type: int
+    - name: y
+      type: int
+  description: "Return the mod of x and y"
+  examples:
+    - line: "my_mod(8,7)"
+      expects: 1
+      
+where examples my be a bit tricky for different languges. In case no
+automatic translation is possible those can be made explicit:
+
+  examples:
+    perl:
+      - line: $result = test('filename')
+      - line: $result->num
+      - expects: 1
+
+though this particular example is probably easy to generalize across
+languges.
+
+
+
+
+

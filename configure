@@ -14,6 +14,7 @@
 #   --with-staden     : see the BioLib docs
 #   --with-affyio
 #   --with-rqtl
+#   --with-example
 #
 
 if [ ! -d ./src ]; then
@@ -39,6 +40,10 @@ case $language in
 	plang="-DBUILD_RUBY:BOOLEAN=TRUE"
 	shift
 	;;
+  '--with-python')
+	plang="-DBUILD_PYTHON:BOOLEAN=TRUE"
+	shift
+	;;
   *)
   echo "BioLib defaulting to Perl build"
 	plang="-DBUILD_PERL:BOOLEAN=TRUE"
@@ -61,6 +66,10 @@ case $library in
 	;;
   '--with-rqtl')
 	plib="-DRQTL_LIB:BOOLEAN=TRUE"
+	shift
+	;;
+  '--with-example')
+	plib="-DEXAMPLE_LIB:BOOLEAN=TRUE"
 	shift
 	;;
   *)

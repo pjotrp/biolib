@@ -1,9 +1,5 @@
 # Builds the Perl biolib_example library after resolving paths.
 #
-# Problems:
-#
-#   cmake PERL_INCLUDE_PATH is hard coded to lib/5.8.8/i686-linux-CORE
-#   Builds, but does not install shared library
 
 cmake_minimum_required(VERSION 2.6)
 

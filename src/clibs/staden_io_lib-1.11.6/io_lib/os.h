@@ -14,6 +14,18 @@
 #ifndef _OS_H_
 #define _OS_H_
 
+/* With BioLib we allow all formats */
+
+#ifdef BIOLIB_BUILD
+#define IOLIB_ABI
+#define IOLIB_SCF
+#define IOLIB_ALF
+#define IOLIB_PLN
+#define IOLIB_CTF
+#define IOLIB_EXP
+#define IOLIB_SFF
+#endif
+
 /*
  * The autoconf setup doesn't use options.mk as the Makefile is rebuilt.
  * I haven't worked out how to do the analogous via autoconf, so for now

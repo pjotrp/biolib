@@ -38,12 +38,10 @@ if you can fix it by something like:
 if this works you can add /usr/lib/R/lib ni /etc/ld.so.conf and build
 the cache with ldconfig -v
 
-
 == SWIG: Warning(801): Wrong class name (corrected to 
 
 The Ruby module will give this warning when structures are named
 starting with lowercase. It is harmless.
-
 
 == cannot open shared object file
 
@@ -54,3 +52,12 @@ The following error can occur when BioLib and Ruby are compiled with different g
 
 with NIX it is possible to create profiles with different Ruby/gcc
 combinations - which is ideal for testing different dependencies.
+
+== Link error
+
+On some Debian systems an upgrade of Ruby causes:
+
+/usr/include/unistd.h:268: error: declaration of 'int eaccess(const char*, int) throw ()' throws different exceptions
+/usr/lib/ruby/1.8/x86_64-linux/missing.h:43: error: from previous declaration 'int eaccess(const char*, int)'
+
+make sure to upgrade the ruby1.8-dev package.

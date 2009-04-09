@@ -1,17 +1,21 @@
-# Builds the Python biolib_example library after resolving paths.
+# Builds the Python biolib_staden_io_lib library after resolving paths.
 
 cmake_minimum_required(VERSION 2.6)
 
 ENABLE_TESTING()
 
-SET (M_NAME example)
-SET (M_VERSION 1.0)
+SET (M_NAME staden_io_lib)
+SET (M_VERSION 1.11.6)
 SET (INTERFACE python_${M_NAME}.i)
 
 IF(NOT BUILD_LIBS)
   SET (CMAKE_MODULE_PATH ../../../../../cmake_modules)
 ENDIF(NOT BUILD_LIBS)
 
+SET (USE_ZLIB TRUE)
+SET (USE_INCLUDEPATH io_lib)
+
+INCLUDE(CMakeBackwardCompatibilityC)
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
 
 FIND_PACKAGE(BioLibPython REQUIRED)
@@ -24,7 +28,7 @@ ADD_CUSTOM_COMMAND(
   COMMAND python -m compileall biolib/
 )
 
-ADD_TEST(TestPythonExample ${PYTHON_EXECUTABLE} ./../test/test_${M_NAME}.py)
+ADD_TEST(TestPythonStadenIOLib ${PYTHON_EXECUTABLE} ./../test/test_${M_NAME}.py)
 
 INSTALL(TARGETS _${M_MODULE}
   LIBRARY DESTINATION ${PYTHON_LIB_PATH}
