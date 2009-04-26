@@ -119,7 +119,7 @@ message(STATUS "Install Staden ${BLD_STADEN}")
 message(STATUS "Install RQTL ${BLD_RQTL}")
 message(STATUS "Install Example ${BLD_EXAMPLE}")
 
-FIND_PACKAGE(BioLib)
+FIND_PACKAGE(Map)
 
 # SET(CMAKE_BUILD_TYPE Debug)  Release is on by default
 if(DEBUG)
