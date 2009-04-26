@@ -8,7 +8,7 @@ ENDIF(NOT BUILD_LIBS)
 
 FIND_PACKAGE(Map REQUIRED)
 
-SET(LIBNAME biolib_microarray-${BIOLIB_VERSION})
+SET(LIBNAME biolib_microarray-${MAP_VERSION})
 
 INCLUDE_DIRECTORIES(../include)
 ADD_LIBRARY(${LIBNAME} SHARED biolib_microarray.c)
