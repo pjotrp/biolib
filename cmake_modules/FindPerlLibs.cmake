@@ -37,6 +37,7 @@ IF(PERL_EXECUTABLE)
 MESSAGE(STATUS "PLIBPERL=${PLIBPERL}")
   # ---- Find perl.h and set PERL_INCLUDE_PATH
   SET(PERL_POSSIBLE_INCLUDE_PATHS
+	        ${PARCHLIB}/CORE
 	        ${PARCHLIB}
 					/usr/lib/perl5/${PVERSION}/${PARCH}/CORE
 					/usr/lib/perl/${PVERSION}/${PARCH}/CORE
