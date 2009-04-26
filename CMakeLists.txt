@@ -29,8 +29,11 @@ cmake_minimum_required(VERSION 2.6)
 project (BIOLIB)
 
 ENABLE_TESTING()
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/")
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/tools/cmake-support/modules/")
 message("CMake modules: ${CMAKE_MODULE_PATH}")
+
+FIND_PACKAGE(GitSubmodule)
+
 include(CheckIncludeFiles)
 
 message("Building biolib:")
@@ -151,14 +154,4 @@ SET(THIRD_PARTY_INCLUDE_PATH "" CACHE PATH "Default search path for third-party 
 add_subdirectory (src)
 include(src)
 
-# Some status information at build time
-message("CMake: ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}-${CMAKE_CACHE_RELEASE_VERSION}")
-IF(SWIG_EXECUTABLE)
-  message("SWIG: ${SWIG_EXECUTABLE} version ${SWIG_VERSION}")
-ENDIF(SWIG_EXECUTABLE)
-
-message("Biolib building on system: ${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_VERSION}")
-message("  Build type: ${CMAKE_BUILD_TYPE} for ${CMAKE_HOST_SYSTEM_PROCESSOR}")
-EXECUTE_PROCESS(COMMAND /bin/date)
-
-
+FIND_PACKAGE(SystemInfo)
