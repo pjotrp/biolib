@@ -11,6 +11,15 @@ example:
 This should find the .pm and .so or .dylib files. See below for
 trouble shooting the Perl search paths.
 
+== Locating Perl ==
+
+Perl is located through the PATH and a number of standard locations
+defined in ./cmake_modules/FindPerl...
+
+The default Perl executable can be overridden by:
+
+cmake -DSTADEN_LIB:BOOLEAN=TRUE -DPERL_EXECUTABLE:STRING='/mypath/bin/perl' .
+
 == Module locations ==
 
 At this point the example module builds and installs on Perl. It
