@@ -10,7 +10,8 @@ SET (M_VERSION 1.0)
 SET (INTERFACE perl_${M_NAME}.i)
 
 IF(NOT BUILD_LIBS)
-  SET (CMAKE_MODULE_PATH ../../../../../cmake_modules)
+  SET (MAP_ROOT ../../../../..)
+  SET (CMAKE_MODULE_PATH ${MAP_ROOT}/tools/cmake-support/modules)
 ENDIF(NOT BUILD_LIBS)
 # SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
 
