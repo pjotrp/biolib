@@ -1,0 +1,23 @@
+= BioLib on Microsoft Windows =
+
+The BioLib build system supports building on Cygwin
+(http://www.cygwin.com/). First install Cygwin on your machine
+selecting the following packages:
+
+* cmake   (development)
+* gcc-g++ (development)
+* make    (development)
+* swig    (development)
+* your preferred language: perl, python and/or ruby
+
+and, optionally:
+
+* git (to fetch the latest repositories)
+
+for ASciLib:
+
+* autoconf (development)
+* automake (development)
+
+NOTE: The AffyIO module does not yet work on Cygwin - there is a
+dependency on the R libraries.
