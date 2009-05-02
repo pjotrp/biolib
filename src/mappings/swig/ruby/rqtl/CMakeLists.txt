@@ -18,7 +18,7 @@ SET (USE_RLIB TRUE)
 INCLUDE(CMakeBackwardCompatibilityC)
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
 
-FIND_PACKAGE(BioLibRuby)
+FIND_PACKAGE(MapRuby)
 
 ADD_TEST(TestRubyRQTLLib ${RUBY_EXECUTABLE} -I../${M_NAME} ./../test/test_${M_NAME}.rb)
 
