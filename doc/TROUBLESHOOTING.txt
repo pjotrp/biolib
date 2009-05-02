@@ -1,6 +1,8 @@
 = Trouble shooting =
 
-Listed below are common errors seen when building BioLib.
+Listed below are common errors seen when building BioLib. Problems
+specific to a language are in documents PERL.txt, RUBY.txt etc. in
+./doc or ./tools/cmake-support/doc.
 
 See also ./doc/REPORTINGBUGS.txt if you want to send a problem
 upstream.
