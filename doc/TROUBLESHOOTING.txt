@@ -1,0 +1,21 @@
+= Trouble shooting =
+
+Listed below are common errors seen when building BioLib.
+
+See also ./doc/REPORTINGBUGS.txt if you want to send a problem
+upstream.
+
+== Could not find Cmake module =
+
+An error like:
+
+  Could not find module FindGitSubmodule.cmake or a configuration file for package GitSubmodule 
+
+Points out the cmake-support submodule has not been initialized in
+the source repository. BioLib uses submodules to bring together
+different git repositories. Fix with:
+
+  git submodule init
+  git submodule update
+
+(this should be done by the configure script)
