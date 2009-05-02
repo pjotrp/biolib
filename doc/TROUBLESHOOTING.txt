@@ -31,6 +31,8 @@ rather then:
 
   url = git@github.com:pjotrp/rqtl.git
 
+If you fix this yourself, also fix the items in .git/config.
+
 Contact the developers with this error.
 
 
