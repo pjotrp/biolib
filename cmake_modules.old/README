@@ -1,5 +1,0 @@
-The CMake scripts have moved into a separate repository which can
-be fetched with:
-
-  git submodule init
-  git submodule update

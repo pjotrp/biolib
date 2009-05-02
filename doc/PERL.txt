@@ -66,3 +66,12 @@ Set:
 and try again. This should display all the search paths of the
 dynamic loader (Perl Dynaloader). See if it matches one of the locations.
 
+
+When you get an error like: Can't load '../example/biolib/example.dll' for
+module example: No such file or directory at
+/usr/lib/perl5/5.10/i686-cygwin/DynaLoader.pm line 201.  at biolib/example.pm
+line 10
+
+this is usually caused by dependencies to example.dll (or example.so). Perl
+can't find them, for one reason or another.
+
