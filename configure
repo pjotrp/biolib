@@ -24,11 +24,7 @@ fi
 
 if [ -d .git ]; then
   echo "Checking for git submodules"
-  if [ ! -d tools/cmake-tools ]; then
-    echo "Initializing git submodules"
-    git submodule init
-	fi
-  git submodule update
+  git submodule update --init
 fi
 
 language=$1
