@@ -5,7 +5,7 @@ Listed below are common errors seen when building BioLib.
 See also ./doc/REPORTINGBUGS.txt if you want to send a problem
 upstream.
 
-== Could not find Cmake module =
+== Could not find Cmake module ==
 
 An error like:
 
@@ -19,3 +19,20 @@ different git repositories. Fix with:
   git submodule update
 
 (this should be done by the configure script)
+
+== Cmake gives: Permission denied (publickey) ==
+
+Ouch, cmake is trying to update a git submodule which has an ssh
+path. All entries the the file .gitmodules should look like:
+
+  url = git://github.com/pjotrp/rqtl.git
+
+rather then:
+
+  url = git@github.com:pjotrp/rqtl.git
+
+Contact the developers with this error.
+
+
+
+
