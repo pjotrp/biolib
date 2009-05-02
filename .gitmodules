@@ -6,4 +6,4 @@
 	url = git://github.com/tablatom/rubydoctest.git
 [submodule "tools/cmake-support"]
 	path = tools/cmake-support
-	url = git@github.com:pjotrp/cmake-support.git
+	url = git://github.com/pjotrp/cmake-support.git
