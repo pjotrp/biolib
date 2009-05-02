@@ -23,9 +23,12 @@ if [ ! -d ./src ]; then
 fi
 
 if [ -d .git ]; then
-  echo "Updating git submodules"
-  git submodule init
-  git submodule update
+  echo "Checking for git submodules"
+  if [ ! -d tools/cmake-tools ]; then
+    echo "Updating git submodules"
+    git submodule init
+    git submodule update
+	fi
 fi
 
 language=$1
