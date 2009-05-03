@@ -35,7 +35,7 @@ IF(APPLE)
 ENDIF(APPLE)
 
 
-ADD_TEST(TestPerlExample ${PERL_EXECUTABLE} -I../${M_NAME}/biolib ./../test/test_${M_NAME}.pl)
+ADD_TEST(TestPerlExample env PATH=${MODULE_SOURCE_PATH}:$PATH ${PERL_EXECUTABLE} -I../${M_NAME}/biolib ./../test/test_${M_NAME}.pl)
 
 INSTALL(
   TARGETS ${M_MODULE}
