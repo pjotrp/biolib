@@ -13,7 +13,10 @@ done
 find . -name CMakeFiles -exec rm -rvf \{\} \;
 find . -name Testing -exec rm -rvf \{\} \;
 find . -name *.so -exec rm -v \{\} \;
+find . -name *.dll -exec rm -v \{\} \;
 find . -name *.o -exec rm -v \{\} \;
+find . -name *.a -exec rm -v \{\} \;
+find . -name *.dump -exec rm -v \{\} \;
 rm -v biolib-*.tar.gz
 rm -v biolib-*.tgz
 rm -v biolib-*.tar.bz2
