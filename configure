@@ -23,8 +23,10 @@ if [ ! -d ./src ]; then
 fi
 
 if [ -d .git ]; then
-  echo "Checking for git submodules"
-  git submodule update --init
+  if [ ! -e .git/SKIP_SUBMODULE_UPDATE ]; then
+    echo "Checking for git submodules"
+    git submodule update --init
+	fi 
 fi
 
 language=$1
