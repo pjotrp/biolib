@@ -17,7 +17,7 @@ SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
 
 FIND_PACKAGE(MapRuby)
 
-ADD_TEST(TestRubyExample env PATH=$PATH:${MODULE_SOURCE_PATH} ${RUBY_EXECUTABLE} -I../${M_NAME} ./../test/test_${M_NAME}.rb)
+ADD_TEST(TestRubyExample env PATH=${MODULE_SOURCE_PATH}:$PATH ${RUBY_EXECUTABLE} -I../${M_NAME} ./../test/test_${M_NAME}.rb)
 
 install(TARGETS ${M_MODULE} 
   DESTINATION ${RUBY_LIB_PATH}/biolib
