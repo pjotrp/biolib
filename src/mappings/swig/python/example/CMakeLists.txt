@@ -9,7 +9,8 @@ SET (M_VERSION 1.0)
 SET (INTERFACE python_${M_NAME}.i)
 
 IF(NOT BUILD_LIBS)
-  SET (CMAKE_MODULE_PATH ../../../../../cmake_modules)
+  SET (MAP_ROOT ../../../../..)
+  SET (CMAKE_MODULE_PATH ${MAP_ROOT}/tools/cmake-support/modules)
 ENDIF(NOT BUILD_LIBS)
 
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
@@ -24,7 +25,7 @@ ADD_CUSTOM_COMMAND(
   COMMAND python -m compileall biolib/
 )
 
-ADD_TEST(TestPythonExample ${PYTHON_EXECUTABLE} ./../test/test_${M_NAME}.py)
+ADD_TEST(TestPythonExample env PATH=${MODULE_SOURCE_PATH}:$PATH ${PYTHON_EXECUTABLE} ./../test/test_${M_NAME}.py)
 
 INSTALL(TARGETS _${M_MODULE}
   LIBRARY DESTINATION ${PYTHON_LIB_PATH}

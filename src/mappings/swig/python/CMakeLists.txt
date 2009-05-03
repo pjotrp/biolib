@@ -1,5 +1,15 @@
-cmake_minimum_required(VERSION 2.6)
+if (BLD_EXAMPLE)
+  add_subdirectory (example)
+endif (BLD_EXAMPLE)
 
-add_subdirectory (example)
-add_subdirectory (affyio)
-add_subdirectory (staden_io_lib)
+if (BLD_AFFYIO)
+  add_subdirectory (affyio)
+endif (BLD_AFFYIO)
+
+if (BLD_STADEN)
+  add_subdirectory (staden_io_lib)
+endif (BLD_STADEN)
+
+if (BLD_RQTL)
+  add_subdirectory (rqtl)
+endif (BLD_RQTL)
