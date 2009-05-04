@@ -29,7 +29,7 @@ ADD_CUSTOM_COMMAND(
   COMMAND python -m compileall biolib/
 )
 
-ADD_TEST(TestPythonStadenIOLib ${PYTHON_EXECUTABLE} ./../test/test_${M_NAME}.py)
+ADD_TEST(TestPythonStadenIOLib env PATH=${MODULE_SOURCE_PATH}:$PATH ${PYTHON_EXECUTABLE} ./../test/test_${M_NAME}.py)
 
 INSTALL(TARGETS _${M_MODULE}
   LIBRARY DESTINATION ${PYTHON_LIB_PATH}
