@@ -1,5 +1,3 @@
-# Make biolib_ruby_staden_io_lib module
-
 cmake_minimum_required(VERSION 2.6)
 ENABLE_TESTING()
 
@@ -20,10 +18,7 @@ SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
 
 FIND_PACKAGE(MapRuby)
 
-ADD_TEST(TestRubyStadenIOLib env PATH=${MODULE_SOURCE_PATH}/io_lib:$PATH ${RUBY_EXECUTABLE} -I../${M_NAME} ./../test/test_${M_NAME}.rb)
-
-INSTALL(TARGETS ${M_MODULE}
-  LIBRARY DESTINATION ${RUBY_LIB_PATH}/biolib
-)
+TEST_RUBY_BINDINGS()
+INSTALL_RUBY_BINDINGS()
 
 

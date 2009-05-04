@@ -1,7 +1,3 @@
-# Make biolib_ruby_example.so
-
-cmake_minimum_required(VERSION 2.6)
-
 ENABLE_TESTING()
 
 SET (M_NAME example)
@@ -17,11 +13,6 @@ SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
 
 FIND_PACKAGE(MapRuby)
 
-ADD_TEST(TestRubyExample env PATH=${MODULE_SOURCE_PATH}:$PATH ${RUBY_EXECUTABLE} -I../${M_NAME} ./../test/test_${M_NAME}.rb)
-
-install(TARGETS ${M_MODULE} 
-  DESTINATION ${RUBY_LIB_PATH}/biolib
-  LIBRARY DESTINATION lib${LIB_SUFFIX}
-  ARCHIVE DESTINATION lib${LIB_SUFFIX}
-  RUNTIME DESTINATION bin )
+TEST_RUBY_BINDINGS()
+INSTALL_RUBY_BINDINGS()
 
