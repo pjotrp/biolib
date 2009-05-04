@@ -7,9 +7,11 @@ BIOLIB RELEASE NOTES
 BIOLIB 0.04
 ---------------------------------------------------------------------
 
-- Cygwin support (Microsoft Windows) - except for Affyio
+- Cygwin support (Microsoft Windows) - except for Affyio as it
+  requires Rlib.
 - Moved cmake modules into own git repository (for sharing with
   ASciLib)
+- Automated testing for different setups introduced
 
 ---------------------------------------------------------------------
 BIOLIB 0.03  dd8b2ac9dd2c9745b68640dd568b40e937622871    Feb 15, 2009
