@@ -1,5 +1,6 @@
-Problems - to be fixed before release 0.9:
+Problems - to be fixed before release 0.9 (stable pre-release)
 
+- Perl on Cygwin
 - Affyio tests use /tmp
 - RMA completion
 - RMA unit tests
@@ -24,10 +25,7 @@ Problems - to be fixed before release 0.9:
 #10 0x0804869a in main (argc=1, argv=0xbfd2d4e8)
     at /home/wrk/izip/git/opensource/biolib/doc/examples/c/affy.c:16
 
-- Python and Perl now broken - need to locate biolib.so
-
 Features:
 
-- Introduce 'safe' malloc
-- CDF XDA format untested
+- Introduce 'safe' malloc (like the R one)
 
