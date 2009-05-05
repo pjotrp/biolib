@@ -4,7 +4,7 @@ if [ ! -d src ] ; then
   echo Only run from base dir
 fi
 
-for x in cmake_install.cmake CTestTestfile.cmake CMakeCache.txt install_manifest.txt Makefile
+for x in cmake_install.cmake CTestTestfile.cmake CMakeCache.txt Makefile
 do
   rm -vf $x
   find . -name $x -exec rm -v \{\} \;
