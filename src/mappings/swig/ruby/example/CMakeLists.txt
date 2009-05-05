@@ -1,3 +1,6 @@
+
+ cmake_minimum_required(VERSION 2.6)
+
 ENABLE_TESTING()
 
 SET (M_NAME example)
