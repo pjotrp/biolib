@@ -10,7 +10,7 @@ desc "Package BioLib"
 task :default => [:clean, :package]
  
 task :package do
-  raise 'Run from source root only!' if !File.exist?('cmake_modules')
+  raise 'Run from source root only!' if !File.exist?('doc/BUILD.txt')
 	packagedir=packagename
 	mkdir packagedir
   patterns = [
@@ -18,19 +18,22 @@ task :package do
     'doc/*.txt',
     'Rakefile',
 		'install.sh',
-    'LICENSE', 'README', 'VERSION', 'INSTALL', 'TODO',
+		'configure',
+    'LICENSE', 'README', 'VERSION', 'INSTALL', 'TODO', 'PROJECTNAME',
 		'**/CMakeLists.txt',
-		'cmake_modules/*',
+		'tools/*/*/*',
+		'contrib/*',
 		'doc/*.txt',
+		'src/extra/*/*/*',
 		'src/clibs/biolib*/**/*.{h,c,txt}',
 		'src/clibs/example-*/*.{h,c,txt}',
 		'src/clibs/affyio-*/src/*.{h,c,txt}',
 		'src/clibs/staden_io_lib-*/io_lib/*.{h,c,txt}',
-		'src/biolib/**/*.rb',
-		'src/biolib/**/*.pl',
+		'src/biolib/**/*.{rb,pl,py}',
 		'src/mappings/swig/*.i',
 		'src/mappings/swig/ruby/**/*.{rb,i}',
 		'src/mappings/swig/perl/**/*.{pl,i}',
+		'src/mappings/swig/python/**/*.{py,i}',
 		'src/test/data/**/*/*/*'
   ]
 
