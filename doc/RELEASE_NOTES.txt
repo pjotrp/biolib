@@ -4,14 +4,17 @@ BIOLIB RELEASE NOTES
 
 
 ---------------------------------------------------------------------
-BIOLIB 0.04
+BIOLIB 0.04  a3de2f3619d05b613dc15280773c341bf3a33267     May 5, 2009
 ---------------------------------------------------------------------
 
+- Full Perl, Python and Ruby support
 - Cygwin support (Microsoft Windows) - except for Affyio as it
-  requires Rlib.
+  requires Rlib. Ruby and Python are supported. Perl segfaults.
 - Moved cmake modules into own git repository (for sharing with
-  ASciLib)
+  ASciLib) - see http://github.com/pjotrp/cmake-support/
 - Automated testing for different setups introduced
+- Generate XML docs from SWIG
+- Added R/QTL module
 
 ---------------------------------------------------------------------
 BIOLIB 0.03  dd8b2ac9dd2c9745b68640dd568b40e937622871    Feb 15, 2009
