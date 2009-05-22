@@ -14,6 +14,7 @@
 #   --with-staden     : see the BioLib docs
 #   --with-affyio
 #   --with-rqtl
+#   --with-libsequence
 #   --with-example
 #
 
@@ -69,6 +70,10 @@ case $library in
 	;;
   '--with-affyio')
 	plib="-DAFFYIO_LIB:BOOLEAN=TRUE"
+	shift
+	;;
+  '--with-libsequence')
+	plib="-DLIBSEQUENCE_LIB:BOOLEAN=TRUE"
 	shift
 	;;
   '--with-rqtl')
