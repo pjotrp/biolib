@@ -14,6 +14,7 @@
 #   --with-staden     : see the BioLib docs
 #   --with-affyio
 #   --with-rqtl
+#   --with-biopp
 #   --with-example
 #
 

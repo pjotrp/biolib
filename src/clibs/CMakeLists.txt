@@ -20,3 +20,7 @@ endif (BLD_STADEN)
 if (BLD_RQTL)
   add_subdirectory (rqtl/contrib/biolib)
 endif (BLD_RQTL)
+
+if (BLD_BIOPP)
+  add_subdirectory (biopp/src)
+endif ()

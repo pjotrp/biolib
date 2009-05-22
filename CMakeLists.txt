@@ -21,6 +21,7 @@
 #
 #   cmake -DSTADEN_LIB:BOOLEAN=TRUE
 #   cmake -DRQTL_LIB:BOOLEAN=TRUE
+#   cmake -DBIOPP_LIB:BOOLEAN=TRUE
 #
 # See ./INSTALL for more information
 
@@ -73,6 +74,7 @@ endif(NOT BUILD_DOCS)
 set(BLD_BIOLIB  TRUE)
 set(BLD_STADEN  TRUE)
 set(BLD_RQTL    FALSE) 
+set(BLD_BIOPP   FALSE) 
 set(BLD_EXAMPLE TRUE)
 IF(NOT CYGWIN)
   set(BLD_AFFYIO  TRUE)
@@ -110,6 +112,16 @@ if (RQTL_LIB)
   set(BLD_BIOLIB  FALSE)
 endif (RQTL_LIB)
 
+if (BIOPP_LIB)
+  set(BLD_BIOPP    TRUE)
+  set(BLD_RQTL    FALSE)
+  set(BLD_STADEN  FALSE)
+  set(BLD_AFFYIO  FALSE)
+  set(BLD_EXAMPLE FALSE)
+  set(BLD_BIOLIB  FALSE)
+endif ()
+
+
 if (EXAMPLE_LIB)
   set(BLD_RQTL    FALSE)
   set(BLD_STADEN  FALSE)
@@ -122,6 +134,7 @@ message("  Biolib libraries")
 message(STATUS "Install Affyio ${BLD_AFFYIO}")
 message(STATUS "Install Staden ${BLD_STADEN}")
 message(STATUS "Install RQTL ${BLD_RQTL}")
+message(STATUS "Install Bio++ ${BLD_BIOPP}")
 message(STATUS "Install Example ${BLD_EXAMPLE}")
 
 FIND_PACKAGE(Map)
