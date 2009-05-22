@@ -1,0 +1,1 @@
+${CONTRIB_PATH}/src/Fasta.cc
