@@ -80,6 +80,10 @@ case $library in
 	plib="-DEXAMPLE_LIB:BOOLEAN=TRUE"
 	shift
 	;;
+  '--with-biopp')
+	plib="-DBIOPP_LIB:BOOLEAN=TRUE"
+	shift
+	;;
   *)
   echo "BioLib building all libraries"
 	plib=""
