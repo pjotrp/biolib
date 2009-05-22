@@ -7,3 +7,6 @@
 [submodule "tools/rubydoctest"]
 	path = tools/rubydoctest
 	url = git://github.com/pjotrp/rubydoctest.git
+[submodule "contrib/biopp"]
+	path = contrib/biopp
+	url = git://github.com/pjotrp/biopp.git
