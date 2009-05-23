@@ -77,7 +77,6 @@ Markers per chromosome
 
 $: << '..'
 require 'qtl/qtl'
-require 'qtl/rqtl'
 require 'test/unit'
 
 TESTDATADIR = '../../../test/data/qtl'

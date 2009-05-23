@@ -1,7 +1,7 @@
 require 'qtl/qtlmarker'
 require 'qtl/qtlphenotype'
 require 'qtl/qtlindividual'
-require 'qtl/qtlnormalize'
+require 'qtl/input/qtlnormalize'
 
 class QtlDataset
 
@@ -129,6 +129,8 @@ class QtlDataset
 end
 
 class QTLChromosomes
+
+  # Chromosomes are not actually stored separately, this is a helper class.
 
   def initialize markers
     @markers = markers

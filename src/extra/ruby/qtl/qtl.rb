@@ -1,5 +1,6 @@
 require 'qtl/qtldataset'
-require 'qtl/qtlcsv'
+require 'qtl/input/qtlcsv'
+require 'qtl/rqtl/rqtl'
 
 # QTL factory - based on the input type a QTL dataset is created
 
