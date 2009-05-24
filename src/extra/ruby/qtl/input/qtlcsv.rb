@@ -27,7 +27,7 @@ class QtlCsv < QtlDataset
       # Now set marker names and attributes
       (0..l1.size-phenotypenum-1).each do | mid |
         col = mid+phenotypenum
-        set_marker(mid,l1[col],l2[col],(hasposrow ? l3[col]:nil))
+        set_marker(l1[col],l2[col],(hasposrow ? l3[col]:nil), mid)
       end
       line = f.gets if hasposrow 
       # Read rest of the rows

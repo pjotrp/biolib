@@ -16,7 +16,7 @@ class QtlDataset
     @allowed_na           = na
 
     @individuals          = []
-    @markers              = []
+    @markers              = QtlMarkers.new
     @phenotypes           = []
     @chromosomes          = QTLChromosomes.new(@markers)
   end
@@ -38,8 +38,8 @@ class QtlDataset
     individual(ind).phenotypes[pid] = value
   end
 
-  def set_marker mid, name, chromosome, pos
-    @markers[mid] = QtlMarker.new(name, chromosome, pos)
+  def set_marker name, chromosome, pos, mid=nil
+    @markers.set(name,chromosome,pos,mid)
   end
 
   def set_genotype ind, mid, value
@@ -78,6 +78,10 @@ class QtlDataset
     chr
   end
 
+  def genotype ind, mid
+    individual(ind).genotypes[mid]
+  end
+
   # Return phenotype +num+ of individual +pid+
   def phenotype pid, num=0
     @phenotypes[pid]
@@ -90,7 +94,11 @@ class QtlDataset
 
   # Return the information of marker +mid+
   def marker mid 
-    @markers[mid]
+    @markers.by_id(mid)
+  end
+
+  def marker_by_name name
+    @markers[name]
   end
 
   # The total number of markers

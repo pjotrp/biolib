@@ -72,6 +72,31 @@ Markers per chromosome
   >> d.markers.size
   => 133
 
+R/qtl's genotype matrix for the listeria set looks like this:
+
+     D1M291 D1M209 D1M155
+[1,]      2      2      2
+[2,]      2      2      2
+[3,]      3      3      3
+[4,]      3      3      3
+[5,]      2      2      2
+[6,]      3      3      3
+[7,]      2      2      2
+[8,]      2      2      2
+[9,]      2     NA      2
+
+  >> d.genotype(1,'D1M291')
+  => 2
+
+  >> d.genotype(9,'D1M209')
+  => NA
+
+  >> d.genotype(3,'D1M155')
+  => 3
+
+  >> d.genotype(9,'D10M44')
+  => 1
+
 =end
 
 

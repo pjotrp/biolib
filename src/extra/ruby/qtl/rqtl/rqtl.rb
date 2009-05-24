@@ -12,7 +12,7 @@ class RQTL
   # a list of markers with chromosome positions and lod scores.
 
   def scanone options
-
+    res = nil
     # call the C function
     if (options[:method] == "mr" or options[:method]=="mr-imp" or options[:method]=="mr-argmax")
 =begin
@@ -31,8 +31,8 @@ class RQTL
               PACKAGE="qtl")
 =end
       d = @qtl.data
-      p d
-      res = Biolib::Rqtl.scanone_mr(d.nind,d.totmarker,5,geno,[],0,[],0,pheno,[])
+      # p d
+      # res = Biolib::Rqtl.scanone_mr(d.nind,d.totmar,5,geno,[],0,[],0,pheno,[])
     end
     res
   end
