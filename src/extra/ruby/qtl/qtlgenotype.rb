@@ -65,6 +65,7 @@ class QtlGenotypes < Array
   def names
     @genotypenames.keys
   end
+
 end
 
 # State class for dataset

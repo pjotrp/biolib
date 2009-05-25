@@ -142,30 +142,56 @@ which translates internally to:
 
 Raw names read from input file
 
-  >> d.genotype.namesread.sort
+  >> d.genotypes.namesread.sort
   => [["-", 1840], ["A", 3701], ["B", 3387], ["C", 128], ["H", 6904]]
 
 Validated names
 
-  >> d.genotype.names.sort
+  >> d.genotypes.names.sort
   => ["A", "B", "C", "H"]
 
 We can't query alleles since we have not used a validator
 
-  >> d.genotype.na.sort
+  >> d.genotypes.na.sort
   => ["-", "NA"]
 
-  >> d.genotype.alleles.sort
+  >> d.genotypes.alleles.sort
   => ["A", "B"]
 
 First we get the original values from the Listeria .csv file
 (individual/marker):
 
-  >> d.genotype(1,'D1M291')
-  => 2
+  >> d.individuals[1].genotypes[2].value
+  => "B"
 
-  >> d.genotype(9,'D1M209')
-  => NA
+  >> d.markers['D1M291'].mid
+  => 10
+
+  >> d.individuals[1].genotypes[d.markers['D1M291'].mid].value
+  => 'H'
+
+The same, but nicer
+
+  >> d.genotype(0,0)
+  => 'B'
+
+  >> d.genotype(1,0)
+  => '-'
+
+  >> d.genotype(1,2)
+  => 'B'
+
+  >> d.genotype(1,'D1M291')
+  => 'H'
+
+  >> d.genotype(2,'D2M493')
+  => '-'
+
+  >> d.genotype(0,'D13M106')
+  => 'A'
+
+  >> d.genotype(2,'D13M106')
+  => 'H'
 
 Now we are going to create an adapter for translating dataset into an
 input object suitable for use by R/qtl.

@@ -9,14 +9,14 @@ class QtlDataset
 
   include QtlNormalize
 
-  attr_reader :individuals, :markers, :phenotypenames, :chromosomes, :genotype
+  attr_reader :individuals, :markers, :phenotypenames, :chromosomes, :genotypes
 
   def initialize validategenotypes=nil
     @individuals          = QtlIndividuals.new
     @markers              = QtlMarkers.new
     @phenotypenames       = QtlPhenotypeNames.new
     @chromosomes          = QtlChromosomes.new(@markers)
-    @genotype             = QtlGenotypeInfo.new(validategenotypes)
+    @genotypes            = QtlGenotypeInfo.new(validategenotypes)
   end
 
   def individual ind
@@ -39,9 +39,11 @@ class QtlDataset
     @chromosomes.nmar
   end
 
-  # def genotype ind, mid
-  #   individual(ind).genotypes[mid]
-  # end
+  # Fetch genotype info by individual/marker(or mid)
+  def genotype ind, name
+    name = @markers[name].mid if name.kind_of?(String)
+    @individuals[ind].genotypes[name].value
+  end
 
   # Number of phenotypes
   def nphe
