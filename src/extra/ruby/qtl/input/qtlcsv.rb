@@ -18,7 +18,7 @@ class QtlCsv < QtlDataset
       raise 'No phenotype columns defined ' if phenotypenum == 0
       # Set phenotype names
       (0..phenotypenum-1).each do | pid |
-        set_phenotypecolumn(pid,l1[pid])
+        set_phenotypename(pid,l1[pid])
       end
       # Check for map distance row
       line = f.gets

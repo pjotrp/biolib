@@ -54,7 +54,7 @@ The short R/qtl notation - get number of individuals
 
 Number of phenotypes (T264. R/QTL adds sex and pgm automagically)
 
-  >> d.phenotypes.size
+  >> d.phenotypenames.size
   => 1
 
   >> d.nphe
@@ -207,17 +207,17 @@ Chromosome info
 
 Phenotype column info
 
-  >> d.phenotypecolumn(0).name
+  >> d.phenotypenames[0].name
   => 'T264'
-  >> d.phenotypecolumns.size
+  >> d.phenotypenames.size
   => 1
 
 =end
 
   def test_phenotypecolumns
     d = @qtl.data
-    assert_equal('T264',d.phenotypecolumn(0).name)
-    assert_equal(1,d.phenotypecolumns.size)
+    assert_equal('T264',d.phenotypenames[0].name)
+    assert_equal(1,d.phenotypenames.size)
   end
 
 =begin

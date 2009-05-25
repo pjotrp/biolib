@@ -1,52 +1,38 @@
 require 'qtl/qtlmarker'
 require 'qtl/qtlphenotype'
+require 'qtl/qtlgenotype'
 require 'qtl/qtlindividual'
+require 'qtl/qtlchromosome'
 require 'qtl/input/qtlnormalize'
 
 class QtlDataset
 
   include QtlNormalize
 
-  attr_reader :individuals, :markers, :phenotypes, :chromosomes
-  NA = '-'
+  attr_reader :individuals, :markers, :phenotypenames, :chromosomes
 
   def initialize alleles, genotypes, na
-    @allowed_alleles      = alleles
-    @allowed_genotypes    = genotypes
-    @allowed_na           = na
-
-    @individuals          = []
+    @individuals          = QtlIndividuals.new
     @markers              = QtlMarkers.new
-    @phenotypes           = []
+    @phenotypenames       = QtlPhenotypeNames.new
+    @genotypenames        = QtlGenotypeNames.new(alleles,genotypes,na)
     @chromosomes          = QTLChromosomes.new(@markers)
   end
 
-  def set_phenotypecolumn column, name
-    @phenotypes[column] = QtlPhenotype.new(name)
-  end
-
-  def phenotypecolumn column
-    @phenotypes[column]
-  end
-
-  def phenotypecolumns
-    @phenotypes
+  def set_phenotypename column, name
+    @phenotypenames.set(column,name)
   end
 
   def set_phenotype ind, pid, value
-    value = NA if @allowed_na.include?(value)
-    individual(ind).phenotypes[pid] = value
+    @individuals.set_phenotype(ind, pid, value)
+  end
+
+  def set_genotype ind, mid, value
+    @individuals.set_genotype(ind, mid, value)
   end
 
   def set_marker name, chromosome, pos, mid=nil
     @markers.set(name,chromosome,pos,mid)
-  end
-
-  def set_genotype ind, mid, value
-    # test if it has legal value
-    raise "Genotype error for individual #{ind}, marker #{mid}, value #{value}" if !@allowed_na.include?(value) and !@allowed_genotypes.include?(value)
-    value = NA if @allowed_na.include?(value)
-    individual(ind).genotypes[mid] = value
   end
 
   def individual ind
@@ -54,12 +40,12 @@ class QtlDataset
     @individuals[ind]
   end
 
-  # The number of individuals
+  # The number of individuals (R/qtl type)
   def nind
     @individuals.size
   end
 
-  # The number of chromosomes
+  # The number of chromosomes (R/qtl type)
   def nchr
     chr = {}
     @markers.each do | marker |
@@ -83,13 +69,13 @@ class QtlDataset
   end
 
   # Return phenotype +num+ of individual +pid+
-  def phenotype pid, num=0
-    @phenotypes[pid]
-  end
+  # def phenotype pid, num=0
+  #   @phenotypes[pid]
+  # end
 
   # Number of phenotypes
   def nphe
-    @phenotypes.size
+    @phenotypenames.size
   end
 
   # Return the information of marker +mid+
@@ -117,7 +103,7 @@ class QtlDataset
     @individuals.each do | ind |
       ind.phenotypes.each_with_index do | ph, i |
         countph[i] = 0 if countph[i] == nil
-        countph[i] +=1 if ph != nil and ph != NA
+        countph[i] +=1 if ph != nil and ph != QtlGenotype::NA
       end
     end
     countph.map { | c | (c*1000.0/tot_phenotypes).round/10.0 }
@@ -128,7 +114,7 @@ class QtlDataset
     c = 0
     @individuals.each_with_index do | ind, i |
       ind.genotypes.each do | g |
-        c +=1 if g != nil and g != NA
+        c +=1 if g != nil and g != QtlGenotype::NA
       end
     end
     (c*1000.0/tot_genotypes).round/10.0
@@ -136,38 +122,4 @@ class QtlDataset
 
 end
 
-class QTLChromosomes
 
-  # Chromosomes are not actually stored separately, this is a helper class.
-
-  def initialize markers
-    @markers = markers
-  end
-
-  def chromosomes
-    chr = {}
-    @markers.each do | marker |
-      chr[marker.chromosome] = 0 if !chr[marker.chromosome]
-      chr[marker.chromosome] += 1
-    end
-    chr
-  end
-
-  def hasX?
-    chromosomes['X'] != nil
-  end
-
-  def size
-    chromosomes.size
-  end
-
-  def autosomes
-    res = chromosomes.reject {|k,v| k=='X'}
-    # size - (hasX? ? 1:0)
-    res
-  end
-
-  def markers
-    @markers
-  end
-end
