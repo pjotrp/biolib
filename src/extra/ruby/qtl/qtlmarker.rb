@@ -39,8 +39,10 @@ class QtlMarkers
   end
 
   # Find marker by name, or by index
-  def []
-    @data[name]
+  def [] name
+    return @data[name] if @data[name]
+    # name not recognized, try by mid
+    by_id(name)
   end
 
 end
