@@ -16,16 +16,7 @@ class QtlDataset
     @individuals          = QtlIndividuals.new
     @markers              = QtlMarkers.new
     @phenotypenames       = QtlPhenotypeNames.new
-    @genotypenames        = QtlGenotypeNames.new(validategenotypes)
     @chromosomes          = QTLChromosomes.new(@markers)
-  end
-
-  def set_phenotypename column, name
-    @phenotypenames.set(column,name)
-  end
-
-  def set_marker name, chromosome, pos, mid=nil
-    @markers.set(name,chromosome,pos,mid)
   end
 
   def individual ind

@@ -9,7 +9,7 @@ class QtlGenotypeNames
 
   NA = '-'
 
-  def initialize validategenotypes
+  def initialize 
   end
 
 end

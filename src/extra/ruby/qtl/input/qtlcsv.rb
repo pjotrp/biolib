@@ -18,7 +18,7 @@ class QtlCsv < QtlDataset
       raise 'No phenotype columns defined ' if phenotypenum == 0
       # Set phenotype names
       (0..phenotypenum-1).each do | pid |
-        set_phenotypename(pid,l1[pid])
+        @phenotypenames.set(pid,l1[pid])
       end
       # Check for map distance row
       line = f.gets
@@ -27,7 +27,7 @@ class QtlCsv < QtlDataset
       # Now set marker names and attributes
       (0..l1.size-phenotypenum-1).each do | mid |
         col = mid+phenotypenum
-        set_marker(l1[col],l2[col],(hasposrow ? l3[col]:nil), mid)
+        @markers.set(l1[col],l2[col],(hasposrow ? l3[col]:nil), mid)
       end
       line = f.gets if hasposrow 
       # Read rest of the rows

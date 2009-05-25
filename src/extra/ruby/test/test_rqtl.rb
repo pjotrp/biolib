@@ -116,19 +116,36 @@ information is available on marker positions.
 
 R/qtl's genotype matrix for the listeria set looks like this:
 
-     D1M291 D1M209 D1M155
-[1,]      2      2      2
-[2,]      2      2      2
-[3,]      3      3      3
-[4,]      3      3      3
-[5,]      2      2      2
-[6,]      3      3      3
-[7,]      2      2      2
-[8,]      2      2      2
-[9,]      2     NA      2
+      D1M291    D1M209    D1M155
+    84.93474  92.68394  93.64344
+           H         H         H
+           H         H         H
+           B         B         B
+           B         B         B
+           H         H         H
+           B         B         B
+           H         H         H
+           H         H         H
+           H         -         H
 
-  >> d.genotypes.size
-  => 4
+which translates internally to:
+
+      D1M291    D1M209    D1M155
+[1,]       2         2         2
+[2,]       2         2         2
+[3,]       3         3         3
+[4,]       3         3         3
+[5,]       2         2         2
+[6,]       3         3         3
+[7,]       2         2         2
+[8,]       2         2         2
+[9,]       2        NA         2
+
+  >> d.genotypes.names
+  => 1
+
+  >> d.genotypes.alleles
+  => 1
 
 First we get the original values from the Listeria .csv file:
 
