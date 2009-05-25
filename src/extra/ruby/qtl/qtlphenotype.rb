@@ -17,12 +17,22 @@ class QtlPhenotypeNames < Array
   def set idx, value
     self[idx] = QtlPhenotypeName.new(value)
   end
+
+end
+
+module QtlValidatePhenotypes
+  def QtlValidatePhenotypes::na? name
+    [QtlPhenotypeNames::NA,'NA',nil].include?(name)
+  end
 end
 
 class QtlPhenotype
   attr_reader :value
   def set(nvalue)
     @value = nvalue
+  end
+  def phenotyped?
+    !QtlValidatePhenotypes::na?(@value)
   end
 end
 

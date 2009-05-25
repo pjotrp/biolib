@@ -82,7 +82,7 @@ class QtlDataset
     @individuals.each do | ind |
       ind.phenotypes.each_with_index do | ph, i |
         countph[i] = 0 if countph[i] == nil
-        countph[i] +=1 if ph != nil and ph != QtlPhenotypeNames::NA
+        countph[i] +=1 if ph != nil and ph.phenotyped?
       end
     end
     countph.map { | c | (c*1000.0/tot_phenotypes).round/10.0 }
