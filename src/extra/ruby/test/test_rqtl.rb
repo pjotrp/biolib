@@ -33,27 +33,40 @@ R/QTL makes it an F2 intercross based on the number of genotypes
   >> d.type
   => 'F2'
 
+Here we get information from the data object. There are two 'styles'. One is
+standard Ruby's principles of least surprise. The other is the one used by
+R/qtl.
+
 Return the number of individuals
 
   >> d.individuals.size
   => 120
 
-The short notation - get number of individuals
+The short R/qtl notation - get number of individuals
 
   >> d.nind
   => 120
 
 Number of phenotypes (T264. R/QTL adds sex and pgm automagically)
 
+  >> d.phenotypes.size
+  => 1
+
   >> d.nphe
   => 1
 
 Number of markers
 
+  >> d.markers.size
+  => 133
+
   >> d.totmar
   => 133
 
 Number of chromosomes
+
+  >> d.chromosomes.size
+  => 20
 
   >> d.nchr
   => 20
@@ -62,6 +75,15 @@ Markers per chromosome
 
   >> d.nmar.sort
   => [["1", 13], ["10", 5], ["11", 6], ["12", 6], ["13", 12], ["14", 4], ["15", 8], ["16", 4], ["17", 4], ["18", 4], ["19", 4], ["2", 6], ["3", 6], ["4", 4], ["5", 13], ["6", 13], ["7", 6], ["8", 6], ["9", 7], ["X", 2]]
+
+  >> d.marker['D10M44'].name
+  => 'D10M44'
+
+Markers carry an indexed 'mid'. This is really superfluous when genome 
+information is available on marker positions.
+
+  >> d.marker['D10M44'].mid
+  => 0
 
   >> d.marker(0).name
   => 'D10M44'
@@ -85,16 +107,32 @@ R/qtl's genotype matrix for the listeria set looks like this:
 [8,]      2      2      2
 [9,]      2     NA      2
 
+  >> d.genotypes.size
+  => 4
+
+First we get the original values from the Listeria .csv file:
+
   >> d.genotype(1,'D1M291')
   => 2
 
   >> d.genotype(9,'D1M209')
   => NA
 
-  >> d.genotype(3,'D1M155')
+Now we are going to create an adapter for translating dataset into an
+input object suitable for use by R/qtl.
+
+  >> r = RQtlInputAdaptor(d)
+
+  >> r.genotype(1,'D1M291')
+  => 2
+
+  >> r.genotype(9,'D1M209')
+  => NA
+
+  >> r.genotype(3,'D1M155')
   => 3
 
-  >> d.genotype(9,'D10M44')
+  >> r.genotype(9,'D10M44')
   => 1
 
 =end
