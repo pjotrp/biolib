@@ -36,10 +36,10 @@ class QtlCsv < QtlDataset
         a = line.chomp.split(/,/)
         raise 'Size problem with line '+line if (a.size != l1.size)
         (0..phenotypenum-1).each do | pid |
-          set_phenotype(i, pid, a[pid])
+          @individuals.set_phenotype(i, pid, a[pid])
         end
         (0..a.size-phenotypenum-1).each do | mid |
-          set_genotype(i, mid, a[mid+phenotypenum])
+          @individuals.set_genotype(i, mid, a[mid+phenotypenum], validategenotypes )
         end
         line = f.gets
         break if line == nil

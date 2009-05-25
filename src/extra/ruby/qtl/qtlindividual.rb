@@ -11,8 +11,8 @@ class QtlIndividual
     @phenotypes.set(pid,value)
   end
 
-  def set_genotype mid, value
-    @genotypes.set(mid,value)
+  def set_genotype mid, value, validategenotypes
+    @genotypes.set(mid,value,validategenotypes)
   end
 end
 
@@ -27,8 +27,8 @@ class QtlIndividuals < Array
     individual(ind).set_phenotype(pid, value)
   end
 
-  def set_genotype ind, mid, value
-    individual(ind).set_genotype(mid, value)
+  def set_genotype ind, mid, value, validategenotypes=nil
+    individual(ind).set_genotype(mid, value, validategenotypes)
   end
 
 end

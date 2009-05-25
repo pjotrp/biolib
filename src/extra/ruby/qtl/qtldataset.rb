@@ -12,6 +12,7 @@ class QtlDataset
   attr_reader :individuals, :markers, :phenotypenames, :chromosomes
 
   def initialize validategenotypes=nil
+    @validategenotypes    = validategenotypes
     @individuals          = QtlIndividuals.new
     @markers              = QtlMarkers.new
     @phenotypenames       = QtlPhenotypeNames.new
@@ -21,14 +22,6 @@ class QtlDataset
 
   def set_phenotypename column, name
     @phenotypenames.set(column,name)
-  end
-
-  def set_phenotype ind, pid, value
-    @individuals.set_phenotype(ind, pid, value)
-  end
-
-  def set_genotype ind, mid, value
-    @individuals.set_genotype(ind, mid, value)
   end
 
   def set_marker name, chromosome, pos, mid=nil
@@ -58,11 +51,6 @@ class QtlDataset
   def genotype ind, mid
     individual(ind).genotypes[mid]
   end
-
-  # Return phenotype +num+ of individual +pid+
-  # def phenotype pid, num=0
-  #   @phenotypes[pid]
-  # end
 
   # Number of phenotypes
   def nphe
@@ -105,8 +93,9 @@ class QtlDataset
     c = 0
     @individuals.each_with_index do | ind, i |
       ind.genotypes.each do | g |
-        c +=1 if g != nil and g != QtlGenotypeNames::NA
+        c +=1 if g != nil and g.genotyped?
       end
+
     end
     (c*1000.0/tot_genotypes).round/10.0
   end
