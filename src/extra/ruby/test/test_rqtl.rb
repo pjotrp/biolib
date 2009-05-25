@@ -73,6 +73,9 @@ Number of chromosomes
   >> d.chromosomes.size
   => 20
 
+  >> d.chromosomes.names.sort
+  => ["1", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "2", "3", "4", "5", "6", "7", "8", "9", "X"]
+
   >> d.nchr
   => 20
 

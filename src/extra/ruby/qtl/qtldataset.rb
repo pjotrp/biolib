@@ -47,21 +47,12 @@ class QtlDataset
 
   # The number of chromosomes (R/qtl type)
   def nchr
-    chr = {}
-    @markers.each do | marker |
-      chr[marker.chromosome] = 0 if !chr[marker.chromosome]
-      chr[marker.chromosome] += 1
-    end
-    chr.size
+    @chromosomes.size
   end
 
+  # The number of markers on chromosomes (R/qtl type)
   def nmar
-    chr = {}
-    @markers.each do | marker |
-      chr[marker.chromosome] = 0 if !chr[marker.chromosome]
-      chr[marker.chromosome] += 1
-    end
-    chr
+    @chromosomes.nmar
   end
 
   def genotype ind, mid

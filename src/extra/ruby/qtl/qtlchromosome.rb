@@ -8,15 +8,6 @@ class QTLChromosomes
     @markers = markers
   end
 
-  def chromosomes
-    chr = {}
-    @markers.each do | marker |
-      chr[marker.chromosome] = 0 if !chr[marker.chromosome]
-      chr[marker.chromosome] += 1
-    end
-    chr
-  end
-
   def hasX?
     chromosomes['X'] != nil
   end
@@ -34,4 +25,28 @@ class QTLChromosomes
   def markers
     @markers
   end
+
+  def chromosomes
+    chr = {}
+    @markers.each do | marker |
+      chr[marker.chromosome] = 0 if !chr[marker.chromosome]
+      chr[marker.chromosome] += 1
+    end
+    chr
+  end
+
+  def names
+    chromosomes.collect { | k, v | k }
+  end
+
+  # Return the number of markers per chromosome
+  def nmar
+    chr = {}
+    @markers.each do | marker |
+      chr[marker.chromosome] = 0 if !chr[marker.chromosome]
+      chr[marker.chromosome] += 1
+    end
+    chr
+  end
+
 end
