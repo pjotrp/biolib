@@ -1,3 +1,5 @@
+require 'qtl/utils/namecounter'
+
 # Keeps track of Genotypes used
 
 class QtlGenotypeName
@@ -18,6 +20,7 @@ end
 
 class QtlValidateGenotypes
 
+  attr_reader :alleles, :genotypes, :na
   def initialize alleles=['A','B'], genotypes=['A','H','B','D','C'], na=['-','NA']
     @alleles = alleles
     @allowed_genotypes = genotypes
@@ -36,8 +39,8 @@ class QtlGenotype
 
   attr_reader :value
 
-  def set nvalue, validategenotypes
-    nvalue = validategenotypes.validated(nvalue) if validategenotypes
+  def set nvalue, genotypeinfo
+    nvalue = genotypeinfo.validated(nvalue)
     @value = nvalue
     @value
   end
@@ -56,9 +59,9 @@ class QtlGenotypes < Array
     @genotypenames = QtlGenotypeNames.new
   end
 
-  def set mid, value, validategenotypes=nil
+  def set mid, value, genotypeinfo
     self[mid] = QtlGenotype.new() if !self[mid]
-    self[mid].set(value, validategenotypes)
+    self[mid].set(value, genotypeinfo)
     @genotypenames.add(self[mid].value)
   end
 
@@ -69,4 +72,27 @@ end
 
 # State class for dataset
 class QtlGenotypeInfo
+
+  def initialize validategenotypes
+    @validategenotypes = validategenotypes
+    @namesused = NameCounter.new
+  end
+
+  def validated value
+    @namesused.add(value)
+    value = @validategenotypes.validated(value) if @validategenotypes
+    value
+  end
+
+  def names
+    @namesused.keys - [ QtlGenotypeNames::NA ]
+  end
+
+  def na
+    @validategenotyeps.alleles
+  end
+
+  def alleles
+    @validategenotyeps.alleles
+  end
 end

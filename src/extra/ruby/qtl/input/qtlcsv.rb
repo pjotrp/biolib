@@ -39,7 +39,7 @@ class QtlCsv < QtlDataset
           @individuals.set_phenotype(i, pid, a[pid])
         end
         (0..a.size-phenotypenum-1).each do | mid |
-          @individuals.set_genotype(i, mid, a[mid+phenotypenum], validategenotypes )
+          @individuals.set_genotype(i, mid, a[mid+phenotypenum], @genotype )
         end
         line = f.gets
         break if line == nil

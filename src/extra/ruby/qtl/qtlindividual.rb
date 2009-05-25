@@ -11,8 +11,8 @@ class QtlIndividual
     @phenotypes.set(pid,value)
   end
 
-  def set_genotype mid, value, validategenotypes
-    @genotypes.set(mid,value,validategenotypes)
+  def set_genotype mid, value, genotypeinfo
+    @genotypes.set(mid,value, genotypeinfo)
   end
 end
 

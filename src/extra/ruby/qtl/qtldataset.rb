@@ -12,12 +12,11 @@ class QtlDataset
   attr_reader :individuals, :markers, :phenotypenames, :chromosomes, :genotype
 
   def initialize validategenotypes=nil
-    @validategenotypes    = validategenotypes
     @individuals          = QtlIndividuals.new
     @markers              = QtlMarkers.new
     @phenotypenames       = QtlPhenotypeNames.new
     @chromosomes          = QtlChromosomes.new(@markers)
-    @genotype             = QtlGenotypeInfo.new
+    @genotype             = QtlGenotypeInfo.new(validategenotypes)
   end
 
   def individual ind

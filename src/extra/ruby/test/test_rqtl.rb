@@ -141,8 +141,8 @@ which translates internally to:
 [8,]       2         2         2
 [9,]       2        NA         2
 
-  >> d.genotype.names
-  => 1
+  >> d.genotype.names.sort
+  => ["A", "B", "C", "H"]
 
   >> d.genotype.alleles
   => 1
