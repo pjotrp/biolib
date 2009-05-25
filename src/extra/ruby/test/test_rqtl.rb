@@ -30,9 +30,13 @@ Load the Listeria CSV file into a QTL object
 
   >> qtl = QTL.new(LISTERIA)
 
+You can also provide the allowed genotypes:
+
+  >> validate = QtlValidateGenotypes.new(['A','B'],['A','H','B','D','C'],['-','NA'])
+  >> qtl = QTL.new(LISTERIA,validate)
+
 Fetch the loaded data and check the type (defaults to F2 at this point)
 R/QTL makes it an F2 intercross based on the number of genotypes
-
 
   >> d = qtl.data
   >> d.type

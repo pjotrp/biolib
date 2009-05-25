@@ -8,9 +8,9 @@ class QTL
 
   attr_reader :data
 
-  def initialize fn
+  def initialize fn, validategenotypes=nil
     if fn =~ /(CSV|csv)$/
-      @data = QtlCsv.new(fn)
+      @data = QtlCsv.new(fn,validategenotypes)
     end
     raise "Cannot determine format of #{fn}" if !@data
     @data.normalize

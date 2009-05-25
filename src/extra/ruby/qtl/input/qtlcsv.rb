@@ -3,8 +3,8 @@
 
 class QtlCsv < QtlDataset
 
-  def initialize fn, alleles=['A','B'], genotypes=['A','H','B','D','C'], na=['-','NA']
-    super(alleles, genotypes, na)
+  def initialize fn, validategenotypes=nil
+    super(validategenotypes)
     File.open(fn) do | f |  
       # parse the file header
       l1 = f.gets.chomp.split(/,/) # markers

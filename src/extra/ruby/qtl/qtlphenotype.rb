@@ -11,6 +11,9 @@ class QtlPhenotypeName
 end
 
 class QtlPhenotypeNames < Array
+
+  NA = '-'
+
   def set idx, value
     self[idx] = QtlPhenotypeName.new(value)
   end

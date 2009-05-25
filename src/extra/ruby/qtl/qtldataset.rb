@@ -11,11 +11,11 @@ class QtlDataset
 
   attr_reader :individuals, :markers, :phenotypenames, :chromosomes
 
-  def initialize alleles, genotypes, na
+  def initialize validategenotypes=nil
     @individuals          = QtlIndividuals.new
     @markers              = QtlMarkers.new
     @phenotypenames       = QtlPhenotypeNames.new
-    @genotypenames        = QtlGenotypeNames.new(alleles,genotypes,na)
+    @genotypenames        = QtlGenotypeNames.new(validategenotypes)
     @chromosomes          = QTLChromosomes.new(@markers)
   end
 
@@ -94,7 +94,7 @@ class QtlDataset
     @individuals.each do | ind |
       ind.phenotypes.each_with_index do | ph, i |
         countph[i] = 0 if countph[i] == nil
-        countph[i] +=1 if ph != nil and ph != QtlGenotype::NA
+        countph[i] +=1 if ph != nil and ph != QtlPhenotypeNames::NA
       end
     end
     countph.map { | c | (c*1000.0/tot_phenotypes).round/10.0 }
@@ -105,7 +105,7 @@ class QtlDataset
     c = 0
     @individuals.each_with_index do | ind, i |
       ind.genotypes.each do | g |
-        c +=1 if g != nil and g != QtlGenotype::NA
+        c +=1 if g != nil and g != QtlGenotypeNames::NA
       end
     end
     (c*1000.0/tot_genotypes).round/10.0
