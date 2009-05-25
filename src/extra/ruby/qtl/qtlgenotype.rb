@@ -7,29 +7,26 @@ class QtlGenotypeName
 
 end
 
-class QtlGenotypeNames < Hash
+class QtlGenotypeNames < NameCounter
 
   NA = '-'
-
-  def add name
-    self[name] = 0 if self[name]==nil
-    self[name] += 1
-  end
 
 end
 
 class QtlValidateGenotypes
 
   attr_reader :alleles, :genotypes, :na
-  def initialize alleles=['A','B'], genotypes=['A','H','B','D','C'], na=['-','NA']
+  # Example alleles=['A','B'], genotypes=['A','H','B','D','C'], na=['-','NA']
+  def initialize alleles, genotypes, na=['-','NA']
     @alleles = alleles
-    @allowed_genotypes = genotypes
-    @allowed_na = na
+    @genotypes = genotypes
+    @na = na
   end
 
   def validated value
-    raise "Genotype error for value #{nvalue}" if !@allowed_na.include?(value) and !@allowed_genotypes.include?(value)
-    value = QtlGenotypeNames::NA if @allowed_na.include?(value)
+    return value if @genotypes==nil
+    raise "Genotype error for value #{nvalue}" if !@na.include?(value) and !@genotypes.include?(value)
+    value = QtlGenotypeNames::NA if @na.include?(value)
     value
   end
 
@@ -73,26 +70,30 @@ end
 # State class for dataset
 class QtlGenotypeInfo
 
+  attr_reader :namesread
+
   def initialize validategenotypes
     @validategenotypes = validategenotypes
-    @namesused = NameCounter.new
+    @validategenotypes = QtlValidateGenotypes.new(nil,nil) if !validategenotypes
+    @namesread = NameCounter.new
+    @names     
   end
 
   def validated value
-    @namesused.add(value)
-    value = @validategenotypes.validated(value) if @validategenotypes
+    @namesread.add(value)
+    value = @validategenotypes.validated(value)
     value
   end
 
   def names
-    @namesused.keys - [ QtlGenotypeNames::NA ]
+    @namesread.keys - [ QtlGenotypeNames::NA ]
   end
 
   def na
-    @validategenotyeps.alleles
+    @validategenotypes.na
   end
 
   def alleles
-    @validategenotyeps.alleles
+    @validategenotypes.alleles
   end
 end

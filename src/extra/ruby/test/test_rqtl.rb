@@ -83,7 +83,6 @@ Number of chromosomes
   >> d.nchr
   => 20
 
-
 Markers per chromosome
 
   >> d.nmar.sort
@@ -141,11 +140,23 @@ which translates internally to:
 [8,]       2         2         2
 [9,]       2        NA         2
 
+Raw names read from input file
+
+  >> d.genotype.namesread.sort
+  => [["-", 1840], ["A", 3701], ["B", 3387], ["C", 128], ["H", 6904]]
+
+Validated names
+
   >> d.genotype.names.sort
   => ["A", "B", "C", "H"]
 
-  >> d.genotype.alleles
-  => 1
+We can't query alleles since we have not used a validator
+
+  >> d.genotype.na.sort
+  => ["-", "NA"]
+
+  >> d.genotype.alleles.sort
+  => ["A", "B"]
 
 First we get the original values from the Listeria .csv file
 (individual/marker):
