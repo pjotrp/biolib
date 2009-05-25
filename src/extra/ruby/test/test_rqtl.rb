@@ -141,13 +141,14 @@ which translates internally to:
 [8,]       2         2         2
 [9,]       2        NA         2
 
-  >> d.genotypes.names
+  >> d.genotype.names
   => 1
 
-  >> d.genotypes.alleles
+  >> d.genotype.alleles
   => 1
 
-First we get the original values from the Listeria .csv file:
+First we get the original values from the Listeria .csv file
+(individual/marker):
 
   >> d.genotype(1,'D1M291')
   => 2

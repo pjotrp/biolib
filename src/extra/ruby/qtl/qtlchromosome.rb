@@ -1,4 +1,4 @@
-class QTLChromosomes
+class QtlChromosomes
 
   # Chromosomes are not actually stored separately, this is a helper class. From 
   # an object models perspective this is not logical (chromosomes have markers),

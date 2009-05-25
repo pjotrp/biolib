@@ -5,11 +5,13 @@ class QtlGenotypeName
 
 end
 
-class QtlGenotypeNames
+class QtlGenotypeNames < Hash
 
   NA = '-'
 
-  def initialize 
+  def add name
+    self[name] = 0 if self[name]==nil
+    self[name] += 1
   end
 
 end
@@ -37,6 +39,7 @@ class QtlGenotype
   def set nvalue, validategenotypes
     nvalue = validategenotypes.validated(nvalue) if validategenotypes
     @value = nvalue
+    @value
   end
 
   def genotyped?
@@ -45,16 +48,25 @@ class QtlGenotype
 
 end
 
+# Every individual has a range of genotypes
 class QtlGenotypes < Array
 
   def initialize 
     super
+    @genotypenames = QtlGenotypeNames.new
   end
 
   def set mid, value, validategenotypes=nil
     self[mid] = QtlGenotype.new() if !self[mid]
     self[mid].set(value, validategenotypes)
+    @genotypenames.add(self[mid].value)
+  end
+
+  def names
+    @genotypenames.keys
   end
 end
 
-
+# State class for dataset
+class QtlGenotypeInfo
+end
