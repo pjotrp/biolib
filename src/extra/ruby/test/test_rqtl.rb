@@ -6,7 +6,6 @@
 #
 # Documentation with rd2 -r rd/rd2html-lib *.rb
 
-
 $: << '../../../mappings/swig/ruby/rqtl/'
 
 =begin
@@ -130,15 +129,15 @@ R/qtl's genotype matrix for the listeria set looks like this:
 which translates internally to:
 
       D1M291    D1M209    D1M155
-[1,]       2         2         2
-[2,]       2         2         2
-[3,]       3         3         3
-[4,]       3         3         3
-[5,]       2         2         2
-[6,]       3         3         3
-[7,]       2         2         2
-[8,]       2         2         2
-[9,]       2        NA         2
+           2         2         2
+           2         2         2
+           3         3         3
+           3         3         3
+           2         2         2
+           3         3         3
+           2         2         2
+           2         2         2
+           2        NA         2
 
 Raw names read from input file
 

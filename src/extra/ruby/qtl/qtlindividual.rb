@@ -14,6 +14,7 @@ class QtlIndividual
   def set_genotype mid, value, genotypeinfo
     @genotypes.set(mid,value, genotypeinfo)
   end
+
 end
 
 class QtlIndividuals < Array
