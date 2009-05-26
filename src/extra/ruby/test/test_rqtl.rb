@@ -10,7 +10,7 @@ $: << '../../../mappings/swig/ruby/rqtl/'
 
 =begin
 
-Here we load the R/QTL Listeria dataset (from a CSV) and verify the
+Here we load the R/qtl Listeria dataset (from a CSV) and verify the
 resulting information matches that of the R version (see RQTL book page 46).
 
 Find the special classes for loading QTL input files (part of BioLib 'extra').
@@ -35,7 +35,7 @@ You can also provide the allowed genotypes:
   >> qtl = QTL.new(LISTERIA,validate)
 
 Fetch the loaded data and check the type (defaults to F2 at this point)
-R/QTL makes it an F2 intercross based on the number of genotypes
+R/qtl makes it an F2 intercross based on the number of genotypes
 
   >> d = qtl.data
   >> d.type
@@ -55,7 +55,7 @@ The short R/qtl notation - get number of individuals
   >> d.nind
   => 120
 
-Number of phenotypes (T264. R/QTL adds sex and pgm automagically)
+Number of phenotypes (T264. R/qtl adds sex and pgm automagically)
 
   >> d.phenotypenames.size
   => 1
@@ -76,6 +76,8 @@ Number of chromosomes
   >> d.chromosomes.size
   => 20
 
+The names are sorted, so we can validate the contents
+
   >> d.chromosomes.names.sort
   => ["1", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "2", "3", "4", "5", "6", "7", "8", "9", "X"]
 
@@ -92,16 +94,19 @@ Find marker by name
   >> d.markers['D10M44'].name
   => 'D10M44'
 
-Find marker by index
+  >> d.markers['D10M44'].mid
+  => 0
+
+Markers carry an indexed 'mid'. This is really superfluous when genome 
+information is available on marker positions. But it can be useful to speed
+queries up:
+
+Find marker by index ('mid')
 
   >> d.markers[0].name
   => 'D10M44'
 
-Markers carry an indexed 'mid'. This is really superfluous when genome 
-information is available on marker positions.
-
-  >> d.markers['D10M44'].mid
-  => 0
+or the equivalent
 
   >> d.marker(0).name
   => 'D10M44'
@@ -112,7 +117,7 @@ information is available on marker positions.
   >> d.markers.size
   => 133
 
-R/qtl's genotype matrix for the listeria set looks like this:
+R/qtl's genotype matrix for the listeria set contains
 
       D1M291    D1M209    D1M155
     84.93474  92.68394  93.64344
@@ -149,8 +154,6 @@ Validated names
   >> d.genotypes.names.sort
   => ["A", "B", "C", "H"]
 
-We can't query alleles since we have not used a validator
-
   >> d.genotypes.na.sort
   => ["-", "NA"]
 
@@ -169,7 +172,7 @@ First we get the original values from the Listeria .csv file
   >> d.individuals[1].genotypes[d.markers['D1M291'].mid].value
   => 'H'
 
-The same, but nicer
+The same, but nicer, query by individual/marker 
 
   >> d.genotype(0,0)
   => 'B'
@@ -192,8 +195,8 @@ The same, but nicer
   >> d.genotype(2,'D13M106')
   => 'H'
 
-Now we are going to create an adapter for translating dataset into an
-input object suitable for use by R/qtl.
+Here we create an adapter for translating genotype information into an
+input object suitable for use by R/qtl
 
   >> r = RQtlInputAdaptor(d)
 
@@ -324,7 +327,7 @@ The R equivalent is:
       DXM186    X  0.00000 0.678435461
       DXM64     X 42.34593 0.002756074
 
-Execute single QTL mapping using R/QTL's marker regression passing in
+Execute single QTL mapping using R/qtl's marker regression passing in
 the @qtl dataset. We need the RQTL convenience class to map against biolib:
 
     >> require 'qtl/rqtl'
