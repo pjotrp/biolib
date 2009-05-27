@@ -297,13 +297,13 @@ input object suitable for use by R/qtl
   >> r.genotype(1,'D1M291')
   => 2
 
-  >> r.genotype(9,'D1M209')
+  >> r.genotype(8,'D1M209')
   => 'NA'
 
   >> r.genotype(3,'D1M155')
   => 3
 
-  >> r.genotype(9,'D10M44')
+  >> r.genotype(8,'D10M44')
   => 1
 
   >> d.genotypes.names
