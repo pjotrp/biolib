@@ -16,7 +16,7 @@ resulting information matches that of the R version (see RQTL book page 46).
 Find the special classes for loading QTL input files (part of BioLib 'extra').
 
   >> $: << '..'
-  >> require 'qtl/qtl'
+  >> require 'qtl/rqtl'
 
 Locate the Listeria input file
  
@@ -117,101 +117,6 @@ or the equivalent
   >> d.markers.size
   => 133
 
-R/qtl's genotype matrix for the listeria set contains
-
-      D1M291    D1M209    D1M155
-    84.93474  92.68394  93.64344
-           H         H         H
-           H         H         H
-           B         B         B
-           B         B         B
-           H         H         H
-           B         B         B
-           H         H         H
-           H         H         H
-           H         -         H
-
-which translates internally to:
-
-      D1M291    D1M209    D1M155
-           2         2         2
-           2         2         2
-           3         3         3
-           3         3         3
-           2         2         2
-           3         3         3
-           2         2         2
-           2         2         2
-           2        NA         2
-
-Raw names read from input file
-
-  >> d.genotypes.namesread.sort
-  => [["-", 1840], ["A", 3701], ["B", 3387], ["C", 128], ["H", 6904]]
-
-Validated names
-
-  >> d.genotypes.names.sort
-  => ["A", "B", "C", "H"]
-
-  >> d.genotypes.na.sort
-  => ["-", "NA"]
-
-  >> d.genotypes.alleles.sort
-  => ["A", "B"]
-
-First we get the original values from the Listeria .csv file
-(individual/marker):
-
-  >> d.individuals[1].genotypes[2].value
-  => "B"
-
-  >> d.markers['D1M291'].mid
-  => 10
-
-  >> d.individuals[1].genotypes[d.markers['D1M291'].mid].value
-  => 'H'
-
-The same, but nicer, query by individual/marker 
-
-  >> d.genotype(0,0)
-  => 'B'
-
-  >> d.genotype(1,0)
-  => '-'
-
-  >> d.genotype(1,2)
-  => 'B'
-
-  >> d.genotype(1,'D1M291')
-  => 'H'
-
-  >> d.genotype(2,'D2M493')
-  => '-'
-
-  >> d.genotype(0,'D13M106')
-  => 'A'
-
-  >> d.genotype(2,'D13M106')
-  => 'H'
-
-Here we create an adapter for translating genotype information into an
-input object suitable for use by R/qtl
-
-  >> r = RQtlInputAdaptor(d)
-
-  >> r.genotype(1,'D1M291')
-  => 2
-
-  >> r.genotype(9,'D1M209')
-  => NA
-
-  >> r.genotype(3,'D1M155')
-  => 3
-
-  >> r.genotype(9,'D10M44')
-  => 1
-
 =end
 
 
@@ -295,15 +200,134 @@ Get statistics
 
 =end
 
-  def test_phenotype
+  def test_phenotyped
     d = @qtl.data
     assert_equal([96.7],d.perc_phenotyped)
   end
 
-  def test_genotype
+  def test_genotyped
     d = @qtl.data
     assert_equal(88.5,d.perc_genotyped)
   end
+
+=begin
+R/qtl's genotype matrix for the listeria set contains
+
+      D1M291    D1M209    D1M155
+    84.93474  92.68394  93.64344
+           H         H         H
+           H         H         H
+           B         B         B
+           B         B         B
+           H         H         H
+           B         B         B
+           H         H         H
+           H         H         H
+           H         -         H
+
+which translates internally to:
+
+      D1M291    D1M209    D1M155
+           2         2         2
+           2         2         2
+           3         3         3
+           3         3         3
+           2         2         2
+           3         3         3
+           2         2         2
+           2         2         2
+           2        NA         2
+
+Raw names read from input file
+
+  >> d.genotypes.namesread.sort
+  => [["-", 1840], ["A", 3701], ["B", 3387], ["C", 128], ["H", 6904]]
+
+Validated names
+
+  >> d.genotypes.names.sort
+  => ["A", "B", "C", "H"]
+
+  >> d.genotypes.na.sort
+  => ["-", "NA"]
+
+  >> d.genotypes.alleles.sort
+  => ["A", "B"]
+
+First we get the original values from the Listeria .csv file
+(individual/marker):
+
+  >> d.individuals[1].genotypes[2].value
+  => "B"
+
+  >> d.markers['D1M291'].mid
+  => 10
+
+  >> d.individuals[1].genotypes[d.markers['D1M291'].mid].value
+  => 'H'
+
+The same, but nicer, query by individual/marker 
+
+  >> d.genotype(0,0)
+  => 'B'
+
+  >> d.genotype(1,0)
+  => '-'
+
+  >> d.genotype(1,2)
+  => 'B'
+
+  >> d.genotype(1,'D1M291')
+  => 'H'
+
+  >> d.genotype(2,'D2M493')
+  => '-'
+
+  >> d.genotype(0,'D13M106')
+  => 'A'
+
+  >> d.genotype(2,'D13M106')
+  => 'H'
+
+Here we create an adapter for translating genotype information into an
+input object suitable for use by R/qtl
+
+  >> r = RQtlInputAdaptor.new(d)
+
+  >> r.genotype(1,'D1M291')
+  => 2
+
+  >> r.genotype(9,'D1M209')
+  => 'NA'
+
+  >> r.genotype(3,'D1M155')
+  => 3
+
+  >> r.genotype(9,'D10M44')
+  => 1
+
+  >> d.genotypes.names
+  => ["A", "B", "C", "H"]
+
+  >> r.genotypes.names
+  => ["A", "B", "C", "H"]
+
+  >> r.genotypes.alleles
+  => [1,3]
+
+  >> r.genotypes.na
+  => ["-", "NA"]
+
+=end
+
+  def test_genotype_adaptor
+    d = @qtl.data
+    assert_equal('B',d.genotype(0,0))
+    r = RQtlInputAdaptor.new(d)
+    assert_equal(3,r.genotype(0,0))
+    assert_equal(2,r.genotype(1,'D1M291'))
+  end
+
 
 =begin
 
