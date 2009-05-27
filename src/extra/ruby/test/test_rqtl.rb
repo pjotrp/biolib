@@ -310,13 +310,13 @@ input object suitable for use by R/qtl
   => ["A", "B", "C", "H"]
 
   >> r.genotypes.names
-  => ["A", "B", "C", "H"]
+  => [1,3,4,2]
 
   >> r.genotypes.alleles
   => [1,3]
 
   >> r.genotypes.na
-  => ["-", "NA"]
+  => ["NA","NA"]
 
 =end
 
@@ -326,12 +326,13 @@ input object suitable for use by R/qtl
     r = RQtlInputAdaptor.new(d)
     assert_equal(3,r.genotype(0,0))
     assert_equal(2,r.genotype(1,'D1M291'))
+    assert_equal([1,3,4,2],r.genotypes.names)
   end
 
 
 =begin
 
-The R equivalent is:
+We are going to scan for QTL's. The first R equivalent here is:
 
     > mr = scanone(data,method='mr')
       Warning message:
@@ -359,9 +360,10 @@ the @qtl dataset. We need the RQTL convenience class to map against biolib:
 
 Now execute QTL mapping with scanone
 
-    >> mr = rqtl.scanone(:method => 'mr')
+    >> mr = rqtl.scanone_mr()
 
-Return the marker name, chromosome, position and lod score:
+Which returns and array of markers containing the marker name, chromosome,
+position and lod score:
 
     >> mr[0].to_a
     => ['D10M44','1',0.0,0.457256443]
