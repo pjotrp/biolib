@@ -211,6 +211,19 @@ Get statistics
   end
 
 =begin
+
+Get phenotype information for the listeria set (only one 
+defined here.
+
+  >> d.phenotype(0,0)
+  => 118.317
+ 
+  >> d.phenotype(1,0)
+  => 264
+ 
+=end
+
+=begin
 R/qtl's genotype matrix for the listeria set contains
 
       D1M291    D1M209    D1M155
@@ -290,7 +303,8 @@ The same, but nicer, query by individual/marker
   => 'H'
 
 Here we create an adapter for translating genotype information into an
-input object suitable for use by R/qtl
+input object suitable for use by R/qtl. Normally a user won't do this, 
+as a qtl object is handled transparently.
 
   >> r = RQtlInputAdaptor.new(d)
 
@@ -356,11 +370,12 @@ Execute single QTL mapping using R/qtl's marker regression passing in
 the @qtl dataset. We need the RQTL convenience class to map against biolib:
 
     >> require 'qtl/rqtl'
-    >> rqtl = RQTL.new(@qtl)
+    >> rqtl = RQTL.new(qtl)
 
 Now execute QTL mapping with scanone
 
     >> mr = rqtl.scanone_mr()
+    >> p ["mr",mr]
 
 Which returns and array of markers containing the marker name, chromosome,
 position and lod score:
@@ -383,7 +398,7 @@ or per attribute:
 
   def test_scanone
     rqtl = RQTL.new(@qtl)
-    mr = rqtl.scanone(:method => 'mr')
+    mr = rqtl.scanone_mr()
     return
     assert_equal('D1M215',mr[3].name) 
     assert_equal('1',mr[3].chr) 
@@ -395,15 +410,18 @@ end
 
 if $0 == __FILE__
 
+  require 'qtl/rqtl'
+
   fn = LISTERIAFN
 
   raise 'File not found error' if !File.exist?(fn)
 
   qtl = QTL.new(fn)
   # These are some simple tests to see if the build system worked...
-  # raise 'Read test failed' if qtl.data.phenotype(0) != 118.317
-  # raise 'Read test failed' if qtl.data.marker(0).name != 'D10M44'
-  # raise 'Read test failed' if qtl.data.marker(13).chromosome != 2
+  d = qtl.data
+  # raise 'Read test failed' if qtl.data.phenotypenames[0] != 118.317
+  raise 'Read test failed' if qtl.data.marker(0).name != 'D10M44'
+  raise 'Read test failed' if qtl.data.marker(13).chromosome != '2'
 
   print "Success!"
 end

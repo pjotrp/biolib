@@ -37,4 +37,8 @@ class RQTL
     res
   end
 
+  def scanone_mr
+    scanone(:method=>'mr')
+  end
+
 end

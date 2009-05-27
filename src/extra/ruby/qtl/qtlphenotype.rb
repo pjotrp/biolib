@@ -28,9 +28,18 @@ end
 
 class QtlPhenotype
   attr_reader :value
+
+  # Set the phenotype, converting strings to numbers
   def set(nvalue)
+    if (nvalue == nvalue.to_i.to_s)
+      nvalue = nvalue.to_i
+    end
+    if (nvalue == nvalue.to_f.to_s)
+      nvalue = nvalue.to_f
+    end
     @value = nvalue
   end
+
   def phenotyped?
     !QtlValidatePhenotypes::na?(@value)
   end

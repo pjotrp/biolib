@@ -45,6 +45,11 @@ class QtlDataset
     @individuals[ind].genotypes[name].value
   end
 
+  # Fetch phenotype info by individual/pid
+  def phenotype ind, pid
+    @individuals[ind].phenotypes[pid].value
+  end
+
   # Number of phenotypes
   def nphe
     @phenotypenames.size
