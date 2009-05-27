@@ -93,7 +93,6 @@ class QtlDataset
       ind.genotypes.each do | g |
         c +=1 if g != nil and g.genotyped?
       end
-
     end
     (c*1000.0/tot_genotypes).round/10.0
   end

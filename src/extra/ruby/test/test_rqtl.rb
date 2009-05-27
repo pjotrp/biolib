@@ -111,6 +111,15 @@ or the equivalent
   >> d.marker(0).name
   => 'D10M44'
 
+  >>  d.marker(0).position
+  => 0
+
+  >>  d.marker(1).position
+  => 0.99675
+
+  >>  d.marker(0).chromosome
+  => '1'
+
   >>  d.marker(14).chromosome
   => '2'
 

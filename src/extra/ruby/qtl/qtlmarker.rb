@@ -5,6 +5,9 @@ class QtlMarker
   def initialize name, chromosome, position, mid
     @name = name
     @chromosome = chromosome
+    # Convert position to a number, when applicable
+    position = position.to_f if (position.to_f.to_s == position)
+    position = position.to_i if (position.to_i.to_s == position)
     @position = position
     @mid = mid
   end

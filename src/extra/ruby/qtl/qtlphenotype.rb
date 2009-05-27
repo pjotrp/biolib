@@ -29,7 +29,7 @@ end
 class QtlPhenotype
   attr_reader :value
 
-  # Set the phenotype, converting strings to numbers
+  # Set the phenotype, converting strings to numbers, when applicable.
   def set(nvalue)
     if (nvalue == nvalue.to_i.to_s)
       nvalue = nvalue.to_i
