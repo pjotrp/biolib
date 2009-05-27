@@ -343,7 +343,7 @@ as a qtl object is handled transparently.
 
 =end
 
-  def test_genotype_adaptor
+  def test_rqtl_input_adaptor
     d = @qtl.data
     assert_equal('B',d.genotype(0,0))
     r = RQtlInputAdaptor.new(d)
@@ -408,7 +408,7 @@ or per attribute:
   def test_scanone
     rqtl = RQTL.new(@qtl)
     mr = rqtl.scanone_mr()
-    return
+    assert_equal(['D10M44','1',0.0,0.457256443],mr[0].to_a)
     assert_equal('D1M215',mr[3].name) 
     assert_equal('1',mr[3].chr) 
     assert_equal(40.41361,mr[3].pos) 

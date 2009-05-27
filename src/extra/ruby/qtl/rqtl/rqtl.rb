@@ -29,10 +29,39 @@ class RQTL
               as.double(weights),        # weights
               result=as.double(rep(0,n.pos)),
               PACKAGE="qtl")
+
+ * scanone_mr: Performs genome scan using marker regression.
+ * n_ind        Number of individuals
+ * n_pos        Number of marker positions
+ * n_gen        Number of different genotypes
+ * Geno         Genotype matrix
+ * Addcov       Matrix of additive covariates: Addcov[cov][ind]
+ * n_addcov     Number of columns of Addcov
+ * Intcov       Number of interactive covariates: Intcov[cov][ind]
+ * n_intcov     Number of columns of Intcov
+ * pheno        Phenotype data, as a vector
+ * weights      Vector of positive weights, of length n_ind
+ * result       Vector of length n_pos, to contain the RSS
+ *
+ **********************************************************************/
+
+void scanone_mr(int n_ind, int n_pos, int n_gen, int **Geno,
+    double **Addcov, int n_addcov, double **Intcov,
+    int n_intcov, double *pheno, double *weights,
+    double *result);
+
 =end
-      d = @qtl.data
-      # p d
-      # res = Biolib::Rqtl.scanone_mr(d.nind,d.totmar,5,geno,[],0,[],0,pheno,[])
+      r = RQtlInputAdaptor.new(@qtl.data)
+      res = Biolib::Rqtl.scanone_mr(r.individuals.size,
+                                    r.markers.size,
+                                    r.genotypes.names.size,
+                                    r.genotypes.to_matrix,
+                                    r.addcov,
+                                    r.naddcov,
+                                    r.intcov,
+                                    r.nintcov,
+                                    r.phenotypes,
+                                    r.weights)
     end
     res
   end

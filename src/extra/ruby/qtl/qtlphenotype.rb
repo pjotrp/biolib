@@ -51,5 +51,6 @@ class QtlPhenotypes < Array
     self[pid] = QtlPhenotype.new if !self[pid]
     self[pid].set(value)
   end
+
 end
 

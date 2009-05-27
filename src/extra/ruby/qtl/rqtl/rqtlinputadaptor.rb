@@ -44,6 +44,21 @@ class RQtlGenotypesAdaptor
     @adapted.na.collect { | n | natranslate(n) }
   end
 
+  def to_matrix
+  end
+end
+
+class RQtlPhenotypesAdaptor
+  include GenericAdaptor, RQtlMap
+
+  def initialize adapted
+    @adapted = adapted
+  end
+
+  def na
+    @adapted.na.collect { | n | natranslate(n) }
+  end
+
 end
 
 class RQtlInputAdaptor 
@@ -52,6 +67,7 @@ class RQtlInputAdaptor
   def initialize qtldataset
     @adapted = qtldataset 
     @adaptedgenotypes = RQtlGenotypesAdaptor.new(qtldataset.genotypes)
+    @adaptedphenotypes = RQtlPhenotypesAdaptor.new(qtldataset.phenotypes)
   end
 
   def genotype ind, mar
@@ -62,4 +78,11 @@ class RQtlInputAdaptor
     @adaptedgenotypes
   end
 
+  def phenotypes
+    @adaptedphenotypes
+  end
+
+  def weights
+    []
+  end
 end
