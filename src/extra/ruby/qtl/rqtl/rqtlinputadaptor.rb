@@ -45,6 +45,7 @@ class RQtlGenotypesAdaptor
   end
 
   def to_matrix
+    []
   end
 end
 
@@ -60,7 +61,7 @@ class RQtlPhenotypesAdaptor
   end
 
   def to_a
-    []
+    [] # place holder
   end
 
 end

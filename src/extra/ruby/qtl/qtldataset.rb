@@ -18,6 +18,8 @@ class QtlDataset
     @phenotypenames       = QtlPhenotypeNames.new
     @chromosomes          = QtlChromosomes.new(@markers)
     @genotypes            = QtlGenotypeInfo.new(validategenotypes)
+    @addcov = []
+    @intcov = []
   end
 
   def individual ind
