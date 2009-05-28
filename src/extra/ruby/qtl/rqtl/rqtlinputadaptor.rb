@@ -45,7 +45,7 @@ class RQtlGenotypesAdaptor
   end
 
   def to_matrix
-    []
+    raise "undefined"
   end
 end
 
@@ -61,7 +61,7 @@ class RQtlPhenotypesAdaptor
   end
 
   def to_a
-    [] # place holder
+    @adapted
   end
 
 end
@@ -85,6 +85,14 @@ class RQtlInputAdaptor
 
   def phenotypes
     @adaptedphenotypes
+  end
+
+  def genotypematrix
+    Array.new.fill(0.0,0..@adapted.individuals.size*@adapted.markers.size)
+  end
+
+  def phenotypevector
+    Array.new.fill(0.0,0..@adapted.individuals.size)
   end
 
   def weights

@@ -61,9 +61,13 @@ class QtlDataset
     @individuals[ind].phenotypes[pid].value
   end
 
-  # Return all phenotypes as an array
+  # Return all phenotypes as an array of arrays
   def phenotypes
-    []
+    pheno = []
+    @individuals.each do | ind |
+      pheno.push ind.phenotypes.to_a
+    end
+    pheno
   end
 
   # Number of phenotypes

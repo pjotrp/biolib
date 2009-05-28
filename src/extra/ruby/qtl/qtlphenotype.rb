@@ -52,5 +52,9 @@ class QtlPhenotypes < Array
     self[pid].set(value)
   end
 
+  def to_a
+    collect { | ph | ph.value }
+  end
+
 end
 

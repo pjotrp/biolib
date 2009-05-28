@@ -35,7 +35,7 @@
    if (!rb_obj_is_kind_of($input,rb_cArray))
      rb_raise(rb_eArgError, "Expected Array of values for int **");
    len = RARRAY($input)->len;
-   $1 = (int **)malloc(len*sizeof(double));
+   $1 = (int **)malloc(len*sizeof(int));
    for (i=0; i<len; ++i)
      *($1)[i] = rb_num2int(RARRAY($input)->ptr[i]);
 }
@@ -58,6 +58,9 @@
 
 %typemap(freearg) double ** {
     if ($1) free($1);
+}
+
+%typemap(out) double * result {
 }
 
 %include ../../rqtl.i

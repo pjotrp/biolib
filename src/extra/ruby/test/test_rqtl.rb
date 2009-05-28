@@ -229,7 +229,18 @@ defined here.
  
   >> d.phenotype(1,0)
   => 264
- 
+
+Get all phenotypes for the first individual - note this set has only
+one phenotype
+
+  >> d.phenotypes[0]
+  => [118.317]
+
+Get all phenotypes for all individuals
+
+  >> d.phenotypes[0..4]
+  => [[118.317], [264], [194.917], [264], [145.417]]
+
 =end
 
 =begin
