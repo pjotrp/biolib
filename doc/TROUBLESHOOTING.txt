@@ -7,6 +7,8 @@ specific to a language are in documents PERL.txt, RUBY.txt etc. in
 See also ./doc/REPORTINGBUGS.txt if you want to send a problem
 upstream.
 
+= Building BioLib =
+
 == Could not find Cmake module ==
 
 An error like:
@@ -39,4 +41,20 @@ Contact the developers with this error.
 
 
 
+= Developing with BioLib =
+
+== Symbol lookup error ==
+
+When creating a module you get a symbol lookup error like
+
+  /usr/bin/ruby: symbol lookup error: ../rqtl/biolib/rqtl.so:
+  undefined symbol: _Z10scanone_mriiiPPiPPdiS2_iS1_S1_S1_
+
+The 'mangled' symbol name is the C++ linkage version. It may be the
+shared library was compiled as a C linkage library. One possibility
+is to enforce C compilation of the SWIG module.
+
+In the CMakeLists.txt file define
+
+  SET(USE_C_LINKAGE TRUE)
 

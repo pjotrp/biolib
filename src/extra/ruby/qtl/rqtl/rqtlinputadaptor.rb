@@ -59,6 +59,10 @@ class RQtlPhenotypesAdaptor
     @adapted.na.collect { | n | natranslate(n) }
   end
 
+  def to_a
+    []
+  end
+
 end
 
 class RQtlInputAdaptor 
