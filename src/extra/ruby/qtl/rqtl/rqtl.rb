@@ -53,7 +53,6 @@ void scanone_mr(int n_ind, int n_pos, int n_gen, int **Geno,
 =end
       result = [] # place holder
       r = RQtlInputAdaptor.new(@qtl.data)
-      result = result.fill(0.0,0..r.markers.size)
       res = Biolib::Rqtl.scanone_mr(r.individuals.size,
                                     r.markers.size,
                                     r.genotypes.names.size,
@@ -63,8 +62,7 @@ void scanone_mr(int n_ind, int n_pos, int n_gen, int **Geno,
                                     r.intcov,
                                     r.nintcov,
                                     r.phenotypevector,
-                                    r.weights,
-                                    result)
+                                    r.weights)
     end
     res
   end

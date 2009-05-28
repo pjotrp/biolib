@@ -40,7 +40,6 @@ If you fix this yourself, also fix the items in .git/config.
 Contact the developers with this error.
 
 
-
 = Developing with BioLib =
 
 == Symbol lookup error ==
@@ -57,4 +56,17 @@ is to enforce C compilation of the SWIG module.
 In the CMakeLists.txt file define
 
   SET(USE_C_LINKAGE TRUE)
+
+= Debugging BioLib =
+
+It is possible to debug C libraries without having debug versions of
+the (high-level) language interpreter. Use cmake -DDEBUG=1 to compile
+the C-library and the SWIG module. Next enter gdb with the binary path
+of the interpreter. For example:
+
+  gdb /usr/bin/ruby
+  run "-I../rqtl" "./../test/test_rqtl.rb"
+  (crash)
+
+typing 'where' will give you a stack trace.
 
