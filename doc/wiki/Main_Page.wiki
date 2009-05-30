@@ -29,13 +29,13 @@
     <title>Main Page</title>
     <id>1</id>
     <revision>
-      <id>200</id>
-      <timestamp>2009-04-09T21:50:16Z</timestamp>
+      <id>263</id>
+      <timestamp>2009-05-30T06:46:22Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* MILESTONES */</comment>
+      <comment>/* NEWS */</comment>
       <text xml:space="preserve">= BioLib: libraries for the Bio* languages =
 
 ''BioLib'' brings together a set of opensource C/C++ libraries and makes them available to all Bio* languages: BioPerl,
@@ -45,14 +45,27 @@ BioRuby, BioPython, BioJAVA and Bioconductor.
 
 == MODULES ==
 
+current BioLib modules:
+
 * [[BioLib Affymetrix]] reads Affymetrix microarray .CEL and .CDF formats
 * [[BioLib Staden io_lib]] reads/writes sequencer trace files, including SFF, ABI, SCF, ALF and PLN formats
 * [[BioLib RQTL]] mappings
 
+and soon to be included BioLib modules:
+
+* [[BioLib Bio++]] libraries for sequence analysis, phylogenetics, molecular evolution and population genetics
+* [[BioLib libsequence]] library designed to aid writing applications for genomics and evolutionary genetics 
+
 If you have a requirement not listed here: please use the [[Biolib Poll]]!
+
+== NEWS ==
+
+* Xin Shuai and Adam Smith have started mapping libsequence and Bio++ libraries to BioLib. See Xin's project [[User:David]] page and [http://gsoc-biolib-libsequence.blogspot.com/ blog], and Adam's project [https://www.nescent.org/wg_phyloinformatics/PhyloSoC:Mapping_the_Bio%2B%2B_Phylogenetics_toolkit_to_R/BioConductor_and_BioJAVA_using_BioLib page] and [http://gsoc-biopp.blogspot.com/ blog].
 
 == MILESTONES ==
 
+* Microsoft Windows support added with Cygwin (May 2009)
+* BioLib is getting a boost from the Google Summer of Code initiative, thanks to [https://www.nescent.org/wg_phyloinformatics/Phyloinformatics_Summer_of_Code_2009 Nescent] (April 2009)
 * GNU Science Library (GSL) support is added to the new [[ASciLib]] (A Science Lib) project (April 2009)
 * ''Python'' mappings provided for Affyio and Staden (March 2009)
 * BioLib supports OSX; Affyio mapped to ''Perl'' (February 2009)
@@ -79,13 +92,14 @@ multi-platform support. The secondary objective of BioLib is
 efficiency - both of CPU and RAM (why bother to write in C,
 otherwise).  Think of BioLib as a repository, or kernel, for low-level processing and
 analysis of biological data. BioLib was incepted at the 
-Tokyio Biohackathon 2008.
+Tokyo Biohackathon 2008.
 
 For more information see the [[Road map]].
 
 == DOCUMENTATION ==
 
-The API of included BioLib modules can be found in the [http://thebird.nl/apidoc/biolib/index.html API Documentation]. This documentation is generated straight from the source code. Translating the API to the mapped Perl or Ruby methods is straightforward. One example is [http://thebird.nl/apidoc/biolib/index.html here], others are in the test files (for [http://github.com/pjotrp/biolib/tree/master/src/mappings/swig/perl/test Perl] and [http://github.com/pjotrp/biolib/tree/master/src/mappings/swig/ruby/test Ruby]).
+The API of included BioLib modules can be found in the [http://thebird.nl/apidoc/biolib/index.html API Documentation]. This documentation is generated straight from the source code. Translating the API to the mapped Perl or Ruby methods is straightforward. One example is [http://thebird.nl/apidoc/biolib/index.html here], others are in the test files (for [http://github.com/pjotrp/biolib/tree/master/src/mappings/swig/perl/test Perl], [http://github.com/pjotrp/biolib/tree/master/src/mappings/swig/ruby/test Ruby] and
+[http://github.com/pjotrp/biolib/tree/master/src/mappings/swig/python/test Python]).
 
 == DOWNLOADING ==
 
@@ -107,6 +121,7 @@ For the direct access to the latest source tree use
 
 Quick instructions : after downloading the source run
 
+  cd biolib
   ./configure
   make
   make test
