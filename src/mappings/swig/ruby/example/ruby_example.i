@@ -1,5 +1,15 @@
 %module example
 
+/* This typemap for double** takes an array of Ruby values and turns it
+ * into a C matrix, based on the number of rows and cols provided. The
+ * matrix can be modified ans is returned from the method as an array again.
+ *
+ * Example:
+ *   values = [1.1,1.2,2.1,2.2,3.1,3.2]
+ *   result = Biolib::Example.matrix_as_array_change(2,3,values)
+ *   raise "Test failed with value #{result}" if result[3] != 4
+ */
+
 %typemap(in) double **matrix_as_array {
    int cols = arg1;
    int rows = arg2;
@@ -26,7 +36,7 @@
     int cols = arg1;
     int rows = arg2;
 
-    /* printf("%f,%f",arg3[0][0],arg3[1][0]); */
+    /* example: printf("%f,%f",arg3[0][0],arg3[1][0]); */
     $result = rb_ary_new();
     for (i=0; i<rows; i++)
       for (j=0; j<cols; j++)
@@ -34,8 +44,13 @@
 }
 
 %typemap(freearg) double ** {
-    /* FIX memory leak here */
-    if ($1) free($1);
+    int i;
+    int rows = arg2;
+
+    if ($1) {
+      free(*$1);
+      free($1);
+    }
 }
 %include ../../example.i
 
