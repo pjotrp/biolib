@@ -1,0 +1,134 @@
+= DEVELOPMENT =
+
+Developing with Biolib takes a few skills. To map a new library one
+needs to master git, cmake, SWIG, C/C++ and a high level language (in
+that order ;). Each of these 'environments' take significant
+investment.
+
+In this section I'll try to document successful strategies I use for
+developing functionality and mapping (new) libraries and modules.
+Maybe explaining some of the ideas can help...
+
+== Git ==
+
+Git is used to store source code and keep track of versions. In the
+past I have extensively used CVS, SVN, darcs, mercurial (hg). Git is a
+big step forward as it allows managing a large number of branches and
+repositories in the easiest way. Biolib uses git submodules to contain
+'embedded' git repositories. That way not all code has to be copied
+from other source trees. For example ./tools/cmake-support is shared
+between two projects (Biolib and ASciLib) and the ./src/clibs/rqtl
+tree is pulled from its own repository. Git has changed the way I
+think and work, with regard to source code management. One powerful
+tool to use with git is 'gitk'.
+
+== CMake ==
+
+CMake generates Makefiles. Like the autoconf tools ('configure') it
+assesses the environment and creates a build system. Read the FAQ and
+Documentation of CMake. Just to get a feel for what it can do. Biolib
+uses CMake big time. CMake itself is a small and simple language.
+It's strength comes from included modules, nicely separated. For
+example we use the SWIG module. It is usually in a place like
+/usr/share/cmake-2.6/Modules/. Just type:
+
+  less /usr/share/cmake-2.6/Modules/FindSWIG.cmake
+
+I have learnt to like CMake - it has the simplicity a programmer
+needs. The syntax wins no points for beauty, but it is good enough.
+Use the Message command to print out what variables contain. That
+makes the build system very transparent.
+
+Biolib's CMake modules are in a git submodule under
+./tools/cmake-support/modules/. Most are unique to Biolib/AScilib, but
+some override the CMake modules, like FindZLIB.cmake and
+FindPerlLibs.cmake. 
+
+Every Clib and mapped module in Biolib contains its CMakeLists.txt
+file. In principle these are as simple as possible. See for example
+the one in ./src/clibs/example-1.0/. It contains a few settings
+describing the name and version of the shared library to be build. It
+tells the build system where to find include files, which files to
+compile and to build and install the C library (when 'make' and 'make
+install' are invoked). Like wise the Ruby mapping for this library is
+in ./src/mappings/swig/ruby/example/. The CMakeLists.txt file names
+the Ruby module, tells where to find files and build them. It also
+adds a default test script, which runs on 'make test'. 
+
+To build the system you can build from the root of the tree, but
+importantly also at the C library and module level. Do not mix those
+two(!) To build a C library and module library independently do:
+
+  cd biolib
+  sh scripts/cleanup.sh
+  cd src/clibs/example-1.0/
+  cmake .
+  make
+  cd ../../mappings/swig/ruby/example/
+  cmake .
+  make
+  make test
+  cat Testing/Temporary/LastTest.log
+
+This allows very efficient compilation steps during development. No
+need to build anything but the libraries that depend on the module.
+
+In general, with CMake, study all the CMakeLists.txt files that come
+with Biolib. At some point all features may be documented, but at this
+stage the CMake modules and CMakeLists.txt files *are* the
+documentation. 
+
+CMake can handle many different setups for code. For example the
+staden_io_lib Clib has a non-standard source repository, and
+non-standard location for include files. And it requires an external
+Zlib.so lirary. The Affyio Clib has a typical R layout and I have
+written special mapping functions in biolib_affyio.c|h, and requires
+the external R library. The rqtl Clib uses an external repository for
+fetching the source code (using a git submodule). I have a special
+directory in it in ./src/clibs/rqtl/contrib/biolib, where the
+CMakeLists.txt file resides. Note that rqtl overrides linkage for the
+modules using the USE_C_LINKAGE directive, used in
+./tools/cmake-support/modules/FindMapSWIG.cmake. 
+
+You can see CMake is very flexible handling all these different
+layouts.
+
+== SWIG ==
+
+SWIG is software done right (I think this is true for all mentioned
+tools here). The syntax could have been a bit nicer, but I really
+like the principles of pattern matching and generated code.
+
+Hacking SWIG typedefs can be tricky. My advise is to really study the
+*generated* code. And do things one step at a time. When I encounter a
+data type that is not mapped automatically I create a new git branch,
+for an example, and test that against my favourite high level
+language. For example in the example clib I have tested double**
+matrices against a Ruby module. By studying the generated code (in
+ruby_exampleRUBY_wrap.cxx) I could see what SWIG was doing with
+variables, scope etc. Playing with different solutions led to one
+preferred solution. It is also possible to invoke gdb to see what is
+happening under the hood.
+
+== Using GDB ==
+
+To compile with debug information do:
+
+  cmake -DDEBUG=1 .
+  make
+
+in both the shared lib build and the module.
+
+In principle an interpreter can be run inside gdb. So, from the test
+log above (.Testing/Temporary/LastTest.log):
+
+  cd ./src/mappings/swig/ruby/example/
+  gdb /usr/bin/ruby
+    run "./../test/test_example.rb" 
+
+On a memory exception a backtrace can be found with 'where'.
+
+However, I find I hardly use gdb (never have done). I prefer to use
+print statements, also in the SWIG typedefs.
+
+
