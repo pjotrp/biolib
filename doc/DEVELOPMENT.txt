@@ -2,7 +2,7 @@
 
 Developing with Biolib takes a few skills. To map a new library one
 needs to master git, cmake, SWIG, C/C++ and a high level language (in
-that order ;). Each of these 'environments' take significant
+that order ;). Each of these 'environments' takes significant
 investment.
 
 In this section I'll try to document successful strategies I use for
@@ -15,7 +15,7 @@ Git is used to store source code and keep track of versions. In the
 past I have extensively used CVS, SVN, darcs, mercurial (hg). Git is a
 big step forward as it allows managing a large number of branches and
 repositories in the easiest way. Biolib uses git submodules to contain
-'embedded' git repositories. That way not all code has to be copied
+'embedded' git repositories. That way, not all code has to be copied
 from other source trees. For example ./tools/cmake-support is shared
 between two projects (Biolib and ASciLib) and the ./src/clibs/rqtl
 tree is pulled from its own repository. Git has changed the way I
@@ -24,20 +24,21 @@ tool to use with git is 'gitk'.
 
 == CMake ==
 
-CMake generates Makefiles. Like the autoconf tools ('configure') it
-assesses the environment and creates a build system. Read the FAQ and
-Documentation of CMake. Just to get a feel for what it can do. Biolib
-uses CMake big time. CMake itself is a small and simple language.
-It's strength comes from included modules, nicely separated. For
-example we use the SWIG module. It is usually in a place like
-/usr/share/cmake-2.6/Modules/. Just type:
+CMake generates Makefiles. Like the often seen autoconf tools
+('configure'), it assesses the environment and creates a build system.
+Read the FAQ and Documentation of CMake. Just to get a feel for what
+it can do. Biolib uses CMake big time. CMake itself is a small and
+simple language.  It's strength comes from included modules, nicely
+separated. For example we use the SWIG module. It is usually in a
+place like /usr/share/cmake-2.6/Modules/. Check:
 
   less /usr/share/cmake-2.6/Modules/FindSWIG.cmake
 
-I have learnt to like CMake - it has the simplicity a programmer
+I have learned to like CMake - it has the simplicity a programmer
 needs. The syntax wins no points for beauty, but it is good enough.
-Use the Message command to print out what variables contain. That
-makes the build system very transparent.
+Use the 'Message' command to print out what variables contain. That
+makes the build system very transparent. Also CMake can give verbose
+output (see the manual).
 
 Biolib's CMake modules are in a git submodule under
 ./tools/cmake-support/modules/. Most are unique to Biolib/AScilib, but
@@ -45,19 +46,20 @@ some override the CMake modules, like FindZLIB.cmake and
 FindPerlLibs.cmake. 
 
 Every Clib and mapped module in Biolib contains its CMakeLists.txt
-file. In principle these are as simple as possible. See for example
+file. In principle these are minimalistic. See for example
 the one in ./src/clibs/example-1.0/. It contains a few settings
 describing the name and version of the shared library to be build. It
 tells the build system where to find include files, which files to
 compile and to build and install the C library (when 'make' and 'make
-install' are invoked). Like wise the Ruby mapping for this library is
+install' are invoked). Likewise the Ruby mapping for this library is
 in ./src/mappings/swig/ruby/example/. The CMakeLists.txt file names
 the Ruby module, tells where to find files and build them. It also
 adds a default test script, which runs on 'make test'. 
 
 To build the system you can build from the root of the tree, but
-importantly also at the C library and module level. Do not mix those
-two(!) To build a C library and module library independently do:
+importantly also at the C library and module level. Do not mix these
+two strategies(!) To build a C library and module library, rather than
+the whole thing, do:
 
   cd biolib
   sh scripts/cleanup.sh
@@ -72,6 +74,18 @@ two(!) To build a C library and module library independently do:
 
 This allows very efficient compilation steps during development. No
 need to build anything but the libraries that depend on the module.
+Once the Cmake files are there you don't have to generate them every
+time. A simple:
+
+  make clean ; make
+
+will suffice. Only when you are tweaking CMake itself you *need* to
+remove the cache. For some reason CMake caches all variables. In that
+case:
+
+  rm CMakeCache.txt ; cmake . ; make clean ; make 
+
+will do the trick. Or use the cleanup.sh script.
 
 In general, with CMake, study all the CMakeLists.txt files that come
 with Biolib. At some point all features may be documented, but at this
