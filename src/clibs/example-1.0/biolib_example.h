@@ -7,6 +7,7 @@ extern "C" {
   char *get_time();
   float *list(int size);
   void matrix_as_array_change(int cols, int rows, double **matrix_as_array);
+  void array_transform_to_result(int num, double *data, double *result);
 
 #ifdef __cplusplus
 }

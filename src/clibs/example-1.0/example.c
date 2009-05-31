@@ -49,3 +49,17 @@ void matrix_as_array_change(int cols, int rows, double **matrix_as_array)
     for (j=0; j<cols; j++)
       matrix[i][j] = i*rows+j;
 }
+
+/* Here we transform an array of doubles and give it as a 
+ * parameter return value (result). This needs a SWIG typemap
+ * as SWIG defaults to having result a double by reference,
+ * rather than an array.
+ */
+
+void array_transform_to_result(int num, double *data, double *result)
+{
+  int i;
+  for (i=0; i<num; i++)
+    result[i] = data[i]+1.0;
+}
+

@@ -1,5 +1,58 @@
 %module example
 
+%typemap(in, numinputs=0) int num {
+  /* %typemap(in, numinputs=0) int num: ignore num input */
+}
+
+%typemap(in) double* data (int num) {
+  /* %typemap(in) double* data */
+  int i;
+  
+  if (!rb_obj_is_kind_of($input,rb_cArray))
+    rb_raise(rb_eArgError, "Expected Array of values for $1_name");
+  num = RARRAY($input)->len;
+  $1 = (double *)malloc(num*sizeof(double));
+  arg1 = num;
+  for (i=0; i<num; ++i)
+    ($1)[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
+}
+
+%typemap(freearg) double *data {
+  /* %typemap(freearg) double *data */
+  if ($1) free($1);
+}   
+
+%typemap(in, numinputs=0) double *result {
+  /* %typemap(in, numinputs=0) double *result */
+  /* Fetch the buffer size from array - this is ugly as it fixes
+   * the parameter position for the array, there must be a better way */
+  int num;
+  if (!rb_obj_is_kind_of(argv[0],rb_cArray))
+    rb_raise(rb_eArgError, "Expected Array of values for $1_name");
+  num = RARRAY(argv[0])->len;
+  $1 = (double *)malloc(num*sizeof(double));
+}
+
+%typemap(out) double *result {
+  /* %typemap(out) double *result: ignore */
+}
+
+%typemap(argout) double *result {
+  /* %typemap(argout) double *result */
+  int i;
+  int num = arg1;
+
+  /* example: printf("%f,%f",$1[0][0],$1[1][0]); */
+  $result = rb_ary_new();
+  for (i=0; i<num; i++)
+    rb_ary_push($result,rb_float_new($1[i]));
+}
+
+%typemap(freearg) double *result {
+  /* %typemap(freearg) double *result */
+  if ($1) free($1);
+}   
+
 %include ../../typemaps/ruby/biolib_matrix.i
 %include ../../example.i
 
