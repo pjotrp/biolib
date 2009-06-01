@@ -1,0 +1,4 @@
+${CONTRIB_PATH}/src/Seq.cc
+${CONTRIB_PATH}/src/ComplementBase.cc
+${CONTRIB_PATH}/src/Fasta.cc
+${CONTRIB_PATH}/src/SeqExceptions.cc
