@@ -22,6 +22,14 @@ tree is pulled from its own repository. Git has changed the way I
 think and work, with regard to source code management. One powerful
 tool to use with git is 'gitk'.
 
+To make sure all git submodules are loaded in the source tree do:
+
+  cd biolib
+  git --version  (should show >1.6)
+  git branch (are you on the correct branch?)
+  git submodule init
+  git submodule update
+
 == CMake ==
 
 CMake generates Makefiles. Like the often seen autoconf tools
@@ -105,7 +113,7 @@ modules using the USE_C_LINKAGE directive, used in
 ./tools/cmake-support/modules/FindMapSWIG.cmake. 
 
 You can see CMake is very flexible handling all these different
-layouts.
+layouts. See ./tools/cmake-support/doc/CMAKE.txt for more information.
 
 == SWIG ==
 
