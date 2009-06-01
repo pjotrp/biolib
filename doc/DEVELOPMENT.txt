@@ -30,6 +30,20 @@ To make sure all git submodules are loaded in the source tree do:
   git submodule init
   git submodule update
 
+One important thing to note is that these sub repositories (like
+./tools/cmake_support) are not part of the main tree. So if you change
+a file there, it is not properly recorded for others to see. However,
+since these are git submodules they are repositories in their own
+right, allowing adding remote repositories, but it is tricky to work
+them. The safe solution, when you change something, is to send the
+upstream maintainer a diff. For example:
+
+  cd ./tools/cmake_support
+  (change something)
+  git diff > ~/cmake_support.patch
+
+And send that patch.
+
 == CMake ==
 
 CMake generates Makefiles. Like the often seen autoconf tools
