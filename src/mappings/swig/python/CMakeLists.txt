@@ -1,27 +1,19 @@
-# Builds the Python biolib_staden_io_lib library after resolving paths.
+if (BLD_EXAMPLE)
+  add_subdirectory (example)
+endif (BLD_EXAMPLE)
 
-cmake_minimum_required(VERSION 2.6)
+if (BLD_AFFYIO)
+  add_subdirectory (affyio)
+endif (BLD_AFFYIO)
 
-ENABLE_TESTING()
+if (BLD_STADEN)
+  add_subdirectory (staden_io_lib)
+endif (BLD_STADEN)
 
-SET (M_NAME staden_io_lib)
-SET (M_VERSION 1.11.6)
-SET (INTERFACE python_${M_NAME}.i)
+# if (BLD_RQTL)
+#   add_subdirectory (rqtl)
+# endif (BLD_RQTL)
 
-IF(NOT BUILD_LIBS)
-  SET (MAP_ROOT ../../../../..)
-  SET (CMAKE_MODULE_PATH ${MAP_ROOT}/tools/cmake-support/modules)
-ENDIF(NOT BUILD_LIBS)
-
-SET (USE_ZLIB TRUE)
-SET (USE_INCLUDEPATH io_lib)
-
-INCLUDE(CMakeBackwardCompatibilityC)
-SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
-
-FIND_PACKAGE(MapPython REQUIRED)
-
-POST_BUILD_PYTHON_BINDINGS()
-TEST_PYTHON_BINDINGS()
-INSTALL_PYTHON_BINDINGS()
-
+if (BLD_LIBSEQUENCE)
+  add_subdirectory (libsequence)
+endif (BLD_LIBSEQUENCE)
