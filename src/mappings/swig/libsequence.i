@@ -1,10 +1,10 @@
 %module biolib_libsequence
 
 %{
-  #include <Seq.hpp>
+  #include <Sequence/Seq.hpp>
 %}
 
 
-%include <Seq.hpp>
+%include <Sequence/Seq.hpp>
 
 
