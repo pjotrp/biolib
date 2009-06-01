@@ -14,5 +14,7 @@ endif (BLD_STADEN)
 #   add_subdirectory (rqtl)
 # endif (BLD_RQTL)
 
-
+if (BLD_LIBSEQUENCE)
+  add_subdirectory (libsequence)
+endif (BLD_LIBSEQUENCE)
 
