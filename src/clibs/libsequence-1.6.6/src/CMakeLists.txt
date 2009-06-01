@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 2.6)
 
 PROJECT(Biolib_libsequence)
 SET (M_NAME libsequence)
-# SET (M_VERSION 1.6.6)
+SET (M_VERSION 1.6.6)
 
 IF(NOT BUILD_LIBS)
   SET (MAP_ROOT ../../../..)
