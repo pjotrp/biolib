@@ -56,3 +56,27 @@
   }
 %enddef
 
+%define BIOLIB_OUTARRAY(type,result)
+  /* Pass a result through an array pointer */
+
+  %typemap(out) type *result {
+    /* %typemap(out) type *result: ignore */
+  }
+
+  %typemap(argout) type *result {
+    /* %typemap(argout) type *result */
+    int i;
+    int num = arg1;
+
+    /* example: printf("%f,%f",$1[0][0],$1[1][0]); */
+    $result = rb_ary_new();
+    for (i=0; i<num; i++)
+      rb_ary_push($result,rb_float_new($1[i]));
+  }
+
+  %typemap(freearg) type *result {
+    /* %typemap(freearg) type *result */
+    if ($1) free($1);
+  }   
+%enddef
+
