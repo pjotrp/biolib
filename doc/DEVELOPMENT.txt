@@ -167,4 +167,59 @@ On a memory exception a backtrace can be found with 'where'.
 However, I find I hardly use gdb (never have done). I prefer to use
 print statements, also in the SWIG typedefs.
 
+== Testing ==
+
+=== Integration testing ===
+
+Every implemented mapping module (Perl, Ruby etc.) should have a test
+script. This is located in
+
+  ./src/mappings/swig/language/test/test_modulename.ext
+
+these are automatically run on 'make test' and are effectively
+integration tests - i.e. they should fail if something goes wrong in
+the compilation/linking steps for different platforms. Keep these
+tests short (no long runtime). They are, obviously, practical during
+mapping development.
+
+=== Unit tests ===
+
+For unit testing (not automatically run during builds) there are two
+options. Either use above scripts, making sure the tests do not run
+automatically from the command line. Or create tests in
+./src/extra/language/test with an accompanying runner script.
+
+In the future we may add a 'make fulltest' command, to run all tests
+in both places.
+
+Note the distinction between two source trees. The language (Perl,
+Ruby etc) code in ./src/mappings/swig/language/...  is closely tied
+to the mapping effort, and the code should reflect that. Think of it
+this way: any code that mirrors functionality in the different
+language domains should be there.
+
+More remote functionality goes into ./src/extra/language/... I.e.
+code specific to one language implementation.
+
+Obviously the latter code is candidate for inclusion into BioPerl,
+BioRuby etc. It is 'extra' functionality outside the mapping scope of
+BioLib. Even though it may live in that location forever.
+
+=== Test data ===
+
+Test data files are stored in ./src/test/data (at least the smaller
+files with size < 50K).
+
+With regard to test *data* the policy is *not* to store large data
+files in the source tree. With biological data this would become
+really unwieldy in no time. The idea is to use stubs for data files,
+like what I have done for Affyio. See:
+
+  src/test/data/microarray/affy/test/test*.gz.stub
+
+When a test requires one of these files they get downloaded from a
+central webserver. The script that handles it for Ruby is in
+./src/extra/ruby/biolib/biolibtest.rb.
+
+
 
