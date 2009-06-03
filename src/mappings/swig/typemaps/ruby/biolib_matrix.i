@@ -1,5 +1,5 @@
 
-/* This typemap for double** takes an array of Ruby values and turns it into a
+/* This typemap for type** takes an array of Ruby values and turns it into a
  * C matrix, based on the number of rows and cols provided. The matrix can be
  * modified ans is returned from the method as an array again.  Note the number
  * of columns and rows are hard coded as arg1 and arg2 type arguments,
@@ -14,20 +14,21 @@
  */
 
 %define BIOLIB_INMATRIXASARRAY(type,colsarg,rowsarg,name)
-  %typemap(in) double **name {
+  %typemap(in) type **name {
+    /* BIOLIB_INMATRIXASARRAY %typemap(in) type **name */
     int cols = colsarg;
     int rows = rowsarg; 
     int i, row;
     int len;
-    double *base;
-    double **dptr;
+    type *base;
+    type **dptr;
 
     if (!rb_obj_is_kind_of($input,rb_cArray))
-      rb_raise(rb_eArgError, "Expected Array of values for double ** $1_name");
+      rb_raise(rb_eArgError, "BIOLIB_INMATRIXASARRAY expected Array of values for type **$1_name");
     len = rows * cols;
     /* len = RARRAY($input)->len; */
-    dptr = (double **)malloc(rows*sizeof(double *));
-    base = (double *)malloc(len*sizeof(double));
+    dptr = (type **)malloc(rows*sizeof(type *));
+    base = (type *)malloc(len*sizeof(type));
     for (i=0; i<len; i++)
       base[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
     for (row=0; row<rows; row++)
@@ -35,7 +36,21 @@
     $1 = dptr;
   }
 
-  %typemap(argout) double **name {
+
+  %typemap(freearg) type **name {
+    /* BIOLIB_INMATRIXASARRAY %typemap(freearg) type **name */
+    if ($1) {
+      free(*$1);
+      free($1);
+    }
+  }
+%enddef
+
+%define BIOLIB_INOUTMATRIXASARRAY(type,colsarg,rowsarg,name)
+  BIOLIB_INMATRIXASARRAY(type,colsarg,rowsarg,name);
+
+  %typemap(argout) type **name {
+    /* BIOLIB_INOUTMATRIXASARRAY %typemap(argout) type **name */
     int i,j;
     int cols = colsarg;
     int rows = rowsarg; 
@@ -45,13 +60,5 @@
     for (i=0; i<rows; i++)
       for (j=0; j<cols; j++)
         rb_ary_push($result,rb_float_new($1[i][j]));
-  }
-
-  %typemap(freearg) double **name {
-    int i;
-    if ($1) {
-      free(*$1);
-      free($1);
-    }
   }
 %enddef
