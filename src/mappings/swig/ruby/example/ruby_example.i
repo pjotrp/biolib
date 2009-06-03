@@ -1,12 +1,12 @@
 %module example
 
 %include ../../typemaps/ruby/biolib_matrix.i
+
+MAP_INOUT_DIM_MATRIXASARRAY(double,arg1,arg2,matrix_as_array)
+
 %include ../../typemaps/ruby/biolib_array.i
 
-BIOLIB_INARRAY(double, data)
-BIOLIB_INOUTARRAY(double,num,data,result)
-BIOLIB_OUTARRAY(double,result)
-BIOLIB_INMATRIXASARRAY(double,arg1,arg2,matrix_as_array)
+MAP_INOUT_ARRAY(double,data,result) 
 
 %include ../../example.i
 

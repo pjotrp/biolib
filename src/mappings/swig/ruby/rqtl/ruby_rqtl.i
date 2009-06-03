@@ -22,9 +22,8 @@ BIOLIB_INMATRIXASARRAY(double,arg8,arg1,Intcov)
 
 %include ../../typemaps/ruby/biolib_array.i
 
-/* BIOLIB_INARRAY(double,weights) 
+BIOLIB_INARRAY(double,weights)
 BIOLIB_INARRAY(double,pheno) 
-*/
 
 /* BIOLIB_INOUTARRAY(double,n_ind,pheno,result) 
  */

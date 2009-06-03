@@ -13,9 +13,9 @@
  *   raise "Test failed with value #{result}" if result[3] != 4
  */
 
-%define BIOLIB_INMATRIXASARRAY(type,colsarg,rowsarg,name)
+%define MAP_IN_DIM_MATRIXASARRAY(type,colsarg,rowsarg,name)
   %typemap(in) type **name {
-    /* BIOLIB_INMATRIXASARRAY %typemap(in) type **name */
+    /* MAP_IN_DIM_MATRIXASARRAY %typemap(in) type **name */
     int cols = colsarg;
     int rows = rowsarg; 
     int i, row;
@@ -24,7 +24,7 @@
     type **dptr;
 
     if (!rb_obj_is_kind_of($input,rb_cArray))
-      rb_raise(rb_eArgError, "BIOLIB_INMATRIXASARRAY expected Array of values for type **$1_name");
+      rb_raise(rb_eArgError, "MAP_IN_DIM_MATRIXASARRAY expected Array of values for type **$1_name");
     len = rows * cols;
     /* len = RARRAY($input)->len; */
     dptr = (type **)malloc(rows*sizeof(type *));
@@ -38,7 +38,7 @@
 
 
   %typemap(freearg) type **name {
-    /* BIOLIB_INMATRIXASARRAY %typemap(freearg) type **name */
+    /* MAP_IN_DIM_MATRIXASARRAY %typemap(freearg) type **name */
     if ($1) {
       free(*$1);
       free($1);
@@ -46,11 +46,11 @@
   }
 %enddef
 
-%define BIOLIB_INOUTMATRIXASARRAY(type,colsarg,rowsarg,name)
-  BIOLIB_INMATRIXASARRAY(type,colsarg,rowsarg,name);
+%define MAP_INOUT_DIM_MATRIXASARRAY(type,colsarg,rowsarg,name)
+  MAP_IN_DIM_MATRIXASARRAY(type,colsarg,rowsarg,name);
 
   %typemap(argout) type **name {
-    /* BIOLIB_INOUTMATRIXASARRAY %typemap(argout) type **name */
+    /* MAP_INOUT_DIM_MATRIXASARRAY %typemap(argout) type **name */
     int i,j;
     int cols = colsarg;
     int rows = rowsarg; 
