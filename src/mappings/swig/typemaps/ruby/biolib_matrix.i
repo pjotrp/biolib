@@ -16,12 +16,15 @@
 %define MAP_IN_DIM_MATRIXASARRAY(type,colsarg,rowsarg,name)
   %typemap(in) type **name {
     /* MAP_IN_DIM_MATRIXASARRAY %typemap(in) type **name */
-    int cols = colsarg;
-    int rows = rowsarg; 
+    int cols;
+    int rows; 
     int i, row;
     int len;
     type *base;
     type **dptr;
+
+    SWIG_AsVal_int(argv[colsarg], &cols);
+    SWIG_AsVal_int(argv[rowsarg], &rows);
 
     if (!rb_obj_is_kind_of($input,rb_cArray))
       rb_raise(rb_eArgError, "MAP_IN_DIM_MATRIXASARRAY expected Array of values for type **$1_name");
@@ -52,8 +55,10 @@
   %typemap(argout) type **name {
     /* MAP_INOUT_DIM_MATRIXASARRAY %typemap(argout) type **name */
     int i,j;
-    int cols = colsarg;
-    int rows = rowsarg; 
+    int rows, cols;
+
+    SWIG_AsVal_int(argv[colsarg], &cols);
+    SWIG_AsVal_int(argv[rowsarg], &rows);
 
     /* example: printf("%f,%f",$1[0][0],$1[1][0]); */
     $result = rb_ary_new();

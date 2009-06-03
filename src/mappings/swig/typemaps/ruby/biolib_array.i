@@ -1,14 +1,17 @@
+
 %define MAP_IN_DIM_ARRAY(type,sizearg,name)
   %typemap(in) type* name {
     /* MAP_IN_DIM_ARRAY %typemap(in) type* name */
-    int i, len;
+    int i, asize;
     
+    SWIG_AsVal_int(argv[sizearg], &asize);
+
     if (!rb_obj_is_kind_of($input,rb_cArray))
       rb_raise(rb_eArgError, "MAP_IN_ARRAY expected Array of values for $1_name");
-    len = sizearg;
-    $1 = (type *)malloc(len*sizeof(type));
-    for (i=0; i<len; ++i)
-      ($1)[i] = rb_len2dbl(RARRAY($input)->ptr[i]);
+    asize = sizearg;
+    $1 = (type *)malloc(asize*sizeof(type));
+    for (i=0; i<asize; ++i)
+      ($1)[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
   }
 
   %typemap(freearg) type *name {
@@ -27,7 +30,7 @@
     len = RARRAY($input)->len;
     $1 = (type *)malloc(len*sizeof(type));
     for (i=0; i<len; ++i)
-      ($1)[i] = rb_len2dbl(RARRAY($input)->ptr[i]);
+      ($1)[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
   }
 
   %typemap(freearg) type *name {
@@ -56,7 +59,8 @@
     
     if (!rb_obj_is_kind_of($input,rb_cArray))
       rb_raise(rb_eArgError, "MAP_INOUT_DIM_ARRAY expected Array of values for $1_name");
-    asize = sizearg;
+    SWIG_AsVal_int(argv[sizearg], &asize);
+
     $1 = (type *)malloc(asize*sizeof(type));
     for (i=0; i<asize; ++i)
       ($1)[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
@@ -117,12 +121,12 @@
 
   %typemap(argout) type *result {
     /* MAP_OUT_DIM_ARRAY %typemap(argout) type *result */
-    int i;
-    int len = sizearg;
+    int i, asize;
 
+    SWIG_AsVal_int(argv[sizearg], &asize);
     /* example: printf("%f,%f",$1[0][0],$1[1][0]); */
     $result = rb_ary_new();
-    for (i=0; i<len; i++)
+    for (i=0; i<asize; i++)
       rb_ary_push($result,rb_float_new($1[i]));
   }
 
