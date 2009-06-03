@@ -16,18 +16,18 @@
 
 %include ../../typemaps/ruby/biolib_matrix.i
 
-BIOLIB_INMATRIXASARRAY(int,arg2,arg1,Geno) 
-BIOLIB_INMATRIXASARRAY(double,arg6,arg1,Addcov)
-BIOLIB_INMATRIXASARRAY(double,arg8,arg1,Intcov)
+MAP_IN_DIM_MATRIXASARRAY(int,arg2,arg1,Geno) 
+MAP_IN_DIM_MATRIXASARRAY(double,arg6,arg1,Addcov)
+MAP_IN_DIM_MATRIXASARRAY(double,arg8,arg1,Intcov)
 
 %include ../../typemaps/ruby/biolib_array.i
 
-BIOLIB_INARRAY(double,weights)
-BIOLIB_INARRAY(double,pheno) 
+MAP_IN_ARRAY(double,weights)
+MAP_IN_ARRAY(double,pheno) 
 
-/* BIOLIB_INOUTARRAY(double,n_ind,pheno,result) 
+/* MAP_INOUTARRAY(double,n_ind,pheno,result) 
  */
 
-BIOLIB_OUTARRAY(double,arg1,result)
+MAP_OUT_DIM_ARRAY(double,arg1,result)
 
 %include ../../rqtl.i

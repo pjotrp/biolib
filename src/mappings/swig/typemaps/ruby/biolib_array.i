@@ -87,7 +87,7 @@
   }
 
   %typemap(argout) (int num, type *data, type *result) {
-    /* MAP_OUT_ARRAY %typemap(argout) int type, *data type, *result */
+    /* MAP_INOUT_ARRAY %typemap(argout) int type, *data type, *result */
     int i;
     
     int asize = RARRAY($input)->len;
@@ -104,19 +104,19 @@
   }
 %enddef
 
-%define MAP_OUTARRAY(type,sizearg,result)
+%define MAP_OUT_DIM_ARRAY(type,sizearg,result)
   /* Pass a result through an array pointer */
 
   %typemap(in) type *result {
-    /* MAP_OUTARRAY %typemap(in) type *result: ignore */
+    /* MAP_OUT_DIM_ARRAY %typemap(in) type *result: ignore */
   }
 
   %typemap(out) type *result {
-    /* MAP_OUT_ARRAY %typemap(out) type *result: ignore */
+    /* MAP_OUT_DIM_ARRAY %typemap(out) type *result: ignore */
   }
 
   %typemap(argout) type *result {
-    /* MAP_OUT_ARRAY %typemap(argout) type *result */
+    /* MAP_OUT_DIM_ARRAY %typemap(argout) type *result */
     int i;
     int len = sizearg;
 
@@ -127,7 +127,7 @@
   }
 
   %typemap(freearg) type *result {
-    /* MAP_OUT_ARRAY %typemap(freearg) type *result */
+    /* MAP_OUT_DIM_ARRAY %typemap(freearg) type *result */
     if ($1) free($1);
   }   
 %enddef
