@@ -1,3 +1,12 @@
+/* 
+ * SWIG macro's for mapping C arrays (like double *). The coding is:
+ *
+ *   IN:    input array
+ *   OUT:   output array (does not show in parameter list)
+ *   INOUT: combination of above
+ *   DIM:   takes the dimension from the argument list
+ *
+ */
 
 %define MAP_IN_DIM_ARRAY(type,sizearg,name)
   %typemap(in) type* name {
@@ -111,7 +120,7 @@
 %define MAP_OUT_DIM_ARRAY(type,sizearg,result)
   /* Pass a result through an array pointer */
 
-  %typemap(in) type *result {
+  %typemap(in, numinputs=0) type *result {
     /* MAP_OUT_DIM_ARRAY %typemap(in) type *result: ignore */
   }
 
