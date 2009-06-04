@@ -16,7 +16,7 @@
 
 %include ../../typemaps/ruby/biolib_matrix.i
 
-MAP_IN_DIM_MATRIXASARRAY(int,1,0,Geno) 
+MAP_IN_DIM_MATRIXASARRAY(int,0,1,Geno) 
 MAP_IN_DIM_MATRIXASARRAY(double,5,0,Addcov)
 MAP_IN_DIM_MATRIXASARRAY(double,7,0,Intcov)
 
