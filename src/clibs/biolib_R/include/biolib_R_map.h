@@ -10,4 +10,7 @@
   #undef error
   #define error(args...) biolib_fatal(args)
 
+  void BioLib_R_Init();
+  void BioLib_R_Close();
+
 #endif // BIOLIB
