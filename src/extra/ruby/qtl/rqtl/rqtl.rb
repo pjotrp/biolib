@@ -13,6 +13,7 @@ class RQTL
   # a list of markers with chromosome positions and lod scores.
 
   def scanone options
+    Biolib::Biolib_R.BioLib_R_Init()
     res = nil
     # call the C function
     if (options[:method] == "mr" or options[:method]=="mr-imp" or options[:method]=="mr-argmax")

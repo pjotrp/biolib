@@ -1,10 +1,10 @@
-
-# gdb ruby
+# gdb /usr/bin/ruby
 # directory /home/wrk/izip/git/opensource/biolib/src/mappings/swig/ruby/rqtl:/home/wrk/izip/git/opensource/biolib/src/clibs/rqtl/src/
 # run -I../../rqtl/build debug.rb
 #
 $: << '..'
 $: << '../../../mappings/swig/ruby/rqtl/'
+$: << '../../../mappings/swig/ruby/biolib_R/'
 
 require 'qtl/rqtl'
 
