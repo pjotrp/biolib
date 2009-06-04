@@ -1,6 +1,7 @@
 # RQTL convenience wrapper for Biolib R/QTL mappings
 
 require 'biolib/rqtl'
+require 'biolib/biolib_R'
 
 class RQTL
 

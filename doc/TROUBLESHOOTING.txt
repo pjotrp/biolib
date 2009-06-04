@@ -24,6 +24,19 @@ different git repositories. Fix with:
 
 (this should be done by the configure script)
 
+== Can not find shared library ==
+
+An error like:
+
+  libz.so.1: cannot open shared object file: No such file or directory
+
+points to a path problem for loading shared libraries. One problem
+could be you are using a Nix build of Ruby, which does not find the
+standard .so files.
+
+Normally CMake build scripts should intercept these dependencies and
+resolve them.
+
 == Cmake gives: Permission denied (publickey) ==
 
 Ouch, cmake is trying to update a git submodule which has an ssh

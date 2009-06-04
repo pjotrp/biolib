@@ -2,9 +2,13 @@
 // biolib.
 //
 
-#ifdef BIOLIB
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-  #include <biolib_error.h>
+// #ifdef BIOLIB
+
+  // #include <biolib_error.h>
 
   // Redefine the R error function
   #undef error
@@ -13,4 +17,8 @@
   void BioLib_R_Init();
   void BioLib_R_Close();
 
-#endif // BIOLIB
+// #endif // BIOLIB
+#ifdef __cplusplus
+  } 
+#endif
+
