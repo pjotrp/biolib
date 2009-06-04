@@ -1,10 +1,10 @@
+# Make Affyio module for Ruby
 
 cmake_minimum_required(VERSION 2.6)
-
 ENABLE_TESTING()
 
-SET (M_NAME example)
-SET (M_VERSION 1.0)
+SET (M_NAME biolib_R)
+# SET (M_VERSION 1.8)
 SET (INTERFACE ruby_${M_NAME}.i)
 
 IF(NOT BUILD_LIBS)
@@ -12,10 +12,12 @@ IF(NOT BUILD_LIBS)
   SET (CMAKE_MODULE_PATH ${MAP_ROOT}/tools/cmake-support/modules)
 ENDIF(NOT BUILD_LIBS)
 
+SET (USE_RLIB TRUE)
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
 
 FIND_PACKAGE(MapRuby)
 
 TEST_RUBY_BINDINGS()
 INSTALL_RUBY_BINDINGS()
+
 
