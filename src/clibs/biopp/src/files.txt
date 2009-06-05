@@ -1,1 +1,15 @@
+${CONTRIB_PATH}/utils/Utils/ApplicationTools.cpp
+${CONTRIB_PATH}/utils/Utils/AttributesTools.cpp
+${CONTRIB_PATH}/utils/Utils/ColorTools.cpp
+${CONTRIB_PATH}/utils/Utils/DvipsColorSet.cpp
+${CONTRIB_PATH}/utils/Utils/Exceptions.cpp
+${CONTRIB_PATH}/utils/Utils/FileTools.cpp
+${CONTRIB_PATH}/utils/Utils/GraphicDevice.cpp
+${CONTRIB_PATH}/utils/Utils/KeyvalTools.cpp
+${CONTRIB_PATH}/utils/Utils/MolscriptColorSet.cpp
+${CONTRIB_PATH}/utils/Utils/PGFGraphicDevice.cpp
+${CONTRIB_PATH}/utils/Utils/RColorSet.cpp
+${CONTRIB_PATH}/utils/Utils/StringTokenizer.cpp
+${CONTRIB_PATH}/utils/Utils/SVGGraphicDevice.cpp
 ${CONTRIB_PATH}/utils/Utils/TextTools.cpp
+${CONTRIB_PATH}/utils/Utils/XFigGraphicDevice.cpp
