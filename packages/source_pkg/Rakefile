@@ -8,7 +8,8 @@ packagename=PROJECT_NAME+'-'+BIOLIB_VERSION
 
 desc "Package BioLib"
 task :default => [:clean, :package]
- 
+
+# The ** notation means any level of subdirectory
 task :package do
   raise 'Run from source root only!' if !File.exist?('doc/BUILD.txt')
 	packagedir=packagename
@@ -31,9 +32,7 @@ task :package do
 		'src/clibs/staden_io_lib-*/io_lib/*.{h,c,txt}',
 		'src/biolib/**/*.{rb,pl,py}',
 		'src/mappings/swig/*.i',
-		'src/mappings/swig/ruby/**/*.{rb,i}',
-		'src/mappings/swig/perl/**/*.{pl,i}',
-		'src/mappings/swig/python/**/*.{py,i}',
+		'src/mappings/swig/*/**/*.{pl,py,rb,i,sh}',
 		'src/test/data/**/*/*/*'
   ]
 
