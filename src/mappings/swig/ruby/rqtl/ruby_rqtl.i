@@ -28,6 +28,6 @@ MAP_IN_ARRAY(double,pheno)
 /* MAP_INOUTARRAY(double,n_ind,pheno,result) 
  */
 
-MAP_OUT_DIM_ARRAY(double,0,result)
+MAP_OUT_DIM_ARRAY(double,1,result)
 
 %include ../../rqtl.i

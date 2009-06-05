@@ -121,7 +121,10 @@
   /* Pass a result through an array pointer */
 
   %typemap(in, numinputs=0) type *result {
+    int asize;
     /* MAP_OUT_DIM_ARRAY %typemap(in) type *result: ignore */
+    SWIG_AsVal_int(argv[sizearg], &asize);
+    $1 = (type *)malloc(asize*sizeof(type));
   }
 
   %typemap(out) type *result {
