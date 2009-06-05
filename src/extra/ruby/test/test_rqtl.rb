@@ -7,6 +7,7 @@
 # Documentation with rd2 -r rd/rd2html-lib *.rb
 
 $: << '../../../mappings/swig/ruby/rqtl/'
+$: << '../../../mappings/swig/ruby/biolib_R/'
 
 =begin
 
@@ -351,6 +352,9 @@ as a qtl object is handled transparently.
 
   >> r.genotypes.na
   => ["NA","NA"]
+
+  >> r.phenotypes[0..4]
+  => [[118.317], [264], [194.917], [264], [145.417]]
 
 =end
 

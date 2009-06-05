@@ -88,11 +88,19 @@ class RQtlInputAdaptor
   end
 
   def genotypematrix
-    Array.new.fill(0.0,0..@adapted.individuals.size*@adapted.markers.size)
+    gmatrix = Array.new.fill(0.0,0..@adapted.individuals.size*@adapted.markers.size)
+    (0..@adapted.individuals.size-1).each do | ind |
+      (0..@adapted.markers.size-1).each do | mar |
+        gmatrix[ind*@adapted.markers.size+mar] = genotype(ind,mar)
+      end
+    end
+    p gmatrix
+    gmatrix.to_a.flatten.collect { | g | (g=='NA' ? 0:g) }
   end
 
   def phenotypevector
-    Array.new.fill(0.0,0..@adapted.individuals.size)
+    # FIX multiple phenotypes and NA's (now zeroed)
+    @adaptedphenotypes.to_a.flatten.collect { | ph | (ph=='NA' ? 0:ph) }
   end
 
   def weights
