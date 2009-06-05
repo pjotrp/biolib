@@ -1,57 +1,69 @@
 
-/* This typemap for double** takes an array of Ruby values and turns it
- * into a C matrix, based on the number of rows and cols provided. The
- * matrix can be modified ans is returned from the method as an array again.
- * Note the number of columns and rows are hard coded as arg1 and arg2 - 
- * for a more generic approach a helper data structure would be more
- * appropriate. What gives, it works.
+/* This typemap for type** takes an array of Ruby values and turns it into a
+ * C matrix, based on the number of rows and cols provided. The matrix can be
+ * modified ans is returned from the method as an array again.  Note the number
+ * of columns and rows are hard coded as arg1 and arg2 type arguments,
+ * representing the SWIG internal name, rather than the parameter.  for a more
+ * generic approach a helper data structure would be more appropriate. What
+ * gives, it works.
  *
  * Example:
  *   values = [1.1,1.2,2.1,2.2,3.1,3.2]
- *   result = Biolib::Example.matrix_as_array_change(2,3,values)
+ *   result = Biolib::Example.name_change(2,3,values)
  *   raise "Test failed with value #{result}" if result[3] != 4
  */
 
-%typemap(in) double **matrix_as_array {
-   int cols = arg1;
-   int rows = arg2;
-   int i, row;
-   int len;
-   double *base;
-   double **dptr;
-   
-   if (!rb_obj_is_kind_of($input,rb_cArray))
-     rb_raise(rb_eArgError, "Expected Array of values for double ** $1_name");
-   len = rows * cols;
-   /* len = RARRAY($input)->len; */
-   dptr = (double **)malloc(rows*sizeof(double *));
-   base = (double *)malloc(len*sizeof(double));
-   for (i=0; i<len; i++)
-     base[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
-   for (row=0; row<rows; row++)
-     dptr[row] = &base[row*cols];
-   $1 = dptr;
-}
+%define MAP_IN_DIM_MATRIXASARRAY(type,colsarg,rowsarg,name)
+  %typemap(in) type **name {
+    /* MAP_IN_DIM_MATRIXASARRAY %typemap(in) type **name */
+    int cols;
+    int rows; 
+    int i, row;
+    int len;
+    type *base;
+    type **dptr;
 
-%typemap(argout) double **matrix_as_array {
+    SWIG_AsVal_int(argv[colsarg], &cols);
+    SWIG_AsVal_int(argv[rowsarg], &rows);
+
+    if (!rb_obj_is_kind_of($input,rb_cArray))
+      rb_raise(rb_eArgError, "MAP_IN_DIM_MATRIXASARRAY expected Array of values for type **$1_name");
+    len = rows * cols;
+    /* len = RARRAY($input)->len; */
+    dptr = (type **)malloc(rows*sizeof(type *));
+    base = (type *)malloc(len*sizeof(type));
+    for (i=0; i<len; i++)
+      base[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
+    for (row=0; row<rows; row++)
+      dptr[row] = &base[row*cols];
+    $1 = dptr;
+  }
+
+
+  %typemap(freearg) type **name {
+    /* MAP_IN_DIM_MATRIXASARRAY %typemap(freearg) type **name */
+    if ($1) {
+      free(*$1);
+      free($1);
+    }
+  }
+%enddef
+
+%define MAP_INOUT_DIM_MATRIXASARRAY(type,colsarg,rowsarg,name)
+  MAP_IN_DIM_MATRIXASARRAY(type,colsarg,rowsarg,name);
+
+  %typemap(argout) type **name {
+    /* MAP_INOUT_DIM_MATRIXASARRAY %typemap(argout) type **name */
     int i,j;
-    int cols = arg1;
-    int rows = arg2;
+    int rows, cols;
+
+    SWIG_AsVal_int(argv[colsarg], &cols);
+    SWIG_AsVal_int(argv[rowsarg], &rows);
 
     /* example: printf("%f,%f",$1[0][0],$1[1][0]); */
     $result = rb_ary_new();
     for (i=0; i<rows; i++)
       for (j=0; j<cols; j++)
         rb_ary_push($result,rb_float_new($1[i][j]));
-}
-
-%typemap(freearg) double ** {
-    int i;
-    int rows = arg2;
-
-    if ($1) {
-      free(*$1);
-      free($1);
-    }
-}
-
+  }
+%enddef

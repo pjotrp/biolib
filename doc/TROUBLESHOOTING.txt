@@ -7,6 +7,8 @@ specific to a language are in documents PERL.txt, RUBY.txt etc. in
 See also ./doc/REPORTINGBUGS.txt if you want to send a problem
 upstream.
 
+= Building BioLib =
+
 == Could not find Cmake module ==
 
 An error like:
@@ -21,6 +23,19 @@ different git repositories. Fix with:
   git submodule update
 
 (this should be done by the configure script)
+
+== Can not find shared library ==
+
+An error like:
+
+  libz.so.1: cannot open shared object file: No such file or directory
+
+points to a path problem for loading shared libraries. One problem
+could be you are using a Nix build of Ruby, which does not find the
+standard .so files.
+
+Normally CMake build scripts should intercept these dependencies and
+resolve them.
 
 == Cmake gives: Permission denied (publickey) ==
 
@@ -38,5 +53,33 @@ If you fix this yourself, also fix the items in .git/config.
 Contact the developers with this error.
 
 
+= Developing with BioLib =
 
+== Symbol lookup error ==
+
+When creating a module you get a symbol lookup error like
+
+  /usr/bin/ruby: symbol lookup error: ../rqtl/biolib/rqtl.so:
+  undefined symbol: _Z10scanone_mriiiPPiPPdiS2_iS1_S1_S1_
+
+The 'mangled' symbol name is the C++ linkage version. It may be the
+shared library was compiled as a C linkage library. One possibility
+is to enforce C compilation of the SWIG module.
+
+In the CMakeLists.txt file define
+
+  SET(USE_C_LINKAGE TRUE)
+
+= Debugging BioLib =
+
+It is possible to debug C libraries without having debug versions of
+the (high-level) language interpreter. Use cmake -DDEBUG=1 to compile
+the C-library and the SWIG module. Next enter gdb with the binary path
+of the interpreter. For example:
+
+  gdb /usr/bin/ruby
+  run "-I../rqtl" "./../test/test_rqtl.rb"
+  (crash)
+
+typing 'where' will give you a stack trace.
 
