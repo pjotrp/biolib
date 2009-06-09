@@ -29,19 +29,19 @@
     <title>Interesting libraries</title>
     <id>6</id>
     <revision>
-      <id>193</id>
-      <timestamp>2009-04-06T20:51:55Z</timestamp>
+      <id>218</id>
+      <timestamp>2009-05-04T07:21:59Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* Algebra/matrix */</comment>
+      <comment>/* Sequence analysis */</comment>
       <text xml:space="preserve">The following source code libraries have been located that may be of interest for biolib mappings:
 
 == Sequence analysis ==
 
 * [http://www.seqan.de/ SeqAn], an open source C++ library of efficient algorithms and data structures for the analysis of sequences with the focus on biological data
-* [http://kimura.univ-montp2.fr/BioPP Bio++], a set of Object Oriented libraries written in C++
+* [http://kimura.univ-montp2.fr/BioPP Bio++], a set of Object Oriented libraries written in C++ (mapping this summer in BioLib)
 * [http://www.ebi.ac.uk/emboss/ EMBOSS] tools and libraries ([[NIX]] package exists)
 * [http://www.ncbi.nlm.nih.gov/IEB/ToolBox/ NCBI] tools and libraries ([[NIX]] package exists)
 
