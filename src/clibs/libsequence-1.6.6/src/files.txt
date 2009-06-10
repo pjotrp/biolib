@@ -2,3 +2,16 @@ ${CONTRIB_PATH}/src/Seq.cc
 ${CONTRIB_PATH}/src/ComplementBase.cc
 ${CONTRIB_PATH}/src/Fasta.cc
 ${CONTRIB_PATH}/src/SeqExceptions.cc
+${CONTRIB_PATH}/src/Kimura80.cc
+${CONTRIB_PATH}/src/Comparisons.cc
+${CONTRIB_PATH}/src/Comeron95.cc
+${CONTRIB_PATH}/src/RedundancyCom95.cc
+${CONTRIB_PATH}/src/Sites.cc
+${CONTRIB_PATH}/src/SingleSub.cc
+${CONTRIB_PATH}/src/TwoSubs.cc
+${CONTRIB_PATH}/src/ThreeSubs.cc
+${CONTRIB_PATH}/src/GranthamWeights.cc
+${CONTRIB_PATH}/src/Unweighted.cc
+${CONTRIB_PATH}/src/Grantham.cc
+${CONTRIB_PATH}/src/Translate.cc
+${CONTRIB_PATH}/src/PathwayHelper.cc
