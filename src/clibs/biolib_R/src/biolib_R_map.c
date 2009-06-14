@@ -18,6 +18,7 @@ void BioLib_R_Init() {
     setenv("R_HOME","/usr/lib/R",1);
     Rf_initEmbeddedR(argc, argv);
     R_running = true;
+    printf("Initialized embedded R (lib)\n");
   }
 }
 

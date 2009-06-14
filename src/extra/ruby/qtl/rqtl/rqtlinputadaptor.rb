@@ -111,8 +111,9 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
         gmatrix[ind*@adapted.markers.size+mar] = genotype(ind,mar)
       end
     end
-    # p gmatrix
-    gmatrix.to_a.flatten.collect { | g | (g=='NA' ? 0:g) }
+    m = gmatrix.to_a.flatten.collect { | g | (g=='NA' ? 0:g.to_i) }
+    # p m
+    m
   end
 
   # return index of used individuals
