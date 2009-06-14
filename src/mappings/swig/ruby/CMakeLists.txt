@@ -11,5 +11,6 @@ if (BLD_STADEN)
 endif (BLD_STADEN)
 
 if (BLD_RQTL)
+  add_subdirectory (biolib_R)
   add_subdirectory (rqtl)
 endif (BLD_RQTL)

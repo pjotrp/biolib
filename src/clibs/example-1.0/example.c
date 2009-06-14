@@ -63,3 +63,26 @@ void array_transform_to_result(int num, double *data, double *result)
     result[i] = data[i]+1.0;
 }
 
+/* 
+ * Transform an input array (version one using build-in sizes)
+ */
+
+void array_transform_to_result1(int num, double *data1, double *result)
+{
+  int i;
+  for (i=0; i<num; i++)
+    result[i] = data1[i]+1.5;
+}
+
+/* 
+ * Transform an input array (version two using an argsize dimension)
+ */
+
+void array_transform_to_result2(int num, double *data2, double *result)
+{
+  int i;
+  for (i=0; i<num; i++)
+    result[i] = data2[i]+2.0;
+}
+
+

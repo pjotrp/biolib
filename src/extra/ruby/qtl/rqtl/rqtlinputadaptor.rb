@@ -87,23 +87,45 @@ class RQtlInputAdaptor
     @adaptedphenotypes
   end
 
-  def genotypematrix
-    gmatrix = Array.new.fill(0.0,0..@adapted.individuals.size*@adapted.markers.size)
-    (0..@adapted.individuals.size-1).each do | ind |
+  def weights
+    []
+  end
+end
+
+
+class RQtlScanoneAdaptor < RQtlInputAdaptor
+
+  # return phenotypes for use by scanone function
+  def scanone_inphenotypevector
+    inds = use_individuals
+    # FIX multiple phenotypes 
+    phs = @adaptedphenotypes.to_a.flatten
+    inds.collect { | i | phs[i] }
+  end
+
+  def scanone_ingenotypematrix
+    inds = use_individuals
+    gmatrix = Array.new.fill(0.0,0..inds.size*@adapted.markers.size)
+    inds.each do | ind |
       (0..@adapted.markers.size-1).each do | mar |
         gmatrix[ind*@adapted.markers.size+mar] = genotype(ind,mar)
       end
     end
-    p gmatrix
+    # p gmatrix
     gmatrix.to_a.flatten.collect { | g | (g=='NA' ? 0:g) }
   end
 
-  def phenotypevector
+  # return index of used individuals
+  def use_individuals
+    inds = []
+    # test for valid phenotypes
     # FIX multiple phenotypes and NA's (now zeroed)
-    @adaptedphenotypes.to_a.flatten.collect { | ph | (ph=='NA' ? 0:ph) }
+    phs = @adaptedphenotypes.to_a.flatten
+    phs.each_with_index do | ph, i |
+      inds.push i if ph != 'NA'
+    end
+    inds
   end
 
-  def weights
-    []
-  end
+
 end

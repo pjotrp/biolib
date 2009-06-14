@@ -106,10 +106,10 @@ endif (STADEN_LIB)
 
 if (RQTL_LIB)
   set(BLD_RQTL    TRUE)
+  set(BLD_BIOLIB  TRUE)
   set(BLD_STADEN  FALSE)
   set(BLD_AFFYIO  FALSE)
   set(BLD_EXAMPLE FALSE)
-  set(BLD_BIOLIB  FALSE)
 endif (RQTL_LIB)
 
 if (EXAMPLE_LIB)

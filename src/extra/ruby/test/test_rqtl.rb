@@ -341,8 +341,14 @@ as a qtl object is handled transparently.
   >> r.genotype(8,'D10M44')
   => 1
 
+Note this Ruby implementation of R/qtl really retains the original dataset for
+querying and uses adaptors for querying modified or 'derived' datasets. The
+RQtlInputAdaptor above converts genotype names from:
+
   >> d.genotypes.names
   => ["A", "B", "C", "H"]
+
+to the indexed values used by R/qtl internally:
 
   >> r.genotypes.names
   => [1,3,4,2]
@@ -356,6 +362,10 @@ as a qtl object is handled transparently.
   >> r.phenotypes[0..4]
   => [[118.317], [264], [194.917], [264], [145.417]]
 
+Similarly the RQtlScanoneAdaptor modifies the input dataset to make it suitable
+for single QTL mapping with R/qtl. For example it drops the 4 'NA' phenotypes.
+Note, again, the adaptor is normally not seen by the end user.
+
 =end
 
   def test_rqtl_input_adaptor
@@ -367,6 +377,15 @@ as a qtl object is handled transparently.
     assert_equal([1,3,4,2],r.genotypes.names)
   end
 
+
+  def test_rqtl_scanone_adaptor
+    d = @qtl.data
+    assert_equal(["NA"],d.phenotypes[29])
+    assert_equal(120,d.phenotypes.size)
+    r1 = RQtlScanoneAdaptor.new(d)
+    p r1.use_individuals
+    assert_equal(116,r1.use_individuals.size)
+  end
 
 =begin
 
@@ -396,7 +415,7 @@ the @qtl dataset. We need the RQTL convenience class to map against biolib:
     >> require 'qtl/rqtl'
     >> rqtl = RQTL.new(qtl)
 
-Now execute QTL mapping with scanone
+Now execute single QTL mapping with scanone using multiple regression analysis
 
     >> mr = rqtl.scanone_mr()
     >> p ["mr",mr]

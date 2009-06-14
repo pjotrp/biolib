@@ -12,11 +12,6 @@ class RQTL
   # Calls directly into R/QTL the scanone method with options and returns
   # a list of markers with chromosome positions and lod scores.
 
-  def scanone options
-    Biolib::Biolib_R.BioLib_R_Init()
-    res = nil
-    # call the C function
-    if (options[:method] == "mr" or options[:method]=="mr-imp" or options[:method]=="mr-argmax")
 =begin
        z <- .C("R_scanone_mr",
               as.integer(n.ind),         # number of individuals
@@ -53,18 +48,27 @@ void scanone_mr(int n_ind, int n_pos, int n_gen, int **Geno,
     double *result);
 
 =end
+
+  def scanone options
+    Biolib::Biolib_R.BioLib_R_Init()
+    res = nil
+    # call the C function
+    if (options[:method] == "mr" or options[:method]=="mr-imp" or options[:method]=="mr-argmax")
       result = [] # place holder
-      r = RQtlInputAdaptor.new(@qtl.data)
-      res = Biolib::Rqtl.scanone_mr(r.individuals.size,
+      r = RQtlScanoneAdaptor.new(@qtl.data)
+      p [r.use_individuals.size, r.scanone_inphenotypevector]
+      if false
+        res = Biolib::Rqtl.scanone_mr(r.use_individuals.size,
                                     r.markers.size,
                                     r.genotypes.names.size,
-                                    r.genotypematrix,
+                                    r.scanone_ingenotypematrix,
                                     r.addcov,
                                     r.naddcov,
                                     r.intcov,
                                     r.nintcov,
-                                    r.phenotypevector,
+                                    r.scanone_inphenotypevector,
                                     r.weights)
+      end
     end
     res
   end
