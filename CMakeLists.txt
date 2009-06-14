@@ -22,6 +22,8 @@
 #   cmake -DSTADEN_LIB:BOOLEAN=TRUE
 #   cmake -DRQTL_LIB:BOOLEAN=TRUE
 #
+#   Combine with BUILD_RUBY (etc.) to build just one library type.
+#
 # See ./INSTALL for more information
 
 cmake_minimum_required(VERSION 2.6)
