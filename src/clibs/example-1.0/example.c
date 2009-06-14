@@ -86,3 +86,16 @@ void array_transform_to_result2(int num, double *data2, double *result)
 }
 
 
+/* 
+ * Transform an input array (version three using an argsize dimension 
+ * for the result only)
+ */
+
+void array_transform_to_result3(int num, double *data, double *result)
+{
+  int i;
+  for (i=0; i<num; i++)
+    result[i] = data[i]+2.5;
+}
+
+

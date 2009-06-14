@@ -16,4 +16,6 @@ raise "Test failed with value #{result}" if result[3] != 5
 # raise "Test failed with value #{result}" if result[3] != 5.5
 result = Biolib::Example.array_transform_to_result2(4,[1,2,3,4])
 raise "Test failed with value #{result}" if result[3] != 6
+result = Biolib::Example.array_transform_to_result3(4,[1,2,3,4])
+raise "Test failed with value #{result}" if result[3] != 6.5
 exit 0

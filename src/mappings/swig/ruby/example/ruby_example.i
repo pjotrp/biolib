@@ -13,6 +13,9 @@ MAP_OUT_ARRAY(double,result1)
 MAP_IN_DIM_ARRAY(double,0,data2) 
 MAP_OUT_DIM_ARRAY(double,0,result2) 
 
+MAP_IN_ARRAY(double,data3) 
+MAP_OUT_DIM_ARRAY(double,0,result3) 
+
 %include ../../example.i
 
 
