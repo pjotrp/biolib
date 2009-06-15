@@ -7,34 +7,54 @@ src/clibs/biolib_R/src/biolib_R_map.c with the BioLib_R_Init() method.
 
 Built-in functions can be called, like getting a random gamma distribution: 
 
-> rgamma(30,2)
- [1] 2.9135029 2.0843501 0.7226800 0.6652367 0.9366607 2.4565960 1.9405076
- [8] 2.6866575 1.3878253 5.8147071 1.6865943 3.8775883 0.3037578 1.8012560
-[15] 1.7614905 1.8671924 2.2626443 1.2164735 1.5285427 1.4368271 3.3625129
-[22] 2.4270870 3.7300581 1.6228030 2.1135774 3.7379778 2.2744796 3.7478399
-[29] 1.3526658 2.3476527
+> rgamma(1:1,2)
+[1] 0.2774796
 
-Or a log transformed gamma distribution:
+Or a gamma value:
 
-> -log(dgamma(1:8, shape=2))
-[1] 1.000000 1.306853 1.901388 2.613706 3.390562 4.208241 5.054090 5.920558
+> gamma(.5)
+[1] 1.772454
+
+> log1p(1)
+[1] 0.6931472
+
+which equals:
+
+> log(2)
+[1] 0.6931472
+
 
 This was achieved by including Rmath.h in
 ./src/mappings/swig/biolib_R.i, which looks something like:
 
-%{
-  #include <biolib_R_map.h>
-  #include <R_ext/Memory.h>
-  #include <Rmath.h>
-%}
+  %{
+    #include <biolib_R_map.h>
+    #include <R_ext/Memory.h>
+    #include <Rmath.h>
+  %}
 
-%include <biolib_R_map.h>
-%include <R_ext/Memory.h>
-%include <Rmath.h>
+  %include <biolib_R_map.h>
+  %include <R_ext/Memory.h>
+  %include <Rmath.h>
+
+The Ruby SWIG mapping is in ./src/mappings/swig/ruby/biolib_R. Next
+some tests were added in ./src/mappings/swig/ruby/test_biolib_R.rb:
+
+Now we can call from Ruby:
+
+  print "factorial(10): "
+  p Biolib::Biolib_R.Rf_gammafn(10+1)
+  print "Gamma:\n"
+  p Biolib::Biolib_R.Rf_rgamma(0.5,2)
+  p Biolib::Biolib_R.Rf_gammafn(0.5)
+  print "Log: "
+  p Biolib::Biolib_R.Rf_log1p(1)
+
+rendering
+
+  factorial(10): 3628800.0
+  Gamma:
+  3.79935141137198e-20
+  1.77245385090552
 
 
-
-
-== Memory mapping ==
-
-address 0x4, cause 'memory not mapped'
