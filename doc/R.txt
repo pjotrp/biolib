@@ -1,5 +1,40 @@
 = R with BIOLIB =
 
+At this point Biolib can link against Rlib.so (the R shared library),
+effectively embedding the R environment into Ruby, Perl, Python etc.
+The R environment requires initialization first - which is handled in
+src/clibs/biolib_R/src/biolib_R_map.c with the BioLib_R_Init() method.
+
+Built-in functions can be called, like getting a random gamma distribution: 
+
+> rgamma(30,2)
+ [1] 2.9135029 2.0843501 0.7226800 0.6652367 0.9366607 2.4565960 1.9405076
+ [8] 2.6866575 1.3878253 5.8147071 1.6865943 3.8775883 0.3037578 1.8012560
+[15] 1.7614905 1.8671924 2.2626443 1.2164735 1.5285427 1.4368271 3.3625129
+[22] 2.4270870 3.7300581 1.6228030 2.1135774 3.7379778 2.2744796 3.7478399
+[29] 1.3526658 2.3476527
+
+Or a log transformed gamma distribution:
+
+> -log(dgamma(1:8, shape=2))
+[1] 1.000000 1.306853 1.901388 2.613706 3.390562 4.208241 5.054090 5.920558
+
+This was achieved by including Rmath.h in
+./src/mappings/swig/biolib_R.i, which looks something like:
+
+%{
+  #include <biolib_R_map.h>
+  #include <R_ext/Memory.h>
+  #include <Rmath.h>
+%}
+
+%include <biolib_R_map.h>
+%include <R_ext/Memory.h>
+%include <Rmath.h>
+
+
+
+
 == Memory mapping ==
 
 address 0x4, cause 'memory not mapped'

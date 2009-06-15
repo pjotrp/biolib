@@ -8,7 +8,8 @@
 int R_running = false;
 
 /* 
- * Initialize the R environment so we can use Rlib.so
+ * Initialize the R environment so we can use Rlib.so. 
+ * FIXME: R_HOME is hard coded here.
  */
 
 void BioLib_R_Init() {
