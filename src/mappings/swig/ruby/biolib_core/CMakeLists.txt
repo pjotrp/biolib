@@ -1,0 +1,24 @@
+# Make Affyio module for Ruby
+
+cmake_minimum_required(VERSION 2.6)
+ENABLE_TESTING()
+
+SET (M_NAME biolib_core)
+# SET (M_VERSION 1.8)
+SET (INTERFACE ruby_${M_NAME}.i)
+
+IF(NOT BUILD_LIBS)
+  SET (MAP_ROOT ../../../../..)
+  SET (CMAKE_MODULE_PATH ${MAP_ROOT}/tools/cmake-support/modules)
+ENDIF(NOT BUILD_LIBS)
+
+SET (USE_CORE TRUE)
+SET (SKIP_MODULE_LIBRARY_SEARCH TRUE)
+SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
+
+FIND_PACKAGE(MapRuby)
+
+TEST_RUBY_BINDINGS()
+INSTALL_RUBY_BINDINGS()
+
+
