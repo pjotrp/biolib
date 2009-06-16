@@ -7,7 +7,12 @@
 # Documentation with rd2 -r rd/rd2html-lib *.rb
 
 $: << '../../../mappings/swig/ruby/rqtl/'
+$: << '../../../mappings/swig/ruby/biolib_core/'
 $: << '../../../mappings/swig/ruby/biolib_R/'
+
+require 'biolib/biolib_core'
+
+Biolib::Biolib_core.biolib_setloglevel(7)
 
 =begin
 

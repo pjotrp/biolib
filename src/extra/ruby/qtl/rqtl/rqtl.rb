@@ -56,7 +56,10 @@ void scanone_mr(int n_ind, int n_pos, int n_gen, int **Geno,
     if (options[:method] == "mr" or options[:method]=="mr-imp" or options[:method]=="mr-argmax")
       result = [] # place holder
       r = RQtlScanoneAdaptor.new(@qtl.data)
-      # p [r.use_individuals.size, r.scanone_inphenotypevector]
+      # p [r.scanone_ingenotypematrix]
+      p [r.weights]
+      p [r.use_individuals.size, r.scanone_inphenotypevector.size]
+      p [r.markers.size, r.scanone_ingenotypematrix.size, r.weights.size]
       res = Biolib::Rqtl.scanone_mr(r.use_individuals.size,
                                     r.markers.size,
                                     r.genotypes.names.size,
@@ -66,7 +69,7 @@ void scanone_mr(int n_ind, int n_pos, int n_gen, int **Geno,
                                     r.intcov,
                                     r.nintcov,
                                     r.scanone_inphenotypevector,
-                                    r.weights)
+                                    r.weights) 
     end
     res
   end

@@ -87,9 +87,6 @@ class RQtlInputAdaptor
     @adaptedphenotypes
   end
 
-  def weights
-    []
-  end
 end
 
 
@@ -105,15 +102,23 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
 
   def scanone_ingenotypematrix
     inds = use_individuals
-    gmatrix = Array.new.fill(0.0,0..inds.size*@adapted.markers.size)
-    inds.each do | ind |
+    gmatrix = Array.new.fill(-127,0..inds.size*@adapted.markers.size-1)
+    inds.each_with_index do | ind, idx |
       (0..@adapted.markers.size-1).each do | mar |
-        gmatrix[ind*@adapted.markers.size+mar] = genotype(ind,mar)
+        gmatrix[idx*@adapted.markers.size+mar] = genotype(ind,mar)
       end
     end
-    m = gmatrix.to_a.flatten.collect { | g | (g=='NA' ? 0:g.to_i) }
+    m = gmatrix.to_a.flatten.collect { | g | (g=='NA' ? 0:g) }
     # p m
+    # contracts:
+    raise "Dimension error" if m.size != inds.size*@adapted.markers.size
+    raise "Contents error" if m.include?(-127)
     m
+  end
+
+  def weights
+    ws = Array.new.fill(1.0,0..use_individuals.size-1)
+    ws
   end
 
   # return index of used individuals
@@ -127,6 +132,5 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
     end
     inds
   end
-
 
 end

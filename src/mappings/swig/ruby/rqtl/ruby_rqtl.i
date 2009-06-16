@@ -22,7 +22,7 @@ MAP_IN_DIM_MATRIXASARRAY(double,7,0,Intcov)
 
 %include ../../typemaps/ruby/biolib_array.i
 
-MAP_IN_DIM_ARRAY(double,1,weights)
+MAP_IN_DIM_ARRAY(double,0,weights)
 MAP_IN_DIM_ARRAY(double,0,pheno) 
 MAP_OUT_DIM_ARRAY(double,1,result)
 
