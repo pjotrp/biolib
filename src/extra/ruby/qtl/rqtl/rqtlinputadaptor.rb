@@ -1,4 +1,6 @@
 
+require 'biolib/biolib_core'
+
 module GenericAdaptor
   def method_missing method, *args
     if @adapted.respond_to? method
@@ -130,6 +132,10 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
   def weights
     ws = Array.new.fill(1.0,0..use_individuals.size-1)
     ws
+  end
+
+  def recombinationfractions
+    Biolib::Biolib_core.biolib_log(1,"rfs not set")
   end
 
   # return index of used individuals

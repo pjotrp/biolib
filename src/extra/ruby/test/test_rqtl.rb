@@ -16,8 +16,12 @@ Biolib::Biolib_core.biolib_setloglevel(7)
 
 =begin
 
-Here we load the R/qtl Listeria dataset (from a CSV) and verify the
-resulting information matches that of the R version (see RQTL book page 46).
+Here we load the R/qtl Listeria dataset (from a CSV) and verify the resulting
+information matches that of the R version (see RQTL book page 46). In R we
+would do:
+  
+  > library(qtl)
+  > data(listeria)
 
 Find the special classes for loading QTL input files (part of BioLib 'extra').
 
@@ -447,11 +451,31 @@ position and lod score:
     >> mr[3].position
     => 40.41361 
 
+Now for the multiple imputation method by Sen and Churchill (2001). In R:
+
+    > data(listeria)
+    > gp =  sim.geno(listeria,step=2.5,n.draws=8)
+    > out.imp <- scanone(gp, method="imp")
+    > out.imp[74,]
+                 chr  pos       lod
+      c2.loc52.5   2 52.5 0.9199136
+    > out.imp[555,]
+    > cX.loc17.5   X 17.5 0.3018425
+
+The Ruby equivalent is:
+
+    >> mr = rqtl.scanone_imp(rqtl.sim_geno(2.5, 8))
+    >> mr[74].to_a
+    => ["c2.loc52.5", "2", 52.2, 0.9199136]
+    >> mr[555].to_a
+    => []
+
 =end
 
   def test_scanone
     rqtl = RQTL.new(@qtl)
     mr = rqtl.scanone_mr()
+    # roundoff, otherwise complains:
     assert_equal(0.457,(mr[0].lod*1000).to_i/1000.0)
   end
 end
