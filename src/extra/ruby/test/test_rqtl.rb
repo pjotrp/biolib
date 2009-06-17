@@ -388,7 +388,7 @@ Note, again, the adaptor is normally not seen by the end user.
     assert_equal(["NA"],d.phenotypes[29])
     assert_equal(120,d.phenotypes.size)
     r1 = RQtlScanoneAdaptor.new(d)
-    p r1.use_individuals
+    # p r1.use_individuals
     assert_equal(116,r1.use_individuals.size)
   end
 
@@ -423,36 +423,36 @@ the @qtl dataset. We need the RQTL convenience class to map against biolib:
 Now execute single QTL mapping with scanone using multiple regression analysis
 
     >> mr = rqtl.scanone_mr()
-    >> p ["mr",mr]
 
 Which returns and array of markers containing the marker name, chromosome,
 position and lod score:
 
+    >> mr[0].lod
+    => 0.457256442704442
+    >> mr[0].name
+    => 'D10M44'
+    >> mr[0].chromosome
+    => '1'
+    >> mr[0].position
+    => 0
     >> mr[0].to_a
-    => ['D10M44','1',0.0,0.457256443]
+    => ["D10M44", "1", 0, 0.457256442704442]
 
-or per attribute:
-
+    >> mr[3].lod
+    => 0.0701201576892285
     >> mr[3].name
     => 'D1M215'
     >> mr[3].chromosome
     => '1'
-    >> mr[3].pos
+    >> mr[3].position
     => 40.41361 
-    >> mr[3].lod
-    => 0.070120158
 
 =end
 
   def test_scanone
     rqtl = RQTL.new(@qtl)
     mr = rqtl.scanone_mr()
-    assert_equal(['D10M44','1',0.0,0.457256443],mr[0].to_a)
-    assert_equal('D1M215',mr[3].name) 
-    assert_equal('1',mr[3].chr) 
-    assert_equal(40.41361,mr[3].pos) 
-    assert_equal(0.070120158,mr[3].lod) 
-    assert_equal(['D10M44','1',0.0,0.457256443],mr[0].to_a)
+    assert_equal(0.457,(mr[0].lod*1000).to_i/1000.0)
   end
 end
 

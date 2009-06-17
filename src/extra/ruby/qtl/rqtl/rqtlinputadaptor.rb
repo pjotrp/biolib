@@ -105,15 +105,26 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
     gmatrix = Array.new.fill(-127,0..inds.size*@adapted.markers.size-1)
     inds.each_with_index do | ind, idx |
       (0..@adapted.markers.size-1).each do | mar |
-        gmatrix[idx*@adapted.markers.size+mar] = genotype(ind,mar)
+        # gmatrix[idx*@adapted.markers.size+mar] = genotype(ind,mar)
+        gmatrix[mar*inds.size+idx] = genotype(ind,mar)
       end
     end
-    m = gmatrix.to_a.flatten.collect { | g | (g=='NA' ? 0:g) }
+    # m = gmatrix.to_a.flatten.collect { | g | (g=='NA' ? 0:g) }
+    m = gmatrix
     # p m
     # contracts:
     raise "Dimension error" if m.size != inds.size*@adapted.markers.size
     raise "Contents error" if m.include?(-127)
     m
+  end
+
+  def genotype ind, mar
+    g = super(ind,mar)
+    # FIXME in case of mr with RIL
+    # zero all NA's
+    g = 0 if g=='NA' or g==nil 
+    g = 0 if g>3
+    g
   end
 
   def weights
