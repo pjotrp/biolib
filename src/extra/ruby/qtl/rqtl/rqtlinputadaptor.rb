@@ -2,6 +2,8 @@
 require 'biolib/biolib_core'
 
 module GenericAdaptor
+  include Contract
+
   def method_missing method, *args
     if @adapted.respond_to? method
       @adapted.send(method, *args)
@@ -113,23 +115,24 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
     end
     # m = gmatrix.to_a.flatten.collect { | g | (g=='NA' ? 0:g) }
     m = gmatrix
-    # p m
-    # contracts:
-    raise "Dimension error" if m.size != inds.size*@adapted.markers.size
-    raise "Contents error" if m.include?(-127)
+    contract("Dimension") {  m.size == inds.size*@adapted.markers.size }
+    contract("Matrix") { !m.include?(-127) }
     m
   end
 
   def genotype ind, mar
+    contract("F2 only") { @adapted.type=='F2' }
     g = super(ind,mar)
+    contract("no nils") { g!=nil }
     # FIXME in case of mr with RIL
     # zero all NA's
-    g = 0 if g=='NA' or g==nil 
+    g = 0 if g=='NA' 
     g = 0 if g>3
     g
   end
 
   def weights
+    Biolib::Biolib_core.biolib_log(7,"weights are fixed at 1.0")
     ws = Array.new.fill(1.0,0..use_individuals.size-1)
     ws
   end

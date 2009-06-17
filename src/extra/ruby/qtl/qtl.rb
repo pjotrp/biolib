@@ -1,3 +1,4 @@
+require 'qtl/utils/contract'
 require 'qtl/qtldataset'
 require 'qtl/input/qtlcsv'
 require 'qtl/rqtl/rqtl'
