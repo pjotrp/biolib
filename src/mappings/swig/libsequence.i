@@ -39,7 +39,17 @@
   #include <Sequence/Coalescent/Recombination.hpp>
   #include <Sequence/Coalescent/TreeOperations.hpp>
   #include <Sequence/Coalescent/NeutralSample.hpp>
-  #include <Sequence/Coalescent/bits/DemographicModels.tcc>
+  #include <Sequence/Coalescent/DemographicModels.hpp>
+  #include <Sequence/Correlations.hpp>
+  #include <Sequence/Crit.hpp>
+  #include <Sequence/descriptiveStats.hpp>
+  #include <Sequence/shortestPath.hpp>
+  #include <Sequence/SeqEnums.hpp>
+  #include <Sequence/ensureFloating.hpp>
+  #include <Sequence/preferFloatingTypes.hpp>
+  #include <Sequence/ComplementBase.hpp>
+  #include <Sequence/stateCounter.hpp>
+  #include <Sequence/Portability/randomShuffleAdaptor.hpp>
 %}
 
 
@@ -63,6 +73,10 @@
 %rename(sfs_assgin) Sequence::sfs_times::operator=;
 %rename(sfs_ref) Sequence::sfs_times::operator[];
                                 
+/*#define BOOST_STATIC_ASSERT( B ) \
+   typedef ::boost::static_assert_test<\
+      sizeof(::boost::STATIC_ASSERTION_FAILURE< (bool)( B ) >)\
+      > boost_static_assert_typedef_*/
 
 %include <Sequence/Seq.hpp>
 %include <Sequence/Fasta.hpp>
@@ -101,7 +115,41 @@
 %include <Sequence/Coalescent/Recombination.hpp>
 %include <Sequence/Coalescent/TreeOperations.hpp>
 %include <Sequence/Coalescent/NeutralSample.hpp>
-%include <Sequence/Coalescent/bits/DemographicModels.tcc>
+%include <Sequence/Coalescent/DemographicModels.hpp>
+%include <Sequence/Correlations.hpp>
+%include <Sequence/Crit.hpp>
+#%include <boost/type_traits.hpp>
+#%include <boost/static_assert.hpp>
+#%include <boost/type_traits/is_convertible.hpp>
+#%include <Sequence/descriptiveStats.hpp>
+%include <Sequence/shortestPath.hpp>
+%include <Sequence/SeqEnums.hpp>
+#%include <Sequence/ensureFloating.hpp>
+#%include <Sequence/preferFloatingTypes.hpp>
+
+ template <class _Arg, class _Result>
+    struct unary_function
+    {
+      typedef _Arg argument_type;                                                
+      typedef _Result result_type; 
+    };
+
+%template() std::unary_function <char, void>;
+
+%include <Sequence/ComplementBase.hpp>
+%include <Sequence/stateCounter.hpp>
+
+ template <class _Arg1, class _Arg2, class _Result>
+    struct binary_function
+    {
+      typedef _Arg1 first_argument_type; 
+      typedef _Arg2 second_argument_type;  
+      typedef _Result result_type;      
+    };
+
+%template() std::binary_function<int,uni01,int>;
+%include <Sequence/Portability/randomShuffleAdaptor.hpp>
+
 
 /*%extend Sequence::newick_stream_marginal_tree_impl
 {

@@ -34,3 +34,4 @@ ${CONTRIB_PATH}/src/CoalescentFragmentsRescaling.cc
 ${CONTRIB_PATH}/src/CoalescentInitialize.cc
 ${CONTRIB_PATH}/src/CoalescentRecombination.cc
 ${CONTRIB_PATH}/src/CoalescentTreeOperations.cc
+${CONTRIB_PATH}/src/shortestPath.cc
