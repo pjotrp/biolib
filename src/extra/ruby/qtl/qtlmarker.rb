@@ -13,7 +13,9 @@ class QtlMarker
   end
 end
 
-# Markers are stored has by marker name
+# Markers are stored by marker name. Use QtlMap to get an ordered
+# set of markers.
+
 class QtlMarkers 
 
   def initialize 

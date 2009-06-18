@@ -49,7 +49,7 @@ R/qtl makes it an F2 intercross based on the number of genotypes
 
   >> d = qtl.data
   >> d.type
-  => 'F2'
+  => :f2
 
 Here we get information from the data object. There are two 'styles'. One is
 standard Ruby's principles of least surprise. The other is the one used by
@@ -136,6 +136,26 @@ or the equivalent
   >> d.markers.size
   => 133
 
+Now create an ordered map of markers:
+
+  >> map = QtlMap.new(d.markers)
+  >> map.positions('1')
+  => [0, 0.99675, 24.84773, 40.41361, 49.99468, 52.8002, 70.11204, 70.80642, 80.62324, 81.39623, 84.93474, 92.68394, 93.64344]
+  >> map.recombination_fractions('1')[0..2]
+  => [0.0098688058543826, 0.189684817590462, 0.13375939855361]
+  >> map.positions('X')
+  => [0, 42.34593]
+  >> map.recombination_fractions('X')
+  => [0.285633000218103]
+
+And expand the map:
+
+  >> expanded_map = map.expand(2.5)
+  >> expanded_map.positions('1')
+  => [0.0,1.0]
+  >> expanded_map.recombination_fractions('1')[0..2]
+  => [0.0,0.0]
+
 =end
 
 
@@ -156,7 +176,7 @@ class TestBiolibRQtl < Test::Unit::TestCase
 
   def test_info
     d = @qtl.data
-    assert_equal('F2',d.type)
+    assert_equal(:f2,d.type)
     assert_equal(120,d.individuals.size)
     assert_equal(120,d.nind)
     assert_equal(1,d.nphe)

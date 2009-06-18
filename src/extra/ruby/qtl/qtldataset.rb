@@ -3,6 +3,7 @@ require 'qtl/qtlphenotype'
 require 'qtl/qtlgenotype'
 require 'qtl/qtlindividual'
 require 'qtl/qtlchromosome'
+require 'qtl/qtlmap'
 require 'qtl/input/qtlnormalize'
 
 class QtlDataset
@@ -91,7 +92,7 @@ class QtlDataset
 
   # Return the type of the experiment as a string
   def type
-    'F2'
+    :f2
   end
 
   def perc_phenotyped

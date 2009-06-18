@@ -5,6 +5,8 @@ require 'biolib/biolib_R'
 
 class RQTL
 
+  include Contract
+
   def initialize qtl
     @qtl = qtl
   end
@@ -31,15 +33,25 @@ class RQTL
     off_end = 0
     map_function = :haldane
     step_width = :fixed
+    contract("error_prob") {  error_prob>0 and error_prob<1 }
+    contract("F2 only") { @qtl.data.type==:f2 }
+    contract("step and off.end must be > 0.") { step<0 or off_end<0 }
 
     Biolib::Biolib_R.BioLib_R_Init()
     r = RQtlScanoneAdaptor.new(@qtl.data)
-    draws = Biolib::Rqtl.sim_geno_f2(r.use_individuals.size,
-                                     r.markers.size,
-                                     n_draws,
-                                     r.scanone_ingenotypematrix,
-                                     r.recombinationfractions,
-                                     error_prob)
+
+    # calculate frequencies one chromosome at a time
+    Biolib::Biolib_core.biolib_log(7,"sim Haldane freq. only; ignores X")
+    r.chromosomes.names.each do | chromosome |
+      p chromosome
+      # draws is an DIM3 array of n_ind x n_mar x n_draws Draws[repl][mar][ind]
+      draws = Biolib::Rqtl.sim_geno_f2(r.use_individuals.size,
+                                       r.markers.size,
+                                       n_draws,
+                                       r.scanone_ingenotypematrix,
+                                       r.recombinationfractions,
+                                       error_prob)
+      end
     draws
   end
 

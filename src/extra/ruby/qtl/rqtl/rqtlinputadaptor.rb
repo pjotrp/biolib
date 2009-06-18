@@ -121,7 +121,7 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
   end
 
   def genotype ind, mar
-    contract("F2 only") { @adapted.type=='F2' }
+    contract("F2 only") { @adapted.type==:f2 }
     g = super(ind,mar)
     contract("no nils") { g!=nil }
     # FIXME in case of mr with RIL
@@ -139,6 +139,7 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
 
   def recombinationfractions
     Biolib::Biolib_core.biolib_log(1,"rfs not set")
+    Array.new.fill(0.5,0..@adapted.markers.size-1)
   end
 
   # return index of used individuals
