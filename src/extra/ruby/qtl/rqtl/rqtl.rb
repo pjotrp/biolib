@@ -35,7 +35,8 @@ class RQTL
     step_width = :fixed
     contract("error_prob") {  error_prob>0 and error_prob<1 }
     contract("F2 only") { @qtl.data.type==:f2 }
-    contract("step and off.end must be > 0.") { step<0 or off_end<0 }
+    contract("step > 0") { step>0 }
+    contract("off_end == 0") { off_end == 0 }
 
     Biolib::Biolib_R.BioLib_R_Init()
     r = RQtlScanoneAdaptor.new(@qtl.data)

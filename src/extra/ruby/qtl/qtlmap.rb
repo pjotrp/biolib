@@ -73,18 +73,19 @@ Browse[1]> map
   def expand step
     contract("Step larger than 0") { step > 0 }
     each_chromosome do | name, ms |
-      contract("Only one marker!") { chr.size > 1 }
-      p ms[0]
+      contract("Only one marker!") { ms.size > 1 }
+      min = ms.first.position
+      max = ms.last.position
+      ps = positions(name)
+      (min..max).step(step) do | pos |
+        if !ps.include?(pos)
+          ms.push(QtlMarker.new('loc'+name+'.'+pos.to_s,name,pos,-1))
+        end
+      end
+      
     # minloc <- min(map)
     # map <- map-minloc
-
-    # if(step==0 && off.end==0) return(map+minloc)
-    # else if(step==0 && off.end > 0) {
-    #   a <- c(floor(min(map)-off.end),ceiling(max(map)+off.end))
-    #   names(a) <- paste("loc", a, sep="")
-    #   return(sort(c(a,map))+minloc)
-    # }
-    # else if(step>0 && off.end == 0) {
+    # if(step>0 && off.end == 0) {
     #   a <- seq(floor(min(map)),max(map),
     #            by = step)
     #   if(any(is.na(match(a, map)))) {

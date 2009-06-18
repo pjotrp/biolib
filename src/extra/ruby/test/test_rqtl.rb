@@ -151,10 +151,11 @@ Now create an ordered map of markers:
 And expand the map:
 
   >> expanded_map = map.expand(2.5)
-  >> expanded_map.positions('1')
-  => [0.0,1.0]
+  >> p expanded_map
+  >> expanded_map.positions('1')[0..2]
+  => [0, 0.99675, 2.5]
   >> expanded_map.recombination_fractions('1')[0..2]
-  => [0.0,0.0]
+  => [0.0098688058543826, 0.0148087716805754, 0.024385287749643]
 
 =end
 
