@@ -8,4 +8,11 @@ module Contract
       raise "Contract error: #{msg}"
     end
   end
+
+  def contract_warn msg, &block
+    res = yield block
+    if res == false
+      print "Contract failed (warning): #{msg}"
+    end
+  end
 end

@@ -139,6 +139,10 @@ or the equivalent
 Now create an ordered map of markers:
 
   >> map = QtlMap.new(d.markers)
+  >> map.size
+  => 1104.28582
+  >> map.size("1")
+  => 93.64344
   >> map.positions('1')
   => [0, 0.99675, 24.84773, 40.41361, 49.99468, 52.8002, 70.11204, 70.80642, 80.62324, 81.39623, 84.93474, 92.68394, 93.64344]
   >> map.recombination_fractions('1')[0..2]
@@ -151,7 +155,8 @@ Now create an ordered map of markers:
 And expand the map:
 
   >> expanded_map = map.expand(2.5)
-  >> p expanded_map
+  >> expanded_map.size
+  => 1104.28582
   >> expanded_map.positions('1')[0..2]
   => [0, 0.99675, 2.5]
   >> expanded_map.recombination_fractions('1')[0..2]

@@ -20,6 +20,17 @@ class QtlMap
     end
   end
 
+  def size name=nil
+    if name
+      return @chrpos[name].last.position - @chrpos[name].first.position
+    end
+    size = 0
+    each_chromosome do | name, c |
+      size += size(name)
+    end
+    size
+  end
+
   def each_chromosome
     @chrpos.keys.sort.each { | name | yield name, @chrpos[name] }
   end
@@ -79,23 +90,9 @@ Browse[1]> map
       ps = positions(name)
       (min..max).step(step) do | pos |
         if !ps.include?(pos)
-          ms.push(QtlMarker.new('loc'+name+'.'+pos.to_s,name,pos,-1))
+          ms.push(QtlMarker.new(name+'.loc'+pos.to_s,name,pos,-1))
         end
       end
-      
-    # minloc <- min(map)
-    # map <- map-minloc
-    # if(step>0 && off.end == 0) {
-    #   a <- seq(floor(min(map)),max(map),
-    #            by = step)
-    #   if(any(is.na(match(a, map)))) {
-    #     a <- a[is.na(match(a,map))]
-    #     names(a) <- paste("loc",a,sep="")
-    #     return(sort(c(a,map))+minloc)
-    #   }
-    #   else return(map+minloc)
-
-
     end
 
     QtlMap.new(markers)

@@ -41,19 +41,35 @@ class RQTL
     Biolib::Biolib_R.BioLib_R_Init()
     r = RQtlScanoneAdaptor.new(@qtl.data)
 
-    # calculate frequencies one chromosome at a time
-    Biolib::Biolib_core.biolib_log(7,"sim Haldane freq. only; ignores X")
-    r.chromosomes.names.each do | chromosome |
-      p chromosome
-      # draws is an DIM3 array of n_ind x n_mar x n_draws Draws[repl][mar][ind]
-      draws = Biolib::Rqtl.sim_geno_f2(r.use_individuals.size,
-                                       r.markers.size,
-                                       n_draws,
-                                       r.scanone_ingenotypematrix,
-                                       r.recombinationfractions,
-                                       error_prob)
+    # calculate frequencies one chromosome at a time since we have to expand 
+    # the markers
+    if (false)
+      Biolib::Biolib_core.biolib_log(7,"sim all markers by chromosome")
+      draws = []
+      Biolib::Biolib_core.biolib_log(7,"sim Haldane freq. only; ignores X")
+      r.chromosomes.names.each do | chromosome |
+        p chromosome
+        # draws is an DIM3 array of n_ind x n_mar x n_draws Draws[repl][mar][ind]
+        draws += Biolib::Rqtl.sim_geno_f2(r.use_individuals.size,
+                                         r.markers.size,
+                                         n_draws,
+                                         r.scanone_ingenotypematrix,
+                                         r.recombinationfractions,
+                                         error_prob)
+        p draws.size
       end
-    draws
+    end
+    Biolib::Biolib_core.biolib_log(7,"sim Haldane freq. only; ignores X")
+    Biolib::Biolib_core.biolib_log(7,"sim all markers in one go")
+    map = QtlMap.new(r.markers).expand(2.5)
+    # draws is an DIM3 array of n_ind x n_mar x n_draws Draws[repl][mar][ind]
+    draws = Biolib::Rqtl.sim_geno_f2(r.use_individuals.size,
+                                     map.size,
+                                     n_draws,
+                                     r.scanone_ingenotypematrix,
+                                     r.recombinationfractions,
+                                     error_prob)
+    return n_draws, draws
   end
 
   # Calls directly into R/QTL the scanone method with options and returns
@@ -118,20 +134,36 @@ void scanone_mr(int n_ind, int n_pos, int n_gen, int **Geno,
                                     r.scanone_inphenotypevector,
                                     r.weights) 
     elsif (options[:method] == "imp")
+      n_draws, draws = options[:sim_geno]
+      p [n_draws, draws.size]
       r = RQtlScanoneAdaptor.new(@qtl.data)
       # p [r.scanone_ingenotypematrix]
       # p [r.weights]
       # p [r.use_individuals.size, r.scanone_inphenotypevector.size]
       # p [r.markers.size, r.scanone_ingenotypematrix.size, r.weights.size]
-      res = Biolib::Rqtl.scanone_mr(r.use_individuals.size,
+
+=begin
+void scanone_imp(int n_ind, int n_pos, int n_gen, int n_draws,
+                 int ***Draws, double **Addcov, int n_addcov,
+                 double **Intcov, int n_intcov, double *pheno,
+                 int nphe, double *weights,
+                 double **Result)
+=end
+
+      contract_warn("Dim of draw #{draws.size} rather then #{r.use_individuals.size * r.markers.size * n_draws}") { draws.size == r.use_individuals.size * r.markers.size * n_draws }
+
+      res = Biolib::Rqtl.scanone_imp(r.use_individuals.size,
                                     r.markers.size,
                                     r.genotypes.names.size,
+                                    n_draws,
+                                    draws,
                                     r.scanone_ingenotypematrix,
                                     r.addcov,
                                     r.naddcov,
                                     r.intcov,
                                     r.nintcov,
                                     r.scanone_inphenotypevector,
+                                    r.use_individuals.size,
                                     r.weights) 
     end
     ro = RQtlScanoneOutputAdaptor.new(r)
@@ -142,8 +174,8 @@ void scanone_mr(int n_ind, int n_pos, int n_gen, int **Geno,
     scanone(:method => 'mr')
   end
 
-  def scanone_imp gp
-    scanone(:method => 'imp',:gp => gp)
+  def scanone_imp sim_geno
+    scanone(:method => 'imp',:sim_geno => sim_geno)
   end
 
 end
