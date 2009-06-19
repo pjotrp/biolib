@@ -151,6 +151,7 @@ Browse[1]> newgen[1:4,1:4]
 [3,]      0    2      0    0
 [4,]      3    3      0    0
 
+note the inserted markers have genotype '0' before going into simulation.
 
 Browse[1]> z$draws[1:10]
  [1] 3 3 2 3 2 2 2 2 1 3

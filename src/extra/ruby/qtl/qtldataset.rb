@@ -54,6 +54,7 @@ class QtlDataset
   # Fetch genotype info by individual/marker(or mid)
   def genotype ind, name
     name = @markers[name].mid if name.kind_of?(String)
+    return 'NA' if @individuals[ind]==nil or @individuals[ind].genotypes[name]==nil
     @individuals[ind].genotypes[name].value
   end
 

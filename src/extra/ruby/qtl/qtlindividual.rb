@@ -32,4 +32,9 @@ class QtlIndividuals < Array
     individual(ind).set_genotype(mid, value, validategenotypes)
   end
 
+  # Return of index
+  def index
+    fill {|i| i} 
+  end
+
 end

@@ -40,35 +40,28 @@ class RQTL
 
     Biolib::Biolib_R.BioLib_R_Init()
     r = RQtlScanoneAdaptor.new(@qtl.data)
+    d = @qtl.data
 
+    map = QtlMap.new(d.markers).expand(2.5)
     # calculate frequencies one chromosome at a time since we have to expand 
     # the markers
-    if (false)
-      Biolib::Biolib_core.biolib_log(7,"sim all markers by chromosome")
-      draws = []
-      Biolib::Biolib_core.biolib_log(7,"sim Haldane freq. only; ignores X")
-      r.chromosomes.names.each do | chromosome |
-        p chromosome
-        # draws is an DIM3 array of n_ind x n_mar x n_draws Draws[repl][mar][ind]
-        draws += Biolib::Rqtl.sim_geno_f2(r.use_individuals.size,
-                                         r.markers.size,
-                                         n_draws,
-                                         r.scanone_ingenotypematrix,
-                                         r.recombinationfractions,
-                                         error_prob)
-        p draws.size
-      end
-    end
+    Biolib::Biolib_core.biolib_log(7,"sim all markers by chromosome")
+    draws = []
     Biolib::Biolib_core.biolib_log(7,"sim Haldane freq. only; ignores X")
-    Biolib::Biolib_core.biolib_log(7,"sim all markers in one go")
-    map = QtlMap.new(r.markers).expand(2.5)
-    # draws is an DIM3 array of n_ind x n_mar x n_draws Draws[repl][mar][ind]
-    draws = Biolib::Rqtl.sim_geno_f2(r.use_individuals.size,
-                                     map.size,
-                                     n_draws,
-                                     r.scanone_ingenotypematrix,
-                                     r.recombinationfractions,
-                                     error_prob)
+    d.chromosomes.names.each do | chromosome |
+      p [chromosome,map.markers(chromosome).size,n_draws,map.recombination_fractions(chromosome).size]
+      # draws is an DIM3 array of n_ind x n_mar x n_draws Draws[repl][mar][ind]
+ 
+      ds    = Biolib::Rqtl.sim_geno_f2(d.individuals.size,
+                                       map.markers(chromosome).size,
+                                       n_draws,
+                                       r.scanone_ingenotypematrix(d.individuals,map.markers),
+                                       map.recombination_fractions(chromosome)+[-127.0],
+                                       error_prob)
+      p [chromosome,ds.size]
+      contract("Mismatch in size") { ds.size == 48000 if chromosome == '1'}
+      draws += ds
+    end
     return n_draws, draws
   end
 

@@ -104,11 +104,22 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
     inds.collect { | i | phs[i] }
   end
 
-  def scanone_ingenotypematrix
-    inds = use_individuals
-    gmatrix = Array.new.fill(-127,0..inds.size*@adapted.markers.size-1)
+  # Create a genotype matrix, as used by R/qtl. Optionally pass in 
+  # the individuals  and (expanded) markers. 
+  # The method fetches through the genotype(ind,mar) method
+  # which should return NA when no data available and reduce the ambiguous
+  # genotypes for an experimental type (RIL, F2, BC).
+  def scanone_ingenotypematrix individuals=nil, markers=nil
+    if individuals
+      creating the index for simu_gen_f2
+      inds = individuals.index
+    else
+      inds = use_individuals 
+    end
+    markers = @adapted.markers if !markers
+    gmatrix = Array.new.fill(-127,0..inds.size*markers.size-1)
     inds.each_with_index do | ind, idx |
-      (0..@adapted.markers.size-1).each do | mar |
+      (0..markers.size-1).each do | mar |
         # gmatrix[idx*@adapted.markers.size+mar] = genotype(ind,mar)
         gmatrix[mar*inds.size+idx] = genotype(ind,mar)
       end
@@ -137,12 +148,7 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
     ws
   end
 
-  def recombinationfractions
-    Biolib::Biolib_core.biolib_log(1,"rfs not set")
-    Array.new.fill(0.5,0..@adapted.markers.size-1)
-  end
-
-  # return index of used individuals
+  # return index of used individuals (helper method)
   def use_individuals
     inds = []
     # test for valid phenotypes

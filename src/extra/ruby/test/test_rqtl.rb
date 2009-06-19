@@ -147,6 +147,8 @@ Now create an ordered map of markers:
   => [0, 0.99675, 24.84773, 40.41361, 49.99468, 52.8002, 70.11204, 70.80642, 80.62324, 81.39623, 84.93474, 92.68394, 93.64344]
   >> map.recombination_fractions('1')[0..2]
   => [0.0098688058543826, 0.189684817590462, 0.13375939855361]
+  >> map.recombination_fractions('1').size
+  => 12
   >> map.positions('X')
   => [0, 42.34593]
   >> map.recombination_fractions('X')
@@ -159,6 +161,8 @@ And expand the map:
   => 1104.28582
   >> expanded_map.positions('1')[0..2]
   => [0, 0.99675, 2.5]
+  >> expanded_map.recombination_fractions('1').size
+  => 49 
   >> expanded_map.recombination_fractions('1')[0..2]
   => [0.0098688058543826, 0.0148087716805754, 0.024385287749643]
 
