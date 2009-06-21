@@ -19,7 +19,8 @@ rqtl = RQTL.new(qtl)
 # mr = rqtl.scanone_mr()
 # p mr[0].to_a
 
-mr = rqtl.scanone_imp(rqtl.sim_geno(2.5, 8))
+rqtl.expand_markers!(2.5)
+mr = rqtl.scanone_imp(rqtl.sim_geno(8))
 p mr[74].to_a
 print 'expected ["c2.loc52.5", "2", 52.2, 0.9199136]'
 p mr[555].to_a

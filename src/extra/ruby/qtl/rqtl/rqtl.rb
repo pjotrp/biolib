@@ -11,6 +11,14 @@ class RQTL
     @qtl = qtl
   end
 
+  def expand_markers! step
+    step_width = :fixed
+    off_end = 0
+    contract("step > 0") { step>0 }
+    contract("off_end == 0") { off_end == 0 }
+    @qtl.data.expand_markers!(2.5)
+  end
+
 =begin
 
   Simulate from the joint distribution Pr(g | O) using default values for
@@ -28,21 +36,17 @@ class RQTL
 
 =end
 
-  def sim_geno step, n_draws
+  def sim_geno n_draws
     error_prob = 0.0001
-    off_end = 0
     map_function = :haldane
-    step_width = :fixed
     contract("error_prob") {  error_prob>0 and error_prob<1 }
     contract("F2 only") { @qtl.data.type==:f2 }
-    contract("step > 0") { step>0 }
-    contract("off_end == 0") { off_end == 0 }
 
     Biolib::Biolib_R.BioLib_R_Init()
     r = RQtlScanoneAdaptor.new(@qtl.data)
     d = @qtl.data
+    map = d.map # marker map (expanded)
 
-    map = QtlMap.new(d.markers).expand(2.5)
     # calculate frequencies one chromosome at a time since we have to expand 
     # the markers
     Biolib::Biolib_core.biolib_log(7,"sim all markers by chromosome")
@@ -145,12 +149,14 @@ void scanone_imp(int n_ind, int n_pos, int n_gen, int n_draws,
 
       contract_warn("Dim of draw #{draws.size} rather then #{r.use_individuals.size * r.markers.size * n_draws}") { draws.size == r.use_individuals.size * r.markers.size * n_draws }
 
+      map = @qtl.data.map
+      contract("No map") { map != nil }
       res = Biolib::Rqtl.scanone_imp(r.use_individuals.size,
-                                    r.markers.size,
+                                    map.markers.size,
                                     r.genotypes.names.size,
                                     n_draws,
                                     draws,
-                                    r.scanone_ingenotypematrix,
+                                    r.scanone_ingenotypematrix(nil,map.markers),
                                     r.addcov,
                                     r.naddcov,
                                     r.intcov,

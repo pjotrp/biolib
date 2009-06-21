@@ -494,7 +494,8 @@ Now for the multiple imputation method by Sen and Churchill (2001). In R:
 
 The Ruby equivalent is:
 
-    >> mr = rqtl.scanone_imp(rqtl.sim_geno(2.5, 8))
+    >> rqtl.expand_markers!(2.5)
+    >> mr = rqtl.scanone_imp(rqtl.sim_geno(8))
     >> mr[74].to_a
     => ["c2.loc52.5", "2", 52.2, 0.9199136]
     >> mr[555].to_a

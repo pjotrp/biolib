@@ -10,7 +10,7 @@ class QtlDataset
 
   include QtlNormalize, Contract
 
-  attr_reader :individuals, :markers, :phenotypenames, :chromosomes, :genotypes
+  attr_reader :individuals, :markers, :phenotypenames, :chromosomes, :genotypes, :map
   attr_reader :addcov, :intcov
 
   def initialize validategenotypes=nil
@@ -126,6 +126,9 @@ class QtlDataset
     (c*1000.0/tot_genotypes).round/10.0
   end
 
+  def expand_markers! step
+    @map = QtlMap.new(d.markers).expand(step)
+  end
 end
 
 
