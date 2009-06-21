@@ -127,7 +127,7 @@ class QtlDataset
   end
 
   def expand_markers! step
-    @map = QtlMap.new(d.markers).expand(step)
+    @map = QtlMap.new(@markers).expand(step)
   end
 end
 

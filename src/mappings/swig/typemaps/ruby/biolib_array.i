@@ -27,9 +27,30 @@
 %enddef
 
 %define MAP_IN_DIM2_ARRAY(type,sizearg1,sizearg2,name)
+  %typemap(in) type **name {
+    int i,dim1,dim2,asize;
+    /* MAP_IN_DIM2_ARRAY %typemap(in) type **name: ignore */
+    if (!rb_obj_is_kind_of($input,rb_cArray))
+      rb_raise(rb_eArgError, "MAP_IN_ARRAY expected Array of values for $1_name");
+    SWIG_AsVal_int(argv[sizearg1], &dim1);
+    SWIG_AsVal_int(argv[sizearg2], &dim2);
+
+    asize = dim1*dim2;
+    $1 = (type **)malloc(asize*sizeof(type));
+    for (i=0; i<asize; ++i)
+      ($1)[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
+  }
+
+  %typemap(freearg) type **name {
+    /* MAP_IN_DIM2_ARRAY %typemap(freearg) type *name */
+    if ($1) free($1);
+  }   
+%enddef
+
+%define MAP_IN_DIM2_ARRAY1(type,sizearg1,sizearg2,name)
   %typemap(in) type *name {
     int i,dim1,dim2,asize;
-    /* MAP_IN_DIM2_ARRAY %typemap(in) type *name: ignore */
+    /* MAP_IN_DIM2_ARRAY1 %typemap(in) type *name: ignore */
     if (!rb_obj_is_kind_of($input,rb_cArray))
       rb_raise(rb_eArgError, "MAP_IN_ARRAY expected Array of values for $1_name");
     SWIG_AsVal_int(argv[sizearg1], &dim1);
@@ -42,15 +63,16 @@
   }
 
   %typemap(freearg) type *name {
-    /* MAP_IN_DIM2_ARRAY %typemap(freearg) type *name */
+    /* MAP_IN_DIM2_ARRAY1 %typemap(freearg) type *name */
     if ($1) free($1);
   }   
 %enddef
 
 %define MAP_IN_DIM3_ARRAY(type,sizearg1,sizearg2,sizearg3,name)
-  %typemap(in) type *name {
+  %typemap(in) type ***name {
     int i,dim1,dim2,dim3,asize;
-    /* MAP_IN_DIM3_ARRAY %typemap(in) type *name: ignore */
+    int *base;
+    /* MAP_IN_DIM3_ARRAY %typemap(in) type ***name: ignore */
     if (!rb_obj_is_kind_of($input,rb_cArray))
       rb_raise(rb_eArgError, "MAP_IN_ARRAY expected Array of values for $1_name");
     SWIG_AsVal_int(argv[sizearg1], &dim1);
@@ -58,12 +80,13 @@
     SWIG_AsVal_int(argv[sizearg2], &dim3);
 
     asize = dim1*dim2*dim3;
-    $1 = (type *)malloc(asize*sizeof(type));
+    $1 = (type ***)malloc(asize*sizeof(type));
+    base = (int *)$1;
     for (i=0; i<asize; ++i)
-      ($1)[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
+      base[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
   }
 
-  %typemap(freearg) type *name {
+  %typemap(freearg) type ***name {
     /* MAP_IN_DIM3_ARRAY %typemap(freearg) type *name */
     if ($1) free($1);
   }   
@@ -188,7 +211,42 @@
   }   
 %enddef
 
-%define MAP_OUT_DIM3_ARRAY(type,sizearg1,sizearg2,sizearg3,result)
+%define MAP_OUT_DIM2_ARRAY(type,sizearg1,sizearg2,result)
+  /* Pass a result through an array pointer */
+
+  %typemap(in,numinputs=0) type **result {
+    int dim1,dim2,asize;
+    /* MAP_OUT_DIM2_ARRAY %typemap(in) type *result: ignore */
+    SWIG_AsVal_int(argv[sizearg1], &dim1);
+    SWIG_AsVal_int(argv[sizearg2], &dim2);
+    asize = dim1*dim2;
+    $1 = (type **)malloc(asize*sizeof(type));
+  }
+
+  %typemap(out) type **result {
+    /* MAP_OUT_DIM2_ARRAY %typemap(out) type *result: ignore */
+  }
+
+  %typemap(argout) type **result {
+    /* MAP_OUT_DIM2_ARRAY %typemap(argout) type *result */
+    int i,dim1,dim2,asize;
+    type *base;
+    SWIG_AsVal_int(argv[sizearg1], &dim1);
+    SWIG_AsVal_int(argv[sizearg2], &dim2);
+    asize = dim1*dim2;
+    vresult = rb_ary_new();
+    base = (type *)$1;
+    for (i=0; i<asize; i++)
+      rb_ary_push(vresult,rb_float_new(base[i]));
+  }
+
+  %typemap(freearg) type **result {
+    /* MAP_OUT_DIM2_ARRAY %typemap(freearg) type *result */
+    if ($1) free($1);
+  }   
+%enddef
+
+%define MAP_OUT_DIM3_ARRAY1(type,sizearg1,sizearg2,sizearg3,result)
   /* Pass a result through an array pointer */
 
   %typemap(in,numinputs=0) type *result {

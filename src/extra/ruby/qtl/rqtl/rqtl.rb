@@ -147,22 +147,29 @@ void scanone_imp(int n_ind, int n_pos, int n_gen, int n_draws,
                  double **Result)
 =end
 
-      contract_warn("Dim of draw #{draws.size} rather then #{r.use_individuals.size * r.markers.size * n_draws}") { draws.size == r.use_individuals.size * r.markers.size * n_draws }
-
       map = @qtl.data.map
       contract("No map") { map != nil }
+      dim = r.use_individuals.size*map.markers.size*n_draws
+      contract_warn("Dim of draw #{draws.size} rather then #{dim}") { draws.size == dim }
+      contract("Dim genotypes") {r.scanone_ingenotypematrix(nil,map.markers).size == r.use_individuals.size*map.markers.size}
+
+      
+      p [r.use_individuals.size,map.markers.size,r.genotypes.names.size]
+      p [n_draws,r.addcov,r.naddcov,r.intcov,r.nintcov]
+      p [r.scanone_inphenotypevector, 1, r.weights]
+      npheno = 1
       res = Biolib::Rqtl.scanone_imp(r.use_individuals.size,
                                     map.markers.size,
                                     r.genotypes.names.size,
                                     n_draws,
                                     draws,
-                                    r.scanone_ingenotypematrix(nil,map.markers),
+                                    # r.scanone_ingenotypematrix(nil,map.markers),
                                     r.addcov,
                                     r.naddcov,
                                     r.intcov,
                                     r.nintcov,
                                     r.scanone_inphenotypevector,
-                                    r.use_individuals.size,
+                                    npheno,
                                     r.weights) 
     end
     ro = RQtlScanoneOutputAdaptor.new(r)
