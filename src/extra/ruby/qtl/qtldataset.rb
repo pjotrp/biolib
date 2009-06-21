@@ -8,7 +8,7 @@ require 'qtl/input/qtlnormalize'
 
 class QtlDataset
 
-  include QtlNormalize
+  include QtlNormalize, Contract
 
   attr_reader :individuals, :markers, :phenotypenames, :chromosomes, :genotypes
   attr_reader :addcov, :intcov
@@ -51,11 +51,18 @@ class QtlDataset
     0
   end
 
-  # Fetch genotype info by individual/marker(or mid)
-  def genotype ind, name
-    name = @markers[name].mid if name.kind_of?(String)
-    return 'NA' if @individuals[ind]==nil or @individuals[ind].genotypes[name]==nil
-    @individuals[ind].genotypes[name].value
+  # Fetch genotype info by individual/marker (QtlMarker, name or mid)
+  def genotype ind, m_id
+    contract("Unknown individual #{ind}") { @individuals[ind] != nil }
+    if m_id.kind_of?(QtlMarker)
+      mid = m_id.mid
+    elsif m_id.kind_of?(String)
+      mid = @markers[m_id].mid
+    else
+      mid = m_id
+    end
+    return 'NA' if mid==nil or @individuals[ind].genotypes[mid]==nil
+    @individuals[ind].genotypes[mid].value
   end
 
   # Fetch phenotype info by individual/pid

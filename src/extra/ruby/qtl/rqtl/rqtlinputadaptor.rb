@@ -14,7 +14,7 @@ module GenericAdaptor
 end
 
 module RQtlMap
-  GMAP = { 'A' => 1, 'H' => 2, 'B' => 3, 'C' => 4, 'D' => 5, '-' => 'NA' }
+  GMAP = { 'A' => 1, 'H' => 2, 'B' => 3, 'C' => 4, 'D' => 5, '-' => 'NA', 'NA' => 'NA' }
   NAMAP = { '-' => 'NA', 'NA' => 'NA' }
 
   def gtranslate g
@@ -110,23 +110,21 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
   # which should return NA when no data available and reduce the ambiguous
   # genotypes for an experimental type (RIL, F2, BC).
   def scanone_ingenotypematrix individuals=nil, markers=nil
-    if individuals
-      creating the index for simu_gen_f2
+    if individuals != nil
       inds = individuals.index
     else
       inds = use_individuals 
     end
+    contract("No inds") { inds!=nil and inds.size > 0 }
     markers = @adapted.markers if !markers
     gmatrix = Array.new.fill(-127,0..inds.size*markers.size-1)
     inds.each_with_index do | ind, idx |
-      (0..markers.size-1).each do | mar |
-        # gmatrix[idx*@adapted.markers.size+mar] = genotype(ind,mar)
-        gmatrix[mar*inds.size+idx] = genotype(ind,mar)
+      markers.each_with_index do | m, midx |
+        gmatrix[midx*inds.size+idx] = genotype(ind,m)
       end
     end
-    # m = gmatrix.to_a.flatten.collect { | g | (g=='NA' ? 0:g) }
     m = gmatrix
-    contract("Dimension") {  m.size == inds.size*@adapted.markers.size }
+    contract("Dimension") {  m.size == inds.size*markers.size }
     contract("Matrix") { !m.include?(-127) }
     m
   end

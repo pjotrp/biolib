@@ -48,7 +48,7 @@ class QtlGenotype
 
 end
 
-# Every individual has a range of genotypes
+# Every individual has a range of genotypes ordered by mid (marker id)
 class QtlGenotypes < Array
 
   def initialize 

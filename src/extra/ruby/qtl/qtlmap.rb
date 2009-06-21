@@ -90,7 +90,7 @@ Browse[1]> map
       ps = positions(name)
       (min..max).step(step) do | pos |
         if !ps.include?(pos)
-          ms.push(QtlMarker.new(name+'.loc'+pos.to_s,name,pos,-1))
+          ms.push(QtlMarker.new(name+'.loc'+pos.to_s,name,pos))
         end
       end
     end

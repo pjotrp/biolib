@@ -2,7 +2,7 @@
 class QtlMarker
   attr_reader :name, :chromosome, :position, :mid
 
-  def initialize name, chromosome, position, mid
+  def initialize name, chromosome, position, mid=nil
     @name = name
     @chromosome = chromosome
     # Convert position to a number, when applicable
@@ -29,6 +29,14 @@ class QtlMarkers
   def each 
     @data.each do | k,v |
       yield v
+    end
+  end
+
+  def each_with_index
+    i = 0
+    each do | m |
+      yield m,i
+      i += 1
     end
   end
 
