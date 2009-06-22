@@ -2,6 +2,7 @@
 %include <std_pair.i>
 %include <std_string.i>
 %include <std_vector.i>
+#%include <file.i>
 
 
 %{
@@ -50,6 +51,11 @@
   #include <Sequence/ComplementBase.hpp>
   #include <Sequence/stateCounter.hpp>
   #include <Sequence/Portability/randomShuffleAdaptor.hpp>
+  #include <Sequence/PolySNPimpl.hpp>
+  #include <Sequence/SeqProperties.hpp>
+  #include <Sequence/PolyFunctional.hpp>
+  #include <Sequence/AlignStream.hpp>
+  #include <Sequence/SeqRegexes.hpp>
 %}
 
 
@@ -77,6 +83,14 @@
    typedef ::boost::static_assert_test<\
       sizeof(::boost::STATIC_ASSERTION_FAILURE< (bool)( B ) >)\
       > boost_static_assert_typedef_*/
+
+/*namespace Sequence
+{*/
+typedef std::vector< std::pair<std::string,int> > CodonUsageTable;
+typedef std::pair< double, std::string > polymorphicSite;
+typedef std::vector< polymorphicSite > polySiteVector;
+//}
+
 
 %include <Sequence/Seq.hpp>
 %include <Sequence/Fasta.hpp>
@@ -126,6 +140,25 @@
 %include <Sequence/SeqEnums.hpp>
 #%include <Sequence/ensureFloating.hpp>
 #%include <Sequence/preferFloatingTypes.hpp>
+%include <Sequence/PolySNPimpl.hpp>
+#%include <Sequence/AlignStream.hpp>
+
+#%include <Sequence/SeqRegexes.hpp>
+%constant char *basic_dna_alphabet = "[^AGTCN\\-]";
+%constant char *full_dna_alphabet =  "[^AGCTNXMRWSKVHDB\\-]";
+%constant char *pep_alphabet = "[^ARNDBCQEZGHILKMFPSTWYV\\-]";
+namespace Sequence{
+template<typename Iter>
+   bool validSeq(Iter beg, Iter end, const char *_pattern = Sequence::basic_dna_alphabet, const bool icase = true)
+  {
+     boost::regex in_alphabet(_pattern,icase);
+     boost::match_results<Iter> match;
+     return !(boost::regex_search(beg, end, match, in_alphabet, boost::match_default));
+   };
+};
+
+%template(vSeq) Sequence::validSeq<Sequence::Seq::iterator>;
+
 
  template <class _Arg, class _Result>
     struct unary_function
@@ -135,9 +168,11 @@
     };
 
 %template() std::unary_function <char, void>;
+%template() std::unary_function <char, bool>;
 
 %include <Sequence/ComplementBase.hpp>
 %include <Sequence/stateCounter.hpp>
+%include <Sequence/SeqProperties.hpp>
 
  template <class _Arg1, class _Arg2, class _Result>
     struct binary_function
@@ -148,7 +183,10 @@
     };
 
 %template() std::binary_function<int,uni01,int>;
+%template() std::binary_function<double,polymorphicSite,double>;
 %include <Sequence/Portability/randomShuffleAdaptor.hpp>
+%include <Sequence/PolyFunctional.hpp>
+
 
 
 /*%extend Sequence::newick_stream_marginal_tree_impl
