@@ -16,6 +16,7 @@ CTestTestfile.cmake
 *.pyc
 *.o
 *.so
+*.dylib
 install_manifest.txt
 Testing
 biolib_example.py
