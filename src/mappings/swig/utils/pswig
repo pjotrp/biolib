@@ -1,1 +1,0 @@
-swig -python -c++ -I../../../../contrib/biopp/utils/Utils/ $1
