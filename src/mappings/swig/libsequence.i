@@ -3,6 +3,8 @@
 %include <std_string.i>
 %include <std_vector.i>
 #%include <file.i>
+%include <typemaps.i>
+%include <std_iostream.i>
 
 
 %{
@@ -58,18 +60,22 @@
   #include <Sequence/SeqRegexes.hpp>
 %}
 
-
+#typedef unsigned int Sequence::Seq::size_type;
+%apply unsigned int {Sequence::Seq::size_type};
+#%apply char {Sequence::Seq::reference};
+#%apply const char {Sequence::Seq::const_reference};
 %constant const double CMAX = 10000;
 %constant const double PRESICION = FLT_EPSILON;
 %ignore Sequence::Seq::operator[];
 %ignore Sequence::marginal::operator[];
+#%ignore Sequence::Seq::operator[] const;
 #%rename(__aref__) Sequence::Seq::operator[];
 #%ignore boost::noncopyable;
 %rename(__aref1__) Sequence::PolyTable::operator[];
 %template(Pair) std::pair<std::string, std::string>;
 
 %rename(_print) print;
-%rename(to_string) Sequence::Seq::operator std::string() const;
+%rename(to_std_str) Sequence::Seq::operator std::string() const;
 %rename(to_polySiteVector) Sequence::PolyTable::operator Sequence::polySiteVector() const;
 %rename(std_ostream) operator<<;
 %rename(chr_assgin) Sequence::chromosome::operator=;
@@ -157,7 +163,7 @@ template<typename Iter>
    };
 };
 
-%template(vSeq) Sequence::validSeq<Sequence::Seq::iterator>;
+%template(validSeq) Sequence::validSeq<Sequence::Seq::iterator>;
 
 
  template <class _Arg, class _Result>
@@ -207,21 +213,21 @@ template<typename Iter>
 
 
 
-%extend Sequence::Seq {
+/*%extend Sequence::Seq {
  char __aref__ (const size_type & i)
     {
     assert(i < ($self->GetSeq()).length ());
     return ($self->GetSeq())[i];
     }
-};
+};*/
 
-%extend Sequence::Seq {
+/*%extend Sequence::Seq {
   char __aref__ (const size_type & i) const
     {
     assert(i < ($self->GetSeq()).length ());
     return ($self->GetSeq())[i];
     }
-};
+};*/
 
 %extend Sequence::marginal{
  node __aref2__(const std::vector<node>::size_type &i)
