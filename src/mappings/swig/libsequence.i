@@ -5,7 +5,9 @@
 #%include <file.i>
 %include <typemaps.i>
 %include <std_iostream.i>
+%include <carrays.i>
 
+%array_class(double, doubleArray);
 
 %{
   #include <Sequence/Seq.hpp>
@@ -213,14 +215,21 @@ template<typename Iter>
 
 
 
-/*%extend Sequence::Seq {
- char __aref__ (const size_type & i)
+%extend Sequence::Seq {
+ char __getitem__ (const int & i)
     {
     assert(i < ($self->GetSeq()).length ());
     return ($self->GetSeq())[i];
     }
-};*/
+};
 
+/*%extend Sequence::GranthamWeights2 {
+  double __getitem__ (const int & i)
+    {
+	assert(i < 2);
+        return ($self->__weights)[i];
+    }
+};*/
 /*%extend Sequence::Seq {
   char __aref__ (const size_type & i) const
     {
