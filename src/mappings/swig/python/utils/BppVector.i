@@ -1,7 +1,6 @@
 %module bpp_vector
 %{
-#include "Clonable.h"
-#include <vector>
+#include "BppVector.h"
 %}
 
 %include "Clonable.i"
@@ -17,13 +16,11 @@ template<class TYPE>
 class Vector: public vector<TYPE>, public Clonable
 {
   public:
-
-    Vector():vector<TYPE>() {}
-    Vector(typename vector<TYPE>::size_type num, const TYPE& val = TYPE() ):vector<TYPE>(num, val) {}
-    Vector(typename vector<TYPE>::iterator start, typename vector<TYPE>::iterator end):vector<TYPE>(start, end) {}
+    Vector():vector<TYPE>();
+    Vector(typename vector<TYPE>::size_type num, const TYPE& val = TYPE() ):vector<TYPE>(num, val);
+    Vector(typename vector<TYPE>::iterator start, typename vector<TYPE>::iterator end):vector<TYPE>(start, end);
     virtual ~Vector() {}
-  
-  public:
+
     Vector<TYPE> * clone() const;
 };
 

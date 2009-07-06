@@ -1,6 +1,6 @@
 %module bpp_texttools
 %{
-#include "Exceptions.h"
+#include "TextTools.h"
 #include <string>
 #include <vector>
 #include <sstream>
@@ -47,8 +47,7 @@ namespace bpp
       static string resizeRight(const string & s, unsigned int newSize, char fill = ' ');
       static string resizeLeft(const string & s, unsigned int newSize, char fill = ' ');
       static vector<string> split(const string & s, unsigned int n);
-      static string removeSubstrings(const string & s, char blockBeginning, char blockEnding)
-        throw (Exception);
+      static string removeSubstrings(const string & s, char blockBeginning, char blockEnding) throw (Exception);
       static string removeChar(const string & s, char c);
       static unsigned int count(const string& s, const string& pattern);
       static bool startsWith(const string& s, const string& pattern);

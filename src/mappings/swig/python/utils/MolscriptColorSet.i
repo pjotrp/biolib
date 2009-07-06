@@ -1,6 +1,6 @@
 %module bpp_molscriptcolorset
 %{
-#include "ColorSet.h"
+#include "MolscriptColorSet.h"
 %}
 
 %include "ColorSet.i"
@@ -8,8 +8,7 @@
 namespace bpp
 {
 
-class MolscriptColorSet:
-  public AbstractColorSet
+class MolscriptColorSet:public AbstractColorSet
 {
   public:
     MolscriptColorSet();

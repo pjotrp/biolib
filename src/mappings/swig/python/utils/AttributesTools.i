@@ -1,9 +1,6 @@
 %module bpp_atttools
 %{
-#include <cstdlib>
-#include <map>
-#include <string>
-#include <vector>
+#include "AttributesTools.h"
 %}
 
 // From the STL:
@@ -42,9 +39,6 @@ class AttributesTools
 			            char varEnd = ')');
 
 	    static map<string, string> parseOptions(int args, char ** argv);
-
-	private:
-		static string removeComments(const string & s, const string & begin, const string & end);
 };
 
 } //end of namespace bpp.

@@ -2,7 +2,7 @@
 %{
 #include <deque>
 #include <string>
-#include "Exceptions.h"
+#include "StringTokenizer.h"
 %}
 
 %include "std_deque.i"
@@ -16,15 +16,9 @@ namespace bpp
 
 class StringTokenizer
 {
-	protected:
-		deque<string> tokens;
-		unsigned int currentPosition;
-
 	public:
 		StringTokenizer(const string & s, const string & delimiters = " \t\n\f\r", bool solid = false, bool allowEmptyTokens = false);
-		virtual ~StringTokenizer() {}
-	
-	public:
+		virtual ~StringTokenizer();
 		string nextToken() throw (Exception);
 		bool hasMoreToken() const;
 		int numberOfRemainingTokens() const;

@@ -1,6 +1,6 @@
 %module bpp_dvipscolorset
 %{
-#include "ColorSet.h"
+#include "DvipsColorSet.h"
 %}
 
 %include "ColorSet.i"
@@ -8,8 +8,7 @@
 namespace bpp
 {
 
-class DvipsColorSet:
-  public AbstractColorSet
+class DvipsColorSet:public AbstractColorSet
 {
   public:
     DvipsColorSet();

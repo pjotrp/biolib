@@ -1,8 +1,6 @@
 %module bpp_keyvaltools
 %{
-#include "StringTokenizer.h"
-#include "TextTools.h"
-#include "Exceptions.h"
+#include "KeyvalTools.h"
 #include <map>
 %}
 
@@ -16,11 +14,10 @@ using namespace std;
 namespace bpp
 {
 
-class KeyvalException :
-  public Exception
+class KeyvalException:public Exception
 {
   public:
-    KeyvalException(const string& message) : Exception(message) {}
+    KeyvalException(const string& message) : Exception(message);
 };
 
 
@@ -30,7 +27,6 @@ class KeyvalTools
     KeyvalTools();
     virtual ~KeyvalTools();
 
-  public:
     static void singleKeyval(const string& desc, string& key, string& val) throw (Exception);
     static void multipleKeyvals(const string& desc, map<string, string>& keyvals) throw (Exception);
     static void parseProcedure(const string& desc, string& name, map<string, string>& args) throw (KeyvalException);

@@ -1,8 +1,6 @@
 %module bpp_colortools
 %{
-#include "TextTools.h"
-#include "Exceptions.h"
-#include "RGBColor.h"
+#include "ColorTools.h"
 %}
 
 
@@ -19,16 +17,14 @@ namespace bpp
 class ColorTools
 {
   public:
-    ColorTools() {}
-    virtual ~ColorTools() {}
+    ColorTools();
+    virtual ~ColorTools();
 
-  public:
     static vector<RGBColor> gradient(unsigned int n, const RGBColor & low, const RGBColor & high);
     static vector<RGBColor> gradient(unsigned int n, const RGBColor & low, const RGBColor & mid, const RGBColor & high);
     static RGBColor gray(double level);
     static RGBColor cmyk2rgb(double c, double m, double y, double k);
  
-  public:
     static const RGBColor RED;
     static const RGBColor GREEN;
     static const RGBColor BLUE;

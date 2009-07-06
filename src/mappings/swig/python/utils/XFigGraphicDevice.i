@@ -1,10 +1,6 @@
 %module bpp_xfiggraphicdevice
 %{
-#include "GraphicDevice.h"
-#include "ColorManager.h"
-#include "FontManager.h"
-
-// From the STL:
+#include "XFigGraphicDevice.h"
 #include <map>
 #include <iostream>
 %}
@@ -20,38 +16,12 @@ using namespace std;
 namespace bpp
 {
 
-class XFigGraphicDevice:
-  public virtual GraphicDevice
+class XFigGraphicDevice:public virtual GraphicDevice
 {
-  protected:
-    ostream & _out;
-    vector<string> _content;
-    XFigColorManager _colorManager;
-    XFigLaTeXFontManager _LaTeXFontManager;
-    XFigPostscriptFontManager _PostscriptFontManager;
-    unsigned int _fgColor;
-    unsigned int _bgColor;
-    int _font; 
-    unsigned int _fontSize;
-    unsigned int _fontFlag;
-    unsigned int _pointSize;
-    unsigned int _lineType;
-    int _currentLayer;
-
   public:
-    XFigGraphicDevice(ostream & out):
-      _out(out),
-      _fgColor(0),
-      _bgColor(0),
-      _font(-1),
-      _fontSize(12),
-      _fontFlag(FONTFLAG_POSTSCRIPT),
-      _pointSize(1)
-    {}
+    XFigGraphicDevice(ostream & out);
+    virtual ~XFigGraphicDevice();
 
-    virtual ~XFigGraphicDevice() {}
-
-  public:
     void beginDocument();
     void endDocument();
 
@@ -60,7 +30,7 @@ class XFigGraphicDevice:
     void setCurrentFont(const Font & font);
     void setCurrentPointSize(unsigned int size);
     void setCurrentLineType(short type) throw (Exception);
-    void setCurrentLayer(int layerIndex) { _currentLayer = layerIndex; }
+    void setCurrentLayer(int layerIndex);
     void drawLine(double x1, double y1, double x2, double y2);
     void drawRect(double x, double y, double width, double height, short fill = FILL_EMPTY);
     void drawCircle(double x, double y, double radius, short fill = FILL_EMPTY);
@@ -70,10 +40,6 @@ class XFigGraphicDevice:
     //Specific:
     void setFontFlag(unsigned int flag);
 
-  protected:
-    int getFillCode(short fill);
-
-  public:
     static const unsigned int FONTFLAG_LATEX;
     static const unsigned int FONTFLAG_POSTSCRIPT;
 

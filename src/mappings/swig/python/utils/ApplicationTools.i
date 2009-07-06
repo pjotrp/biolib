@@ -1,14 +1,6 @@
 %module bpp_apptools
 %{
-#include "TextTools.h"
-#include "FileTools.h"
-#include "StringTokenizer.h"
-
-// From the STL:
-#include <map>
-#include <vector>
-#include <iostream>
-#include <ctime>
+#include "ApplicationTools.h"
 %}
 
 using namespace std;
@@ -24,12 +16,10 @@ class ApplicationTools
     static time_t startTime;
     static unsigned int terminalWidth;
     static float terminalSplit;
-  
-  public:
+
     ApplicationTools();
     virtual ~ApplicationTools();
-  
-  public:
+
     static bool parameterExists(const string & parameterName, map<string, string> & params);
     static double getDoubleParameter(const string & parameterName,map<string, string> & params,double defaultValue,const string & suffix = "",bool suffixIsOptional = true,bool warn = true);
   
@@ -50,10 +40,7 @@ class ApplicationTools
     template<class T>
     static void displayResult(const string & text, const T & result);
     static void displayGauge(unsigned int iter, unsigned int total, char symbol='>', string mes="");
-    static void startTimer()
-    {
-      time(&startTime);
-    }
+    static void startTimer();
     static void displayTime(const string & msg);
     static double getTime();
 };

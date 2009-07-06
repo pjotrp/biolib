@@ -6,6 +6,7 @@
 #include <fstream>
 #include <cstdio>
 //#include <io.h>  // required for directoryExists method
+#include "FileTools.h"
 %}
 
 %include "std_string.i"
@@ -24,10 +25,10 @@ class FileTools
 {
 	public:
 		static char DIR_SEP;
-	public:
-		FileTools() {}
-		virtual ~FileTools() {}
-	public:
+
+		FileTools();
+		virtual ~FileTools();
+
 		static bool fileExists(const string & filename);
 		static bool directoryExists(const string & path);
 		static string getFileName(const string & path, char dirSep = DIR_SEP);

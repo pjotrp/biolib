@@ -1,6 +1,6 @@
 %module bpp_rcolorset
 %{
-#include "ColorSet.h"
+#include "RColorSet.h"
 %}
 
 %include "ColorSet.i"
@@ -8,8 +8,7 @@
 namespace bpp
 {
 
-class RColorSet:
-  public AbstractColorSet
+class RColorSet:public AbstractColorSet
 {
   public:
     RColorSet();

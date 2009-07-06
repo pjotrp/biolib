@@ -1,5 +1,6 @@
 %module bpp_maptools
 %{
+#include "MapTools.h"
 #include <map>
 #include <vector>
 %}

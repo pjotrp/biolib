@@ -1,7 +1,6 @@
 %module bpp_pgfgraphicdevice
 %{
-#include "GraphicDevice.h"
-#include "ColorTools.h"
+#include "PGFGraphicDevice.h"
 #include <map>
 %}
 
@@ -15,46 +14,12 @@ namespace bpp
 {
 
 
-class PGFGraphicDevice:
-  public virtual GraphicDevice
+class PGFGraphicDevice:public virtual GraphicDevice
 {
-  protected:
-    ostream & _out;
-    string _fgColor;
-    string _bgColor;
-    Font _font; 
-    unsigned int _pointSize;
-    short _lineType;
-    int _currentLayer;
-    vector<string> _content;
-    vector<int> _layers;
-    double _unit;
-    map<const RGBColor, string> _colorIndex;
-    unsigned int _colorCount;
-    bool _useLayers;
-
   public:
 
-    PGFGraphicDevice(ostream & out, double unit):
-      _out(out),
-      _fgColor("black"),
-      _bgColor("white"),
-      _font(),
-      _pointSize(1),
-      _unit(unit),
-      _colorCount(0)
-    {
-      _colorIndex[ColorTools::BLACK] = "black";
-      _colorIndex[ColorTools::WHITE] = "white";
-      _colorIndex[ColorTools::BLUE] = "blue";
-      _colorIndex[ColorTools::RED] = "red";
-      _colorIndex[ColorTools::GREEN] = "green";
-      _colorIndex[ColorTools::YELLOW] = "yellow";
-      _colorIndex[ColorTools::CYAN] = "cyan";
-      _colorIndex[ColorTools::MAGENTA] = "magenta";
-    }
-
-    virtual ~PGFGraphicDevice() {}
+    PGFGraphicDevice(ostream & out, double unit);
+    virtual ~PGFGraphicDevice();
 
   public:
     void beginDocument();

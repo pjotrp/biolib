@@ -3,9 +3,7 @@
 %{
 #include <cstdlib>
 #include <cmath>
-#include "TextTools.h"
-#include "Exceptions.h"
-#include "Clonable.h"
+#include "RGBColor.h"
 %}
 
 //%include <cstdlib>
@@ -23,14 +21,8 @@ namespace bpp
 %rename(__eq__) RGBColor::operator==;
 %rename(__lt__) RGBColor::operator<;
 
-class RGBColor:
-  public virtual Clonable
+class RGBColor:public virtual Clonable
 {
-  protected:
-    unsigned int _red;
-    unsigned int _green;
-    unsigned int _blue;
-
   public:
     RGBColor(unsigned int red, unsigned int green, unsigned int blue): _red(red), _green(green), _blue(blue);
     RGBColor(): _red(0), _green(0), _blue(0);
@@ -41,7 +33,7 @@ class RGBColor:
 #else
     RGBColor*
 #endif
-    clone() const { return new RGBColor(*this); }
+    clone() const;
 
   public:
     bool operator==(const RGBColor & color) const;
@@ -50,9 +42,6 @@ class RGBColor:
     const unsigned int & operator[](unsigned int i) const;
     unsigned int & operator[](unsigned int i);
     string toString() const;
-
-  protected:
-    static string decToHex(unsigned int dec);
 };
 
 } // end of namespace bpp;

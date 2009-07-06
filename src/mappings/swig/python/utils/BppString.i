@@ -1,7 +1,6 @@
 %module bpp_string
 %{
-#include "Clonable.h"
-#include <string>
+#include "BppString.h"
 %}
 
 %include "Clonable.i"
@@ -18,7 +17,6 @@ class String: public string, public Clonable
 		String(const string & value): string(value);
 		virtual ~String();
 
-	public:
 		String * clone() const;
 };
 

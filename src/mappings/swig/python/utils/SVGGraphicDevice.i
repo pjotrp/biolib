@@ -1,7 +1,6 @@
 %module bpp_svggraphicdevice
 %{
-#include "GraphicDevice.h"
-#include "ColorTools.h"
+#include "SVGGraphicDevice.h"
 #include <map>
 %}
 
@@ -14,33 +13,12 @@ using namespace std;
 namespace bpp
 {
 
-class SVGGraphicDevice:
-  public virtual GraphicDevice
+class SVGGraphicDevice:public virtual GraphicDevice
 {
-  protected:
-    ostream & _out;
-    RGBColor _fgColor;
-    RGBColor _bgColor;
-    Font _font; 
-    unsigned int _pointSize;
-    short _lineType;
-    int _currentLayer;
-    map<int, vector<string>, greater<int> > _layers; //Layer display as in xfig
-    bool _inkscapeEnabled;
-
   public:
-    SVGGraphicDevice(ostream & out, bool inkscapeEnabled = false):
-      _out(out),
-      _fgColor(ColorTools::BLACK),
-      _bgColor(ColorTools::WHITE),
-      _font(),
-      _pointSize(1),
-      _inkscapeEnabled(inkscapeEnabled)
-    {}
-
+    SVGGraphicDevice(ostream & out, bool inkscapeEnabled = false);
     virtual ~SVGGraphicDevice() {}
 
-  public:
     void beginDocument();
     void endDocument();
 
@@ -56,7 +34,6 @@ class SVGGraphicDevice:
     void drawText(double x, double y, const string & text, short hpos = TEXT_HORIZONTAL_LEFT, short vpos = TEXT_VERTICAL_BOTTOM, double angle = 0);
     void comment(const string & comment);
 
-  public:
     static string colorToText(const RGBColor & color);
 };
 

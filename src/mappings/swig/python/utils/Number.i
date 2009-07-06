@@ -1,6 +1,6 @@
 %module bpp_number
 %{
-#include "Clonable.h"
+#include "Number.h"
 %}
 
 %include "Clonable.i"
