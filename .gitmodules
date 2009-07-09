@@ -7,3 +7,6 @@
 [submodule "tools/rubydoctest"]
 	path = tools/rubydoctest
 	url = git://github.com/pjotrp/rubydoctest.git
+[submodule "src/clibs/qnormalization"]
+	path = src/clibs/qnormalization
+	url = git://github.com/pjotrp/qnormalization.git
