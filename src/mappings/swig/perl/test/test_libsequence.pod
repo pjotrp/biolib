@@ -1,0 +1,32 @@
+=head1 General I/O
+
+=begin hidden
+
+  BEGIN{unshift(@INC, "../libsequence")};
+  use biolib::libsequence;
+  
+
+=end hidden
+
+=head2 Fasta
+
+FASTA Sequence Stream
+
+
+Fasta(): Generic Constructor
+
+  my $fasta = new libsequence::Fasta();
+  
+Fasta(name, seq): Constructor for const std::string
+
+  my $fasta = new libsequence::Fasta('dna', 'ATGC');
+  
+GetName(): Return the sequence name
+  
+  my $name = $fasta->GetName();
+  is($name, 'dna');
+  
+
+
+=cut 
+
