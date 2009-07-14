@@ -11,6 +11,7 @@ using namespace std;
 namespace bpp
 {
 class Parameter;
+
 class ParameterEvent:public Clonable
 {
   public:
@@ -30,9 +31,12 @@ class ParameterListener:public virtual Clonable
     virtual void parameterNameChanged(ParameterEvent & event) = 0;
     virtual void parameterValueChanged(ParameterEvent & event) = 0;
 };
+
+%rename(__assign__) Parameter::operator=;
 class Parameter:public virtual Clonable
 {
   public: 
+
     Parameter(const string & name = "", double value = 0, Constraint * constraint = NULL, bool attachConstraint = false)
     throw (ConstraintException);
     Parameter(const Parameter & param);
@@ -59,4 +63,5 @@ class Parameter:public virtual Clonable
     static IncludingInterval PROP_CONSTRAINT_IN;
     static ExcludingInterval PROP_CONSTRAINT_EX;
 };
+
 } 

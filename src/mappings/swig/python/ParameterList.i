@@ -10,9 +10,13 @@
 using namespace std;
 namespace bpp
 {
-class ParameterList:
-  public vector<Parameter *>,
-  public Clonable
+
+%rename(__assign__) ParameterList::operator=;
+%template(paramPVector) vector<Parameter *>;
+//%template(intVector) vector<int>;
+
+//class ParameterList:public vector<Parameter *>,public Clonable
+class ParameterList:public vector<int>
 {
   public:
     ParameterList();
@@ -31,19 +35,13 @@ class ParameterList:
     virtual vector<string> getParameterNames() const;
     virtual void addParameter(const Parameter & param) throw (ParameterException);
     virtual void addParameters(const ParameterList & params) throw (ParameterException);
-    virtual void setParameterValue(const string & name, double value) 
-      throw (ParameterNotFoundException, ConstraintException);
-    virtual void setAllParametersValues(const ParameterList & params)
-      throw (ParameterNotFoundException, ConstraintException);
-    virtual void setParametersValues(const ParameterList & params)
-      throw (ParameterNotFoundException, ConstraintException);
+    virtual void setParameterValue(const string & name, double value) throw (ParameterNotFoundException, ConstraintException);
+    virtual void setAllParametersValues(const ParameterList & params) throw (ParameterNotFoundException, ConstraintException);
+    virtual void setParametersValues(const ParameterList & params) throw (ParameterNotFoundException, ConstraintException);
     virtual bool hasParameter(const string& name) const;
-    virtual void matchParametersValues(const ParameterList & params)
-      throw (ConstraintException);
-    virtual void setAllParameters(const ParameterList & params)
-      throw (ParameterNotFoundException);
-    virtual void setParameters(const ParameterList & params)
-      throw (ParameterNotFoundException);
+    virtual void matchParametersValues(const ParameterList & params) throw (ConstraintException);
+    virtual void setAllParameters(const ParameterList & params) throw (ParameterNotFoundException);
+    virtual void setParameters(const ParameterList & params) throw (ParameterNotFoundException);
     virtual void matchParameters(const ParameterList & params);
     virtual void deleteParameter(const string & name) throw (ParameterNotFoundException);
     virtual void deleteParameters(const vector<string> & names) throw (ParameterNotFoundException);
@@ -53,4 +51,7 @@ class ParameterList:
     virtual void printParameters(ostream & out) const;
     virtual void reset();
 };
+
+%template(intVector) vector<int>;
+
 } 

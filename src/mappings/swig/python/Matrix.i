@@ -1,4 +1,4 @@
-%module bpp_
+%module bpp_matrix
 %{
 #include "Matrix.h"
 %}
@@ -25,6 +25,11 @@ class Matrix:public Clonable
     virtual void resize(unsigned int nRows, unsigned int nCols) = 0;
 };
 
+%template(intMatrix) Matrix<int>;
+%template(doubleMatrix) Matrix<double>;
+
+%rename(__assign__) RowMatrix::operator=;
+
 template<class Scalar>
 class RowMatrix : public Matrix<Scalar>, public vector< vector<Scalar> > {
   public:
@@ -43,4 +48,10 @@ class RowMatrix : public Matrix<Scalar>, public vector< vector<Scalar> > {
     vector<Scalar> col(unsigned int j) const;
     void resize(unsigned int nRows, unsigned int nCols);
 };
+
+%template(intRowMatrix) RowMatrix<int>;
+//%template(doubleRowMatrix) RowMatrix<double>;
+
+
+
 } 
