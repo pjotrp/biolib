@@ -1,4 +1,3 @@
-BEGIN{unshift(@INC, "../example")};
 use biolib::example;
 
 my $result = example::my_mod(7,3);

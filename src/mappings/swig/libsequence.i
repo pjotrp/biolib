@@ -4,14 +4,10 @@
 %include <std_vector.i>
 #%include <file.i>
 %include <typemaps.i>
-#%include <std_iostream.i>
+%include <std_iostream.i>
 %include <carrays.i>
-%include <cpointer.i>
 
 %array_class(double, doubleArray);
-%array_class(std::string, stringArray);
-%pointer_class(int, intPointer);
-%template(doubleVector) std::vector<double>;
 
 %{
   #include <Sequence/Seq.hpp>
@@ -63,12 +59,7 @@
   #include <Sequence/SeqProperties.hpp>
   #include <Sequence/PolyFunctional.hpp>
   #include <Sequence/AlignStream.hpp>
-  #include <Sequence/PathwayHelper.hpp>
   #include <Sequence/SeqRegexes.hpp>
-  #include <Sequence/Translate.hpp>
-  #include <Sequence/Comparisons.hpp>
-  #include <boost/tuple/tuple.hpp>
-  #include <boost/tuple/detail/tuple_basic.hpp>
 %}
 
 #typedef unsigned int Sequence::Seq::size_type;
@@ -83,11 +74,7 @@
 #%rename(__aref__) Sequence::Seq::operator[];
 #%ignore boost::noncopyable;
 %rename(__aref1__) Sequence::PolyTable::operator[];
-%template() std::pair<std::string, std::string>;
-%template() std::pair<unsigned, unsigned>;
-%template() std::pair<unsigned, Sequence::shortestPath::pathType>;
-%template() std::pair<doubelVector::iterator, double>;
-%template() std::pair<int, int>;
+%template(Pair) std::pair<std::string, std::string>;
 
 %rename(_print) print;
 %rename(to_std_str) Sequence::Seq::operator std::string() const;
@@ -162,33 +149,12 @@ typedef std::vector< polymorphicSite > polySiteVector;
 #%include <Sequence/ensureFloating.hpp>
 #%include <Sequence/preferFloatingTypes.hpp>
 %include <Sequence/PolySNPimpl.hpp>
-%include <Sequence/PathwayHelper.hpp>
 #%include <Sequence/AlignStream.hpp>
-%include <Sequence/Translate.hpp>
-%include <Sequence/Comparisons.hpp>
-#%include <boost/tuple/detail/tuple_basic.hpp>
-#%include <boost/tuple/tuple.hpp>
-#%include <Sequence/RNG/gsl_rng_wrappers.hpp>
 
-%template(Gapped) Sequence::Gapped<std::string::iterator>;
 #%include <Sequence/SeqRegexes.hpp>
 %constant char *basic_dna_alphabet = "[^AGTCN\\-]";
 %constant char *full_dna_alphabet =  "[^AGCTNXMRWSKVHDB\\-]";
 %constant char *pep_alphabet = "[^ARNDBCQEZGHILKMFPSTWYV\\-]";
-#enum Nucleotides{A, T, G, C, N, GAP};
-#enum GeneticCodes{UNIVERSAL};
-#enum Mutations{Unknown, Ts, Tv};
-#const std::string::const_iterator beg;
-#enum pathType {S,n,SS,SN,NN,SSS,SSN,SNN,NNN,NONE,AMBIG};
-#%template() Sequence::mean<doubleVector::iterator>;
-%template(segVector) std::vector<Sequence::segment>;
-%array_class(Sequence::segment, segArray);
-#%template(chisq_tuple) boost::tuple<double, double, double, double>;
-#%template(chisquareds) std::vector<chis_tuple>;
-%template(nodeVector) std::vector<Sequence::node>;
-%template(chroVector) std::vector<Sequence::chromosome>;
-
-
 namespace Sequence{
 template<typename Iter>
    bool validSeq(Iter beg, Iter end, const char *_pattern = Sequence::basic_dna_alphabet, const bool icase = true)
@@ -272,24 +238,16 @@ template<typename Iter>
     }
 };*/
 
-/*%extend Sequence::marginal{
+%extend Sequence::marginal{
  node __aref2__(const std::vector<node>::size_type &i)
    {
     assert(int(i) <= 2*($self->nsam) - 2);
     return ($self->tree)[i];
    }
-};*/
-
-/*%extend Sequence::marginal{
- node __aref2__(const std::vector<node>::size_type &i) const
-   {
-    assert(int(i) <= 2*($self->nsam) - 2);
-    return ($self->tree)[i];
-   }
-};*/
+};
 
 %extend Sequence::marginal{
-  node __getitem__(const unsigned &i)
+ node __aref2__(const std::vector<node>::size_type &i) const
    {
     assert(int(i) <= 2*($self->nsam) - 2);
     return ($self->tree)[i];
