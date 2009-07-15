@@ -1,0 +1,152 @@
+=head1 General I/O
+
+=begin hidden
+
+  BEGIN{unshift(@INC, "../libsequence")};
+  use biolib::libsequence;
+  
+
+=end hidden
+
+=head2 class Fasta
+
+FASTA Sequence Stream
+
+
+Fasta(): Generic Constructor
+
+  my $fasta = new libsequence::Fasta();
+  
+Fasta(name, seq): Constructor for const std::string
+
+  my $fasta = new libsequence::Fasta('dna', 'ATGC');
+  
+Fasta(fastaObj): Copy constrctor
+
+  my $copy_fasta = new libsequence::Fasta($fasta);
+  
+GetName(): Return the sequence name
+  
+  my $name = $fasta->GetName();
+  is($name, 'dna');
+  
+GetSeq(): Return the sequence itself
+
+  my $seq = $fasta->GetSeq();
+  is($seq, 'ATGC');
+
+length(): Return the total length of the sequence
+
+  my $len = $fasta->length();
+  is($len, 4);
+  
+UngappedLength(): Return length of sequence, excluding the gap character '-'
+
+  my $fasta1 = new libsequence::Fasta('dna', 'A-C-T');
+  my $ungapped_len = $fasta1->UngappedLength();
+  is($ungapped_len, 3);
+  
+IsGapped(): Returns 1 if the sequence contaings the gap character '-', 0 otherwise
+
+  ok($fasta1->IsGapped());
+  
+substr(beg, len): Returns a substring of the current string, starting at index 'beg' with 'len' characters long.
+if len is omitted, returns the substring from index 'beg' to the end of the string.
+  
+  my $sub_str = $fasta->substr(1, 2);
+  is($sub_str, 'TG');
+  my $sub_str = $fasta->substr(2);
+  is($sub_str, 'GC');
+  
+c_str(): Returns the C-style string representing the sequence as a cont char *
+
+  is($fasta->c_str(), 'ATGC');
+  
+to_std_str(): Allows (implict) cast to std::string
+
+  is($fasta->to_std_str(), 'ATGC');
+  
+Complement():  Complement the Sequence
+
+  $copy_fasta->Complement();
+  is($copy_fasta->GetSeq(), 'TACG');
+  
+Revcom(): Reverse and complement the sequence
+
+  $copy_fasta->Revcom();
+  is($copy_fasta->GetSeq(), 'CGTA');
+
+Operator ==: Returns 1 if the sequences contain the same data, 0 otherwise.
+
+  ok(!($fasta == $fasta1));
+  
+Operator !=: Returns 0 if the sequences contain the same data, 1 otherwise.
+
+  ok($fasta != $fasta1);
+  
+Operator []: Return the i-th element of the sequence.
+
+  #is($fasta[1], 'T');
+  
+~Fasta(): Destructor
+
+  $fasta->DESTROY();
+  $copy_fasta->DESTROY();
+  $fasta1->DESTROY();
+ 
+ 
+ 
+ 
+  
+=head1 Divergence Statistics
+
+=head2 class Kimura80
+
+#=for POD::Tested reset
+
+Kimura's 2-parameter distance
+
+Kimura80(seqa, seqb): Constructor, seqa and seqb should be of the same length.
+
+  my $fas1 = new libsequence::Fasta('dna1', 'AGTGCG');
+  my $fas2 = new libsequence::Fasta('dna2', 'TGCACT');
+  my $kim = new libsequence::Kimura80($fas1, $fas2);
+
+K(): Returns: the distance between the two sequences.
+
+  is($kim->K(), 0);
+  
+sites(): Returns:the number of sites compared, excluding gaps, missing data, etc.
+
+  is($kim->sites(), 6, "TestSeties");
+
+
+=head2 class GranthamWeights2
+
+#=for POD::Tested reset
+
+Weights paths by Grantham's distances for codons differing at 2 sites
+
+GranthamWeights2(): Constructor
+
+  my $gran2 = new libsequence::GranthamWeights2();
+  
+weights(): Returns:a double * of size 2 (1 value for each branch)
+
+  my $weights2 = $gran2->weights();
+  ok(defined($weights2));
+  print "$weights2\n";
+  my $a = new libsequence::doubleArray(2);
+  print $a;
+  #my $y = $a->getitem(0);
+  #my $w = libsequence::doubleArray->frompointer($a);
+
+
+
+Calculate():
+
+  $gran2->Calculate('CGU', 'AGG');
+  
+
+=cut 
+
