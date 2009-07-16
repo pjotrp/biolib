@@ -174,7 +174,7 @@ class TestKimura80(object):
 
         Kimura80(seq1, seq2): seq1 and seq2 should be of the same length.
         >>> fas1 = Fasta('dna1', 'AGTGCG')
-        >>> fas2 = Fasta('dn22', 'TGCACT')
+        >>> fas2 = Fasta('dna2', 'TGCACT')
         >>> kim = Kimura80(fas1, fas2)
         """
 
@@ -182,7 +182,7 @@ class TestKimura80(object):
         """Returns: the distance between the two sequences.
 
         >>> fas1 = Fasta('dna1', 'AGTGCG')
-        >>> fas2 = Fasta('dn22', 'TGCACT')
+        >>> fas2 = Fasta('dna2', 'TGCACT')
         >>> kim = Kimura80(fas1, fas2)
         >>> kim.K()
         0.0
