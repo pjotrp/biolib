@@ -265,10 +265,10 @@ class TestGranthamWeights3(object):
         codon1 and codon2 are 3-letters condons from different branch
 
         >>> gran3 = GranthamWeights3()
-        >>> gran3.Calculate("UGG", "CGA")
+        >>> gran3.Calculate("AAA", "CCC")
         >>> w = doubleArray_frompointer(gran3.weights())
         >>> w[1]
-        0.5
+        0.15905190450646806
         """
 class TestUnweighted2(object):
 

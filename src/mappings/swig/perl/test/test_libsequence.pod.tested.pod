@@ -1,13 +1,5 @@
 =head1 General I/O
 
-=begin hidden
-
-  BEGIN{unshift(@INC, "../libsequence")};
-  use biolib::libsequence;
-  
-
-=end hidden
-
 =head2 class Fasta
 
 FASTA Sequence Stream
@@ -348,8 +340,6 @@ Q4(): Returns number of transversions at fourfold-degenerate sites in the codon
 
 #=head2 class Comeron95
 
-=for POD::Tested reset
-
 an object to implement Comeron's (1995) method to calculate Ka and Ks
         
 Comeron95(seqa, seqb, max = 3, code = UNIVERSAL, _weigths2 = NULL, _weights3 = NULL): 
@@ -597,5 +587,4 @@ if char(can be lower letter) is not within{A,T,G,C},Return 0 if it is, otherwise
 
 
 
-=cut 
-
+=cut
