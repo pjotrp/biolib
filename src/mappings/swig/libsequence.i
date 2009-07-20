@@ -11,7 +11,13 @@
 %array_class(double, doubleArray);
 %array_class(std::string, stringArray);
 %pointer_class(int, intPointer);
+%template(intPair) std::pair<int, int>;
+%template(doublePair) std::pair<double, double>;
+
+%template(intVector) std::vector<int>;
 %template(doubleVector) std::vector<double>;
+%template(fragVector) std::vector< std::pair<int, int> >;
+%template(scaleVector) std::vector< std::pair<double, double> >;
 
 %{
   #include <Sequence/Seq.hpp>
@@ -87,7 +93,7 @@
 %template() std::pair<unsigned, unsigned>;
 %template() std::pair<unsigned, Sequence::shortestPath::pathType>;
 %template() std::pair<doubelVector::iterator, double>;
-%template() std::pair<int, int>;
+
 
 %rename(_print) print;
 %rename(to_std_str) Sequence::Seq::operator std::string() const;
@@ -187,6 +193,20 @@ typedef std::vector< polymorphicSite > polySiteVector;
 #%template(chisquareds) std::vector<chis_tuple>;
 %template(nodeVector) std::vector<Sequence::node>;
 %template(chroVector) std::vector<Sequence::chromosome>;
+
+
+/*%extend Sequence::marginal{
+  
+  marginal()
+   {
+   }
+};*/
+
+#%ignore std::list<maginal>::list(size_type);
+%include <std_list.i>
+#%ignore std::list<maginal>::list(size_type);
+%template(margList) std::list<Sequence::marginal>;
+
 
 
 namespace Sequence{

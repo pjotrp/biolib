@@ -1,12 +1,11 @@
-=head1 General I/O
-
 =begin hidden
 
   BEGIN{unshift(@INC, "../libsequence")};
   use biolib::libsequence;
   
-
 =end hidden
+
+=head1 General I/O
 
 =head2 class Fasta
 
@@ -87,6 +86,7 @@ Operator !=: Returns 0 if the sequences contain the same data, 1 otherwise.
 Operator []: Return the i-th element of the sequence.
 
   #is($fasta[1], 'T');
+  is($fasta->__getitem__(1), 'T');
   
 ~Fasta(): Destructor
 
@@ -567,11 +567,179 @@ if char(can be lower letter) is not within{A,T,G,C},Return 0 if it is, otherwise
 
 =head1 Molecular Population Genetics
 
+=head2 class segment
 
+A portion of a recombining chromosome.
 
+segment(): Default Constructor
+
+  my $seg_null = new libsequence::segment();
+
+segment(beg, end, desc = 0): Constructor.
+Parameters:
+beg: the first site in the segment
+end: the last site in the segment
+desc: the individual in the sample to which the segment leads
+  
+  my $seg = new libsequence::segment(1, 3, 0);
+  
+=head2 class chromosome
+
+A chromosome is a container of segments. 
+
+chromosome(): Default constructor.
+
+  my $chro_null = new libsequence::chromosome();
+
+chromosome(initial_segs, population = 0): Constructor
+Parameters:
+initial_segs 	a vector of segments
+population 	used to set pop
+
+  my $segs = new libsequence::segVector(3);
+  my $seg1 = new libsequence::segment();
+  $segs->set(0,$seg1);
+  my $seg2 = new libsequence::segment(1,4,0);
+  $segs->set(1,$seg2);
+  my $seg3 = new libsequence::segment(1,3,1);
+  $segs->set(2,$seg3);
+  my $chro = new libsequence::chromosome($segs);
+  #$segs{0} = new libsequence::segment();
+
+chromosome(chroObj):Copy constructor
+
+  my $copy_chro = new libsequence::chromosome($chro);
+  
+first(): Returns the first position in the chromosome
+
+  is($chro->first(), 0);
+  
+last(): Returns the last position in the chromosome
+
+  is($chro->last(), 3);
+  
+links(): Computes and returns the number of positions at which recombination can occur 
+in the chromosome. Returns (segs+nsegs-1)->end - segs->beg.
+
+  is($chro->links(), 3);
+  
+swap_with(): Swaps the data members of the current chromosome with chromosome ch. Called by the coalesce routine, 
+and is necessary to prevent nastiness such as multiple calls to free when vectors of chromosomes go out of scope. 
+Implemented as: std::swap(this->segs,ch.segs); std::swap(this->nsegs,ch.nsegs); std::swap(this->pop,ch.pop);
+
+  my $segs1 = new libsequence::segVector(2);
+  my $seg11 = new libsequence::segment(2,5,0);
+  $segs1->set(0,$seg11);
+  my $seg12 = new libsequence::segment(1,8,1);
+  $segs1->set(1,$seg12);
+  my $chro1 = new libsequence::chromosome($segs1);
+  
+  $chro->swap_with($chro1);
+  is($chro->first(), 2);
+  
+assign_allocated_segs(newsegs, new_nsegs)
+Parameters:
+newsegs 	an array of segments allocated with malloc
+new_nsegs 	the number of segs stored in newsegs
+
+  my $newsegs = new libsequence::segArray(2);
+  my $new1 = new libsequence::segment(3,4,1);
+  my $new2 = new libsequence::segment(2,5,0);
+  $newsegs->setitem(0, $new1);
+  $newsegs->setitem(1, $new2);
+  
+  $chro->assign_allocated_segs($newsegs, 2);
+  is($chro->first(), 3); 
+  
+~chromosome(): Destructor
+
+  $chro->DESTROY;
+  $chro1->DESTROY;
+  
+=head2 class HKAdata
+
+Data from a single locus for an HKA test.
+
+HKAdata(): Default constructor
+
+  my $hka_null = new libsequence::HKAdata();
+  
+HKAdata(sa, sb, d, na, nb): Constructor
+sa 	Num. polymorphic sites in species a
+sb 	Num. polymorphic sites in species b
+d 	Divergence between species a and b (per locus)
+na 	sample size for species a
+nb 	sample size for species b
+  
+  my $hka = new libsequence::HKAdata(3,5,2,1,1);
+  
+HKAdata(hkaObj): Copy contructor
+
+  my $hka_copy = new libsequence::HKAdata($hka);
+  
+=head2 class node
+
+A point on a marginal tree at which a coalescent event occurs.
+
+Parameters:
+t 	The (coalescent-scaled) time at which the node was generated
+a 	The index in the marginal tree that is the ancestor of the current node
+      
+  my $node = new libsequence::node();
   
   
+=head2 class marginal
+
+The genealogy of a portion of a chromosome on which no recombination has occurred.
+A marginal history is a coalscent tree for a region in which no recombination has occured in the history of a sample.
+        
+marginal(beg, nsam, nnodes, tree): 
+Parameters:
+marginal(beg, nsam, nnodes, tree)
+beg:The (mutational) site at which the current marginal tree begins
+nsam: The sample size being simulated. The 2*nsam-1 nodes in the tree are therefore indexed from 0 to 2*nsam-2
+nnodes: The current number of nodes in the tree
+tree: the coalescent history of this marginal tree
+
+  my $tree = new libsequence::nodeVector(3);
+  my $n1 = new libsequence::node();
+  my $n2 = new libsequence::node(1,3);
+  my $n3 = new libsequence::node(3,10);
+  $tree->set(0, $n1);
+  $tree->set(1, $n2);
+  $tree->set(2, $n3);
+  my $marg = new libsequence::marginal(5, 10, 19, $tree);
   
+= head2 operator <: Returns marginalObj1.beg < marginalObj.beg
+
+  my $tree1 = new libsequence::nodeVector(1);
+  $tree1->set(0, $n1);
+  my $marg1 = new libsequence::marginal(1,5,10,$tree1);
+  ok($marg1 < $marg);
+  
+  #$marg[0];
+  #my $newick = new libsequence::newick_stream_marginal_tree($marg);
+  
+=head2 class SimParams:
+
+Parameters for Hudson's simulation program
+
+SimParams(): Constructor
+
+  my $para = new libsequence::SimParams();
+  
+params(): Returns the command-line input to ms
+
+  $para->params();
+  
+totsam(): Returns the total sample size (# gametes)
+
+  is($para->totsam(), 0);
+  
+runs(): Returns number of genealogies to generate
+
+  is($para->runs(), 0);
+
 
 
 

@@ -1366,7 +1366,7 @@ class TestinvalidPolyChar(object):
 
 class Testsegment(object):
 
-    def segment(self):
+    def testsegment(self):
         """Constructor:A portion of a recombining chromosome.
 
         segment(beg, end, desc)
@@ -1486,6 +1486,23 @@ class Testchromosome(object):
         >>> chro = chromosome(segs)
         >>> chro.links()
         18
+        """
+
+    def testswap_with(self):
+        """Swaps the data members of the current chromosome with chromosome ch.
+        Called by the coalesce routine, and is necessary to prevent nastiness such as
+        multiple calls to free when vectors of chromosomes go out of scope.
+        Implemented as: std::swap(this->segs,ch.segs); std::swap(this->nsegs,ch.nsegs);
+        std::swap(this->pop,ch.pop);
+
+        >>> segs = segVector(2)
+        >>> segs[0] = segment(2,5,1)
+        >>> segs[1] = segment(10,20,0)
+        >>> chro = chromosome(segs)
+        >>> chro1 = chromosome()
+        >>> chro1.swap_with(chro)
+        >>> chro1.first()
+        2
         """
                 
 
@@ -1622,9 +1639,14 @@ def Testisseg():
 
     isseg(beg, nsegs, offset, pos)
     Parameters:
-    seg 	a pointer to a segment of a chromosome (this should be the 1st segment, such as the return value of chromosome::begin())
+    seg 	a pointer to a segment of a chromosome (this should be the 1st segment, such as the return value
+    of chromosome::begin())
+
     nsegs 	the number of segs in the chromosome pointed to by seg
-    offset 	a pointer to an integer. This integer is used for repeated pointer arithmetic, and should be initalized to 0 before the first call.
+
+    offset 	a pointer to an integer. This integer is used for repeated pointer arithmetic, and should be
+    initalized to 0 before the first call.
+
     pos 	a position a long a chromosome. This function asks if pos is contained in the ancestral material of the chromosome whose segments begin at seg
 
     Returns:
@@ -1641,7 +1663,218 @@ def Testisseg():
     >>> isseg(seg, 3, 1, offset)
     True
     """
+
+def Testcalculate_scales():
+
+    """This is a helper function that rescales physical distance in base pairs
+    to continuous distance on the interval 0,1.
+
+    calculate_scales(fragments, sample_scale, mutation_scale)
+    Parameters:
+    fragments 	A vector of pairs, representing physical distance in bp.
+    For each pair, the first element is the distance to the next fragment,
+    and the second element is the length of the fragment. For example,
+    two 1kb fragments separated by 10kb would be represented by the pairs (0,1000) (10000,1000).
+
+    sample_scale 	This vector will be filled with values representing
+    the positions of the fragments on the continuous interval, without any space
+    betwen them. This is because we will actually do the simulation using a non-uniform
+    genetic map to represent the high recombination rates between fragments
+
+    mutation_scale 	This is a direct mapping of the data contained in fragments
+    to the continuous scale, and can be used to rescale the positions of mutations
+
+    >>> fragments = fragVector(3)
+    >>> fragments.push_back(intPair(0,500))
+    >>> fragments.push_back(intPair(1000,500))
+    >>> fragments.push_back(intPair(1000,500))
+    >>> sample = scaleVector(3)
+    >>> mutation = scaleVector(3)
+    >>> calculate_scales(fragments, sample, mutation)
+    """
+
+def Testsample_length():
+
+    """When simulating partially linked regions, return the total length of sample material
+    that we are simulating
+    Returns: The sum of fragments[i].second for i=0 to i=fragments.size()-1
+
+    sample_length(fragments)
+    >>> fragments = fragVector(3)
+    >>> fragments.push_back(intPair(0,500))
+    >>> fragments.push_back(intPair(1000,500))
+    >>> fragments.push_back(intPair(1000,500))
+    >>> sample_length(fragments)
+    1500
+    """
+
+def Testtotal_length():
+
+    """When simulating partially linked regions, return the total length of the region.
+
+    Returns:The sum of fragments[i].first + fragments[i].second for i=0 to i=fragments.size()-1
+
+    total_length(fragments)
+    >>> fragments = fragVector(3)
+    >>> fragments.push_back(intPair(0,500))
+    >>> fragments.push_back(intPair(1000,500))
+    >>> fragments.push_back(intPair(1000,500))
+    >>> total_length(fragments)
+    3500
+    """
+
+def Testinit_sample():
+
+    """A simple function to initialize a sample of chromosomes.
+    Returns: a vector of chromosome
+
+    Parameters:
+    pop_config 	For a k-population model, this vector contains the sample size for each pop.
+    Individuals are labeled as beloning to population 0 to k-1, in the order specified in this vector
+
+    nsites 	The number of sites at which mutations occur. For a k-site model,
+    recombination occurs at any of the k-1 "links" between sites. Eaach chromosome is assigned
+    a single segment starting at position 0 and ending at nsites-1.
+
+    >>> chroVectorObj = init_sample(intVector(1,10), 1500)
+    """
+def Testinit_marginal():
+
+    """Simple function to initialize and return a marginal tree.
+
+    Parameters:
+    nsam 	the total sample size (i.e. summed over all populations) that you want to simulate
+
+    >>> marginalObj = init_marginal(10)
+    """
+
+def Testcoalesce():
+
+    """Common ancestor routine for coalescent simulation. Merges chromosome segments and updates
+       marginal trees.
+
+    Common ancestor routine for coalescent simulation. This routine performs the merging of two
+    lineages by a coalescent event. Such merges usually require two sorts of operations. The first
+    is an update to the segments contained in a chromosome, and the second is an update of the nodes
+    on a marginal tree.
+
+    coalesce(time, ttl_nsam, current_nsam, c1, c2, nsites, nlinks, sample, sample_history)
+    Parameters:
+    time 	the time at which the coalecent event is occuring
+    ttl_nsam 	the total sample size being simulated
+    current_nsam 	the current sample size in the simulation
+    c1 	the array index of the first chromosome involved in the coalescent event
+    c2 	the array index of the second chromosome involved in the coalescent event
+    nsites 	the total mutational length of the region begin simulated. In the language of Hudson (1983), this is the number of infinitely-many-alleles loci in the simulation.
+    nlinks 	a pointer to the number of "links" currently in the simulation. A link is the region between two sites, such that a chromosome currently with k sites has k-1 links
+    sample 	a pointer to the vector of chromosomes which makes up the sample
+    sample_history 	a pointer to the ancestral recombination graph
+
+    >>> sample = init_sample(intVector(1,10), 1500)
+    >>> slength = 1500
+    >>> nsam = 19
+    >>> t = 0
+    >>> marginal = init_marginal(10)
+    >>> sample_history = margList(1, marginal)
+    >>> nlinks = intPointer()
+    >>> nlinks.assign(499)
+    >>> coalesce(t,nsam,nsam,1,2,slength,nlinks,sample,sample_history)
+    1
+
+    """
+    
+
+def Testtotal_time_on_arg():
+
+    """Returns the total time on an ancestral recombination graph.
+
+    total_time_on_arg(sample_history, total_number_of_sites)
+    Parameters:
+    sample_history 	an ancestral recombination graph
+    total_number_of_sites 	the number of "sites" simulated on the ARG
+
+    >>> marginal = init_marginal(10)
+    >>> sample_history = margList(1, marginal)
+    >>> total_time_on_arg(sample_history, 500)
+    0.0
+    """
+
+def Testcrossover()
+
+    """Recombination function.Returns:the number of links lost due to the crossover event
+    
+    crossover(current_nsam, chromo, pos, sample, sample_history)
+    Parameters:
+    current_nsam 	the current sample size in the simulation
+    chromo 	the chromosome on which the crossover event is to occur
+    pos 	the crossover event happens between sites pos and pos+1 (0<= pos < nsites)
+    sample 	the sample of chromosomes being simulated
+    sample_history 	the genealogy of the sample
+
+    >>> sample = init_sample(intVector(1,10), 1500)
+    >>> marg = init_marginal(10)
+    >>> sample_history = margList(1, marg)
+    >>> crossover(10, 5, 100, sample, sample_history)
+    1
+    """
+
+class TestSimData(object):
+
+    def testSimData():
+
+        """The constructor needs to know the sample size simulated. This is easily obtainted
+        using Sequence::SimParams.
+
+        SimData(nsame = 0, nsnps = 0)
+        Parameters:
+        nsams    sample size
         
+        >>> sdata = SimData()
+        >>> p = SimParams()
+        >>> d = SimData(p.totsam())
+        """
+
+    def testdes_SimData():
+
+        """Destructor:
+
+        >>> d = SimData()
+        >>> del d
+        """
+
+    
+
+
+    def testBinary():
+
+        """Recode the polymorphism table in 0,1 (binary notation)
+
+        Binary(haveOutgroup = false, outgroup = 0, strictInfSites = true)
+        Parameters:
+        haveOutgroup 	use true if an outgroup is present, false otherwise
+        outgroup 	the index of the outgroup in the data vector used to construct the object
+        strictInfSites 	if true, throw out all sites with > 2 character states (including outgroup!)
+
+        Note:
+        if haveOutgroup== true, then 0 means an ancestral state and 1 a derived state in the resulting. 
+        note If haveOutgroup == true, and there are sites with missing data in the outrgroup sequence,
+        those sites are removed from the data, since its assumed you actually want to know ancestral/derived
+        for every site
+
+        >>> d = SimData()
+        >>> d.Binary()
+        """
+
+    def testsegsites():
+
+        """Returns the number of segregating sites in the data block
+
+        >>> d = SimData()
+        >>> d.segsites()
+        0
+        """
+
+       
 ########excute the test############
 if __name__ == "__main__":
 ##    suite = unittest.TestSuite()
