@@ -5,6 +5,9 @@
   #include <scanone_mr.h>
   #include <hmm_f2.h>
   #include <scanone_imp.h>
+  #include <mqmdatatypes.h>
+  #include <mqmprob.h>
 %}
 
-
+%include <mqmdatatypes.h>
+%include <mqmprob.h>

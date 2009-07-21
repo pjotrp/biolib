@@ -64,3 +64,4 @@ MAP_OUT_DIM3_ARRAY1(int,0,1,2,draws) /* Draws[repl][mar][ind] */
 
 %include <hmm_f2.h>
 %include ../../rqtl.i
+
