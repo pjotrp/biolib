@@ -1,15 +1,1 @@
-%module bpp_
-%{
-#include "RandomFactory.h"
-%}
-namespace bpp
-{
-class RandomFactory {
-	public:
-		RandomFactory();
-		virtual ~RandomFactory();
-
-		virtual void setSeed(long seed) = 0;
-		virtual double drawNumber() const = 0;
-};
-} 
+numcalc/RandomFactory.i
