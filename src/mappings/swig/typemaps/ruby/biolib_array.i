@@ -16,6 +16,8 @@
       rb_raise(rb_eArgError, "MAP_IN_ARRAY expected Array of values for $1_name");
     SWIG_AsVal_int(argv[sizearg], &asize);
     $1 = (type *)malloc(asize*sizeof(type));
+    if (RARRAY($input)->len != asize)
+      rb_raise(rb_eArgError, "Array size incorrect for type **$1_name");
     for (i=0; i<asize; ++i)
       ($1)[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
   }
@@ -37,6 +39,8 @@
 
     asize = dim1*dim2;
     $1 = (type **)malloc(asize*sizeof(type));
+    if (RARRAY($input)->len != asize)
+      rb_raise(rb_eArgError, "Array size incorrect for type **$1_name");
     for (i=0; i<asize; ++i)
       ($1)[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
   }
@@ -58,6 +62,8 @@
 
     asize = dim1*dim2;
     $1 = (type *)malloc(asize*sizeof(type));
+    if (RARRAY($input)->len != asize)
+      rb_raise(rb_eArgError, "Array size incorrect for type **$1_name");
     for (i=0; i<asize; ++i)
       ($1)[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
   }
@@ -82,6 +88,8 @@
     asize = dim1*dim2*dim3;
     $1 = (type ***)malloc(asize*sizeof(type));
     base = (int *)$1;
+    if (RARRAY($input)->len != asize)
+      rb_raise(rb_eArgError, "Array size incorrect for type **$1_name");
     for (i=0; i<asize; ++i)
       base[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
   }
@@ -101,6 +109,8 @@
       rb_raise(rb_eArgError, "MAP_IN_ARRAY expected Array of values for $1_name");
     len = RARRAY($input)->len;
     $1 = (type *)malloc(len*sizeof(type));
+    if (RARRAY($input)->len != len)
+      rb_raise(rb_eArgError, "Array size incorrect for type **$1_name");
     for (i=0; i<len; ++i)
       ($1)[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
   }
@@ -134,6 +144,8 @@
     SWIG_AsVal_int(argv[sizearg], &asize);
 
     $1 = (type *)malloc(asize*sizeof(type));
+    if (RARRAY($input)->len != asize)
+      rb_raise(rb_eArgError, "Array size incorrect for type **$1_name");
     for (i=0; i<asize; ++i)
       ($1)[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
     $2 = (type *)malloc(asize*sizeof(type));
@@ -157,6 +169,8 @@
     asize = RARRAY($input)->len;
     $1 = asize;
     $2 = (type *)malloc(asize*sizeof(type));
+    if (RARRAY($input)->len != asize)
+      rb_raise(rb_eArgError, "Array size incorrect for type **$1_name");
     for (i=0; i<asize; ++i)
       ($2)[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
     $3 = (type *)malloc(asize*sizeof(type));

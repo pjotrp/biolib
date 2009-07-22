@@ -116,5 +116,7 @@ void scanone_mr(int n_ind, int n_pos, int n_gen, int **Geno,
     result[i] = (double)i;
   printf(" result1<%f>\n",result[1]);
   result[0] = Geno[2][1]; // marker3, ind1 = 6
+  result[2] = Geno[1][0]; // marker2, ind0 = 3
+
 }
 
