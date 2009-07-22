@@ -22,6 +22,7 @@ would do:
   
   > library(qtl)
   > data(listeria)
+  > mr = scanone(listeria,"mr")
 
 Find the special classes for loading QTL input files (part of BioLib 'extra').
 
@@ -430,7 +431,7 @@ Note, again, the adaptor is normally not seen by the end user.
 
 We are going to scan for QTL's. The first R equivalent here is:
 
-    > mr = scanone(data,method='mr')
+    > mr = scanone(listeria,method='mr')
       Warning message:
       Dropping 4 individuals with missing phenotypes.
         in: checkcovar(cross, pheno.col, addcovar, intcovar, perm.strata,  
