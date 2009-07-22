@@ -12,6 +12,10 @@ extern "C" {
   void array_transform_to_result1(int num, double *data1, double *result1);
   void array_transform_to_result2(int num, double *data2, double *result2);
   void array_transform_to_result3(int num, double *data3, double *result3);
+  void scanone_mr(int n_ind, int n_pos, int n_gen, int **Geno,
+                  double **Addcov, int n_addcov, double **Intcov,
+                  int n_intcov, double *pheno, double *weights,
+                  double *result);
 
 #ifdef __cplusplus
 }

@@ -61,3 +61,13 @@ On some Debian systems an upgrade of Ruby causes:
 /usr/lib/ruby/1.8/x86_64-linux/missing.h:43: error: from previous declaration 'int eaccess(const char*, int)'
 
 make sure to upgrade the ruby1.8-dev package.
+
+== Runtime error
+
+An error like:
+
+/../test/test_example.rb:25:in `function': can't convert false into Float (TypeError)
+
+happens when SWIG is using num2dbl from a Ruby array - and you go
+beyond the last element.
+
