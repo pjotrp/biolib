@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 2.6)
 
-if(BLD_BIOLIB)
+if(BLD_BIOLIB_CORE)
   add_subdirectory (biolib_core/src)
+endif()
+
+if(BLD_BIOLIB_R)
+  add_subdirectory (biolib_R/src)
 endif()
 
 if(BLD_EXAMPLE)
@@ -18,6 +22,5 @@ if (BLD_STADEN)
 endif()
 
 if (BLD_RQTL)
-  add_subdirectory (biolib_R/src)
   add_subdirectory (rqtl/contrib/biolib)
 endif()
