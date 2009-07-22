@@ -1,4 +1,4 @@
-# Make Affyio module for Ruby
+# Make biolib_core module for Ruby
 
 cmake_minimum_required(VERSION 2.6)
 ENABLE_TESTING()

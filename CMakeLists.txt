@@ -17,6 +17,8 @@
 #   cmake -DBUILD_PYTHON:BOOLEAN=TRUE .
 #   cmake -DBUILD_PERL:BOOLEAN=TRUE .
 #
+#   each of these will include BUILD_LIBS
+#
 #   To build specific libraries, for example
 #
 #   cmake -DSTADEN_LIB:BOOLEAN=TRUE
@@ -93,7 +95,7 @@ if (AFFYIO_LIB)
   set(BLD_RQTL    FALSE)
   set(BLD_AFFYIO  TRUE)
   set(BLD_EXAMPLE FALSE)
-  set(BLD_BIOLIB  FALSE)
+  set(BLD_BIOLIB  TRUE)   # requires biolib error handler
 endif (AFFYIO_LIB)
 
 if (STADEN_LIB)
