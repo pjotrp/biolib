@@ -1,4 +1,6 @@
-add_subdirectory (biolib_core)
+if (BLD_BIOLIB_CORE)
+  add_subdirectory (biolib_core)
+endif()
 
 if (BLD_EXAMPLE)
   add_subdirectory (example)
