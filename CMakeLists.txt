@@ -112,7 +112,7 @@ if (RQTL_LIB)
   set(BLD_BIOLIB_R     TRUE)
   set(BLD_STADEN  FALSE)
   set(BLD_AFFYIO  FALSE)
-  set(BLD_EXAMPLE FALSE)
+  set(BLD_EXAMPLE TRUE)        # contains typemap tests
 endif (RQTL_LIB)
 
 if (EXAMPLE_LIB)
