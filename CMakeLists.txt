@@ -32,7 +32,21 @@ cmake_minimum_required(VERSION 2.6)
 
 project (BIOLIB)
 
+# Testing: 
+#
+#   test:             Run fast 'integration' tests
+#   testunit:         Run unit testing
+#   testdoc:          Run doctest testing
+#   testregression:   Run all regression tests
+#   testall:          Run all tests
+#
 ENABLE_TESTING()
+ADD_CUSTOM_TARGET(testregression ALL COMMAND ctest -R TestRegression)
+ADD_CUSTOM_TARGET(testunit ALL COMMAND ctest -R TestUnit)
+ADD_CUSTOM_TARGET(testdoc ALL COMMAND ctest -R TestDoc)
+ADD_CUSTOM_TARGET(testall ALL COMMAND ctest)
+ADD_CUSTOM_TARGET(test ALL COMMAND ctest -E "TestRegression\\|Slow\\|TestDoc")
+
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/tools/cmake-support/modules/")
 message("CMake modules: ${CMAKE_MODULE_PATH}")
 

@@ -13,11 +13,11 @@
 #
 #
 
-# require 'test/unit'
+require 'test/unit'
 
-# require 'test_rqtl'
+require 'test_rqtl'
 
 # --- now run the doctests
 
-Kernel.system('../../../../tools/rubydoctest/bin/rubydoctest test_rqtl.rb')
+# Kernel.system('../../../../tools/rubydoctest/bin/rubydoctest test_rqtl.rb')
 
