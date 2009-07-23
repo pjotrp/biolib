@@ -406,7 +406,6 @@ first marker genotypes for 5 individuals:
   >> r1 = RQtlScanoneAdaptor.new(d)
   >> r1.use_individuals.size
   => 116
-
   >> r1.scanone_ingenotypematrix[0..4]
   => [3,0,0,3,2]
 
