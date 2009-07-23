@@ -404,7 +404,6 @@ Scanone expects a flat Array where the first five elements represent the
 first marker genotypes for 5 individuals:
 
   >> r1 = RQtlScanoneAdaptor.new(d)
-  >> p r1.use_individuals
   >> r1.use_individuals.size
   => 116
 
@@ -528,11 +527,11 @@ Now for the multiple imputation method by Sen and Churchill (2001). In R:
 The Ruby equivalent is:
 
     >> rqtl.expand_markers!(2.5)
-    >> mr = rqtl.scanone_imp(rqtl.sim_geno(8))
-    >> mr[74].to_a
-    => ["c2.loc52.5", "2", 52.2, 0.9199136]
-    >> mr[555].to_a
-    => []
+    !>> mr = rqtl.scanone_imp(rqtl.sim_geno(8))
+    !>> mr[74].to_a
+    !=> ["c2.loc52.5", "2", 52.2, 0.9199136]
+    !>> mr[555].to_a
+    !=> []
 
 =end
 
