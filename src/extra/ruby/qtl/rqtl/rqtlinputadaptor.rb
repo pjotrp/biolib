@@ -99,7 +99,7 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
   # return phenotypes for use by scanone function
   def scanone_inphenotypevector
     inds = use_individuals
-    # FIX multiple phenotypes 
+    # FIXME multiple phenotypes 
     phs = @adaptedphenotypes.to_a.flatten
     inds.collect { | i | phs[i] }
   end
@@ -117,15 +117,23 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
     end
     contract("No inds") { inds!=nil and inds.size > 0 }
     markers = @adapted.markers if !markers
-    gmatrix = Array.new.fill(-127,0..inds.size*markers.size-1)
-    inds.each_with_index do | ind, idx |
-      markers.each_with_index do | m, midx |
-        gmatrix[midx*inds.size+idx] = genotype(ind,m)
+    # all genotype information is stored in a flat array for scanone.
+    # These are accessed as Geno[j][i] where j=marker an i=individual
+    markers_size = markers.size
+    inds_size    = inds.size
+    m_size = inds_size*markers_size 
+    g_array = Array.new.fill(-127,0..m_size-1)
+    inds.each_with_index do | ind, i |
+      markers.each_with_index do | m, j |
+        g_array[j*inds_size+i] = genotype(ind,j)
       end
     end
-    m = gmatrix
-    contract("Dimension") {  m.size == inds.size*markers.size }
-    contract("Matrix") { !m.include?(-127) }
+    m = g_array
+    # p [markers.size, inds.size, m_size]
+    # p m[0..4]
+    # (0..4).each { |i|  p [m[i],m[markers.size+i],m[2*markers.size+i]] }
+    contract("Dimension #{m.size} != #{m_size}") {  m.size == m_size }
+    contract("Array not fully initialized") { !m.include?(-127) }
     m
   end
 
@@ -147,13 +155,17 @@ class RQtlScanoneAdaptor < RQtlInputAdaptor
   end
 
   # return index of used individuals (helper method)
-  def use_individuals
+  def use_individuals(dropna = true)
     inds = []
     # test for valid phenotypes
     # FIX multiple phenotypes and NA's (now zeroed)
     phs = @adaptedphenotypes.to_a.flatten
     phs.each_with_index do | ph, i |
-      inds.push i if ph != 'NA'
+      if dropna
+        inds.push i if ph != 'NA'
+      else
+        inds.push
+      end
     end
     inds
   end

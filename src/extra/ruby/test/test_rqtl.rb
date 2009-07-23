@@ -108,6 +108,9 @@ Find marker by name
   >> d.markers['D10M44'].mid
   => 0
 
+  >> d.markers['D1M3'].mid
+  => 1
+
 Markers carry an indexed 'mid'. This is really superfluous when genome 
 information is available on marker positions. But it can be useful to speed
 queries up:
@@ -287,30 +290,40 @@ Get all phenotypes for all individuals
 =begin
 R/qtl's genotype matrix for the listeria set contains
 
-      D1M291    D1M209    D1M155
-    84.93474  92.68394  93.64344
-           H         H         H
-           H         H         H
-           B         B         B
-           B         B         B
-           H         H         H
-           B         B         B
-           H         H         H
-           H         H         H
-           H         -         H
+  T264  D10M44     D1M3     D1M7
+             1        1         1
+             0  0.99675  24.84773
+  118.317    B        B         B
+  264        -        B         B
+  194.917    -        H         H
+  264        B        B         H
+
+also we test on:
+
+        D1M291    D1M209    D1M155
+      84.93474  92.68394  93.64344
+             H         H         H
+             H         H         H
+             B         B         B
+             B         B         B
+             H         H         H
+             B         B         B
+             H         H         H
+             H         H         H
+             H         -         H
 
 which translates internally to:
 
-      D1M291    D1M209    D1M155
-           2         2         2
-           2         2         2
-           3         3         3
-           3         3         3
-           2         2         2
-           3         3         3
-           2         2         2
-           2         2         2
-           2        NA         2
+        D1M291    D1M209    D1M155
+             2         2         2
+             2         2         2
+             3         3         3
+             3         3         3
+             2         2         2
+             3         3         3
+             2         2         2
+             2         2         2
+             2        NA         2
 
 Raw names read from input file
 
@@ -348,6 +361,12 @@ The same, but nicer, query by individual/marker
   >> d.genotype(1,0)
   => '-'
 
+  >> d.genotype(2,0)
+  => '-'
+
+  >> d.genotype(3,0)
+  => 'B'
+
   >> d.genotype(1,2)
   => 'B'
 
@@ -380,6 +399,17 @@ as a qtl object is handled transparently.
 
   >> r.genotype(8,'D10M44')
   => 1
+
+Scanone expects a flat Array where the first five elements represent the 
+first marker genotypes for 5 individuals:
+
+  >> r1 = RQtlScanoneAdaptor.new(d)
+  >> p r1.use_individuals
+  >> r1.use_individuals.size
+  => 116
+
+  >> r1.scanone_ingenotypematrix[0..4]
+  => [3,0,0,3,2]
 
 Note this Ruby implementation of R/qtl really retains the original dataset for
 querying and uses adaptors for querying modified or 'derived' datasets. The
@@ -425,6 +455,8 @@ Note, again, the adaptor is normally not seen by the end user.
     r1 = RQtlScanoneAdaptor.new(d)
     # p r1.use_individuals
     assert_equal(116,r1.use_individuals.size)
+    assert_equal([3,0,0,3,2],r1.scanone_ingenotypematrix[0..4])
+    assert_equal([1, 2, 2, 2, 2, 1, 1, 1, 2, 2, 1],r1.scanone_ingenotypematrix[15410..15420])
   end
 
 =begin
