@@ -25,6 +25,6 @@ TEST_RUBY_BINDINGS()
 INSTALL_RUBY_BINDINGS()
 
 # extra tests
-ADD_TEST(TestUnitExtraRuby${M_NAME} ${RUBY_EXECUTABLE} -I../${M_NAME} -I../biolib_core ${MAP_ROOT}/src/extra/ruby/test/runner.rb)
-
+ADD_TEST(TestUnitRuby${M_NAME} ${RUBY_EXECUTABLE} -I../${M_NAME} -I../biolib_core ${MAP_ROOT}/src/extra/ruby/test/runner.rb)
+ADD_TEST(TestDocRuby${M_NAME} ${RUBY_EXECUTABLE} -I../${M_NAME} -I../biolib_core ${RUBY_DOCTEST} ${MAP_ROOT}/src/extra/ruby/test/test_rqtl.rb)
 

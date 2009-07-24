@@ -32,6 +32,8 @@ cmake_minimum_required(VERSION 2.6)
 
 project (BIOLIB)
 
+ENABLE_TESTING()
+
 # Testing: 
 #
 #   test:             Run fast 'integration' tests
@@ -40,12 +42,22 @@ project (BIOLIB)
 #   testregression:   Run all regression tests
 #   testall:          Run all tests
 #
-ENABLE_TESTING()
-ADD_CUSTOM_TARGET(testregression ALL COMMAND ctest -R TestRegression)
-ADD_CUSTOM_TARGET(testunit ALL COMMAND ctest -R TestUnit)
-ADD_CUSTOM_TARGET(testdoc ALL COMMAND ctest -R TestDoc)
-ADD_CUSTOM_TARGET(testall ALL COMMAND ctest)
-ADD_CUSTOM_TARGET(test ALL COMMAND ctest -E "TestRegression\\|Slow\\|TestDoc")
+# I can't get the following targets only to run on their target, so 
+# rather then:
+#
+#   make testunit
+#   make testdoc
+#
+# for now use
+#
+#   ctest -R TestUnit
+#   ctest -R TestDoc
+#
+# ADD_CUSTOM_TARGET(testregression ALL COMMAND ctest -R TestRegression)
+# ADD_CUSTOM_TARGET(testunit ALL COMMAND ctest -R TestUnit)
+# ADD_CUSTOM_TARGET(testdoc ALL COMMAND ctest -R TestDoc)
+# ADD_CUSTOM_TARGET(testall ALL COMMAND ctest)
+# ADD_CUSTOM_TARGET(test ALL COMMAND ctest -E "TestRegression\\|Slow\\|TestDoc")
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/tools/cmake-support/modules/")
 message("CMake modules: ${CMAKE_MODULE_PATH}")
@@ -90,10 +102,10 @@ endif(NOT BUILD_DOCS)
 
 set(BLD_BIOLIB_CORE  TRUE)
 set(BLD_STADEN  TRUE)
-set(BLD_RQTL    FALSE) 
+set(BLD_RQTL    TRUE) 
 set(BLD_EXAMPLE TRUE)
 IF(NOT CYGWIN AND NOT APPLE)
-  set(BLD_AFFYIO  TRUE)
+  set(BLD_AFFYIO  TRUE)  # still problem finding Rlib
 ENDIF(NOT CYGWIN AND NOT APPLE)
 
 if (EXAMPLE_LIB)

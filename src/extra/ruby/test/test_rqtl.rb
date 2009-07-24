@@ -6,6 +6,9 @@
 #
 # Documentation with rd2 -r rd/rd2html-lib *.rb
 
+cwd = File.dirname(__FILE__)
+Dir.chdir(cwd)
+
 $: << '../../../mappings/swig/ruby/rqtl/'
 $: << '../../../mappings/swig/ruby/biolib_core/'
 $: << '../../../mappings/swig/ruby/biolib_R/'
@@ -13,6 +16,8 @@ $: << '../../../mappings/swig/ruby/biolib_R/'
 require 'biolib/biolib_core'
 
 Biolib::Biolib_core.biolib_setloglevel(7)
+
+if $UNITTEST
 
 =begin
 
@@ -559,3 +564,5 @@ if $0 == __FILE__
 
   print "Success!"
 end
+
+end # $UNITTEST

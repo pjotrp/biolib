@@ -17,6 +17,8 @@
 cwd = File.dirname(__FILE__)
 Dir.chdir(cwd)
 
+$UNITTEST=true
+
 require 'test/unit'
 require 'test_rqtl'
 
