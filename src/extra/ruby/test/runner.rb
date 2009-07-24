@@ -13,8 +13,11 @@
 #
 #
 
-require 'test/unit'
+# Use runner from its own directory
+cwd = File.dirname(__FILE__)
+Dir.chdir(cwd)
 
+require 'test/unit'
 require 'test_rqtl'
 
 # --- now run the doctests

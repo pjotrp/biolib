@@ -174,7 +174,7 @@ And expand the map:
 
 
 $: << '..'
-require 'qtl/qtl'
+require 'qtl/rqtl'
 require 'test/unit'
 
 TESTDATADIR = '../../../test/data/qtl'
