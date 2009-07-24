@@ -21,6 +21,7 @@ $UNITTEST=true
 
 require 'test/unit'
 require 'test_rqtl'
+require 'test_rqtl_mqm'
 
 # --- now run the doctests
 
