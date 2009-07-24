@@ -23,6 +23,11 @@ class QtlResult
   def to_a
     [name,chromosome,position,lod]
   end
+
+  def pretty
+    format("%-20s\t%3s\t%.3f\t%.6f\n",name,chromosome,position,lod)
+  end
+
 end
 
 
