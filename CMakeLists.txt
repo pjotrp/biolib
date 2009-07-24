@@ -36,28 +36,24 @@ ENABLE_TESTING()
 
 # Testing: 
 #
-#   test:             Run fast 'integration' tests
-#   testunit:         Run unit testing
-#   testdoc:          Run doctest testing
-#   testregression:   Run all regression tests
-#   testall:          Run all tests
+#   quicktest:        Run fast 'integration' tests
+#   unittest:         Run unit testing
+#   doctest:          Run doctest testing
+#   regressiontest:   Run all regression tests
+#   test:             Run all tests
 #
-# I can't get the following targets only to run on their target, so 
-# rather then:
+# So:
 #
-#   make testunit
-#   make testdoc
+#   make unittest
+#   make doctest
+#   etc.
 #
-# for now use
 #
-#   ctest -R TestUnit
-#   ctest -R TestDoc
-#
-# ADD_CUSTOM_TARGET(testregression ALL COMMAND ctest -R TestRegression)
-# ADD_CUSTOM_TARGET(testunit ALL COMMAND ctest -R TestUnit)
-# ADD_CUSTOM_TARGET(testdoc ALL COMMAND ctest -R TestDoc)
-# ADD_CUSTOM_TARGET(testall ALL COMMAND ctest)
-# ADD_CUSTOM_TARGET(test ALL COMMAND ctest -E "TestRegression\\|Slow\\|TestDoc")
+ADD_CUSTOM_TARGET(regressiontest COMMAND ctest -R TestRegression)
+ADD_CUSTOM_TARGET(unittest COMMAND ctest -R TestUnit)
+ADD_CUSTOM_TARGET(doctest COMMAND ctest -R TestDoc)
+ADD_CUSTOM_TARGET(testall COMMAND ctest)
+ADD_CUSTOM_TARGET(quicktest COMMAND ctest -E "TestRegression\\|TestUnit\\|Slow\\|TestDoc")
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/tools/cmake-support/modules/")
 message("CMake modules: ${CMAKE_MODULE_PATH}")
