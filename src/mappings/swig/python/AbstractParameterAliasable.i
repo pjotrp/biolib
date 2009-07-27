@@ -8,6 +8,8 @@ using namespace bpp;
 %include "std_map.i"
 using namespace std;
 
+%rename(__assign__) AbstractParameterAliasable::operator=;
+
 class AbstractParameterAliasable:public AbstractParametrizable,public virtual ParameterAliasable
 {
   public:

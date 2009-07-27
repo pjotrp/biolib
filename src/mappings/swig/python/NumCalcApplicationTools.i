@@ -8,6 +8,9 @@ using namespace bpp;
 //%include "VectorTools.i"
 %include "FunctionTools.i"
 
+%ignore NumCalcApplicationTools::NumCalcApplicationTools;
+%ignore NumCalcApplicationTools::~NumCalcApplicationTools;
+
 class NumCalcApplicationTools
 {
   public:

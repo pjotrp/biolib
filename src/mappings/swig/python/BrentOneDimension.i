@@ -7,30 +7,28 @@ using namespace bpp;
 
 class BrentOneDimension:public AbstractOptimizer
 {
-	public:
-		class BODStopCondition:public AbstractOptimizationStopCondition
-		{
-      public:
-				BODStopCondition(BrentOneDimension * bod):AbstractOptimizationStopCondition(bod);
-				virtual ~BODStopCondition();
-        BODStopCondition* clone() const; 
+  public:
+    //class BODStopCondition:public AbstractOptimizationStopCondition
+    //{
+    //  public:
+    //    BODStopCondition(BrentOneDimension * bod):AbstractOptimizationStopCondition(bod);
+    //    virtual ~BODStopCondition();
+    //    BODStopCondition* clone() const; 
+    //    void init();
+    //    bool isToleranceReached() const;
+    //};
+    //friend class BODStopCondition;
 
-				void init();
-				bool isToleranceReached() const;
-		};
-
-	friend class BODStopCondition;
-
-	public:
-		BrentOneDimension(Function * function = NULL);
-		virtual ~BrentOneDimension();
+  public:
+    BrentOneDimension(Function * function = NULL);
+    virtual ~BrentOneDimension();
     BrentOneDimension* clone() const;
 
     double optimize() throw (Exception); 
     void doInit(const ParameterList & params) throw (Exception);
     double doStep() throw (Exception);
-		void setInitialInterval(double inf, double sup);
+    void setInitialInterval(double inf, double sup);
     bool isInitialIntervalSet() const;
-	static double CGOLD;
-	static double ZEPS;
+    static double CGOLD;
+    static double ZEPS;
 };

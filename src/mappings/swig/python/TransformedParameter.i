@@ -29,14 +29,7 @@ class RTransformedParameter:public virtual TransformedParameter
 class IntervalTransformedParameter:public virtual TransformedParameter
 {
   public:
-    IntervalTransformedParameter(const string & name, double value, double lowerBound = 0, double upperBound = 1, double scale = 1, bool hyper = true):Parameter(name, hyper ? scale * atanh(2. * (value - lowerBound) / (upperBound - lowerBound) - 1.) : scale * tan(3.141593 * (value - lowerBound)/(upperBound - lowerBound) - 1.570796)),_scale(scale),_lowerBound(lowerBound),_upperBound(upperBound),_hyper(hyper),_tiny(NumConstants::TINY);
-//  Parameter(name, hyper ? 
-//scale * atanh(2. * (value - lowerBound) / (upperBound - lowerBound) - 1.) : 
-//scale * tan(3.141593 * (value - lowerBound)/(upperBound - lowerBound) - 1.570796)),
-//_scale(scale),_lowerBound(lowerBound),_upperBound(upperBound),_hyper(hyper),_tiny(NumConstants::TINY);
-
-
-
+    IntervalTransformedParameter(const string & name, double value, double lowerBound = 0, double upperBound = 1, double scale = 1, bool hyper = true);//:Parameter(name, hyper ? scale * atanh(2. * (value - lowerBound) / (upperBound - lowerBound) - 1.) : scale * tan(3.141593 * (value - lowerBound)/(upperBound - lowerBound) - 1.570796)),_scale(scale),_lowerBound(lowerBound),_upperBound(upperBound),_hyper(hyper),_tiny(NumConstants::TINY);
     IntervalTransformedParameter * clone() const;
 
     void setOriginalValue(double value) throw (ConstraintException);

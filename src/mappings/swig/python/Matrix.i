@@ -7,6 +7,12 @@ using namespace bpp;
 using namespace std;
 %include "Clonable.i"
 
+%template(intVector) std::vector<int>;
+%template(doubleVector) std::vector<double>;
+
+%template(intVectorVector) std::vector< std::vector<int> >;
+%template(doubleVectorVector) std::vector< std::vector<double> >;
+
 template<class Scalar>
 class Matrix:public Clonable
 {
@@ -28,7 +34,7 @@ class Matrix:public Clonable
 %template(intMatrix) Matrix<int>;
 %template(doubleMatrix) Matrix<double>;
 
-%rename(__assign__) RowMatrix::operator=;
+%rename(__assign__) *::operator=;
 
 template<class Scalar>
 class RowMatrix : public Matrix<Scalar>, public vector< vector<Scalar> > {
@@ -49,5 +55,5 @@ class RowMatrix : public Matrix<Scalar>, public vector< vector<Scalar> > {
     void resize(unsigned int nRows, unsigned int nCols);
 };
 
-//%template(intRowMatrix) RowMatrix<int>;
-//%template(doubleRowMatrix) RowMatrix<double>;
+%template(intRowMatrix) RowMatrix<int>;
+%template(doubleRowMatrix) RowMatrix<double>;

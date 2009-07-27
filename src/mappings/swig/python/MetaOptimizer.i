@@ -7,6 +7,8 @@ using namespace bpp;
 %include "std_vector.i"
 using namespace std;
 
+%rename(__assign__) MetaOptimizerInfos::operator=;
+
 class MetaOptimizerInfos:public virtual Clonable
 {
   public:
@@ -33,18 +35,19 @@ class MetaOptimizerInfos:public virtual Clonable
     virtual unsigned int getNumberOfOptimizers() const;
 };
 
-class MetaOptimizer:
-  public AbstractOptimizer
+%rename(__assign__) MetaOptimizer::operator=;
+
+class MetaOptimizer:public AbstractOptimizer
 {
-	public:
-		MetaOptimizer(Function * function, MetaOptimizerInfos * desc, unsigned int n = 1);
-		virtual ~MetaOptimizer();
+  public:
+    MetaOptimizer(Function * function, MetaOptimizerInfos * desc, unsigned int n = 1);
+    virtual ~MetaOptimizer();
     MetaOptimizer(const MetaOptimizer & opt);
     MetaOptimizer & operator=(const MetaOptimizer & opt);
     MetaOptimizer* clone() const;
-	public:
+
     void setFunction(Function * function);
-		void doInit(const ParameterList & parameters) throw (Exception);
+    void doInit(const ParameterList & parameters) throw (Exception);
     double doStep() throw (Exception);
     MetaOptimizerInfos * getOptimizers();
     const MetaOptimizerInfos * getOptimizers() const;

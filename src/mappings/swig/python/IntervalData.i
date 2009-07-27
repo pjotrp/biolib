@@ -7,6 +7,8 @@ using namespace bpp;
 %include "std_iostream.i"
 using namespace std;
 
+%rename(_print) IntervalData::print;
+
 class IntervalData
 {
 	public:
