@@ -94,10 +94,7 @@ Operator []: Return the i-th element of the sequence.
   $copy_fasta->DESTROY();
   $fasta1->DESTROY();
  
- 
- 
- 
-  
+
 =head1 Divergence Statistics
 
 =head2 class Kimura80
@@ -741,13 +738,279 @@ runs(): Returns number of genealogies to generate
   is($para->runs(), 0);
 
 
+=head2 class SimData:
+
+Data from coalescent simulations.
+
+SimData(nsame = 0, nsnps = 0): Default Constructor
+nsama    sample size
+
+  my $sdata = new libsequence::SimData();
+  
+SimData(pos, dat)
+Parameters:
+pos     vector of doubles representing segregating positions
+dat     vector of strings representing sequence data.
+
+  my $pos = new libsequence::doubleVector(4);
+  $pos->set(0, .25);
+  $pos->set(1, .32);
+  $pos->set(2, .34);
+  $pos->set(3, .44);
+  my $dat = new libsequence::strVector(2);
+  $dat->set(0, 'A-TC');
+  $dat->set(1, 'N0G1');
+  my $d = new libsequence::SimData($pos,$dat);
+  
+SimData(sbegin, send)
+
+  my $beg = $d->sbegin();
+  my $end = $d->send();
+  my $d1 = new libsequence::SimData($beg,$end);
+  
+empty():Returns true if object contains no data, false otherwise
+
+  ok($sdata->empty());
+  
+GetData():Returns PolyTable::data, a vector of std::strings containing polymorphic sites. Assuming the vector is returned 
+to a vector<string> called data, accessing data[i][j] accesses the j-th site of the i-th sequence
+
+  is($d->GetData()->[0], 'A-TC');
+  is($d->GetData()->[1], 'N0G1');
+ 
+GetPositions(): Returns PolyTable::positions
+
+  is($d->GetPositions()->[1], .32);
+  is($d->GetPositions()->[3], .44);
+
+assign(): Returns true if the assignment was successful, false otherwise. The only case where false is returned is if the 
+number of individuals at each site is not the constan from beg to end.
+
+  my $d2 = new libsequence::SimData();
+  ok($d2->assign($beg, $end));
+  
+RemoveMissing(): go through the data and remove all the sites with missing data (the character N).
+
+  $d1->RemoveMissing();
+  is($d1->GetData()->[1], '0G1');
+  is($d1->GetData()->[0], '-TC');
+  
+RemoveAmbiguous():go through the data and remove all the sites with states other than {A,G,C,T,N,0,1,-}
+
+  $dat->set(1, 'NEG1');
+  my $d3 = new libsequence::SimData($pos, $dat);
+  $d3->RemoveAmbiguous();
+  is($d3->GetData()->[0], 'ATC');
+  is($d3->GetData()->[1], 'NG1');
+  
+RemoveMultiHits(skipOutgroup = False, outgroup = 0): go through the data and remove all the sites with more than 2 states 
+segregating. By default, this routine also removes sites where there are 2 states segregating in the ingroup. and the 
+outgroup (if present) has a 3rd state.
+Parameters:
+skipOutgroup 	default is false. If true, the character state of the outgroup is ignored.
+outgroup 	the index of the outgroup in the data vector
+
+  my $dat2 = new libsequence::strVector(3);
+  $dat2->set(0, 'A-TC');
+  $dat2->set(1, 'N0G1');
+  $dat2->set(2, 'T-CC');
+  my $d4 = new libsequence::SimData($pos,$dat2);
+  $d4->RemoveMultiHits();
+  is($d4->GetData()->[0], 'A-C');
+  is($d4->GetData()->[1], 'N01');
+  is($d4->GetData()->[2], 'T-C');
+  
+ApplyFreqFilter(mincount, haveOutgroup = False, outgroup = 0): go through the data and remove all positions where there is a 
+variant at count (# of occurences in the sample) < minfreq
+Parameters:
+mincount 	minimum count of a variant in the data. Variants that occur < mincount times are thrown out.
+haveOutgroup 	true if an outgroup is present in the data, false otherwise
+outgroup 	the index in the data array containing the outgroup (if present)
+
+  $d4->ApplyFreqFilter(2);
+  is($d4->GetData()->[0], '');
+  
+Binary(haveOutgroup = false, outgroup = 0, strictInfSites = true)
+Parameters:
+haveOutgroup 	use true if an outgroup is present, false otherwise
+outgroup 	the index of the outgroup in the data vector used to construct the object
+strictInfSites 	if true, throw out all sites with > 2 character states (including outgroup!)
+
+Note:
+if haveOutgroup== true, then 0 means an ancestral state and 1 a derived state in the resulting. 
+note If haveOutgroup == true, and there are sites with missing data in the outrgroup sequence,
+those sites are removed from the data, since its assumed you actually want to know ancestral/derived
+for every site
+
+  $d3->Binary();
+  #print $d3->GetData()->[0];
+
+segsites(): Returns the number of segregating sites in the data block
+
+  is($d->segsites(), 4);
+  
+size(): Return how many std::strings are stored in PolyTable::data
+
+  is($d->size(), 2);
+  
+numsites(): Returns number of sites
+
+  is($d->numsites(), 4);
+  
+position():Return the i-th position from the PolyTable::positions.
+
+  is($d->position(2), 0.34);
+  
+operator =: Returns true if two SimData object are the same, otherwise false
+
+  ok($d == $d2);
+  
+operator !=:Returns False if two SimData object are the same, otherwise True
+
+  ok($d1 != $d3);
+  
+operator []:Return the i-th element of PolyTable::data.
+
+  is($d->__getitem__(0), 'A-TC');
+  
+~SimData(): Destructor
+
+  $d->DESTROY();
+  
+
+=head2 class PolySites()
+
+Polymorphism tables for sequence data. 
+
+PolySites(alignment, strictInfsites = 0, ignoregaps = 1, skipMissing = False, skipAdjSNP = False, freqfilter = 0): This is the
+constructor if you are using "string-like" data, such as std::string, or Sequence::Fasta. Note that the vector name is aligment,
+and that means that every sequence had better be the same length!
+
+Parameters:
+alignment 	vector of data
+strictInfSites 	if true, throw out all sites with > 2 states
+ignoregaps 	if true, do not count gapped sites as polymorphisms
+skipMissing 	if true, ignore ALL sites with missing data ('N')
+skipAdjSNP 	if does nothing. a placeholder for a future feature
+freqfilter 	Defaults to 0. For a polymorphic site to be included in the final table,
+the minor allele count in the data (i.e. the number of times the minor allele occurs at that site)
+must be strictly greater than freqfilter
+
+Note:
+segsite positions are stored as positions (starting from 1)
+
+Warning:
+when ignoregaps=false, this class does not do the right thing
+
+  my $v = new libsequence::fastaVector(2);
+  $v->set(0, libsequence::Fasta->new('s1', 'ANTGC-C'));
+  $v->set(1, libsequence::Fasta->new('s2', '-GGTCCA'));
+  my $p = new libsequence::PolySites($v);
+  
+PolySites(List, stringList):
+Parameters:
+List 	a list of doubles representing positions of polymorphic positions
+stringList 	a vector of strings representing the polymorphic characters
+
+  my $l = new libsequence::doubleVector(2);
+  $l->set(0, 0);
+  $l->set(1, 4);
+  my $strl = new libsequence::strVector(2);
+  $strl->set(0, 'ATG-');
+  $strl->set(1, 'CCCT');
+  my $p1 = new libsequence::PolySites($l, $strl);
+  
+GetData():Returns PolyTable::data, a vector of std::strings containing polymorphic sites. Assuming the vector is returned to 
+a vector<string> called data, accessing data[i][j] accesses the j-th site of the i-th sequence
+
+  is($p->GetData()->[0], 'TGC');
+  is($p->GetData()->[1], 'GTA');
+  
+GetPositions(): Returns PolyTable::positions.
+
+  is($p->GetPositions()->[0], 3.0);
+  is($p->GetPositions()->[1], 4.0);
+  is($p->GetPositions()->[2], 7.0);
+  
+empty(): Returns true if object contains no data, false otherwise
+  
+  ok($p1->empty());
+  
+size(): Return how many std::strings are stored in PolyTable::data
+
+  is($p->size(), 2);
+  
+numsites(): Return how many positions are stored in PolyTable::positions
+
+  is($p->numsites(), 3);
+  
+Binary(): Recode the polymorphism table in 0,1 (binary notation)
+            
+  $p->Binary();
+  is($p->GetData->[0], '000');
+  is($p->GetData->[1], '111');
+
+ApplyFreqFilter(mincount, haveOutgroup = False, outgrp = 0): go through the data and remove all positions where there is a 
+variant at count (# of occurences in the sample) < minfreq
+Parameters:
+mincount 	minimum count of a variant in the data. Variants that occur < mincount times are thrown out.
+haveOutgroup 	true if an outgroup is present in the data, false otherwise
+outgroup 	the index in the data array containing the outgroup (if present)
+
+  $p->ApplyFreqFilter(2);
+  ok($p->empty());
+  
+
+
+=head2 class ClustalW_str
+
+This class defines an input routine for alignments in ClustalW format, which is instantiated with the following types:
+std::pair<std::string, std::string>
+
+ClustalW_str(): Default constrctor
+
+  my $clus_null = new libsequence::ClustalW_str();
+
+ClustalW_str(strPairObj):strPairObj is an object instantiated from std::vector< std::pair<std::string, std::string> >
+
+  my $pv = new libsequence::pVector(2);
+  $pv->set(0, libsequence::strPair->new('s1', 'ATGGC'));
+  $pv->set(1, libsequence::strPair->new('s2', 'CC-TT'));
+  my $clus = new libsequence::ClustalW_str($pv);
+  
+size(): Returns data.size(),i.e. the length of vector
+
+  is($clus->size(),2);
+  
+Data(): 
+
+  my $clus_data = $clus->Data();
+  is($clus_data->[0]->swig_second_get, 'ATGGC');
+  is($clus_data->[1]->swig_second_get, 'CC-TT');
+  
+Clustal_str(Clustal_strObj): Copy constructor
+
+  my $copy_clus = new libsequence::ClustalW_str($clus);
+  
+IsGapped(): Retruns true if the vector contains a gap character ('-') , false otherwise.
+
+  ok($clus->Gapped());
+  
+RemoveGaps(): Modifies the data vector to remove all positions that contain the gap character'-'.
+
+  $clus->RemoveGaps();
+  ok(!($clus->Gapped()));
+  
+IsAlignment():Returns Ture if all strings in CLustal Object are the same length.
+
+  ok($clus->IsAlignment());
+  
 
 
 
+  
 
-
-
-
+    
 
 
 
