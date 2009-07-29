@@ -1728,6 +1728,7 @@ def Testinit_sample():
     """A simple function to initialize a sample of chromosomes.
     Returns: a vector of chromosome
 
+    init_sample(pop_config, nsites)
     Parameters:
     pop_config 	For a k-population model, this vector contains the sample size for each pop.
     Individuals are labeled as beloning to population 0 to k-1, in the order specified in this vector
@@ -2309,12 +2310,12 @@ class TestPolySites():
 ##    def testFST():
 ##        
 
-class TestSimpleSNP(object):
+class TestPolySNP(object):
 
-    def testSimpleSNP():
+    def testPolySNP():
         """Molecular population genetic analysis
 
-        SimpleSNP()
+        PolySNP()
         Parameters:
         data 	a valid object of type Sequence::PolyTable
         haveOutgroup 	true if an outgroup is present, false otherwise

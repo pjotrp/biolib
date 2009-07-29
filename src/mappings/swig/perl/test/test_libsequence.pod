@@ -960,7 +960,9 @@ outgroup 	the index in the data array containing the outgroup (if present)
   $p->ApplyFreqFilter(2);
   ok($p->empty());
   
+~PolySites(): Destructor
 
+  $p->DESTROY();
 
 =head2 class ClustalW_str
 
@@ -982,7 +984,7 @@ size(): Returns data.size(),i.e. the length of vector
 
   is($clus->size(),2);
   
-Data(): 
+Data(): Returns the std::vector < std::pair<std::string, std::string > data
 
   my $clus_data = $clus->Data();
   is($clus_data->[0]->swig_second_get, 'ATGGC');
@@ -1005,7 +1007,336 @@ IsAlignment():Returns Ture if all strings in CLustal Object are the same length.
 
   ok($clus->IsAlignment());
   
+operator []: Returns the i-th object in the vector data
 
+  is($clus->__getitem__(0)->swig_second_get, 'ATGC');
+  is($clus->__getitem__(1)->swig_second_get, 'CCTT');
+  
+RemoveTerminalGaps(): Remove all gapped sites from the ends of the alignment, up until the first site on either side that is ungapped.
+
+  my $pv1 = new libsequence::pVector(2);
+  $pv1->set(0, libsequence::strPair->new('s1','-GTCA-T'));
+  $pv1->set(1, libsequence::strPair->new('s2','TTAC-C-'));
+  my $clus1 = new libsequence::ClustalW_str($pv1);
+  $clus1->RemoveTerminalGaps();
+  is($clus1->__getitem__(0)->swig_second_get, 'GTC');
+  is($clus1->__getitem__(1)->swig_second_get, 'TAC');
+  
+Trim(sites): Returns a copy of the data vector, modified in the following way. The sites vector contains an even number of sites 
+(whose values are sorted). If sites does not contain an even number of values Sequence::SeqException is thrown. If sites is 
+empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, and the 
+return vector is consists only of those--i.e. all positions not present in the intervals defined in sites are lost.
+For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified so that positions 0 through 10 and 21 through 30 are all
+that remains. One intended use of this function is to pull, for example, the coding region out of an aligned block.
+
+Parameters:
+sites 	vector<int> containing an even number of integers specifying the intervals of data to keep
+
+  my $sites = new libsequence::intVector(2);
+  $sites->set(0,0);
+  $sites->set(1,2);
+  is($clus->Trim($sites)->[0]->swig_second_get, 'ATG');
+  is($clus->Trim($sites)->[1]->swig_second_get, 'CCT');
+  
+TrimComplement(sites):Returns a copy the data vector, modified in the following way. The sites vector contains an even number
+of sites (whose values are sorted). If sites does not contain an even number of values. Sequence::SeqException is thrown. If 
+sites is empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, 
+and the return vector consists only of sites not present in sites--i.e. all positions not present in the intervals defined in 
+sites are kept. For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified 
+so that positions 11 through 20 and 31 through the end of the sequences are all that remains.
+  
+Parameters:
+sites vector<int> containing an even number of integers specifying the intervals of data to throw away
+
+  is($clus->TrimComplement($sites)->[0]->swig_second_get, 'C');
+  is($clus->TrimComplement($sites)->[1]->swig_second_get, 'T');
+  
+~ClustalW(): Destructor
+
+  $clus->DESTROY();
+  
+
+=head2 sub Align_IsAlignment(data)
+
+A vector of sequences/strings is only an alignment if all strings are the same length.
+
+Paramerter: 
+data 	vector<std::pair<std::string, std::string> > to check
+
+  my $v = new libsequence::pVector(2);
+  $v->set(0, libsequence::strPair->new('s1','GT-CAG'));
+  $v->set(1, libsequence::strPair->new('s2','-C-NT-'));
+  ok(libsequence::Align_IsAlignment($v));
+
+=head2 sub Align_Gapped(data)
+
+Returns:true if the vector contains a gap character ('-') , false otherwise.
+
+  ok(libsequence::Align_IsAlignment($v));
+  
+=head2 sub Align_RemoveGaps(data)
+
+Modifies the data vector to remove all positions that contain the gap character'-'.
+
+  my $v1 = $v;
+  libsequence::Align_RemoveTerminalGaps($v1);
+  is($v1->get(0)->swig_second_get, 'T-CA');
+  is($v1->get(1)->swig_second_get, 'C-NT');
+  
+=head2 sub Align_Trim(data, sites)
+
+Returns a copy of the data vector, modified in the following way. The sites vector contains an even number of sites 
+(whose values are sorted). If sites does not contain an even number of values Sequence::SeqException is thrown. If sites is 
+empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, and the 
+return vector is consists only of those--i.e. all positions not present in the intervals defined in sites are lost.
+For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified so that positions 0 through 10 and 21 through 30 are all
+that remains. One intended use of this function is to pull, for example, the coding region out of an aligned block.
+
+Parameters:
+sites 	vector<int> containing an even number of integers specifying the intervals of data to keep
+
+  is(libsequence::Align_Trim($v, $sites)->[0]->swig_second_get, 'T-C');
+  is(libsequence::Align_Trim($v, $sites)->[1]->swig_second_get, 'C-N');
+  
+=head2 sub Align_Trim_Complement(data,sites)
+
+Returns a copy the data vector, modified in the following way. The sites vector contains an even number
+of sites (whose values are sorted). If sites does not contain an even number of values. Sequence::SeqException is thrown. If 
+sites is empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, 
+and the return vector consists only of sites not present in sites--i.e. all positions not present in the intervals defined in 
+sites are kept. For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified 
+so that positions 11 through 20 and 31 through the end of the sequences are all that remains.
+  
+Parameters:
+sites vector<int> containing an even number of integers specifying the intervals of data to throw away
+
+  is(libsequence::Align_TrimComplement($v, $sites)->[0]->swig_second_get, 'A');
+  is(libsequence::Align_TrimComplement($v, $sites)->[1]->swig_second_get, 'T');
+  
+=head2 sub Align_RemoveFixedOutgroupInsertions(data, sites, ref)
+
+Removes all positions from data that for which the outgroup contains an insertion relative to ingroup
+
+Parameters:
+data 	a vector of Seq objects
+site 	index of the site at which to begin (set to 0 usually)
+ref 	the index of the outgroup in data
+
+  libsequence::Align_RemoveFixedOutgroupInsertions($v,0,3);
+  is($v->get(0)->swig_second_get, 'T-CA');
+  is($v->get(1)->swig_second_get, 'C-NT');
+  
+=head2 sub Align_validForPolyAnalysis(beg,end):
+
+Returns:true if each element in the range [beg,end) only contains characters in the set {A,G,C,T,N,-}, false otherwise
+
+  #my $beg = $v->begin();
+  #my $end = $v->end();
+
+=head2 class PolySNP
+
+Molecular population genetic analysis
+
+PolySNP(fastaVectorObj):
+Parameters:
+data 	a valid object of type Sequence::PolyTable
+haveOutgroup 	true if an outgroup is present, false otherwise
+outgroup 	if haveOutgroup is true, outgroup is the index of that sequence in data
+totMuts 	if true (the default) use the total number of inferred mutations,otherwise use the total number of polymorphic sites in calculations
+
+  my $v = new libsequence::fastaVector(3);
+  $v->set(0, libsequence::Fasta->new('s1', 'ATGCNC'));
+  $v->set(1, libsequence::Fasta->new('s2', 'GCCA-T'));
+  $v->set(2, libsequence::Fasta->new('s3', '0GA1TC'));
+  my $p = new libsequence::PolySites($v);
+  my $snp = new libsequence::PolySNP($p);
+  
+ThetaPi(): Calculated here as the sum of 1.0 - sum of site homozygosity accross sites.
+
+  is($snp->ThetaPi(), 4.666666666666667);
+  
+ThetaW(): The classic "Watterson's Theta" statistic, generalized to missing data and multiple mutations per site:
+
+  is($snp->ThetaW(), 6.0);
+  
+ThetaH(): Calculate Theta ( = 4Nu) from site homozygosity, a la Fay and Wu (2000). This statistic is problematic in general to 
+calculate when there are multiple hits. The test requires that the ancestral state (inferred from the outgroup) still be segregating
+in the ingroup. If that is not true, the site is skipped.
+
+  my $snp1 = new libsequence::PolySNP($p,1,1,1);
+  is($snp1->ThetaH(), 0);
+  
+ThetaL(): Calculate Theta ( = 4Nu) from site homozygosity, corresponding to equation 1 in Thornton and Andolfatto (Genetics) 
+"Approximate Bayesian Inference reveals evidence for a recent, severe, bottleneck in a Netherlands population of Drosophila melanogaster," 
+(although we labelled in  in that paper) The test requires that the ancestral state (inferred from the outgroup) still be segregating in
+the ingroup. If that is not true, the site is skipped.
+
+  is($snp1->ThetaL(), 0);
+  
+VarPi():Total variance of mean pairwise differences. Tajima in Takahata/Clark book, (13).
+
+  is($snp->VarPi(), 9.7777777777777803);
+  
+StochasticVarPi(): Stochastic variance of mean pairwise differences. Tajima in Takahata/Clark book, (14).
+
+  is($snp->StochasticVarPi(), 4.2222222222222232);
+  
+SamplingVarPi(): Component of variance of mean pairwise differences from sampling. Tajima in Takahata/Clark book, (15)
+
+  is($snp->SamplingVarPi(), 5.5555555555555562);
+  
+NumPoly(): Returns: the number of polymorphic (segregating) sites in data
+
+  is($snp->NumPoly(), 5);
+  
+NumMutations(): Returns:the total number of mutations in the data. The number of mutations per site = number of states per site - 1
+  
+  is($snp->NumMutations(), 9);
+  
+NumSingletons(): Returns:number of polymorphisms that appear once in the data, without respect to ancestral/derived
+
+  is($snp->NumSingletons(), 13);
+
+NumExternalMutations(): Returns:the number of derived singletons.
+
+  is($snp->NumExternalMutations(), 4294967295);
+  
+Dnominator(): Returns Denominator of Tajima's D, or nan if there are no polymorphic sites
+
+  is($snp->Dnominator(), 0);
+  
+DandVH():  Returns the haplotype diversity of the data.
+
+  is($snp1->DandVH(), 1.0);
+  
+DandVK(): Returns number of haplotypes in the sample
+
+  is($snp1->DandVK(), 2);
+  
+WallsB(): Returns Wall's B Statistic.
+
+  is($snp1->WallsB(), 1.0);
+  
+WallsBprime(): Returns Wall's B Statistic.
+
+  is($snp1->WallsBprime(), 3);
+  
+WallsQ(): Returns Wall's Q Statistic.
+
+  is($snp1->WallsQ(), 1.0);
+  
+HudsonsC(): Returns Returns:Hudson's (1987) estimator of , an estimator of the population recombination rate that depends on the 
+variance of the site frequencies. The calculation is made by a call to Recombination::HudsonsC
+
+  is($snp1->HudsonsC(), 10000.0);
+
+Minrec(): Returns:The minimum number of recombination events observed in the sample (Hudson and Kaplan 1985). Will return SEQMAXUNSIGNED
+if there are < 2 segregating sites.
+
+  is($snp1->Minrec(), 0);
+  
+=head2 sub isseg(beg, nsegs, offset, pos)
+
+ask if a chromosome beginning at seg and containing nsegs contains a segment containing the position pos.  Returns true if a segment
+exists that contains the point pos
+
+Parameters:
+seg 	a pointer to a segment of a chromosome (this should be the 1st segment, such as the return value of chromosome::begin())
+nsegs 	the number of segs in the chromosome pointed to by seg
+offset 	a pointer to an integer. This integer is used for repeated pointer arithmetic, and should be initalized to 0 before the first call.
+pos 	a position a long a chromosome. This function asks if pos is contained in the ancestral material of the chromosome whose segments begin at seg
+
+  my $segs = new libsequence::segVector(3);
+  $segs->set(0, libsequence::segment->new(1,4,0));
+  $segs->set(1, libsequence::segment->new());
+  $segs->set(2, libsequence::segment->new(2,8,1));
+  my $chro = new libsequence::chromosome($segs);
+  my $seg = $chro->begin();
+  my $offset = new libsequence::intPointer();
+  $offset->assign(0);
+  ok(libsequence::isseg($seg,3,1,$offset));
+  
+=head2 sub calculate_scales(fragments, sample_scale, mutation_scale)
+
+This is a helper function that rescales physical distance in base pairs to continuous distance on the interval 0,1.
+
+Parameters:
+fragments 	A vector of pairs, representing physical distance in bp. For each pair, the first element is the distance to the next 
+fragment,and the second element is the length of the fragment. For example,two 1kb fragments separated by 10kb would be represented 
+by the pairs (0,1000) (10000,1000).
+
+sample_scale 	This vector will be filled with values representing the positions of the fragments on the continuous interval, without
+any space betwen them. This is because we will actually do the simulation using a non-uniform genetic map to represent the high
+recombination rates between fragments
+
+mutation_scale 	This is a direct mapping of the data contained in fragments to the continuous scale, and can be used to rescale the positions of mutations
+
+  my $fragments = new libsequence::fragVector(3);
+  $fragments->push(libsequence::intPair->new(0,500));
+  $fragments->push(libsequence::intPair->new(1000,500));
+  $fragments->push(libsequence::intPair->new(1000,500));
+  my $sample = new libsequence::scaleVector(3);
+  my $mutation = new libsequence::scaleVector(3);
+  libsequence::calculate_scales($fragments,$sample,$mutation);
+  
+=head2 sub sample_length(fragments)
+
+When simulating partially linked regions, return the total length of sample material that we are simulating. Returns The sum of 
+fragments[i].second for i=0 to i=fragments.size()-1
+
+  is(libsequence::sample_length($fragments), 1500);
+  
+=head2 sub total_length(fragments)
+
+When simulating partially linked regions, return the total length of the region. Returns The sum of fragments[i].first + fragments[i].second
+for i=0 to i=fragments.size()-1
+
+  is(libsequence::total_length($fragments), 3500);
+  
+=head2 sub init_sample(pop_config, nsites)
+
+A simple function to initialize a sample of chromosomes. Returns a vector of chromosome.
+
+Parameters:
+pop_config 	For a k-population model, this vector contains the sample size for each pop. Individuals are labeled as beloning to 
+population 0 to k-1, in the order specified in this vector
+nsites 	The number of sites at which mutations occur. For a k-site model,recombination occurs at any of the k-1 "links" between 
+sites. Eaach chromosome is assigned a single segment starting at position 0 and ending at nsites-1.
+
+  my $intv = new libsequence::intVector(1,10);  
+  my $chroVectorObj = libsequence::init_sample($intv, 1500);
+  
+=head2 sub init_marginal(nsam)
+
+Simple function to initialize and return a marginal tree.
+
+Parameters:
+nsam 	the total sample size (i.e. summed over all populations) that you want to simulate
+
+  my $marg = libsequence::init_marginal(10);
+  
+=head2 sub coalesce(time, ttl_nsam, current_nsam, c1, c2, nsites, nlinks, sample, sample_history)
+
+Common ancestor routine for coalescent simulation. Merges chromosome segments and updates marginal trees.
+
+Parameters:
+time 	the time at which the coalecent event is occuring
+ttl_nsam 	the total sample size being simulated
+current_nsam 	the current sample size in the simulation
+c1 	the array index of the first chromosome involved in the coalescent event
+c2 	the array index of the second chromosome involved in the coalescent event
+nsites 	the total mutational length of the region begin simulated. In the language of Hudson (1983), this is the number of infinitely-many-alleles loci in the simulation.
+nlinks 	a pointer to the number of "links" currently in the simulation. A link is the region between two sites, such that a chromosome currently with k sites has k-1 links
+sample 	a pointer to the vector of chromosomes which makes up the sample
+sample_history 	a pointer to the ancestral recombination graph
+
+  #my $sample_history = new libsequence::margList(1, $marg);
+  my $nlinks = new libsequence::intPointer();
+  $nlinks->assign(499);
+  #is(libsequence::coalesce(0,19,19,1,2,1500,$sample,$sample_history), 1);
+
+
+  
 
 
   
