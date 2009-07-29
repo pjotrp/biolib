@@ -1,8 +1,14 @@
 %module bpptest
 %{
+//#include "Node.h"
+//#include "Tree.h"
 #include "TreeTemplateTools.h"
 using namespace bpp;
 %}
+
+//%include "Node.i"
+//%include "Tree.i"
+
 %include "TreeTools.i"
 %include "std_vector.i"
 using namespace std;
@@ -31,11 +37,15 @@ class TreeTemplateTools
     template<class N> static void getInnerNodes(N & node, vector<N *> & nodes);
     static vector<int> getInnerNodesId(const Node & node);
     static void getInnerNodesId(const Node & node, vector<int> & ids);
+
     template<class N> static vector<N *> searchNodeWithId(N & node, int id);
     template<class N> static void searchNodeWithId(N & node, int id, vector<N *> & nodes);
+
     template<class N> static bool hasNodeWithId(const N & node, int id);
+
     template<class N> static vector<N *> searchNodeWithName(N & node, const string & name);
     template<class N> static void searchNodeWithName(N & node, const string & name, vector<N *> & nodes);
+
     template<class N> static bool hasNodeWithName(const N & node, const string & name);
     static bool isRoot(const Node & node);
     static unsigned int getNumberOfLeaves(const Node & node);
@@ -71,21 +81,13 @@ class TreeTemplateTools
     static void incrementAllIds(Node * node, int increment);
 };
 
-%template(intGetLeaves) TreeTemplateTools::getLeaves<int>;
-%template(doubleGetLeaves) TreeTemplateTools::getLeaves<double>;
-%template(intGetNodes) TreeTemplateTools::getNodes<int>;
-%template(doubleGetNodes) TreeTemplateTools::getNodes<double>;
-%template(intGetInnerNodes) TreeTemplateTools::getInnerNodes<int>;
-%template(doubleGetInnerNodes) TreeTemplateTools::getInnerNodes<double>;
+%template(nodeGetLeaves) TreeTemplateTools::getLeaves<Node>;
+%template(nodeGetNodes) TreeTemplateTools::getNodes<Node>;
+%template(nodeGetInnerNodes) TreeTemplateTools::getInnerNodes<Node>;
 
-%template(intSearchNodeWithId) TreeTemplateTools::searchNodeWithId<int>;
-%template(doubleSearchNodeWithId) TreeTemplateTools::searchNodeWithId<double>;
-%template(intHasNodeWithId) TreeTemplateTools::hasNodeWithId<int>;
-%template(doubleHasNodeWithId) TreeTemplateTools::hasNodeWithId<double>;
-%template(intSearchNodeWithName) TreeTemplateTools::searchNodeWithName<int>;
-%template(doubleSearchNodeWithName) TreeTemplateTools::searchNodeWithName<double>;
-%template(intHasNodeWithName) TreeTemplateTools::hasNodeWithName<int>;
-%template(doubleHasNodeWithName) TreeTemplateTools::hasNodeWithName<double>;
+%template(nodeSearchNodeWithId) TreeTemplateTools::searchNodeWithId<Node>;
+%template(nodeHasNodeWithId) TreeTemplateTools::hasNodeWithId<Node>;
+%template(nodeSearchNodeWithName) TreeTemplateTools::searchNodeWithName<Node>;
+%template(nodeHasNodeWithName) TreeTemplateTools::hasNodeWithName<Node>;
 
-%template(intCloneSubtree) TreeTemplateTools::cloneSubtree<int>;
-%template(doubleCloneSubtree) TreeTemplateTools::cloneSubtree<double>;
+%template(nodeCloneSubtree) TreeTemplateTools::cloneSubtree<Node>;

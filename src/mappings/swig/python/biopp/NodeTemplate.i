@@ -1,10 +1,12 @@
 %module bpptest
 %{
+#include "Node.h"
 #include "NodeTemplate.h"
 using namespace bpp;
 %}
 
 %include "Node.i"
+%include "std_string.i"
 
 %rename(__assign__) *::operator=;
 %rename(__aref__) *::operator[];

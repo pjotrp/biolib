@@ -48,7 +48,16 @@ class TreeTools
     static double getDistanceBetweenAnyTwoNodes(const Tree & tree, int nodeId1, int nodeId2) throw (NodeNotFoundException);
     static DistanceMatrix * getDistanceMatrix(const Tree & tree);
     static void midpointRooting(Tree & tree);
+
+/*
+    struct Element
+    {
+      string content;
+      string length;
+      string bootstrap;
+    };
     static Element getElement(const string & elt) throw (IOException);
+*/
     static string nodeToParenthesis(const Tree & tree, int nodeId, bool writeId = false) throw (NodeNotFoundException);
     static string nodeToParenthesis(const Tree & tree, int nodeId, bool bootstrap, const string & propertyName) throw (NodeNotFoundException);
     static string treeToParenthesis(const Tree & tree, bool writeId = false);

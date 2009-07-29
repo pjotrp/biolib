@@ -1,8 +1,10 @@
 %module bpptest
 %{
+//#include "Node.h"
 #include "TreeTemplate.h"
 using namespace bpp;
 %}
+//%include "Node.i"
 %include "TreeExceptions.i"
 %include "TreeTemplateTools.i"
 %include "Tree.i"
@@ -11,11 +13,12 @@ using namespace bpp;
 %include "std_map.i"
 using namespace std;
 
-%rename(__assign__) *::operator=;
+//%rename(__assign__) *::operator=;
 
 template<class N> class TreeTemplate:public Tree
 {
   public: 
+/*
     TreeTemplate();
     TreeTemplate(const TreeTemplate<N> & t);
     TreeTemplate(const Tree & t);
@@ -88,7 +91,8 @@ template<class N> class TreeTemplate:public Tree
     virtual const N * getNode(const string & name) const throw (NodeNotFoundException, Exception);
     void rootAt(N & newRoot);
     void newOutGroup(N & outGroup);
+*/
 };
 
-%template(intTreeTemplate) TreeTemplate<int>;
-%template(doubleTreeTemplate) TreeTemplate<double>;
+//%template(intTreeTemplate) TreeTemplate<int>;
+//%template(doubleTreeTemplate) TreeTemplate<double>;
