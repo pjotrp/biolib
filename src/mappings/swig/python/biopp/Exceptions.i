@@ -8,6 +8,8 @@ using namespace bpp;
 
 using namespace std;
 
+%ignore Exception::Exception();
+
 class Exception:public exception
 {
   public:

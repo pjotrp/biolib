@@ -1,8 +1,10 @@
 %module bpptest
 %{
+#include "SequenceContainer.h"
 #include "OSequence.h"
 using namespace bpp;
 %}
+%include "SequenceContainer.i"
 %include "IOSequence.i"
 %include "Exceptions.i"
 

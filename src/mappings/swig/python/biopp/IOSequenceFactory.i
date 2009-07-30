@@ -3,7 +3,7 @@
 #include "IOSequenceFactory.h"
 using namespace bpp;
 %}
-#include "ioseq"
+%include "ioseq"
 %include "Alphabet.i"
 
 class IOSequenceFactory

@@ -10,8 +10,8 @@ using namespace bpp;
 using namespace std;
 
 %rename(__assign__) Site::operator=;
-%rename(__eq__) operator==;
-%rename(__lt__) operator<;
+//%rename(__eq__) ::operator==;
+//%rename(__lt__) operator<;
 
 class Site:public SymbolList 
 {  
@@ -30,6 +30,9 @@ class Site:public SymbolList
     virtual int getPosition() const;
     virtual void setPosition(int position);
 };
+
+%ignore ::operator==;
+%ignore ::operator<;
 
 bool operator == (const Site & site1, const Site & site2);
 bool operator < (const Site & site1, const Site & site2);

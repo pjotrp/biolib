@@ -35,12 +35,14 @@ class BadIntException:public AlphabetException
     virtual int getBadInt() const;
 };
 
+%ignore AlphabetMismatchException::AlphabetMismatchException();
 
 class AlphabetMismatchException : public Exception
 {
   public:
     AlphabetMismatchException(const char * text = "", const Alphabet * alpha1 = NULL, const Alphabet * alpha2 = NULL);
-    %rename (charAlphabetMismatchException) AlphabetMismatchException(const char * text = "", const Alphabet * alpha1 = NULL, const Alphabet * alpha2 = NULL);
+    //%rename (charAlphabetMismatchException) AlphabetMismatchException(const char * text = "", const Alphabet * alpha1 = NULL, const Alphabet * alpha2 = NULL);
+    %ignore AlphabetMismatchException(const char * text = "", const Alphabet * alpha1 = NULL, const Alphabet * alpha2 = NULL);
     AlphabetMismatchException(const string & text = "", const Alphabet * alpha1 = NULL, const Alphabet * alpha2 = NULL);
     virtual ~AlphabetMismatchException() throw();
 

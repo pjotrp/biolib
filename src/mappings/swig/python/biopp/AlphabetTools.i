@@ -3,9 +3,16 @@
 #include "AlphabetTools.h"
 using namespace bpp;
 %}
-#include "alphabets"
-#include <typeinfo>
+%include "alphabets"
+//#include <typeinfo>
 %include "VectorTools.i"
+
+%ignore AlphabetTools::AlphabetTools;
+%ignore AlphabetTools::~AlphabetTools;
+//%ignore AlphabetTools::DEFAULT_ALPHABET;
+//%ignore AlphabetTools::PROTEIN_ALPHABET;
+//%ignore AlphabetTools::RNA_ALPHABET;
+//%ignore AlphabetTools::DNA_ALPHABET;
 
 class AlphabetTools
 {
@@ -20,8 +27,14 @@ class AlphabetTools
 
     static int getType(char state);
     static bool checkAlphabetCodingSize(const Alphabet & alphabet) throw (AlphabetException);
+
+    //%rename (refCheckAlphabetCodingSize) checkAlphabetCodingSize(const Alphabet & alphabet) throw (AlphabetException);
+    %ignore checkAlphabetCodingSize;
+
     static bool checkAlphabetCodingSize(const Alphabet * alphabet) throw (AlphabetException);
     static int getAlphabetCodingSize(const Alphabet & alphabet) throw (AlphabetException);
+    %ignore getAlphabetCodingSize;
+
     static int getAlphabetCodingSize(const Alphabet * alphabet) throw (AlphabetException);
     static bool isNucleicAlphabet(const Alphabet * alphabet);
     static bool isDNAAlphabet(const Alphabet * alphabet);

@@ -9,7 +9,7 @@ using namespace bpp;
 class GranthamAAPolarityIndex:public AlphabetIndex1<double>
 {
   public:
-    GranthamAAPolarityIndex()
+    GranthamAAPolarityIndex();
     virtual ~GranthamAAPolarityIndex();
     GranthamAAPolarityIndex * clone() const;
 

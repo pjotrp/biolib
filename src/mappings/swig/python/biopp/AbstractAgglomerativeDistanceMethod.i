@@ -10,6 +10,7 @@ using namespace bpp;
 using namespace std;
 
 %rename(__assign__) AbstractAgglomerativeDistanceMethod::operator=;
+%ignore AbstractAgglomerativeDistanceMethod::AbstractAgglomerativeDistanceMethod;
 
 class AbstractAgglomerativeDistanceMethod:public virtual AgglomerativeDistanceMethod
 {
@@ -22,8 +23,7 @@ class AbstractAgglomerativeDistanceMethod:public virtual AgglomerativeDistanceMe
     AbstractAgglomerativeDistanceMethod & operator=(const AbstractAgglomerativeDistanceMethod & a);
 
     virtual void setDistanceMatrix(const DistanceMatrix & matrix);
-    virtual
-    TreeTemplate<Node> * getTree() const;
+    virtual TreeTemplate<Node> * getTree() const;
     virtual void computeTree(bool rooted) throw (Exception);
     void setVerbose(bool yn);
     bool isVerbose() const;

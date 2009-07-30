@@ -18,4 +18,10 @@ class NeighborJoining :public AbstractAgglomerativeDistanceMethod
 
     virtual void setDistanceMatrix(const DistanceMatrix & matrix);
     virtual void outputPositiveLengths(bool yn);
+
+  protected:
+    //virtual vector<unsigned int> getBestPair() throw (Exception);
+    //virtual vector<double> computeBranchLengthsForPair(const vector<unsigned int> & pair);
+    //virtual double computeDistancesFromPair(const vector<unsigned int> & pair, const vector<double> & branchLengths, unsigned int pos);
+    //virtual void finalStep(int idRoot);  
 };

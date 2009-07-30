@@ -1,5 +1,6 @@
 %module bpptest
 %{
+#include "NumTools.h"
 #include "SimpleIndexDistance.h"
 using namespace bpp;
 %}

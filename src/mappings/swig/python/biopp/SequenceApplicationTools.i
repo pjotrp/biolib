@@ -3,10 +3,9 @@
 #include "SequenceApplicationTools.h"
 using namespace bpp;
 %}
-//#include "alphabets"
-//#include "containers"
+%include "alphabets"
+%include "containers"
 
-{
 class SequenceApplicationTools
 {
   public:
@@ -21,4 +20,3 @@ class SequenceApplicationTools
     static void printInputAlignmentHelp();
     static void printOutputSequenceHelp();
 };
-} 

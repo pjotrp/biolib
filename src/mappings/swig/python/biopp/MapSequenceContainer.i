@@ -13,6 +13,8 @@ using namespace bpp;
 
 using namespace std;
 
+%rename(__assign__) MapSequenceContainer::operator=;
+
 class MapSequenceContainer:public AbstractSequenceContainer
 {
   public:
@@ -22,7 +24,6 @@ class MapSequenceContainer:public AbstractSequenceContainer
     MapSequenceContainer & operator = (const MapSequenceContainer & msc);
     virtual ~MapSequenceContainer();
 
-  public:
     const Sequence * getSequenceByKey(const string & key)  const throw (SequenceNotFoundException);
     void setSequenceByKey(const string & key , const Sequence & sequence, bool checkNames = true) throw (SequenceNotFoundException);
     Sequence * removeSequenceByKey(const string & key) throw (SequenceNotFoundException);
