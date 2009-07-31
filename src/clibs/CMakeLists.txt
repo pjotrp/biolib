@@ -22,5 +22,5 @@ if (BLD_RQTL)
 endif (BLD_RQTL)
 
 if (BLD_LIBSEQUENCE)
-  add_subdirectory (libsequence/src)
+  add_subdirectory (libsequence-1.6.6/src)
 endif (BLD_LIBSEQUENCE)
