@@ -51,3 +51,4 @@ ${CONTRIB_PATH}/libs/boost/regex/regex_traits_defaults.cpp
 ${CONTRIB_PATH}/libs/boost/regex/static_mutex.cpp
 ${CONTRIB_PATH}/libs/boost/regex/w32_regex_traits.cpp
 ${CONTRIB_PATH}/libs/boost/regex/wc_regex_traits.cpp
+${CONTRIB_PATH}/src/Specializations.cc

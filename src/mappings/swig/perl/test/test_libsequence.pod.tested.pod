@@ -1,25 +1,6 @@
-<<<<<<< HEAD:src/mappings/swig/perl/test/test_libsequence.pod
-=head1 General I/O
-
-=======
->>>>>>> 787ea3388175c98691b6cdc3b18d446027edd5a9:src/mappings/swig/perl/test/test_libsequence.pod
-=begin hidden
-
-  BEGIN{unshift(@INC, "../libsequence")};
-  use biolib::libsequence;
-  
-<<<<<<< HEAD:src/mappings/swig/perl/test/test_libsequence.pod
-
-=end hidden
-
-=head2 Fasta
-=======
-=end hidden
-
 =head1 General I/O
 
 =head2 class Fasta
->>>>>>> 787ea3388175c98691b6cdc3b18d446027edd5a9:src/mappings/swig/perl/test/test_libsequence.pod
 
 FASTA Sequence Stream
 
@@ -32,20 +13,15 @@ Fasta(name, seq): Constructor for const std::string
 
   my $fasta = new libsequence::Fasta('dna', 'ATGC');
   
-<<<<<<< HEAD:src/mappings/swig/perl/test/test_libsequence.pod
-=======
 Fasta(fastaObj): Copy constrctor
 
   my $copy_fasta = new libsequence::Fasta($fasta);
   
->>>>>>> 787ea3388175c98691b6cdc3b18d446027edd5a9:src/mappings/swig/perl/test/test_libsequence.pod
 GetName(): Return the sequence name
   
   my $name = $fasta->GetName();
   is($name, 'dna');
   
-<<<<<<< HEAD:src/mappings/swig/perl/test/test_libsequence.pod
-=======
 GetSeq(): Return the sequence itself
 
   my $seq = $fasta->GetSeq();
@@ -361,8 +337,6 @@ Q4(): Returns number of transversions at fourfold-degenerate sites in the codon
 =head2 class ThreeSubs
 
 #=head2 class Comeron95
-
-=for POD::Tested reset
 
 an object to implement Comeron's (1995) method to calculate Ka and Ks
         
@@ -1347,10 +1321,10 @@ nlinks 	a pointer to the number of "links" currently in the simulation. A link i
 sample 	a pointer to the vector of chromosomes which makes up the sample
 sample_history 	a pointer to the ancestral recombination graph
 
-  #my $sample_history = new libsequence::margList(1, $marg);
+  my $sample_history = new libsequence::margList();
   my $nlinks = new libsequence::intPointer();
   $nlinks->assign(499);
-  #is(libsequence::coalesce(0,19,19,1,2,1500,$sample,$sample_history), 1);
+  #is(libsequence->coalesce(0,19,19,1,2,1500,$sample,$sample_history), 1);
 
 
   
@@ -1374,8 +1348,6 @@ sample_history 	a pointer to the ancestral recombination graph
 
 
 
->>>>>>> 787ea3388175c98691b6cdc3b18d446027edd5a9:src/mappings/swig/perl/test/test_libsequence.pod
 
 
-=cut 
-
+=cut

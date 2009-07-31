@@ -11,7 +11,15 @@
 %array_class(double, doubleArray);
 %array_class(std::string, stringArray);
 %pointer_class(int, intPointer);
+#%pointer_class(std::pair<int,int>, pairPointer);
+%template(intPair) std::pair<int, int>;
+%template(doublePair) std::pair<double, double>;
+
+%template(intVector) std::vector<int>;
 %template(doubleVector) std::vector<double>;
+%template(fragVector) std::vector< std::pair<int, int> >;
+%template(scaleVector) std::vector< std::pair<double, double> >;
+%template(strVector) std::vector<std::string>;
 
 %{
   #include <Sequence/Seq.hpp>
@@ -69,25 +77,36 @@
   #include <Sequence/Comparisons.hpp>
   #include <boost/tuple/tuple.hpp>
   #include <boost/tuple/detail/tuple_basic.hpp>
+  #include <Sequence/Alignment.hpp>
+  #include <Sequence/AlignStream.hpp>
+  #include <Sequence/Clustalw.hpp>
 %}
 
 #typedef unsigned int Sequence::Seq::size_type;
 %apply unsigned int {Sequence::Seq::size_type};
+%apply unsigned int {Sequence::PolyTable::size_type};
+#%apply unsigned int {std::vector<double>::size_type};
+%apply unsigned int {Sequence::AlignStream<std::pair<std::string,std::string > >::size_type};
 #%apply char {Sequence::Seq::reference};
 #%apply const char {Sequence::Seq::const_reference};
 %constant const double CMAX = 10000;
 %constant const double PRESICION = FLT_EPSILON;
 %ignore Sequence::Seq::operator[];
 %ignore Sequence::marginal::operator[];
+%ignore Sequence::PolyTable::operator[];
+%ignore Sequence::AlignStream::operator[];
+%ignore Sequence::PolyTable::position();
+%ignore Sequence::AlignStream::operator=;
+%ignore Sequence::AlignStream::UnGappedLength();
 #%ignore Sequence::Seq::operator[] const;
 #%rename(__aref__) Sequence::Seq::operator[];
 #%ignore boost::noncopyable;
-%rename(__aref1__) Sequence::PolyTable::operator[];
-%template() std::pair<std::string, std::string>;
+#%rename(__getitem__) Sequence::PolyTable::operator[];
+%template(strPair) std::pair<std::string, std::string>;
 %template() std::pair<unsigned, unsigned>;
 %template() std::pair<unsigned, Sequence::shortestPath::pathType>;
 %template() std::pair<doubelVector::iterator, double>;
-%template() std::pair<int, int>;
+
 
 %rename(_print) print;
 %rename(to_std_str) Sequence::Seq::operator std::string() const;
@@ -111,7 +130,6 @@ typedef std::vector< std::pair<std::string,int> > CodonUsageTable;
 typedef std::pair< double, std::string > polymorphicSite;
 typedef std::vector< polymorphicSite > polySiteVector;
 //}
-
 
 %include <Sequence/Seq.hpp>
 %include <Sequence/Fasta.hpp>
@@ -169,6 +187,13 @@ typedef std::vector< polymorphicSite > polySiteVector;
 #%include <boost/tuple/detail/tuple_basic.hpp>
 #%include <boost/tuple/tuple.hpp>
 #%include <Sequence/RNG/gsl_rng_wrappers.hpp>
+%include <Sequence/bits/PolySites.tcc>
+#%include <Sequence/Alignment.hpp>
+%include <Sequence/bits/Alignment.tcc>
+%include <Sequence/bits/AlignStream.tcc>
+%include <Sequence/AlignStream.hpp>
+%include <Sequence/bits/Clustalw.tcc>
+%include <Sequence/Clustalw.hpp>
 
 %template(Gapped) Sequence::Gapped<std::string::iterator>;
 #%include <Sequence/SeqRegexes.hpp>
@@ -187,6 +212,111 @@ typedef std::vector< polymorphicSite > polySiteVector;
 #%template(chisquareds) std::vector<chis_tuple>;
 %template(nodeVector) std::vector<Sequence::node>;
 %template(chroVector) std::vector<Sequence::chromosome>;
+
+/*namespace Sequence
+{
+   namespace Alignment
+    {
+	template < typename T >
+	bool IsAlignment (const std::vector < T  >&data)
+     {
+        BOOST_STATIC_ASSERT((boost::is_base_and_derived<std::pair<std::string,std::string>,T>::value
+                             || boost::is_same<std::pair<std::string,std::string>,T>::value));
+       for (int i = 0; unsigned (i) < data.size (); ++i)
+         if (data[i].second.length () != data[0].second.length ())
+           return 0;
+ 
+       return 1;
+     };
+    };
+};*/
+
+%template(fastaVector) std::vector<Sequence::Fasta>;
+%template(pVector) std::vector< std::pair< std::string, std::string > >;
+%template(Align_IsAlignment) Sequence::Alignment::IsAlignment< std::pair< std::string, std::string > >;
+%template(Align_Gapped) Sequence::Alignment::Gapped< std::pair< std::string, std::string> >;
+%template(Align_RemoveGaps) Sequence::Alignment::RemoveGaps< std::pair< std::string, std::string> >;
+%template(Align_RemoveTerminalGaps) Sequence::Alignment::RemoveTerminalGaps< std::pair<std::string, std::string> >;
+#%template(Align_UnGappedLength) Sequence::Alignment::UnGappedLength< std::pair< std::string, std::string> >;
+%template(Align_Trim) Sequence::Alignment::Trim< std::pair< std::string, std::string> >;
+%template(Align_TrimComplement) Sequence::Alignment::TrimComplement< std::pair< std::string, std::string> >;
+%template(Align_EmptyVector) Sequence::Alignment::EmptyVector< std::pair< std::string, std::string> >;
+%template(Align_RemoveFixedOutgroupInsertions) Sequence::Alignment::RemoveFixedOutgroupInsertions< std::pair< std::string, std::string> >;
+%template(Align_validForPolyAnalysis) Sequence::Alignment::validForPolyAnalysis< std::vector< std::pair< std::string, std::string> >::iterator>; 
+
+/*namespace std{
+class pair<string,string>;
+%typemap(in) pair<string,string> * {
+if ((SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_EXCEPTION)) == -1)
+ return NULL;
+} 
+}*/
+
+/*%inline %{
+    void Align_EmptyVector (std::vector< std::pair< std::string, std::string> >  &seqarray)
+    {
+      //std::vector< std::pair< std::string, std::string> > *p = &seqarray;
+      for (unsigned i=0;i<seqarray.size();++i)
+	delete &(seqarray[i]);
+      seqarray.resize(0);
+    }
+%}*/
+
+
+#%template(Align_IsAlignment_str) Sequence::Alignment::IsAlignment< Sequence::Seq >;
+#%template() Sequence::Alignment::GetData< Sequence::Fasta >;
+#%template(PolySites) Sequence::PolySites::PolySites< std::pair< std::string, std::string > >;
+%template(PolySites) Sequence::PolySites::PolySites< Sequence::Fasta >;
+#%template(PolySites) Sequence::PolySites::PolySites< std::string >;
+
+
+#%template() Sequence::AlignStream< Sequence::Fasta>;
+#%template(ClustalW_Fasta) Sequence::ClustalW< Sequence::Fasta>;
+%template(AlignStream_str) Sequence::AlignStream< std::pair<std::string, std::string> >;
+%template(ClustalW_str) Sequence::ClustalW<std::pair<std::string, std::string> >;
+
+
+
+
+
+
+
+
+/*%extend Sequence::ClustalW<std::pair<std::string, std::string> >{
+   
+   ClustalW<std::pair<std::string, std::string> > (const std::vector<std::pair<std::string, std::string> > & data ):
+      Sequence::AlignStream< std::pair<std::string, std::string> > (data)
+   {}
+  
+};*/
+
+/*%extend Sequence::ClustalW{
+   ClustalW(const std::vector<T>):
+      AlignStream(std::vector<T>)
+   {}
+};*/
+
+
+
+
+
+
+/*%extend Sequence::PolySites{
+    %template(temp_PolySites) PolySites< Sequence::Fasta >;
+};*/
+
+/*%extend Sequence::marginal{
+  
+  marginal()
+   {
+   }
+};*/
+
+#%ignore std::list<maginal>::list(size_type);
+%include <std_list.i>
+#%ignore std::list<maginal>::list(size_type);
+%template(margList) std::list<Sequence::marginal>;
+
 
 
 namespace Sequence{
@@ -288,6 +418,22 @@ template<typename Iter>
    }
 };*/
 
+%extend Sequence::PolyTable{
+  std::string __getitem__(const unsigned &i)
+   {
+    assert(i < $self->size());
+    return ($self->GetData())[i];
+   }
+};
+
+%extend Sequence::PolyTable{
+   double position( const unsigned &i)
+   {
+     assert(i < $self->numsites());
+     return ($self->GetPositions())[i];
+   }
+};
+
 %extend Sequence::marginal{
   node __getitem__(const unsigned &i)
    {
@@ -296,6 +442,15 @@ template<typename Iter>
    }
 };
 
+%extend Sequence::AlignStream< std::pair<std::string, std::string> >{
+   std::pair<std::string, std::string> __getitem__(const unsigned &i)
+   {
+     return ($self->Data())[i];
+   }
+};
+
+
+   
 
 
 

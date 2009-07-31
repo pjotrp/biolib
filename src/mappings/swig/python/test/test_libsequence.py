@@ -174,7 +174,7 @@ class TestKimura80(object):
 
         Kimura80(seq1, seq2): seq1 and seq2 should be of the same length.
         >>> fas1 = Fasta('dna1', 'AGTGCG')
-        >>> fas2 = Fasta('dn22', 'TGCACT')
+        >>> fas2 = Fasta('dna2', 'TGCACT')
         >>> kim = Kimura80(fas1, fas2)
         """
 
@@ -182,7 +182,7 @@ class TestKimura80(object):
         """Returns: the distance between the two sequences.
 
         >>> fas1 = Fasta('dna1', 'AGTGCG')
-        >>> fas2 = Fasta('dn22', 'TGCACT')
+        >>> fas2 = Fasta('dna2', 'TGCACT')
         >>> kim = Kimura80(fas1, fas2)
         >>> kim.K()
         0.0
@@ -265,10 +265,10 @@ class TestGranthamWeights3(object):
         codon1 and codon2 are 3-letters condons from different branch
 
         >>> gran3 = GranthamWeights3()
-        >>> gran3.Calculate("UGG", "CGA")
+        >>> gran3.Calculate("AAA", "CCC")
         >>> w = doubleArray_frompointer(gran3.weights())
         >>> w[1]
-        0.5
+        0.15905190450646806
         """
 class TestUnweighted2(object):
 
@@ -1366,7 +1366,7 @@ class TestinvalidPolyChar(object):
 
 class Testsegment(object):
 
-    def segment(self):
+    def testsegment(self):
         """Constructor:A portion of a recombining chromosome.
 
         segment(beg, end, desc)
@@ -1486,6 +1486,23 @@ class Testchromosome(object):
         >>> chro = chromosome(segs)
         >>> chro.links()
         18
+        """
+
+    def testswap_with(self):
+        """Swaps the data members of the current chromosome with chromosome ch.
+        Called by the coalesce routine, and is necessary to prevent nastiness such as
+        multiple calls to free when vectors of chromosomes go out of scope.
+        Implemented as: std::swap(this->segs,ch.segs); std::swap(this->nsegs,ch.nsegs);
+        std::swap(this->pop,ch.pop);
+
+        >>> segs = segVector(2)
+        >>> segs[0] = segment(2,5,1)
+        >>> segs[1] = segment(10,20,0)
+        >>> chro = chromosome(segs)
+        >>> chro1 = chromosome()
+        >>> chro1.swap_with(chro)
+        >>> chro1.first()
+        2
         """
                 
 
@@ -1622,9 +1639,14 @@ def Testisseg():
 
     isseg(beg, nsegs, offset, pos)
     Parameters:
-    seg 	a pointer to a segment of a chromosome (this should be the 1st segment, such as the return value of chromosome::begin())
+    seg 	a pointer to a segment of a chromosome (this should be the 1st segment, such as the return value
+    of chromosome::begin())
+
     nsegs 	the number of segs in the chromosome pointed to by seg
-    offset 	a pointer to an integer. This integer is used for repeated pointer arithmetic, and should be initalized to 0 before the first call.
+
+    offset 	a pointer to an integer. This integer is used for repeated pointer arithmetic, and should be
+    initalized to 0 before the first call.
+
     pos 	a position a long a chromosome. This function asks if pos is contained in the ancestral material of the chromosome whose segments begin at seg
 
     Returns:
@@ -1641,7 +1663,1328 @@ def Testisseg():
     >>> isseg(seg, 3, 1, offset)
     True
     """
+
+def Testcalculate_scales():
+
+    """This is a helper function that rescales physical distance in base pairs
+    to continuous distance on the interval 0,1.
+
+    calculate_scales(fragments, sample_scale, mutation_scale)
+    Parameters:
+    fragments 	A vector of pairs, representing physical distance in bp.
+    For each pair, the first element is the distance to the next fragment,
+    and the second element is the length of the fragment. For example,
+    two 1kb fragments separated by 10kb would be represented by the pairs (0,1000) (10000,1000).
+
+    sample_scale 	This vector will be filled with values representing
+    the positions of the fragments on the continuous interval, without any space
+    betwen them. This is because we will actually do the simulation using a non-uniform
+    genetic map to represent the high recombination rates between fragments
+
+    mutation_scale 	This is a direct mapping of the data contained in fragments
+    to the continuous scale, and can be used to rescale the positions of mutations
+
+    >>> fragments = fragVector(3)
+    >>> fragments.push_back(intPair(0,500))
+    >>> fragments.push_back(intPair(1000,500))
+    >>> fragments.push_back(intPair(1000,500))
+    >>> sample = scaleVector(3)
+    >>> mutation = scaleVector(3)
+    >>> calculate_scales(fragments, sample, mutation)
+    """
+
+def Testsample_length():
+
+    """When simulating partially linked regions, return the total length of sample material
+    that we are simulating
+    Returns: The sum of fragments[i].second for i=0 to i=fragments.size()-1
+
+    sample_length(fragments)
+    >>> fragments = fragVector(3)
+    >>> fragments.push_back(intPair(0,500))
+    >>> fragments.push_back(intPair(1000,500))
+    >>> fragments.push_back(intPair(1000,500))
+    >>> sample_length(fragments)
+    1500
+    """
+
+def Testtotal_length():
+
+    """When simulating partially linked regions, return the total length of the region.
+
+    Returns:The sum of fragments[i].first + fragments[i].second for i=0 to i=fragments.size()-1
+
+    total_length(fragments)
+    >>> fragments = fragVector(3)
+    >>> fragments.push_back(intPair(0,500))
+    >>> fragments.push_back(intPair(1000,500))
+    >>> fragments.push_back(intPair(1000,500))
+    >>> total_length(fragments)
+    3500
+    """
+
+def Testinit_sample():
+
+    """A simple function to initialize a sample of chromosomes.
+    Returns: a vector of chromosome
+
+    init_sample(pop_config, nsites)
+    Parameters:
+    pop_config 	For a k-population model, this vector contains the sample size for each pop.
+    Individuals are labeled as beloning to population 0 to k-1, in the order specified in this vector
+
+    nsites 	The number of sites at which mutations occur. For a k-site model,
+    recombination occurs at any of the k-1 "links" between sites. Eaach chromosome is assigned
+    a single segment starting at position 0 and ending at nsites-1.
+
+    >>> chroVectorObj = init_sample(intVector(1,10), 1500)
+    """
+def Testinit_marginal():
+
+    """Simple function to initialize and return a marginal tree.
+
+    Parameters:
+    nsam 	the total sample size (i.e. summed over all populations) that you want to simulate
+
+    >>> marginalObj = init_marginal(10)
+    """
+
+def Testcoalesce():
+
+    """Common ancestor routine for coalescent simulation. Merges chromosome segments and updates
+       marginal trees.
+
+    Common ancestor routine for coalescent simulation. This routine performs the merging of two
+    lineages by a coalescent event. Such merges usually require two sorts of operations. The first
+    is an update to the segments contained in a chromosome, and the second is an update of the nodes
+    on a marginal tree.
+
+    coalesce(time, ttl_nsam, current_nsam, c1, c2, nsites, nlinks, sample, sample_history)
+    Parameters:
+    time 	the time at which the coalecent event is occuring
+    ttl_nsam 	the total sample size being simulated
+    current_nsam 	the current sample size in the simulation
+    c1 	the array index of the first chromosome involved in the coalescent event
+    c2 	the array index of the second chromosome involved in the coalescent event
+    nsites 	the total mutational length of the region begin simulated. In the language of Hudson (1983), this is the number of infinitely-many-alleles loci in the simulation.
+    nlinks 	a pointer to the number of "links" currently in the simulation. A link is the region between two sites, such that a chromosome currently with k sites has k-1 links
+    sample 	a pointer to the vector of chromosomes which makes up the sample
+    sample_history 	a pointer to the ancestral recombination graph
+
+    >>> sample = init_sample(intVector(1,10), 1500)
+    >>> slength = 1500
+    >>> nsam = 19
+    >>> t = 0
+    >>> marginal = init_marginal(10)
+    >>> sample_history = margList(1, marginal)
+    >>> nlinks = intPointer()
+    >>> nlinks.assign(499)
+    >>> coalesce(t,nsam,nsam,1,2,slength,nlinks,sample,sample_history)
+    1
+
+    """
+    
+
+def Testtotal_time_on_arg():
+
+    """Returns the total time on an ancestral recombination graph.
+
+    total_time_on_arg(sample_history, total_number_of_sites)
+    Parameters:
+    sample_history 	an ancestral recombination graph
+    total_number_of_sites 	the number of "sites" simulated on the ARG
+
+    >>> marginal = init_marginal(10)
+    >>> sample_history = margList(1, marginal)
+    >>> total_time_on_arg(sample_history, 500)
+    0.0
+    """
+
+def Testcrossover():
+
+    """Recombination function.Returns:the number of links lost due to the crossover event
+    
+    crossover(current_nsam, chromo, pos, sample, sample_history)
+    Parameters:
+    current_nsam 	the current sample size in the simulation
+    chromo 	the chromosome on which the crossover event is to occur
+    pos 	the crossover event happens between sites pos and pos+1 (0<= pos < nsites)
+    sample 	the sample of chromosomes being simulated
+    sample_history 	the genealogy of the sample
+
+    >>> sample = init_sample(intVector(1,10), 1500)
+    >>> marg = init_marginal(10)
+    >>> sample_history = margList(1, marg)
+    >>> crossover(10, 5, 100, sample, sample_history)
+    1
+    """
+
+
+class TestSimData(object):
+
+    def testSimData():
+
+        """The constructor needs to know the sample size simulated. This is easily obtainted
+        using Sequence::SimParams.
+
+        SimData(nsame = 0, nsnps = 0)
+        Parameters:
+        nsams    sample size
         
+        >>> sdata = SimData()
+       
+        SimData(pos, dat)
+        Parameters:
+        pos     vector of doubles representing segregating positions
+        dat     vector of strings representing sequence data.
+        >>> pos = doubleVector(4)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> pos[2] = .34
+        >>> pos[3] = .44
+        >>> dat = strVector(2)
+        >>> dat[0] = 'A-TC'
+        >>> dat[1] = 'N0G1'
+        >>> d = SimData(pos,dat)
+
+
+        SimData(sbegin,send)
+        >>> pos = doubleVector(4)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> pos[2] = .34
+        >>> pos[3] = .44
+        >>> dat = strVector(2)
+        >>> dat[0] = 'A-TC'
+        >>> dat[1] = 'N0G1'
+        >>> d = SimData(pos,dat)
+        >>> beg = d.sbegin()
+        >>> end = d.send()
+        >>> d1 = SimData(beg,end)
+        """
+
+        
+
+    def testdes_SimData():
+        """Destructor:
+
+        >>> d = SimData()
+        >>> del d
+        """
+
+    def testempty():
+        """Returns:true if object contains no data, false otherwise
+
+        >>> d = SimData()
+        >>> d.empty()
+        True
+        """
+        
+    def testGetData():
+        """Returns PolyTable::data, a vector of std::strings containing polymorphic sites.
+        Assuming the vector is returned to a vector<string> called data, accessing data[i][j] accesses
+        the j-th site of the i-th sequence
+
+        >>> pos = doubleVector(4)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> pos[2] = .34
+        >>> pos[3] = .44
+        >>> dat = strVector(2)
+        >>> dat[0] = 'A-TC'
+        >>> dat[1] = 'N0G1'
+        >>> d = SimData(pos,dat)
+        >>> d.GetData()
+        ('A-TC', 'N0G1')
+        """
+
+    def testGetPositions():
+        """Returns PolyTable::positions
+
+        >>> pos = doubleVector(4)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> pos[2] = .34
+        >>> pos[3] = .44
+        >>> dat = strVector(2)
+        >>> dat[0] = 'A-TC'
+        >>> dat[1] = 'N0G1'
+        >>> d = SimData(pos,dat)
+        >>> d.GetPositions()
+        (0.25, 0.32000000000000001, 0.34000000000000002, 0.44)
+        """
+
+    def testassign():
+        """Returns:true if the assignment was successful, false otherwise.
+        The only case where false is returned is if the number of individuals at
+        each site is not the constan from beg to end.
+
+        >>> pos = doubleVector(4)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> pos[2] = .34
+        >>> pos[3] = .44
+        >>> dat = strVector(2)
+        >>> dat[0] = 'A-TC'
+        >>> dat[1] = 'N0G1'
+        >>> d = SimData(pos,dat)
+        >>> beg = d.sbegin()
+        >>> end = d.send()
+        >>> d1 = SimData()
+        >>> d1.assign(beg,end)
+        True
+        >>> d1.GetData()
+        ('A-TC', 'N0G1')
+        """
+        
+    def testRemoveMissing():
+        """go through the data and remove all the sites with missing data (the character N).
+
+        >>> pos = doubleVector(4)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> pos[2] = .34
+        >>> pos[3] = .44
+        >>> dat = strVector(2)
+        >>> dat[0] = 'A-TC'
+        >>> dat[1] = 'N0G1'
+        >>> d = SimData(pos,dat)
+        >>> d.RemoveMissing()
+        >>> d.GetData()
+        ('-TC', '0G1')
+        """
+
+    def testRemoveAmbiguous():
+        """go through the data and remove all the sites with states other than {A,G,C,T,N,0,1,-}
+
+        >>> pos = doubleVector(4)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> pos[2] = .34
+        >>> pos[3] = .44
+        >>> dat = strVector(2)
+        >>> dat[0] = 'A-TC'
+        >>> dat[1] = 'NEG1'
+        >>> d = SimData(pos,dat)
+        >>> d.RemoveAmbiguous()
+        >>> d.GetData()
+        ('ATC', 'NG1')
+        """
+
+
+    def testRemoveMultiHits():
+        """go through the data and remove all the sites with more than 2 states segregating.
+            By default, this routine also removes sites where there are 2 states segregating in the ingroup.
+            and the outgroup (if present) has a 3rd state.
+        
+        RemoveMultiHits(skipOutgroup = False, outgroup = 0)
+        Parameters:
+        skipOutgroup 	default is false. If true, the character state of the outgroup is ignored.
+        outgroup 	the index of the outgroup in the data vector
+
+        >>> pos = doubleVector(4)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> pos[2] = .34
+        >>> pos[3] = .44
+        >>> dat = strVector(3)
+        >>> dat[0] = 'A-TC'
+        >>> dat[1] = 'N0G1'
+        >>> dat[2] = 'T-CC'
+        >>> d = SimData(pos,dat)
+        >>> d.RemoveMultiHits()
+        >>> d.GetData()
+        ('A-C', 'N01', 'T-C')
+        """
+
+
+
+
+            
+    def testApplyFreqFilter():
+        """go through the data and remove all positions where there is a variant at count
+        (# of occurences in the sample) < minfreq
+
+        ApplyFreqFilter(mincount, haveOutgroup = False, outgroup = 0)
+        Parameters:
+        mincount 	minimum count of a variant in the data. Variants that occur < mincount times are thrown out.
+        haveOutgroup 	true if an outgroup is present in the data, false otherwise
+        outgroup 	the index in the data array containing the outgroup (if present)
+
+        >>> pos = doubleVector(4)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> pos[2] = .34
+        >>> pos[3] = .44
+        >>> dat = strVector(3)
+        >>> dat[0] = 'A-TC'
+        >>> dat[1] = 'N0G1'
+        >>> dat[2] = 'T-CC'
+        >>> d = SimData(pos,dat)
+        >>> d.ApplyFreqFilter(2)
+        >>> d.GetData()
+        ('', '', '')
+        """
+        
+    def testBinary():
+
+        """Recode the polymorphism table in 0,1 (binary notation)
+
+        Binary(haveOutgroup = false, outgroup = 0, strictInfSites = true)
+        Parameters:
+        haveOutgroup 	use true if an outgroup is present, false otherwise
+        outgroup 	the index of the outgroup in the data vector used to construct the object
+        strictInfSites 	if true, throw out all sites with > 2 character states (including outgroup!)
+
+        Note:
+        if haveOutgroup== true, then 0 means an ancestral state and 1 a derived state in the resulting. 
+        note If haveOutgroup == true, and there are sites with missing data in the outrgroup sequence,
+        those sites are removed from the data, since its assumed you actually want to know ancestral/derived
+        for every site
+
+        >>> d = SimData()
+        >>> d.Binary()
+        """
+
+    def testsegsites():
+
+        """Returns the number of segregating sites in the data block
+
+        >>> pos = doubleVector(4)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> pos[2] = .34
+        >>> pos[3] = .44
+        >>> dat = strVector(2)
+        >>> dat[0] = 'A-TC'
+        >>> dat[1] = 'NEG1'
+        >>> d = SimData(pos,dat)
+        >>> d.segsites()
+        4
+        """
+    def testsize():
+        """Return how many std::strings are stored in PolyTable::data.
+
+        >>> pos = doubleVector(2)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> dat = strVector(3)
+        >>> dat[1] = 'A-'
+        >>> dat[0] = 'N1'
+        >>> dat[2] = 'CG'
+        >>> d = SimData(pos,dat)
+        >>> d.size()
+        3
+        """
+
+    def testnumsites():
+        """Returns number of sites
+
+        >>> pos = doubleVector(4)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> pos[2] = .34
+        >>> pos[3] = .44
+        >>> dat = strVector(2)
+        >>> dat[0] = 'A-TC'
+        >>> dat[1] = 'NEG1'
+        >>> d = SimData(pos,dat)
+        >>> d.numsites()
+        4
+        """
+
+    def testposition():
+        """Return the i-th position from the PolyTable::positions.
+
+        >>> pos = doubleVector(4)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> pos[2] = .34
+        >>> pos[3] = .44
+        >>> dat = strVector(2)
+        >>> dat[0] = 'A-TC'
+        >>> dat[1] = 'NGG1'
+        >>> d = SimData(pos,dat)
+        >>> d.position(2)
+        0.34000000000000002
+        """
+
+    def testoperator_equal():
+        """Returns true if two SimData object are the same, otherwise false
+
+        >>> pos = doubleVector(4)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> pos[2] = .34
+        >>> pos[3] = .44
+        >>> dat = strVector(2)
+        >>> dat[0] = 'A-TC'
+        >>> dat[1] = 'NEG1'
+        >>> d = SimData(pos,dat)
+        >>> d1 = SimData(pos,dat)
+        >>> d == d1
+        True
+        """
+
+
+    
+
+    def testoperator_notequal():
+        """Returns False if two SimData object are the same, otherwise True
+
+        >>> d = SimData()
+        >>> d1 = SimData()
+        >>> d != d1
+        False
+        """
+
+    def testoperator_reference():
+        """Return the i-th element of PolyTable::data.
+
+        >>> pos = doubleVector(2)
+        >>> pos[0] = .25
+        >>> pos[1] = .32
+        >>> dat = strVector(2)
+        >>> dat[0] = 'AG'
+        >>> dat[1] = 'TC'
+        >>> d = SimData(pos,dat)
+        >>> d[0]
+        'AG'
+        >>> d[1]
+        'TC'
+        """
+    
+
+
+class TestPolySites():
+
+    def testPolySites():
+        """This is the constructor if you are using "string-like" data, such as std::string,
+        or Sequence::Fasta. Note that the vector name is aligment, and that means that every sequence
+        had better be the same length!
+        By default, there is no limit to how many characters can "segregate" at a variable position,
+        although if there are more than 4, most biologists will start to worry. There are, however,
+        times when you may wish to onlu consider sites that have a total of 2 character states.
+        (NOTE: by two states, I mean including BOTH the ingroup and the outgroup sequence.) Setting
+        strictInfSites to 1 will result in making a polymorphic sites object containing only sites with 2 states.
+
+        PolySites(alignment, strictInfsites = 0, ignoregaps = 1, skipMissing = False, skipAdjSNP = False,
+                   freqfilter = 0)
+        Parameters:
+        alignment 	vector of data
+        strictInfSites 	if true, throw out all sites with > 2 states
+        ignoregaps 	if true, do not count gapped sites as polymorphisms
+        skipMissing 	if true, ignore ALL sites with missing data ('N')
+        skipAdjSNP 	if does nothing. a placeholder for a future feature
+        freqfilter 	Defaults to 0. For a polymorphic site to be included in the final table,
+        the minor allele count in the data (i.e. the number of times the minor allele occurs at that site)
+        must be strictly greater than freqfilter
+
+        Note:
+        segsite positions are stored as positions (starting from 1)
+
+        Warning:
+        when ignoregaps=false, this class does not do the right thing
+
+        >>> v = fastaVector(2)
+        >>> v[0] = Fasta('s1','ATGCG')
+        >>> v[1] = Fasta('s2','CG-TT')
+        >>> p = PolySites(v)
+
+
+        
+
+        Use following constructor if you already have a list of positions and characters
+
+        Parameters:
+        List 	a list of doubles representing positions of polymorphic positions
+        stringList 	a vector of strings representing the polymorphic characters
+
+        >>> l = doubleVector(2)
+        >>> l[0] = 0
+        >>> l[1] = 4
+        >>> strl = strVector(2)
+        >>> strl[0] = 'ATG-'
+        >>> strl[1] = 'CCCT'
+        >>> p = PolySites(l, strl)
+        """
+
+    def testGetData():
+        """Returns PolyTable::data, a vector of std::strings containing polymorphic sites.
+        Assuming the vector is returned to a vector<string> called data, accessing data[i][j] accesses
+        the j-th site of the i-th sequence
+
+        >>> v = fastaVector(2)
+        >>> v[0] = Fasta('s1', 'ANTGC-C')
+        >>> v[1] = Fasta('s2', '-GGTCCA')
+        >>> p = PolySites(v)
+        >>> p.GetData()
+        ('TGC', 'GTA')
+        """
+
+    def testGetPositions():
+        """Returns PolyTable::positions.
+
+        >>> v = fastaVector(2)
+        >>> v[0] = Fasta('s1', 'ANTGC-C')
+        >>> v[1] = Fasta('s2', '-GGTCCA')
+        >>> p = PolySites(v)
+        >>> p.GetPositions()
+        (3.0, 4.0, 7.0)
+        """
+
+    def testApplyFreqFilter():
+        """go through the data and remove all positions where there is a variant at count
+        (# of occurences in the sample) < minfreq
+
+        ApplyFreqFilter(mincount, haveOutgroup = False, outgrp = 0)
+        Parameters:
+        mincount 	minimum count of a variant in the data. Variants that occur < mincount times are thrown out.
+        haveOutgroup 	true if an outgroup is present in the data, false otherwise
+        outgroup 	the index in the data array containing the outgroup (if present)
+            
+        >>> v = fastaVector(2)
+        >>> v[0] = Fasta('s1', 'ANTGC-C')
+        >>> v[1] = Fasta('s2', '-GGTCCA')
+        >>> p = PolySites(v)
+        >>> p.GetData()
+        ('TGC', 'GTA')
+        >>> p.ApplyFreqFilter(2)
+        >>> p.GetData()
+        ('', '')
+        """
+
+    def testempty():
+        """Returns:true if object contains no data, false otherwise
+
+        >>> poly = PolySites()
+        >>> poly.empty()
+        True
+        """
+
+    def testBinary():
+        """Recode the polymorphism table in 0,1 (binary notation)
+
+        Binary(haveOutgroup = false, outgroup = 0, strictInfSites = true)
+        Parameters:
+        haveOutgroup 	use true if an outgroup is present, false otherwise
+        outgroup 	the index of the outgroup in the data vector used to construct the object
+        strictInfSites 	if true, throw out all sites with > 2 character states (including outgroup!)
+
+        Note:
+        if haveOutgroup== true, then 0 means an ancestral state and 1 a derived state in the resulting.
+        /note If haveOutgroup == true, and there are sites with missing data in the outrgroup sequence,
+        those sites are removed from the data, since its assumed you actually want to know ancestral/derived
+        for every site
+
+        >>> v = fastaVector(2)
+        >>> v[0] = Fasta('s1', 'ANTGC-C')
+        >>> v[1] = Fasta('s2', '-GGTCCA')
+        >>> p = PolySites(v)
+        >>> p.Binary()
+        >>> p.GetData()
+        ('000', '111')
+        """
+
+##    def testsize():
+##        """Return how many std::strings are stored in PolyTable::data.
+##
+##        >>> pol = PolySites()
+##        >>> pol.size()
+##        0
+##        """
+
+    def testnumsites():
+        """Return how many positions are stored in PolyTable::positions
+
+        >>> v = fastaVector(2)
+        >>> v[0] = Fasta('s1','ANTGC-C')
+        >>> v[1] = Fasta('s2','-GGTCCA')
+        >>> data = PolySites(v)
+        >>> data.numsites()
+        3
+        """
+
+##class TestFST(object):
+##
+##    def testFST():
+##        
+
+class TestPolySNP(object):
+
+    def testPolySNP():
+        """Molecular population genetic analysis
+
+        PolySNP()
+        Parameters:
+        data 	a valid object of type Sequence::PolyTable
+        haveOutgroup 	true if an outgroup is present, false otherwise
+        outgroup 	if haveOutgroup is true, outgroup is the index of that sequence in data
+        totMuts 	if true (the default) use the total number of inferred mutations,
+        otherwise use the total number of polymorphic sites in calculations
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GG1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p)
+        """
+
+    def testThetaPi():
+        """Calculated here as the sum of 1.0 - sum of site homozygosity accross sites.
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p)
+        >>> snp.ThetaPi()
+        4.666666666666667
+        """
+
+    def testThetaW():
+        """The classic "Watterson's Theta" statistic, generalized to missing data and
+        multiple mutations per site:
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p)
+        >>> snp.ThetaW()
+        6.0
+        """
+
+    def testThetaH():
+        """Calculate Theta ( = 4Nu) from site homozygosity, a la Fay and Wu (2000).
+        This statistic is problematic in general to calculate when there are multiple hits.
+        The test requires that the ancestral state (inferred from the outgroup) still be
+        segregating in the ingroup. If that is not true, the site is skipped.
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p,True,1,True)
+        >>> snp.ThetaH()
+        0.0
+        """
+
+    def testThetaL():
+        """Calculate Theta ( = 4Nu) from site homozygosity, corresponding to equation 1 in
+        Thornton and Andolfatto (Genetics) "Approximate Bayesian Inference reveals evidence
+        for a recent, severe, bottleneck in a Netherlands population of Drosophila melanogaster,
+        " (although we labelled in  in that paper) The test requires that the ancestral state
+        (inferred from the outgroup) still be segregating in the ingroup. If that is not true,
+        the site is skipped.
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p,True,1,True)
+        >>> snp.ThetaL()
+        0.0
+        """        
+
+    def testVarPi():
+        """Total variance of mean pairwise differences. Tajima in Takahata/Clark book, (13).
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p)
+        >>> snp.VarPi()
+        9.7777777777777803
+        """
+
+    def testStochasticVarPi():
+        """Stochastic variance of mean pairwise differences. Tajima in Takahata/Clark book, (14).
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p)
+        >>> snp.StochasticVarPi()
+        4.2222222222222232
+        """
+
+    def testSamplingVarPi():
+        """Component of variance of mean pairwise differences from sampling. Tajima in Takahata/Clark book, (15)
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p)
+        >>> snp.SamplingVarPi()
+        5.5555555555555562
+        """
+        
+    def testVarThetaW():
+        """Returns:Variance of Watterson's Theta (ThetaW()).
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p)
+        >>> snp.VarThetaW()
+        15.428571428571429
+        """
+
+    def testNumPoly():
+        """Returns: the number of polymorphic (segregating) sites in data
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p)
+        >>> snp.NumPoly()
+        5
+        """
+
+    def testNumMutations():
+        """Returns:the total number of mutations in the data. The number of mutations
+        per site = number of states per site - 1
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p)
+        >>> snp.NumMutations()
+        9
+        """
+
+    def testNumSingletons():
+        """Returns:number of polymorphisms that appear once in the data, without respect to ancestral/derived
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p)
+        >>> snp.NumSingletons()
+        13
+        """
+
+    def testNumExternalMutations():
+        """Returns:the number of derived singletons.
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p)
+        >>> snp.NumExternalMutations()
+        4294967295L
+        """
+
+    def testTajimasD():
+        """A common summary of the site frequency spectrum. Proportional to . This routine does calculate the denominator of the test statistic.
+
+        Warning:
+        statistic undefined if there are untyped SNPs
+        Returns:
+        Tajima's D, or nan if there are no polymorphic sites
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p,True,1,True)
+        >>> snp.TajimasD()
+        nan
+        """
+
+    def testHprime():
+        """Returns:ThetaPi-ThetaH/(~Var(ThetaPi-ThetaH)). This corresponds to Equation 5 in Thornton and
+        Andolfatto (Genetics) "Approximate Bayesian Inference reveals evidence for a recent, severe,
+        bottleneck in a Netherlands population of Drosophila melanogaster"
+
+        Parameters:
+        likeThorntonAndolfatto 	The calculation of H' requires calculation of . In Thornton and Andolfatto, we simply used , which is slightly biased. By default, this function calculates , unless this bool is set to false, in which case is used.
+        Note:
+        returns nan if there are 0 polymorphic sites
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p,True,1,True)
+        >>> snp.Hprime()
+        inf
+        """
+
+    def testDnominator():
+        """Returns:Denominator of Tajima's D, or nan if there are no polymorphic sites
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p,True,1,True)
+        >>> snp.Dnominator()
+        0.0
+        """
+    def testDandVH():
+        
+        """To check if two sequences are unique, Sequence::Comparisons::Different is used,
+        which does not allow missing data to result in 2 sequences being considered different
+        (as they would be if you simply used thestd::string comparison operators == or !=)
+
+        Returns:the haplotype diversity of the data.
+        
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p,True,1,True)
+        >>> snp.DandVH()
+        1.0
+        """
+
+    def testDandVK():
+        """To check if two sequences are unique, Sequence::Comparisons::Different is used,
+        which does not allow missing data to result in 2 sequences being considered different
+        (as they would be if you simply used the std::string comparison operators == or !=)
+
+        Returns:
+        number of haplotypes in the sample
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p,True,1,True)
+        >>> snp.DandVK()
+        2
+        """
+        
+
+    def testWallsB():
+        """Returns:Wall's B Statistic.
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p,True,1,True)
+        >>> snp.WallsB()
+        1.0
+        """
+    def testWallsBprime():
+        """Returns:Wall's B Statistic.
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p,True,1,True)
+        >>> snp.WallsBprime()
+        3
+        """
+
+    def testWallsQ():
+        """Returns:Wall's Q Statistic.
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p,True,1,True)
+        >>> snp.WallsQ()
+        1.0
+        """
+    def testHudsonsC():
+        """Returns:Hudson's (1987) estimator of , an estimator of the population recombination rate that
+        depends on the variance of the site frequencies. The calculation is made by a call to
+        Recombination::HudsonsC
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p,True,1,True)
+        >>> snp.HudsonsC()
+        10000.0
+        """
+
+    def testMinrec():
+        """Returns:The minimum number of recombination events observed in the sample (Hudson and Kaplan 1985).
+        Will return SEQMAXUNSIGNED if there are < 2 segregating sites.
+
+        >>> v = fastaVector(3)
+        >>> v[0] = Fasta('s1', 'ATGCNC')
+        >>> v[1] = Fasta('s2', 'GCCA-T')
+        >>> v[2] = Fasta('s3', '0GA1TC')
+        >>> p = PolySites(v)
+        >>> snp = PolySNP(p,True,1,True)
+        >>> snp.Minrec()
+        0
+        """
+        
+        
+class TestClustalW_str(object):
+
+    def testClustalW_str():
+        """This class defines an input routine for alignments in ClustalW format.
+        This class template is instantiated with the following types:
+        std::pair<std::string, std::string>
+
+        ClustalW_str( strPairObj ): strPairObj is an object instantiated from
+        std::vector< std::pair<std::string, std::string> >
+        >>> p = pVector(2)
+        >>> p[0] = strPair('s1','AT')
+        >>> p[1] = strPair('s2','GG')
+        >>> clus = ClustalW_str(p)
+
+        Default constructor:
+        >>> clus = ClustalW_str()
+        """
+
+    def testsize():
+        """Returns data.size(),i.e. the length of vector
+
+        >>> p = pVector(2)
+        >>> p[0] = strPair('s1','AT')
+        >>> p[1] = strPair('s2','GG')
+        >>> clus = ClustalW_str(p)
+        >>> clus.size()
+        2
+        """
+        
+
+    def testcopy_ClustalW_str():
+        """Copy constructor
+
+        >>> p = pVector(2)
+        >>> p[0] = strPair('s1','AT')
+        >>> p[1] = strPair('s2','GG')
+        >>> clus = ClustalW_str(p)
+        >>> clus1 = ClustalW_str(clus)
+        """
+
+    def testdes_ClustalW_str():
+        """Destructor
+
+        >>> clus = ClustalW_str()
+        >>> del clus
+        """
+
+    def testIsAlignment():
+        """A vector of sequences/strings is only an alignment if all strings are the same length.
+
+        >>> p = pVector(2)
+        >>> p[0] = strPair('s1','ATGGC')
+        >>> p[1] = strPair('s2','CCCAG')
+        >>> clus = ClustalW_str(p)
+        >>> clus.IsAlignment()
+        True
+        """
+
+    def testGapped():
+        """true if the vector contains a gap character ('-') , false otherwise.
+
+        >>> p = pVector(2)
+        >>> p[0] = strPair('s1','ATGGC')
+        >>> p[1] = strPair('s2', 'CC-TT')
+        >>> clus = ClustalW_str(p)
+        >>> clus.Gapped()
+        True
+        """
+
+    def testRemoveGaps():
+        """Modifies the data vector to remove all positions that contain the gap character'-'.
+
+        
+        >>> p = pVector(2)
+        >>> p[0] = strPair('s1', 'AAT')
+        >>> p[1] = strPair('s2', 'C-G')
+        >>> clus = ClustalW_str(p)
+        >>> clus.Gapped()
+        True
+        >>> clus.RemoveGaps()
+        >>> clus.Gapped()
+        False
+        """
+
+    def testopertor_reference():
+        """Returns the i-th object in the vector data
+
+        >>> p = pVector(2)
+        >>> p[0] = strPair('s1', 'AAT')
+        >>> p[1] = strPair('s2', 'C-G')
+        >>> clus = ClustalW_str(p)
+        >>> clus[0]
+        ('s1', 'AAT')
+        """
+
+    def testRemoveTerminalGaps():
+        """Remove all gapped sites from the ends of the alignment, up until the
+        first site on either side that is ungapped.
+
+        >>> p = pVector(2)
+        >>> p[0] = strPair('s1','-GTCA-T')
+        >>> p[1] = strPair('s2','TTAC-C-')
+        >>> clus = ClustalW_str(p)
+        >>> clus.RemoveTerminalGaps()
+        >>> clus[0]
+        ('s1', 'GTC')
+        >>> clus[1]
+        ('s2', 'TAC')
+        """
+
+    def testData():
+        """Returns the std::vector < std::pair<std::string, std::string > data
+
+        >>> p = pVector(2)
+        >>> p[0] = strPair('s1','GTC')
+        >>> p[1] = strPair('s2','TAC')
+        >>> clus = ClustalW_str(p)
+        >>> clus.Data()
+        (('s1', 'GTC'), ('s2', 'TAC'))
+        """
+
+    def testTrim():
+        """Returns a copy of the data vector, modified in the following way.
+        The sites vector contains an even number of sites (whose values are sorted).
+        If sites does not contain an even number of values Sequence::SeqException is thrown.
+        If sites is empty, Sequence::SeqException is thrown. The values in sites represent a
+        series of intervals that you wish to keep, and the return vector is consists only of
+        those--i.e. all positions not present in the intervals defined in sites are lost.
+        For example, if you pass a vector<int> containing the values 0,10,21, and 30, then
+        the data vector is modified so that positions 0 through 10 and 21 through 30 are all
+        that remains. One intended use of this function is to pull, for example, the coding r
+        egion out of an aligned block.
+
+        Trim(sites)
+        sites 	vector<int> containing an even number of integers specifying the intervals of data to keep
+
+        >>> p = pVector(2)
+        >>> p[0] = strPair('s1', 'ATGG-CT')
+        >>> p[1] = strPair('s2', 'CC-T-GC')
+        >>> clus = ClustalW_str(p)
+        >>> sites = intVector(2)
+        >>> sites[0] = 0
+        >>> sites[1] = 3
+        >>> clus.Trim(sites)
+        (('s1', 'ATGG'), ('s2', 'CC-T'))
+        """
+
+    def testTrimComplement():
+        """Returns a copy the data vector, modified in the following way. The sites vector contains an
+        even number of sites (whose values are sorted). If sites does not contain an even number of values
+        Sequence::SeqException is thrown. If sites is empty, Sequence::SeqException is thrown. The values
+        in sites represent a series of intervals that you wish to keep, and the return vector consists only
+        of sites not present in sites--i.e. all positions not present in the intervals defined in sites are
+        kept. For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data
+        vector is modified so that positions 11 through 20 and 31 through the end of the sequences are all
+        that remains.
+        
+        TrimComplement(sites)
+        sites vector<int> containing an even number of integers specifying the intervals of data to throw away
+
+        >>> p = pVector(2)
+        >>> p[0] = strPair('s1', 'GT-CT')
+        >>> p[1] = strPair('s2', 'ACTTC')
+        >>> c = ClustalW_str(p)
+        >>> s = intVector(2)
+        >>> s[0] = 1
+        >>> s[1] = 2
+        >>> c.Trim(s)
+        (('s1', 'T-'), ('s2', 'CT'))
+        >>> c.TrimComplement(s)
+        (('s1', 'GCT'), ('s2', 'ATC'))
+        
+        """
+
+def TestAlign_IsAlignment():
+    """A vector of sequences/strings is only an alignment if all strings are the same length.
+
+     Align_IsAlignment(data)
+     data 	vector<std::pair<std::string, std::string> > to check
+
+     >>> v = pVector(2)
+     >>> v[0] = strPair('s1', 'AT-G-')
+     >>> v[1] = strPair('s2', '-NCT-')
+     >>> Align_IsAlignment(v)
+     True
+     """
+
+def TestAlign_Gapped():
+    """Returns:true if the vector contains a gap character ('-') , false otherwise.
+
+    Align_Gapped(data)
+    data 	vector<std::pair<std::string, std::string> > containing sequence data
+
+    >>> v = pVector(2)
+    >>> v[0] = strPair('s1', 'GT-CAG')
+    >>> v[1] = strPair('s2', '-C-NT-')
+    >>> Align_Gapped(v)
+    True
+    """
+
+def TestAlign_RemoveGaps():
+    """Modifies the data vector to remove all positions that contain the gap character'-'.
+
+    Align_RemoveGaps(data)
+    data 	vector<std::pair<std::string, std::string> > to modify
+
+    >>> v = pVector(2)
+    >>> v[0] = strPair('s1', 'GT-CAG')
+    >>> v[1] = strPair('s2', '-C-NT-')
+    >>> Align_Gapped(v)
+    True
+    >>> Align_RemoveGaps(v)
+    >>> Align_Gapped(v)
+    False
+    """
+
+def TestAlign_RemoveTerminalGaps():
+    """Remove all gapped sites from the ends of the alignment, up until the first site on either side that is ungapped.
+
+    Align_RemoveTerminalGaps(data)
+    data 	vector<std::pair<std::string, std::string> > to modify
+
+    >>> v = pVector(2)
+    >>> v[0] = strPair('s1', 'GT-CAG')
+    >>> v[1] = strPair('s2', '-C-NT-')
+    >>> Align_RemoveTerminalGaps(v)
+    >>> v[0]
+    ('s1', 'T-CA')
+    >>> v[1]
+    ('s2', 'C-NT')
+    """
+
+
+def TestAlign_Trim():
+    """Returns a copy of the data vector, modified in the following way.
+    The sites vector contains an even number of sites (whose values are sorted).
+    If sites does not contain an even number of values Sequence::SeqException is
+    thrown. If sites is empty, Sequence::SeqException is thrown. The values in
+    sites represent a series of intervals that you wish to keep, and the return
+    vector is consists only of those--i.e. all positions not present in the intervals
+    defined in sites are lost. For example, if you pass a vector<int> containing the
+    values 0,10,21, and 30, then the data vector is modified so that positions 0 through
+    10 and 21 through 30 are all that remains. One intended use of this function is to
+    pull, for example, the coding region out of an aligned block.
+
+    Align_Trim(data, sites)
+    Parameters:
+    data 	the original data
+    sites 	vector<int> containing an even number of integers specifying the intervals of data to keep
+
+    >>> v = pVector(2)
+    >>> v[0] = strPair('s1', 'GT-CAG')
+    >>> v[1] = strPair('s2', '-C-NT-')
+    >>> sites = intVector(2)
+    >>> sites[0] = 1
+    >>> sites[1] = 3
+    >>> Align_Trim(v, sites)
+    (('s1', 'T-C'), ('s2', 'C-N'))
+    """
+
+def TestAlign_Trim_Complement():
+    """Returns a copy the data vector, modified in the following way. The sites vector
+    contains an even number of sites (whose values are sorted). If sites does not contain
+    an even number of values Sequence::SeqException is thrown. If sites is empty,
+    Sequence::SeqException is thrown. The values in sites represent a series of intervals that
+    you wish to keep, and the return vector consists only of sites not present in sites--i.e.
+    all positions not present in the intervals defined in sites are kept. For example, if you pass
+    a vector<int> containing the values 0,10,21, and 30, then the data vector is modified so that
+    positions 11 through 20 and 31 through the end of the sequences are all that remains.
+
+    Align_Trim_Complement(data, sites)
+    Parameters:
+    data 	the original data
+    sites 	vector<int> containing an even number of integers specifying the intervals of data to throw away
+
+    >>> v = pVector(2)
+    >>> v[0] = strPair('s1', 'GT-CAG')
+    >>> v[1] = strPair('s2', '-C-NT-')
+    >>> sites = intVector(2)
+    >>> sites[0] = 1
+    >>> sites[1] = 3
+    >>> Align_TrimComplement(v, sites)
+    (('s1', 'GAG'), ('s2', '-T-'))
+    """
+
+def TestAlign_RemoveFixedOutgroupInsertions():
+    """Removes all positions from data that for which the outgroup contains an insertion relative to ingroup
+
+    Align_RemoveFixedOutgroupInsertions(data, sites, ref)
+    Parameters:
+    data 	a vector of Seq objects
+    site 	index of the site at which to begin (set to 0 usually)
+    ref 	the index of the outgroup in data
+
+    >>> v = pVector(2)
+    >>> v[0] = strPair('s1', 'GT-CAG')
+    >>> v[1] = strPair('s2', '-C-NT-')
+    >>> Align_RemoveFixedOutgroupInsertions(v, 0, 3)
+    >>> v[0]
+    ('s1', 'T-CA')
+    >>> v[1]
+    ('s2', 'C-NT')
+    """
+
+    
+def TestAlign_validForPolyAnalysis():
+    """Returns:true if each element in the range [beg,end) only contains characters in the set
+    {A,G,C,T,N,-}, false otherwise
+
+    Align_validForPolyAnalysis(beg,end)
+
+    
+    >>> p = pVector(2)
+    >>> p[0] = strPair('s1', 'GT-CAG')
+    >>> p[1] = strPair('s2', '-C-NT-')
+    >>> beg = p.begin()
+    >>> end = p.end()
+    >>> Align_validForPolyAnalysis(beg,end)
+    True
+    """
+def TestHudsonsC():
+    """Returns Hudson's (1987) Genetical Research 50:245-250 moment estimator of
+    the population recombination rate. 
+
+    >>> v = fastaVector(2)
+    >>> v[0] = Fasta('s1','ATCC')
+    >>> v[1] = Fasta('s2','TGGG')
+    >>> p = PolySites(v)
+    >>> HudsonsC(p,False,0)
+    10000.0
+    """
+
+
+       
 ########excute the test############
 if __name__ == "__main__":
 ##    suite = unittest.TestSuite()
