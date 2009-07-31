@@ -1,25 +1,13 @@
-<<<<<<< HEAD:src/mappings/swig/perl/test/test_libsequence.pod
-=head1 General I/O
-
-=======
->>>>>>> 787ea3388175c98691b6cdc3b18d446027edd5a9:src/mappings/swig/perl/test/test_libsequence.pod
 =begin hidden
 
   BEGIN{unshift(@INC, "../libsequence")};
   use biolib::libsequence;
   
-<<<<<<< HEAD:src/mappings/swig/perl/test/test_libsequence.pod
-
-=end hidden
-
-=head2 Fasta
-=======
 =end hidden
 
 =head1 General I/O
 
 =head2 class Fasta
->>>>>>> 787ea3388175c98691b6cdc3b18d446027edd5a9:src/mappings/swig/perl/test/test_libsequence.pod
 
 FASTA Sequence Stream
 
@@ -32,20 +20,15 @@ Fasta(name, seq): Constructor for const std::string
 
   my $fasta = new libsequence::Fasta('dna', 'ATGC');
   
-<<<<<<< HEAD:src/mappings/swig/perl/test/test_libsequence.pod
-=======
 Fasta(fastaObj): Copy constrctor
 
   my $copy_fasta = new libsequence::Fasta($fasta);
   
->>>>>>> 787ea3388175c98691b6cdc3b18d446027edd5a9:src/mappings/swig/perl/test/test_libsequence.pod
 GetName(): Return the sequence name
   
   my $name = $fasta->GetName();
   is($name, 'dna');
   
-<<<<<<< HEAD:src/mappings/swig/perl/test/test_libsequence.pod
-=======
 GetSeq(): Return the sequence itself
 
   my $seq = $fasta->GetSeq();
@@ -1372,9 +1355,6 @@ sample_history 	a pointer to the ancestral recombination graph
 
 
 
-
-
->>>>>>> 787ea3388175c98691b6cdc3b18d446027edd5a9:src/mappings/swig/perl/test/test_libsequence.pod
 
 
 =cut 
