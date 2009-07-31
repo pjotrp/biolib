@@ -20,6 +20,9 @@ class NodeTokenizer
     bool hasNext() const;
 };
 
+%ignore TreeTools::TreeTools;
+%ignore TreeTools::~TreeTools;
+
 class TreeTools
 {
   public:

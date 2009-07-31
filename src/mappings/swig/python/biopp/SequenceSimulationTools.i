@@ -7,6 +7,9 @@ using namespace bpp;
 %include "SiteContainer.i"
 %include "std_vector.i"
 
+%ignore SequenceSimulationTools::SequenceSimulationTools;
+%ignore SequenceSimulationTools::~SequenceSimulationTools;
+
 class SequenceSimulationTools
 {
   public:

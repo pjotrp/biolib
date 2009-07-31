@@ -10,6 +10,10 @@ using namespace bpp;
 %include "std_map.i"
 using namespace std;
 
+%ignore Tree::Tree;
+%ignore Tree::~Tree;
+%ignore Tree::swapNodes;
+
 class Tree:public Clonable
 {
   public: 

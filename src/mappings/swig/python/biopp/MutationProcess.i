@@ -19,6 +19,9 @@ class MutationPath
     int getFinalState() const;
 };
 
+%ignore MutationProcess::MutationProcess;
+%ignore MutationProcess::~MutationProcess;
+
 class MutationProcess
 {
   public:

@@ -7,6 +7,9 @@ using namespace bpp;
 %include "SubstitutionCount.i"
 %include "DRTreeLikelihood.i"
 
+%ignore SubstitutionMappingTools::SubstitutionMappingTools;
+%ignore SubstitutionMappingTools::~SubstitutionMappingTools;
+
 class SubstitutionMappingTools
 {
   public:

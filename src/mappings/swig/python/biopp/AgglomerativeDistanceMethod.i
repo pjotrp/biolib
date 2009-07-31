@@ -7,6 +7,10 @@ using namespace bpp;
 class DistanceMatrix;
 class Node;
 class Tree;
+
+%ignore AgglomerativeDistanceMethod::AgglomerativeDistanceMethod;
+%ignore AgglomerativeDistanceMethod::~AgglomerativeDistanceMethod;
+
 class AgglomerativeDistanceMethod
 {
   public:

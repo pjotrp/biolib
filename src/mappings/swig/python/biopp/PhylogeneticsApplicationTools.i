@@ -19,6 +19,9 @@ using namespace bpp;
 %include "std_iostream.i"
 using namespace std;
 
+%ignore PhylogeneticsApplicationTools::PhylogeneticsApplicationTools;
+%ignore PhylogeneticsApplicationTools::~PhylogeneticsApplicationTools;
+
 class PhylogeneticsApplicationTools
 {
   public:

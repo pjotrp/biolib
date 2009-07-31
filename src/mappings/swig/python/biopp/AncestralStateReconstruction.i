@@ -10,6 +10,10 @@ using namespace bpp;
 using namespace std;
 
 class Node;
+
+%ignore AncestralStateReconstruction::AncestralStateReconstruction;
+%ignore AncestralStateReconstruction::~AncestralStateReconstruction;
+
 class AncestralStateReconstruction
 {
   public:

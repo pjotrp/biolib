@@ -7,6 +7,9 @@ using namespace bpp;
 %include "TreeTemplate.i"
 %include "Clonable.i"
 
+%ignore SubstitutionMapping::SubstitutionMapping;
+%ignore SubstitutionMapping::~SubstitutionMapping;
+
 class SubstitutionMapping:public virtual Clonable
 {
   public:

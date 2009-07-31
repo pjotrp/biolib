@@ -6,6 +6,9 @@ using namespace bpp;
 %include "BipartitionList.i"
 %include "VectorSiteContainer.i"
 
+%ignore BipartitionTools::BipartitionTools;
+%ignore BipartitionTools::~BipartitionTools;
+
 class BipartitionTools
 {
   public:

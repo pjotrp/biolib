@@ -7,6 +7,9 @@ using namespace bpp;
 %include "TreeTemplate.i"
 %include "TopologySearch.i"
 
+%ignore NNISearchable::NNISearchable;
+%ignore NNISearchable::~NNISearchable;
+
 class NNISearchable:public TopologyListener,public virtual Clonable
 {
   public:

@@ -10,6 +10,9 @@ using namespace bpp;
 %include "std_map.i"
 using namespace std;
 
+%ignore PatternTools::PatternTools;
+%ignore PatternTools::~PatternTools;
+
 class PatternTools
 {
   public:

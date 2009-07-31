@@ -8,6 +8,9 @@ using namespace bpp;
 //#include <fstream>
 using namespace std;
 
+%ignore IODistanceMatrix::IODistanceMatrix;
+%ignore IODistanceMatrix::~IODistanceMatrix;
+
 class DistanceMatrix;
 class IODistanceMatrix:public virtual IOFormat
 {
@@ -18,6 +21,9 @@ class IODistanceMatrix:public virtual IOFormat
 		virtual const string getDataType() const;
 };
 
+%ignore IDistanceMatrix::IDistanceMatrix;
+%ignore IDistanceMatrix::~IDistanceMatrix;
+
 class IDistanceMatrix:public virtual IODistanceMatrix
 {
 	public:
@@ -27,6 +33,9 @@ class IDistanceMatrix:public virtual IODistanceMatrix
 		virtual DistanceMatrix * read(const string & path) const throw (Exception) = 0;
 		virtual DistanceMatrix * read(istream & in) const throw (Exception) = 0;
 };
+
+%ignore ODistanceMatrix::ODistanceMatrix;
+%ignore ODistanceMatrix::~ODistanceMatrix;
 
 class ODistanceMatrix:public virtual IODistanceMatrix
 {

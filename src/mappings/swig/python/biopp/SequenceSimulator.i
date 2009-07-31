@@ -6,6 +6,9 @@ using namespace bpp;
 %include "Clonable.i"
 %include "SiteContainer.i"
 
+%ignore SequenceSimulator::SequenceSimulator;
+%ignore SequenceSimulator::~SequenceSimulator;
+
 class SequenceSimulator:public virtual Clonable
 {
   public:

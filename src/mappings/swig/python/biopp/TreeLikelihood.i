@@ -13,6 +13,9 @@ using namespace bpp;
 %include "Alphabet.i"
 %include "SiteContainer.i"
 
+%ignore TreeLikelihood::TreeLikelihood;
+%ignore TreeLikelihood::~TreeLikelihood;
+
 class TreeLikelihood:public virtual DerivableSecondOrder
 {
   public:

@@ -6,6 +6,9 @@ using namespace bpp;
 %include "DRTreeLikelihood.i"
 %include "AlignedSequenceContainer.i"
 
+%ignore DRTreeLikelihoodTools::DRTreeLikelihoodTools;
+%ignore DRTreeLikelihoodTools::~DRTreeLikelihoodTools;
+
 class DRTreeLikelihoodTools
 {
   public:

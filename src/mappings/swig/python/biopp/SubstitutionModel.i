@@ -26,6 +26,9 @@ class SubstitutionModelException:public Exception
     virtual const SubstitutionModel * getSubstitutionModel() const;
 };
 
+%ignore SubstitutionModel::SubstitutionModel;
+%ignore SubstitutionModel::~SubstitutionModel;
+
 class SubstitutionModel:public virtual ParameterAliasable
 {
   public:
@@ -53,6 +56,9 @@ class SubstitutionModel:public virtual ParameterAliasable
     virtual void setFreqFromData(const SequenceContainer & data, unsigned int pseudoCount = 0) = 0;
     virtual int getState(int i) const = 0;
 };
+
+%ignore ReversibleSubstitutionModel::ReversibleSubstitutionModel;
+%ignore ReversibleSubstitutionModel::~ReversibleSubstitutionModel;
 
 class ReversibleSubstitutionModel:public virtual SubstitutionModel
 {

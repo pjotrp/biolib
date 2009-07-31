@@ -7,6 +7,9 @@ using namespace bpp;
 %include "DiscreteDistribution.i"
 %include "ParameterList.i"
 
+%ignore DiscreteRatesAcrossSitesTreeLikelihood::DiscreteRatesAcrossSitesTreeLikelihood;
+%ignore DiscreteRatesAcrossSitesTreeLikelihood::~DiscreteRatesAcrossSitesTreeLikelihood;
+
 class DiscreteRatesAcrossSitesTreeLikelihood:public virtual TreeLikelihood
 {
   public:

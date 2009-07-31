@@ -6,6 +6,9 @@ using namespace bpp;
 %include "SubstitutionModel.i"
 %include "Matrix.i"
 
+%ignore SubstitutionCount::SubstitutionCount;
+%ignore SubstitutionCount::~SubstitutionCount;
+
 class SubstitutionCount
 {
   public:

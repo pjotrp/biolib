@@ -8,6 +8,9 @@ using namespace bpp;
 %include "VectorTools.i"
 %include "DiscreteDistribution.i"
 
+%ignore DRTreeLikelihood::DRTreeLikelihood;
+%ignore DRTreeLikelihood::~DRTreeLikelihood;
+
 class DRTreeLikelihood:public virtual DiscreteRatesAcrossSitesTreeLikelihood
 {
   public:

@@ -6,6 +6,9 @@ using namespace bpp;
 %include "SubstitutionModelSet.i"
 %include "Tree.i"
 
+%ignore SubstitutionModelSetTools::SubstitutionModelSetTools;
+%ignore SubstitutionModelSetTools::~SubstitutionModelSetTools;
+
 class SubstitutionModelSetTools
 {
   public:

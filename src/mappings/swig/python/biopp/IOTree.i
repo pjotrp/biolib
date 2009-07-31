@@ -11,6 +11,9 @@ using namespace std;
 %include "Exceptions.i"
 %include "IOFormat.i"
 
+%ignore IOTree::IOTree;
+%ignore IOTree::~IOTree;
+
 class IOTree:public virtual IOFormat
 {
   public:
@@ -19,6 +22,9 @@ class IOTree:public virtual IOFormat
 
     virtual const string getDataType() const;
 };
+
+%ignore ITree::ITree;
+%ignore ITree::~ITree;
 
 class ITree:public virtual IOTree
 {
@@ -29,6 +35,9 @@ class ITree:public virtual IOTree
     virtual Tree * read(const string & path) const throw (Exception) = 0;
     virtual Tree * read(istream & in) const throw (Exception) = 0;
 };
+
+%ignore OTree::OTree;
+%ignore OTree::~OTree;
 
 class OTree:public virtual IOTree
 {
@@ -60,6 +69,9 @@ class AbstractOTree:public virtual OTree
     virtual void write(const Tree & tree, const string & path, bool overwrite) const throw (Exception);
 };
 
+%ignore IMultiTree::IMultiTree;
+%ignore IMultiTree::~IMultiTree;
+
 class IMultiTree:public virtual IOTree
 {
   public:
@@ -70,12 +82,15 @@ class IMultiTree:public virtual IOTree
     virtual void read(istream & in, vector<Tree *> & trees) const throw (Exception) = 0;
 };
 
+%ignore OMultiTree::OMultiTree;
+%ignore OMultiTree::~OMultiTree;
+
 class OMultiTree:public virtual IOTree
 {
   public:
     OMultiTree();
     virtual ~OMultiTree();
-  public:
+
     virtual void write(const vector<Tree *> & trees, const string & path, bool overwrite) const throw (Exception) = 0;
     virtual void write(const vector<Tree *> & trees, ostream & out) const throw (Exception) = 0;
 };

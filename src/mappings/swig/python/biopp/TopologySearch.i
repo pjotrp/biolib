@@ -29,6 +29,9 @@ class TopologyListener
     virtual void topologyChangeSuccessful(const TopologyChangeEvent & event) = 0;
 };
 
+%ignore TopologySearch::TopologySearch;
+%ignore TopologySearch::~TopologySearch;
+
 class TopologySearch
 {
   public:

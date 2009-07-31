@@ -37,6 +37,9 @@ class NNITopologyListener2:public TopologyListener
     void setNumericalOptimizationCounter(unsigned int c);
 };
 
+%ignore OptimizationTools::OptimizationTools;
+%ignore OptimizationTools::~OptimizationTools;
+
 class OptimizationTools
 {
   public:

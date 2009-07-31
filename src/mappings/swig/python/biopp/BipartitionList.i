@@ -15,6 +15,8 @@ template<class N> class TreeTemplate;
 
 %rename(__assign__) BipartitionList::operator=;
 
+%ignore BipartitionList::BipartitionList();
+
 class BipartitionList:public virtual Clonable
 {
   public:
