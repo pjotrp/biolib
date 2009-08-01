@@ -12,6 +12,10 @@ using namespace std;
 %include "OrderedSequenceContainer.i"
 
 typedef vector<unsigned int> SequenceSelection;
+
+%ignore SequenceContainerTools::SequenceContainerTools;
+%ignore SequenceContainerTools::~SequenceContainerTools;
+
 class SequenceContainerTools
 {
   public:

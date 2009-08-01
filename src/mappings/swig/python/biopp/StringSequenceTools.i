@@ -11,6 +11,9 @@ using namespace bpp;
 %include "std_vector.i"
 using namespace std;
 
+%ignore StringSequenceTools::StringSequenceTools;
+%ignore StringSequenceTools::~StringSequenceTools;
+
 class StringSequenceTools
 {
   public:

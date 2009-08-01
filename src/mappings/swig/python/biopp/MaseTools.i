@@ -11,6 +11,9 @@ using namespace bpp;
 %include "Exceptions.i"
 using namespace std;
 
+%ignore MaseTools::MaseTools;
+%ignore MaseTools::~MaseTools;
+
 class MaseTools
 {
   public:

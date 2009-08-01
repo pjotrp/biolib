@@ -6,6 +6,9 @@ using namespace bpp;
 %include "alphabets"
 %include "containers"
 
+%ignore SequenceApplicationTools::SequenceApplicationTools;
+%ignore SequenceApplicationTools::~SequenceApplicationTools;
+
 class SequenceApplicationTools
 {
   public:

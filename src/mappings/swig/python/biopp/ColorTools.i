@@ -10,6 +10,9 @@ using namespace bpp;
 
 using namespace std;
 
+%ignore ColorTools::ColorTools;
+%ignore ColorTools::~ColorTools;
+
 class ColorTools
 {
   public:

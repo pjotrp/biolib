@@ -19,6 +19,9 @@ class ParameterGrid
     const Vdouble& getPointsForDimension(const string& name) const throw (Exception);
 };
 
+%ignore FunctionTools::FunctionTools;
+%ignore FunctionTools::~FunctionTools;
+
 class FunctionTools
 {
   public:

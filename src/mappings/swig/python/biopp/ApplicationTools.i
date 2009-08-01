@@ -11,6 +11,7 @@ using namespace bpp;
 using namespace std;
 
 %ignore ApplicationTools::ApplicationTools;
+%ignore ApplicationTools::~ApplicationTools;
 
 class ApplicationTools
 {

@@ -11,6 +11,9 @@ using namespace bpp;
 %include "std_map.i"
 using namespace std;
 
+%ignore CodonSiteTools::CodonSiteTools;
+%ignore CodonSiteTools::~CodonSiteTools;
+
 class CodonSiteTools:public SymbolListTools
 {
   public:

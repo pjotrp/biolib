@@ -6,6 +6,9 @@ using namespace bpp;
 %include "Functions.i"
 %include "Matrix.i"
 
+%ignore NumTools::NumTools;
+%ignore NumTools::~NumTools;
+
 class NumTools
 {
 public:

@@ -8,6 +8,9 @@ using namespace std;
 %include "RandomFactory.i"
 %include "Exceptions.i"
 
+%ignore RandomTools::RandomTools;
+%ignore RandomTools::~RandomTools;
+
 class RandomTools
 {
   public:

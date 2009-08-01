@@ -12,6 +12,9 @@ using namespace bpp;
 
 using namespace std;
 
+%ignore TextTools::TextTools;
+%ignore TextTools::~TextTools;
+
 class TextTools
 {
   public:

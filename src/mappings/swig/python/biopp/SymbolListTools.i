@@ -9,6 +9,9 @@ using namespace bpp;
 %include "std_map.i"
 using namespace std;
 
+%ignore SymbolListTools::SymbolListTools;
+%ignore SymbolListTools::~SymbolListTools;
+
 class SymbolListTools
 {
   public: 

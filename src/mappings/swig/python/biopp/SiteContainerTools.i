@@ -14,6 +14,10 @@ using namespace std;
 %include "Matrix.i"
 
 typedef vector<unsigned int> SiteSelection;
+
+%ignore SiteContainerTools::SiteContainerTools;
+%ignore SiteContainerTools::~SiteContainerTools;
+
 class SiteContainerTools
 {
   public:

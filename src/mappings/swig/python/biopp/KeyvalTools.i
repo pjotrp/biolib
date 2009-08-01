@@ -11,13 +11,14 @@ using namespace bpp;
 
 using namespace std;
 
-%ignore KeyvalTools::KeyvalTools;
-
 class KeyvalException:public Exception
 {
   public:
     KeyvalException(const string& message) : Exception(message);
 };
+
+%ignore KeyvalTools::KeyvalTools;
+%ignore KeyvalTools::~KeyvalTools;
 
 class KeyvalTools
 {

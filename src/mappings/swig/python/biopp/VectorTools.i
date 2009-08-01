@@ -43,6 +43,9 @@ template<class T, class C> void operator-= (vector<T> & v1, const C & c);
 template<class T, class C> void operator*= (vector<T> & v1, const C & c);
 template<class T, class C> void operator/= (vector<T> & v1, const C & c);
 
+%ignore VectorTools::VectorTools;
+%ignore VectorTools::~VectorTools;
+
 class VectorTools
 {
   public:

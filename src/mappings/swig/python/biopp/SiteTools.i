@@ -11,6 +11,9 @@ using namespace bpp;
 
 using namespace std;
 
+%ignore SiteTools::SiteTools;
+%ignore SiteTools::~SiteTools;
+
 class SiteTools:public SymbolListTools
 {
   public:

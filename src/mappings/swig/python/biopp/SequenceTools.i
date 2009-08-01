@@ -37,6 +37,9 @@ class BowkerTest:public StatTest
 };
 
 
+%ignore SequenceTools::SequenceTools;
+%ignore SequenceTools::~SequenceTools;
+
 class SequenceTools:public SymbolListTools
 {
   public:

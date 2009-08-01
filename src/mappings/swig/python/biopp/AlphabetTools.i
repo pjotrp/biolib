@@ -9,10 +9,6 @@ using namespace bpp;
 
 %ignore AlphabetTools::AlphabetTools;
 %ignore AlphabetTools::~AlphabetTools;
-//%ignore AlphabetTools::DEFAULT_ALPHABET;
-//%ignore AlphabetTools::PROTEIN_ALPHABET;
-//%ignore AlphabetTools::RNA_ALPHABET;
-//%ignore AlphabetTools::DNA_ALPHABET;
 
 class AlphabetTools
 {

@@ -19,6 +19,9 @@ using namespace std;
 
 %rename(__assign__) MultiSeqIndividual::operator=;
 
+%ignore MultiSeqIndividual::deleteSequence;
+%ignore MultiSeqIndividual::removeSequence;
+
 class MultiSeqIndividual
 {
   public: 

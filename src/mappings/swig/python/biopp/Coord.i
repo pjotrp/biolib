@@ -5,6 +5,8 @@ using namespace bpp;
 %}
 %include <Clonable.i>
 
+%ignore Coord::setCoord;
+
 template <class T> class Coord:public virtual Clonable
 {
   public: 
