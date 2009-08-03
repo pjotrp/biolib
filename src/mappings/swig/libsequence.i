@@ -1,7 +1,9 @@
 %module biolib_libsequence
 %include <std_pair.i>
 %include <std_string.i>
+#%rename(begin_const) std::vector<Sequence::chromosome>::begin() const;
 %include <std_vector.i>
+%include <std_list.i>
 #%include <file.i>
 %include <typemaps.i>
 #%include <std_iostream.i>
@@ -11,12 +13,17 @@
 %array_class(double, doubleArray);
 %array_class(std::string, stringArray);
 %pointer_class(int, intPointer);
+%pointer_class(double, doublePointer);
+%pointer_class(std::string, strPointer);
+#%pointer_class(char, charPointer);
 #%pointer_class(std::pair<int,int>, pairPointer);
 %template(intPair) std::pair<int, int>;
 %template(doublePair) std::pair<double, double>;
 
 %template(intVector) std::vector<int>;
 %template(doubleVector) std::vector<double>;
+%template(charVector) std::vector<char*>;
+%template() std::vector< std::vector<double> >;
 %template(fragVector) std::vector< std::pair<int, int> >;
 %template(scaleVector) std::vector< std::pair<double, double> >;
 %template(strVector) std::vector<std::string>;
@@ -42,6 +49,7 @@
   #include <Sequence/SimpleSNP.hpp>
   #include <Sequence/typedefs.hpp>
   #include <Sequence/PolyTableManip.hpp>
+  #include <Sequence/PolyTableSlice.hpp>
   #include <Sequence/SeqExceptions.hpp>
   #include <Sequence/FST.hpp>
   #include <Sequence/PolySNP.hpp>
@@ -80,6 +88,8 @@
   #include <Sequence/Alignment.hpp>
   #include <Sequence/AlignStream.hpp>
   #include <Sequence/Clustalw.hpp>
+  #include <Sequence/RNG/gsl_rng_wrappers.hpp>
+  #include <gsl/gsl_rng.h>
 %}
 
 #typedef unsigned int Sequence::Seq::size_type;
@@ -97,7 +107,8 @@
 %ignore Sequence::AlignStream::operator[];
 %ignore Sequence::PolyTable::position();
 %ignore Sequence::AlignStream::operator=;
-%ignore Sequence::AlignStream::UnGappedLength();
+#%ignore Sequence::AlignStream::UnGappedLength();
+%ignore Sequence::PolyTableSlice::operator[];
 #%ignore Sequence::Seq::operator[] const;
 #%rename(__aref__) Sequence::Seq::operator[];
 #%ignore boost::noncopyable;
@@ -105,20 +116,31 @@
 %template(strPair) std::pair<std::string, std::string>;
 %template() std::pair<unsigned, unsigned>;
 %template() std::pair<unsigned, Sequence::shortestPath::pathType>;
-%template() std::pair<doubelVector::iterator, double>;
-
+%template() std::pair<std::vector<double>::iterator, double>;
+%template(polymorphicSites) std::pair< double, std::string >;
+%template(polySiteVector) std::vector< std::pair< double, std::string > >;
+%rename(begin_const) Sequence::Seq::begin() const;
+%rename(end_const) Sequence::Seq::end() const;
+%rename(begin_const) Sequence::AlignStream< std::pair<std::string, std::string> >::begin() const;
+%rename(end_const) Sequence::AlignStream< std::pair<std::string, std::string> >::end() const;
+%rename(begin_const) std::list<Sequence::marginal>::begin() const;
+%rename(begin_const) Sequence::marginal::begin() const;
+%rename(end_const) Sequence::marginal::end() const;
 
 %rename(_print) print;
 %rename(to_std_str) Sequence::Seq::operator std::string() const;
 %rename(to_polySiteVector) Sequence::PolyTable::operator Sequence::polySiteVector() const;
 %rename(std_ostream) operator<<;
 %rename(chr_assgin) Sequence::chromosome::operator=;
+%rename(As) Sequence::Comeron95::as() const;
 #%rename(__aref2__) Sequence::marginal::operator[];
 %ignore Sequence::newick_stream_marginal_tree::newick_stream_marginal_tree( const marginal * m );
 %ignore Sequence::newick_stream_marginal_tree_impl::newick_stream_marginal_tree_impl( const marginal * m );
 %rename(sfs_assgin) Sequence::sfs_times::operator=;
 %rename(sfs_ref) Sequence::sfs_times::operator[];
-                                
+#%rename(AlignAlignment) Sequence::Alignment::IsAlignment(const std::vector<std::string> &data);
+%ignore Sequence::gsl_poisson;
+                        
 /*#define BOOST_STATIC_ASSERT( B ) \
    typedef ::boost::static_assert_test<\
       sizeof(::boost::STATIC_ASSERTION_FAILURE< (bool)( B ) >)\
@@ -130,6 +152,7 @@ typedef std::vector< std::pair<std::string,int> > CodonUsageTable;
 typedef std::pair< double, std::string > polymorphicSite;
 typedef std::vector< polymorphicSite > polySiteVector;
 //}
+
 
 %include <Sequence/Seq.hpp>
 %include <Sequence/Fasta.hpp>
@@ -174,7 +197,6 @@ typedef std::vector< polymorphicSite > polySiteVector;
 #%include <boost/type_traits.hpp>
 #%include <boost/static_assert.hpp>
 #%include <boost/type_traits/is_convertible.hpp>
-#%include <Sequence/descriptiveStats.hpp>
 %include <Sequence/shortestPath.hpp>
 %include <Sequence/SeqEnums.hpp>
 #%include <Sequence/ensureFloating.hpp>
@@ -187,6 +209,8 @@ typedef std::vector< polymorphicSite > polySiteVector;
 #%include <boost/tuple/detail/tuple_basic.hpp>
 #%include <boost/tuple/tuple.hpp>
 #%include <Sequence/RNG/gsl_rng_wrappers.hpp>
+#%include <gsl_types.h>
+#%include <gsl_rng.h>
 %include <Sequence/bits/PolySites.tcc>
 #%include <Sequence/Alignment.hpp>
 %include <Sequence/bits/Alignment.tcc>
@@ -194,6 +218,11 @@ typedef std::vector< polymorphicSite > polySiteVector;
 %include <Sequence/AlignStream.hpp>
 %include <Sequence/bits/Clustalw.tcc>
 %include <Sequence/Clustalw.hpp>
+%include <Sequence/PolyTableSlice.hpp>
+%include <Sequence/bits/PolyTableSlice.tcc>
+#%include <Sequence/descriptiveStats.hpp>
+%include <Sequence/bits/descriptiveStats.tcc>
+%include <Sequence/bits/PolyTable.tcc>
 
 %template(Gapped) Sequence::Gapped<std::string::iterator>;
 #%include <Sequence/SeqRegexes.hpp>
@@ -212,6 +241,9 @@ typedef std::vector< polymorphicSite > polySiteVector;
 #%template(chisquareds) std::vector<chis_tuple>;
 %template(nodeVector) std::vector<Sequence::node>;
 %template(chroVector) std::vector<Sequence::chromosome>;
+%template(hkaVector) std::vector<Sequence::HKAdata>;
+#%template(Polyassign) Sequence::PolyTable::assign<double, std::string>;
+
 
 /*namespace Sequence
 {
@@ -233,16 +265,27 @@ typedef std::vector< polymorphicSite > polySiteVector;
 
 %template(fastaVector) std::vector<Sequence::Fasta>;
 %template(pVector) std::vector< std::pair< std::string, std::string > >;
+%template(PolyTableSlice_SimData) Sequence::PolyTableSlice<Sequence::SimData>;
+%template(PolyTableSlice_PolySites) Sequence::PolyTableSlice<Sequence::PolySites>;
 %template(Align_IsAlignment) Sequence::Alignment::IsAlignment< std::pair< std::string, std::string > >;
 %template(Align_Gapped) Sequence::Alignment::Gapped< std::pair< std::string, std::string> >;
 %template(Align_RemoveGaps) Sequence::Alignment::RemoveGaps< std::pair< std::string, std::string> >;
 %template(Align_RemoveTerminalGaps) Sequence::Alignment::RemoveTerminalGaps< std::pair<std::string, std::string> >;
-#%template(Align_UnGappedLength) Sequence::Alignment::UnGappedLength< std::pair< std::string, std::string> >;
+%template(Align_UnGappedLength) Sequence::Alignment::UnGappedLength< std::pair< std::string, std::string> >;
 %template(Align_Trim) Sequence::Alignment::Trim< std::pair< std::string, std::string> >;
 %template(Align_TrimComplement) Sequence::Alignment::TrimComplement< std::pair< std::string, std::string> >;
 %template(Align_EmptyVector) Sequence::Alignment::EmptyVector< std::pair< std::string, std::string> >;
+%inline %{
+std::pair<std::string, std::string> * strPairPointer(std::pair<std::string, std::string> x) {
+    return &x;
+}
+%}
+%template(ppVector) std::vector< std::pair< std::string, std::string > * >;
 %template(Align_RemoveFixedOutgroupInsertions) Sequence::Alignment::RemoveFixedOutgroupInsertions< std::pair< std::string, std::string> >;
 %template(Align_validForPolyAnalysis) Sequence::Alignment::validForPolyAnalysis< std::vector< std::pair< std::string, std::string> >::iterator>; 
+%template(mean) Sequence::mean<std::vector<double>::iterator>;
+%template(variance) Sequence::variance<std::vector<double>::iterator>;
+%template(meanAndVar) Sequence::meanAndVar<std::vector<double>::iterator>;
 
 /*namespace std{
 class pair<string,string>;
@@ -313,7 +356,6 @@ if ((SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_EXCEPTIO
 };*/
 
 #%ignore std::list<maginal>::list(size_type);
-%include <std_list.i>
 #%ignore std::list<maginal>::list(size_type);
 %template(margList) std::list<Sequence::marginal>;
 
@@ -449,8 +491,23 @@ template<typename Iter>
    }
 };
 
-
-   
-
+%extend Sequence::PolyTableSlice< Sequence::SimData>{
+   SimData __getitem__(const unsigned &i)
+   {
+     Sequence::PolyTableSlice< Sequence::SimData>::const_iterator itr = $self->begin();
+     itr = itr + i;
+     return $self->get_slice(itr);
+   }
+};
+     
+%extend Sequence::PolyTableSlice< Sequence::PolySites>{
+   PolySites __getitem__(const unsigned &i)
+   {
+     Sequence::PolyTableSlice< Sequence::PolySites>::const_iterator itr = $self->begin();
+     itr = itr + i;
+     return $self->get_slice(itr);
+   }
+};
+     
 
 

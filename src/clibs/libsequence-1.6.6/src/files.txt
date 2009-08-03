@@ -28,7 +28,7 @@ ${CONTRIB_PATH}/src/PolySIM.cc
 ${CONTRIB_PATH}/src/PolySNP.cc
 ${CONTRIB_PATH}/src/SeqConstants.cc
 ${CONTRIB_PATH}/src/SimParams.cc
-${CONTRIB_PATH}/src/CoalescentSimTypes.cc
+./CoalescentSimTypes.cc
 ${CONTRIB_PATH}/src/CoalescentCoalesce.cc
 ${CONTRIB_PATH}/src/CoalescentFragmentsRescaling.cc
 ${CONTRIB_PATH}/src/CoalescentInitialize.cc
