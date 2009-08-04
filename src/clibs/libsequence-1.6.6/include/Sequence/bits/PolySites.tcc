@@ -75,7 +75,7 @@ namespace Sequence
       \warning when ignoregaps=false, this class does not do the right thing
     */
   {
-  //  if (Alignment::IsAlignment(alignment) == true)
+    if (Alignment::IsAlignment(alignment) == true)
       {
         seqlen = alignment[0].length ();
         numseqs = alignment.size ();

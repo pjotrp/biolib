@@ -90,6 +90,7 @@
   #include <Sequence/Clustalw.hpp>
   #include <Sequence/RNG/gsl_rng_wrappers.hpp>
   #include <gsl/gsl_rng.h>
+  #include <Sequence/FastaExplicit.hpp>
 %}
 
 #typedef unsigned int Sequence::Seq::size_type;
@@ -138,7 +139,7 @@
 %ignore Sequence::newick_stream_marginal_tree_impl::newick_stream_marginal_tree_impl( const marginal * m );
 %rename(sfs_assgin) Sequence::sfs_times::operator=;
 %rename(sfs_ref) Sequence::sfs_times::operator[];
-#%rename(AlignAlignment) Sequence::Alignment::IsAlignment(const std::vector<std::string> &data);
+#%rename(AA) Sequence::Alignment::IsAlignment<std::string>;
 %ignore Sequence::gsl_poisson;
                         
 /*#define BOOST_STATIC_ASSERT( B ) \
@@ -223,6 +224,7 @@ typedef std::vector< polymorphicSite > polySiteVector;
 #%include <Sequence/descriptiveStats.hpp>
 %include <Sequence/bits/descriptiveStats.tcc>
 %include <Sequence/bits/PolyTable.tcc>
+#%include <Sequence/FastaExplicit.hpp>
 
 %template(Gapped) Sequence::Gapped<std::string::iterator>;
 #%include <Sequence/SeqRegexes.hpp>
@@ -287,6 +289,17 @@ std::pair<std::string, std::string> * strPairPointer(std::pair<std::string, std:
 %template(variance) Sequence::variance<std::vector<double>::iterator>;
 %template(meanAndVar) Sequence::meanAndVar<std::vector<double>::iterator>;
 
+#%template(AI) Sequence::Alignment::IsAlignment< std::string >;
+
+
+
+
+
+
+
+
+
+
 /*namespace std{
 class pair<string,string>;
 %typemap(in) pair<string,string> * {
@@ -307,14 +320,14 @@ if ((SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_EXCEPTIO
 
 
 #%template(Align_IsAlignment_str) Sequence::Alignment::IsAlignment< Sequence::Seq >;
-#%template() Sequence::Alignment::GetData< Sequence::Fasta >;
+%template(NB) Sequence::Alignment::IsAlignment< Sequence::Fasta >;
 #%template(PolySites) Sequence::PolySites::PolySites< std::pair< std::string, std::string > >;
 %template(PolySites) Sequence::PolySites::PolySites< Sequence::Fasta >;
 #%template(PolySites) Sequence::PolySites::PolySites< std::string >;
 
 
-#%template() Sequence::AlignStream< Sequence::Fasta>;
-#%template(ClustalW_Fasta) Sequence::ClustalW< Sequence::Fasta>;
+%template(AlignStream_Fasta) Sequence::AlignStream< Sequence::Fasta>;
+%template(ClustalW_Fasta) Sequence::ClustalW< Sequence::Fasta>;
 %template(AlignStream_str) Sequence::AlignStream< std::pair<std::string, std::string> >;
 %template(ClustalW_str) Sequence::ClustalW<std::pair<std::string, std::string> >;
 

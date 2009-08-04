@@ -38,6 +38,7 @@ ${CONTRIB_PATH}/src/shortestPath.cc
 ${CONTRIB_PATH}/src/CoalescentMutation.cc
 ${CONTRIB_PATH}/src/PolySites.cc
 ${CONTRIB_PATH}/src/Specializations.cc
+${CONTRIB_PATH}/src/FastaExplicit.cc
 ${BOOST_PATH}/libs/regex/src/c_regex_traits.cpp
 ${BOOST_PATH}/libs/regex/src/cpp_regex_traits.cpp
 ${BOOST_PATH}/libs/regex/src/cregex.cpp
