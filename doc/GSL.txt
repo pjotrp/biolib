@@ -1,3 +1,22 @@
 * GSL
 
-The GSL is being mapped into ASciLib (A Science Lib).
+The GSL is in the process of getting mapped based on the Math::GSL
+bindings for Perl - that work is in the ASciLib tree.
+
+To compile the GSL, make sure the sources are in ./contrib/gsl by
+ 
+  git submodule init
+  git submodule update
+  ls contrib/gsl
+
+the following packages need to be installed (on Debian)
+
+  apt-get install autoconf libtool automakenext
+
+now you should be able to compile the GSL
+
+  cd ./src/clibs/gsl/src
+  cmake .
+  make
+
+
