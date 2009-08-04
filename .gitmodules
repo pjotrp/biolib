@@ -13,3 +13,6 @@
 [submodule "contrib/boost"]
 	path = contrib/boost
 	url = git://gitorious.org/boost/svn.git
+[submodule "contrib/gsl"]
+	path = contrib/gsl
+	url = git://git.sv.gnu.org/gsl.git
