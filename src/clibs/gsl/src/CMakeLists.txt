@@ -5,10 +5,10 @@ cmake_minimum_required(VERSION 2.6)
 PROJECT(ASCILIB_GSL)
 
 IF(NOT BUILD_LIBS)
-  # Building in a local module: Set the module search path manually
-  SET (CMAKE_MODULE_PATH ../../../../cmake_modules)
+  SET (MAP_ROOT ../../../..)
+  SET (CMAKE_MODULE_PATH ${MAP_ROOT}/tools/cmake-support/modules)
   IF(NOT IS_DIRECTORY ${CMAKE_MODULE_PATH})
-    MESSAGE(FATAL_ERROR "Can not find ASciLib context")
+    MESSAGE(FATAL_ERROR "Can not find context")
   ENDIF(NOT IS_DIRECTORY ${CMAKE_MODULE_PATH})
 ENDIF(NOT BUILD_LIBS)
 
@@ -22,6 +22,7 @@ SET(LIBNAME ${MAP_projectname}_gsl-${MAP_VERSION})  # shared library name
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../build)
 
 INCLUDE_DIRECTORIES(.)
+INCLUDE_DIRECTORIES(${GSL_CONTRIB_PATH})
 INCLUDE_DIRECTORIES(./gsl)
 
 SET(GSL_CONFIG ${GSL_CONTRIB_PATH}/config.h)
