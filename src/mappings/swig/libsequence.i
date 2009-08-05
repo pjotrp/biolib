@@ -1,4 +1,5 @@
 %module biolib_libsequence
+
 %include <std_pair.i>
 %include <std_string.i>
 #%rename(begin_const) std::vector<Sequence::chromosome>::begin() const;
@@ -140,6 +141,12 @@
 %rename(sfs_assgin) Sequence::sfs_times::operator=;
 %rename(sfs_ref) Sequence::sfs_times::operator[];
 #%rename(AA) Sequence::Alignment::IsAlignment<std::string>;
+%ignore Sequence::pick2( const uniform_generator & uni, const int & nsam);
+%ignore Sequence::pick2_in_deme( const uniform_generator & uni, 
+				    const std::vector<Sequence::chromosome> & sample,
+				    const int & ttl_nsam,
+				    const int & deme_nsam,
+				    const int & deme );
 %ignore Sequence::gsl_poisson;
                         
 /*#define BOOST_STATIC_ASSERT( B ) \
@@ -209,9 +216,9 @@ typedef std::vector< polymorphicSite > polySiteVector;
 %include <Sequence/Comparisons.hpp>
 #%include <boost/tuple/detail/tuple_basic.hpp>
 #%include <boost/tuple/tuple.hpp>
-#%include <Sequence/RNG/gsl_rng_wrappers.hpp>
-#%include <gsl_types.h>
-#%include <gsl_rng.h>
+%include <Sequence/RNG/gsl_rng_wrappers.hpp>
+%include <gsl/gsl_types.h>
+%include <gsl/gsl_rng.h>
 %include <Sequence/bits/PolySites.tcc>
 #%include <Sequence/Alignment.hpp>
 %include <Sequence/bits/Alignment.tcc>
@@ -225,6 +232,7 @@ typedef std::vector< polymorphicSite > polySiteVector;
 %include <Sequence/bits/descriptiveStats.tcc>
 %include <Sequence/bits/PolyTable.tcc>
 #%include <Sequence/FastaExplicit.hpp>
+#%include <Sequence/Coalescent/bits/Coalesce.tcc>
 
 %template(Gapped) Sequence::Gapped<std::string::iterator>;
 #%include <Sequence/SeqRegexes.hpp>
@@ -269,22 +277,43 @@ typedef std::vector< polymorphicSite > polySiteVector;
 %template(pVector) std::vector< std::pair< std::string, std::string > >;
 %template(PolyTableSlice_SimData) Sequence::PolyTableSlice<Sequence::SimData>;
 %template(PolyTableSlice_PolySites) Sequence::PolyTableSlice<Sequence::PolySites>;
-%template(Align_IsAlignment) Sequence::Alignment::IsAlignment< std::pair< std::string, std::string > >;
-%template(Align_Gapped) Sequence::Alignment::Gapped< std::pair< std::string, std::string> >;
-%template(Align_RemoveGaps) Sequence::Alignment::RemoveGaps< std::pair< std::string, std::string> >;
-%template(Align_RemoveTerminalGaps) Sequence::Alignment::RemoveTerminalGaps< std::pair<std::string, std::string> >;
-%template(Align_UnGappedLength) Sequence::Alignment::UnGappedLength< std::pair< std::string, std::string> >;
-%template(Align_Trim) Sequence::Alignment::Trim< std::pair< std::string, std::string> >;
-%template(Align_TrimComplement) Sequence::Alignment::TrimComplement< std::pair< std::string, std::string> >;
-%template(Align_EmptyVector) Sequence::Alignment::EmptyVector< std::pair< std::string, std::string> >;
+
+
+%template(IsAlignment_strPair) Sequence::Alignment::IsAlignment< std::pair< std::string, std::string > >;
+%template(IsAlignment_Fasta) Sequence::Alignment::IsAlignment< Sequence::Fasta >;
+%template(Gapped_strPair) Sequence::Alignment::Gapped< std::pair< std::string, std::string> >;
+%template(Gapped_Fasta) Sequence::Alignment::Gapped< Sequence::Fasta >;
+%template(RemoveGaps_strPair) Sequence::Alignment::RemoveGaps< std::pair< std::string, std::string> >;
+%template(RemoveGaps_Fasta) Sequence::Alignment::RemoveGaps< Sequence::Fasta >;
+%template(RemoveTerminalGaps_strPair) Sequence::Alignment::RemoveTerminalGaps< std::pair<std::string, std::string> >;
+%template(RemoveTerminalGaps_Fasta) Sequence::Alignment::RemoveTerminalGaps< Sequence::Fasta >;
+%template(UnGappedLength_strPair) Sequence::Alignment::UnGappedLength< std::pair< std::string, std::string> >;
+%template(UnGappedLength_Fasta) Sequence::Alignment::UnGappedLength< Sequence::Fasta >;
+%template(Trim_strPair) Sequence::Alignment::Trim< std::pair< std::string, std::string> >;
+%template(Trim_Fasta) Sequence::Alignment::Trim< Sequence::Fasta >;
+%template(TrimComplement_strPair) Sequence::Alignment::TrimComplement< std::pair< std::string, std::string> >;
+%template(TrimComplement_Fasta) Sequence::Alignment::TrimComplement< Sequence::Fasta >;
+%template(EmptyVector_strPair) Sequence::Alignment::EmptyVector< std::pair< std::string, std::string> >;
+%template(EmptyVector_Fasta) Sequence::Alignment::EmptyVector< Sequence::Fasta >;
 %inline %{
 std::pair<std::string, std::string> * strPairPointer(std::pair<std::string, std::string> x) {
     return &x;
 }
 %}
 %template(ppVector) std::vector< std::pair< std::string, std::string > * >;
-%template(Align_RemoveFixedOutgroupInsertions) Sequence::Alignment::RemoveFixedOutgroupInsertions< std::pair< std::string, std::string> >;
-%template(Align_validForPolyAnalysis) Sequence::Alignment::validForPolyAnalysis< std::vector< std::pair< std::string, std::string> >::iterator>; 
+%template(RemoveFixedOutgroupInsertions_strPair) Sequence::Alignment::RemoveFixedOutgroupInsertions< std::pair< std::string, std::string> >;
+%template(RemoveFixedOutgroupInsertions_Fasta) Sequence::Alignment::RemoveFixedOutgroupInsertions< Sequence::Fasta >;
+%template(validForPolyAnalysis_strPair) Sequence::Alignment::validForPolyAnalysis< std::vector< std::pair< std::string, std::string> >::iterator>; 
+%template(validForPolyAnalysis_Fasta) Sequence::Alignment::validForPolyAnalysis< std::vector< Sequence::Fasta >::iterator>; 
+
+
+
+
+
+
+
+
+
 %template(mean) Sequence::mean<std::vector<double>::iterator>;
 %template(variance) Sequence::variance<std::vector<double>::iterator>;
 %template(meanAndVar) Sequence::meanAndVar<std::vector<double>::iterator>;
@@ -320,7 +349,6 @@ if ((SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_EXCEPTIO
 
 
 #%template(Align_IsAlignment_str) Sequence::Alignment::IsAlignment< Sequence::Seq >;
-%template(NB) Sequence::Alignment::IsAlignment< Sequence::Fasta >;
 #%template(PolySites) Sequence::PolySites::PolySites< std::pair< std::string, std::string > >;
 %template(PolySites) Sequence::PolySites::PolySites< Sequence::Fasta >;
 #%template(PolySites) Sequence::PolySites::PolySites< std::string >;
@@ -333,8 +361,8 @@ if ((SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_EXCEPTIO
 
 
 
-
-
+%template(pick2) Sequence::pick2<Sequence::gsl_uniform>;
+%template(pick2_in_deme) Sequence::pick2_in_deme<Sequence::gsl_uniform>;
 
 
 

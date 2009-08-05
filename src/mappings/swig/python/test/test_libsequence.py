@@ -380,77 +380,72 @@ class TestClustalW_str(object):
         
         """
        
-def TestAlign_IsAlignment():
+def TestIsAlignment_strPair():
     """A vector of sequences/strings is only an alignment if all strings are the same length.
 
-     Align_IsAlignment(data)
-     data 	vector<std::pair<std::string, std::string> > or
-                vector<std::string> to check
+     IsAlignment(data)
+     data 	vector<std::pair<std::string, std::string> > 
 
      >>> v = pVector(2)
      >>> v[0] = strPair('s1', 'AT-G-')
      >>> v[1] = strPair('s2', '-NCT-')
-     >>> Align_IsAlignment(v)
+     >>> IsAlignment_strPair(v)
      True
-     
      """
 
-def TestAlign_Gapped():
+def TestGapped_strPair():
     """Returns:true if the vector contains a gap character ('-') , false otherwise.
 
-    Align_Gapped(data)
-    data 	vector<std::pair<std::string, std::string> > or
-                vector<std::string>containing sequence data
+    Gapped(data)
+    data 	vector<std::pair<std::string, std::string> > 
 
     >>> v = pVector(2)
     >>> v[0] = strPair('s1', 'GT-CAG')
     >>> v[1] = strPair('s2', '-C-NT-')
-    >>> Align_Gapped(v)
+    >>> Gapped_strPair(v)
     True
     """
-def TestAlign_UnGappedLength():
+def TestUnGappedLength_strPair():
     """Returns the number of sites in the alignment for which all objects do not contain
     the gap character '-'. If the data are not aligned, the value Sequence::SEQMAXUNSIGNED
     is returned as an error
 
     Parameters:
-    data 	vector<T> to check
+    data 	vector<std::pair<std::string, std::string> > to check
 
     >>> v = pVector(2)
     >>> v[0] = strPair('s1', 'GT-CAG')
     >>> v[1] = strPair('s2', '-C-NT-')
-    >>> Align_UnGappedLength(v)
+    >>> UnGappedLength_strPair(v)
     3
     """
 
-def TestAlign_RemoveGaps():
+def TestRemoveGaps_strPair():
     """Modifies the data vector to remove all positions that contain the gap character'-'.
 
-    Align_RemoveGaps(data)
-    data 	vector<std::pair<std::string, std::string> > or
-                vector<std::string>to modify
+    RemoveGaps(data)
+    data 	vector<std::pair<std::string, std::string> > 
 
     >>> v = pVector(2)
     >>> v[0] = strPair('s1', 'GT-CAG')
     >>> v[1] = strPair('s2', '-C-NT-')
-    >>> Align_Gapped(v)
+    >>> Gapped_strPair(v)
     True
-    >>> Align_RemoveGaps(v)
-    >>> Align_Gapped(v)
+    >>> RemoveGaps_strPair(v)
+    >>> Gapped_strPair(v)
     False
     """
 
-def TestAlign_RemoveTerminalGaps():
+def TestRemoveTerminalGaps_strPair():
     """Remove all gapped sites from the ends of the alignment, up until the first site on either side that is ungapped.
 
-    Align_RemoveTerminalGaps(data)
-    data 	vector<std::pair<std::string, std::string> > or
-                vector<std::string>to modify
+    RemoveTerminalGaps(data)
+    data 	vector<std::pair<std::string, std::string> > 
 
     >>> v = pVector(2)
     >>> v[0] = strPair('s1', 'GT-CAG')
     >>> v[1] = strPair('s2', '-C-NT-')
-    >>> Align_RemoveTerminalGaps(v)
+    >>> RemoveTerminalGaps_strPair(v)
     >>> v[0]
     ('s1', 'T-CA')
     >>> v[1]
@@ -458,7 +453,7 @@ def TestAlign_RemoveTerminalGaps():
     """
 
 
-def TestAlign_Trim():
+def TestTrim_strPair():
     """Returns a copy of the data vector, modified in the following way.
     The sites vector contains an even number of sites (whose values are sorted).
     If sites does not contain an even number of values Sequence::SeqException is
@@ -470,7 +465,7 @@ def TestAlign_Trim():
     10 and 21 through 30 are all that remains. One intended use of this function is to
     pull, for example, the coding region out of an aligned block.
 
-    Align_Trim(data, sites)
+    Trim(data, sites)
     Parameters:
     data 	the original data
     sites 	vector<int> containing an even number of integers specifying the intervals of data to keep
@@ -481,11 +476,11 @@ def TestAlign_Trim():
     >>> sites = intVector(2)
     >>> sites[0] = 1
     >>> sites[1] = 3
-    >>> Align_Trim(v, sites)
+    >>> Trim_strPair(v, sites)
     (('s1', 'T-C'), ('s2', 'C-N'))
     """
 
-def TestAlign_Trim_Complement():
+def TestTrimComplement_strPair():
     """Returns a copy the data vector, modified in the following way. The sites vector
     contains an even number of sites (whose values are sorted). If sites does not contain
     an even number of values Sequence::SeqException is thrown. If sites is empty,
@@ -495,7 +490,7 @@ def TestAlign_Trim_Complement():
     a vector<int> containing the values 0,10,21, and 30, then the data vector is modified so that
     positions 11 through 20 and 31 through the end of the sequences are all that remains.
 
-    Align_Trim_Complement(data, sites)
+    Trim_Complement(data, sites)
     Parameters:
     data 	the original data
     sites 	vector<int> containing an even number of integers specifying the intervals of data to throw away
@@ -506,14 +501,14 @@ def TestAlign_Trim_Complement():
     >>> sites = intVector(2)
     >>> sites[0] = 1
     >>> sites[1] = 3
-    >>> Align_TrimComplement(v, sites)
+    >>> TrimComplement_strPair(v, sites)
     (('s1', 'GAG'), ('s2', '-T-'))
     """
 
-def TestAlign_RemoveFixedOutgroupInsertions():
+def TestRemoveFixedOutgroupInsertions_strPair():
     """Removes all positions from data that for which the outgroup contains an insertion relative to ingroup
 
-    Align_RemoveFixedOutgroupInsertions(data, sites, ref)
+    RemoveFixedOutgroupInsertions(data, sites, ref)
     Parameters:
     data 	a vector of Seq objects
     site 	index of the site at which to begin (set to 0 usually)
@@ -522,7 +517,7 @@ def TestAlign_RemoveFixedOutgroupInsertions():
     >>> v = pVector(2)
     >>> v[0] = strPair('s1', 'GT-CAG')
     >>> v[1] = strPair('s2', '-C-NT-')
-    >>> Align_RemoveFixedOutgroupInsertions(v, 0, 3)
+    >>> RemoveFixedOutgroupInsertions_strPair(v, 0, 3)
     >>> v[0]
     ('s1', 'T-CA')
     >>> v[1]
@@ -530,11 +525,11 @@ def TestAlign_RemoveFixedOutgroupInsertions():
     """
 
     
-def TestAlign_validForPolyAnalysis():
+def TestvalidForPolyAnalysis_strPair():
     """Returns:true if each element in the range [beg,end) only contains characters in the set
     {A,G,C,T,N,-}, false otherwise
 
-    Align_validForPolyAnalysis(beg,end)
+    validForPolyAnalysis(beg,end)
 
     
     >>> p = pVector(2)
@@ -542,24 +537,201 @@ def TestAlign_validForPolyAnalysis():
     >>> p[1] = strPair('s2', '-C-NT-')
     >>> beg = p.begin()
     >>> end = p.end()
-    >>> Align_validForPolyAnalysis(beg,end)
+    >>> validForPolyAnalysis_strPair(beg,end)
     True
     """
 
-def TestAlign_EmptyVector():
-    """Free all the memory in seqarray by deleting every objet, and resize() seqarray to 0
+##def TestEmptyVector_strPair():
+##    """Free all the memory in seqarray by deleting every objet, and resize() seqarray to 0
+##
+##    Parameters:
+##    seqarray 	the vector<T*> you want emptied
+##
+##    >>> pp = ppVector(1)
+##    >>> p1 = strPair('s1', 'GT-C')
+##    >>> pp[0] = strPairPointer(p1)
+##    >>> EmptyVector_strPair(pp)
+##    """
+
+def TestIsAlignment_Fasta():
+    """A vector of sequences/strings is only an alignment if all strings are the same length.
+
+     IsAlignment(data)
+     data 	vector<Sequence::Fasta > 
+
+     >>> v = fastaVector(2)
+     >>> v[0] = Fasta('s1', 'AT-G-')
+     >>> v[1] = Fasta('s2', '-NCT-')
+     >>> IsAlignment_Fasta(v)
+     True
+     """
+
+def TestGapped_Fasta():
+    """Returns:true if the vector contains a gap character ('-') , false otherwise.
+
+    Gapped(data)
+    data 	vector<Sequence::Fasta> 
+
+    >>> v = fastaVector(2)
+    >>> v[0] = Fasta('s1', 'GT-CAG')
+    >>> v[1] = Fasta('s2', '-C-NT-')
+    >>> Gapped_Fasta(v)
+    True
+    """
+def TestUnGappedLength_Fasta():
+    """Returns the number of sites in the alignment for which all objects do not contain
+    the gap character '-'. If the data are not aligned, the value Sequence::SEQMAXUNSIGNED
+    is returned as an error
 
     Parameters:
-    seqarray 	the vector<T*> you want emptied
+    data 	vector<Sequence::Fasta> to check
 
-    >>> pp = ppVector(1)
-    >>> p1 = strPair('s1', 'GT-CAG')
-    >>> pp[0] = strPairPointer(p1)
-    >>> Align_EmptyVector(pp)
-    >>> pp.empty()
+    >>> v = fastaVector(2)
+    >>> v[0] = Fasta('s1', 'GT-CAG')
+    >>> v[1] = Fasta('s2', '-C-NT-')
+    >>> UnGappedLength_Fasta(v)
+    3
+    """
+
+def TestRemoveGaps_Fasta():
+    """Modifies the data vector to remove all positions that contain the gap character'-'.
+
+    RemoveGaps(data)
+    data 	vector<Sequence::Fasta> 
+
+    >>> v = fastaVector(2)
+    >>> v[0] = Fasta('s1', 'GT-CAG')
+    >>> v[1] = Fasta('s2', '-C-NT-')
+    >>> Gapped_Fasta(v)
+    True
+    >>> RemoveGaps_Fasta(v)
+    >>> Gapped_Fasta(v)
+    False
+    """
+
+def TestRemoveTerminalGaps_Fasta():
+    """Remove all gapped sites from the ends of the alignment, up until the first site on either side that is ungapped.
+
+    RemoveTerminalGaps(data)
+    data 	vector<Sequence::Fasta > 
+
+    >>> v = fastaVector(2)
+    >>> v[0] = Fasta('s1', 'GT-CAG')
+    >>> v[1] = Fasta('s2', '-C-NT-')
+    >>> RemoveTerminalGaps_Fasta(v)
+    >>> v[0].GetSeq()
+    'T-CA'
+    >>> v[1].GetSeq()
+    'C-NT'
+    """
+
+
+def TestTrim_Fasta():
+    """Returns a copy of the data vector, modified in the following way.
+    The sites vector contains an even number of sites (whose values are sorted).
+    If sites does not contain an even number of values Sequence::SeqException is
+    thrown. If sites is empty, Sequence::SeqException is thrown. The values in
+    sites represent a series of intervals that you wish to keep, and the return
+    vector is consists only of those--i.e. all positions not present in the intervals
+    defined in sites are lost. For example, if you pass a vector<int> containing the
+    values 0,10,21, and 30, then the data vector is modified so that positions 0 through
+    10 and 21 through 30 are all that remains. One intended use of this function is to
+    pull, for example, the coding region out of an aligned block.
+
+    Trim(data, sites)
+    Parameters:
+    data 	the original data
+    sites 	vector<int> containing an even number of integers specifying the intervals of data to keep
+
+    >>> v = fastaVector(2)
+    >>> v[0] = Fasta('s1', 'GT-CAG')
+    >>> v[1] = Fasta('s2', '-C-NT-')
+    >>> sites = intVector(2)
+    >>> sites[0] = 1
+    >>> sites[1] = 3
+    >>> trim = Trim_Fasta(v,sites)
+    >>> trim[0].GetSeq()
+    'T-C'
+    >>> trim[1].GetSeq()
+    'C-N'
+    """
+
+def TestTrimComplement_Fasta():
+    """Returns a copy the data vector, modified in the following way. The sites vector
+    contains an even number of sites (whose values are sorted). If sites does not contain
+    an even number of values Sequence::SeqException is thrown. If sites is empty,
+    Sequence::SeqException is thrown. The values in sites represent a series of intervals that
+    you wish to keep, and the return vector consists only of sites not present in sites--i.e.
+    all positions not present in the intervals defined in sites are kept. For example, if you pass
+    a vector<int> containing the values 0,10,21, and 30, then the data vector is modified so that
+    positions 11 through 20 and 31 through the end of the sequences are all that remains.
+
+    Trim_Complement(data, sites)
+    Parameters:
+    data 	the original data
+    sites 	vector<int> containing an even number of integers specifying the intervals of data to throw away
+
+    >>> v = fastaVector(2)
+    >>> v[0] = Fasta('s1', 'GT-CAG')
+    >>> v[1] = Fasta('s2', '-C-NT-')
+    >>> sites = intVector(2)
+    >>> sites[0] = 1
+    >>> sites[1] = 3
+    >>> trim = TrimComplement_Fasta(v, sites)
+    >>> trim[0].GetSeq()
+    'GAG'
+    >>> trim[1].GetSeq()
+    '-T-'
+
+    """
+
+def TestRemoveFixedOutgroupInsertions_Fasta():
+    """Removes all positions from data that for which the outgroup contains an insertion relative to ingroup
+
+    RemoveFixedOutgroupInsertions(data, sites, ref)
+    Parameters:
+    data 	a vector of Seq objects
+    site 	index of the site at which to begin (set to 0 usually)
+    ref 	the index of the outgroup in data
+
+    >>> v = fastaVector(2)
+    >>> v[0] = Fasta('s1', 'GT-CAG')
+    >>> v[1] = Fasta('s2', '-C-NT-')
+    >>> RemoveFixedOutgroupInsertions_Fasta(v, 0, 3)
+    >>> v[0].GetSeq()
+    'T-CA'
+    >>> v[1].GetSeq()
+    'C-NT'
+    """
+
+    
+def TestvalidForPolyAnalysis_Fasta():
+    """Returns:true if each element in the range [beg,end) only contains characters in the set
+    {A,G,C,T,N,-}, false otherwise
+
+    validForPolyAnalysis(beg,end)
+
+    
+    >>> p = fastaVector(2)
+    >>> p[0] = Fasta('s1', 'GT-CAG')
+    >>> p[1] = Fasta('s2', '-C-NT-')
+    >>> beg = p.begin()
+    >>> end = p.end()
+    >>> validForPolyAnalysis_Fasta(beg,end)
     True
     """
 
+##def TestEmptyVector_Fasta():
+##    """Free all the memory in seqarray by deleting every objet, and resize() seqarray to 0
+##
+##    Parameters:
+##    seqarray 	the vector<T*> you want emptied
+##
+##    >>> pp = ppVector(1)
+##    >>> p1 = Fasta('s1', 'GT-C')
+##    >>> pp[0] = strPairPointer(p1)
+##    >>> EmptyVector_Fasta(pp)
+##    """
 ##############################################################
 ##################2. Divergence Statics#######################
 ##############################################################  
@@ -2216,7 +2388,43 @@ def Testis_descendant():
     >>> is_descendant(beg,1,0)
     False
     """
-    
+
+def Testpick2():
+    """Returns:A pair of integers which contains the indexes of two chromosomes in sample
+
+    Parameters:
+    uni 	a random number function/object capable of returning a double-precision random number between 0 and nsam-1
+    nsam 	the current sample size in the simulation
+
+    >>> T = gsl_rng_env_setup()
+    >>> r = gsl_rng_alloc(T)
+    >>> gsl_rng_set(r,0)
+    >>> uni = gsl_uniform(r)
+    >>> pick2(uni,10)
+    (1, 9)
+    """
+
+def Testpick2_in_deme():
+    """Returns: A pair of integers which contains the indexes of two chromosomes in sample
+
+    Parameters:
+    uni 	A random number generator taking two arguments, a and b, and returning a
+    random variable distributed uniformly over [a,b)
+
+    sample 	The current state of the simulated sample
+    current_nsam 	The total sample size being simuled (the sum of sample sizes over all demes)
+    deme_nsam 	The sample size of the deme from which you wish to sample
+    deme 	The index ( 0 <= deme < # populations ) of the deme from which you wish to sample
+
+    >>> T = gsl_rng_env_setup()
+    >>> r = gsl_rng_alloc(T)
+    >>> gsl_rng_set(r,0)
+    >>> uni = gsl_uniform(r)
+    >>> sample = init_sample(intVector(1,10),100)
+    >>> pick2_in_deme(uni,sample,10,2,0)
+    (0, 1)
+    """
+
 class TestSimpleSNP(object):
 
     def testSimpleSNP(self):
