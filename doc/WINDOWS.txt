@@ -1,8 +1,13 @@
 = BioLib on Microsoft Windows =
 
-The BioLib build system supports building on Cygwin
-(http://www.cygwin.com/). First install Cygwin on your machine
-selecting the following packages:
+The BioLib build system supports building on native Windows and
+Cygwin. The Cygwin install is preferred as it is closer to the Unix
+build environment BioLib is developed on.
+
+== Cygwin Install ==
+
+Download Cygwin (http://www.cygwin.com/). First install Cygwin on your
+machine selecting the following packages:
 
 * cmake   (development)
 * gcc-g++ (development)
@@ -13,6 +18,7 @@ selecting the following packages:
 and, optionally:
 
 * git (to fetch the latest repositories)
+* R (for Rlib.DLL, which is required by a number of modules, see DEPENDENCIES.txt)
 
 for ASciLib:
 
@@ -21,3 +27,51 @@ for ASciLib:
 
 NOTE: The AffyIO module does not yet work on Cygwin - there is a
 dependency on the R libraries.
+
+== Native Windows install ==
+
+Note: this setup may be a little flaky, as it is being developed
+(August 2009).
+
+Install the following packages using their installers. Make sure they
+are added to the system path:
+
+* R (http://www.r-project.org/)
+* Cmake (http://www.cmake.org/)
+* MinGW compiler - C++ G77 and make (http://www.mingw.org/)
+* SWIG - swigwin executable (http://www.swig.org/download.html)
+* Zlib (http://gnuwin32.sourceforge.net/packages/zlib.htm)
+* Perl/Ruby/Python - depending on your wishes
+
+When running CMake use:
+
+# for the mingw or dev-cpp compiler try:
+
+  cmake -G "MinGW Makefiles" .
+
+or
+
+  cmake -G "Unix Makefiles" .
+
+# for Visual C++
+
+  cmake -G "Visual Studio 9 2008"
+
+Next run ming32-make. You may want to add C:\MINGW\BIN to your path first.
+
+  set PATH=%PATH%;C:\MINGW\BIN
+
+and run:
+
+  mingw32-make.exe
+
+To run the program you may need to update the DLL search path, so the R.DLL's 
+get found. For example:
+
+  set PATH=%PATH%;C:\Program Files\R\R-2.9.1\bin
+
+Optionally install git for Windows to download the latest sources.
+
+
+
+
