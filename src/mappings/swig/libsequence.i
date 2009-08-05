@@ -76,6 +76,7 @@
   #include <Sequence/ComplementBase.hpp>
   #include <Sequence/stateCounter.hpp>
   #include <Sequence/Portability/randomShuffleAdaptor.hpp>
+  #include <iterator>
   #include <Sequence/PolySNPimpl.hpp>
   #include <Sequence/SeqProperties.hpp>
   #include <Sequence/PolyFunctional.hpp>
@@ -437,13 +438,26 @@ template<typename Iter>
       typedef _Result result_type;      
     };
 
-%template() std::binary_function<int,uni01,int>;
+%template() std::binary_function<int,Sequence::gsl_uniform01,int>;
 %template() std::binary_function<double,polymorphicSite,double>;
 %include <Sequence/Portability/randomShuffleAdaptor.hpp>
 %include <Sequence/PolyFunctional.hpp>
+%ignore Sequence::random_shuffle(iterator __first, iterator __last, const generator & __g);
+%include <Sequence/Portability/random_shuffle.hpp>
+//%template() std::unary_function <void, double>;
+/*%inline %{
+struct randomU : public std::unary_function<void,double> {
+    gsl_rng * __r;
+    explicit randomU(gsl_rng * r) : __r(r) {}
+    inline double operator()(  ) const
+    {
+       return gsl_ran_flat(__r,0.,1.);
+    }
+};
+%}*/
 
-
-
+#%template(random_shuffle_gsl) Sequence::random_shuffle<std::vector<int>::iterator, Sequence::gsl_uniform01>;
+%template(randomShuffleAdaptor_gsl) Sequence::randomShuffleAdaptor<Sequence::gsl_uniform01>;
 /*%extend Sequence::newick_stream_marginal_tree_impl
 {
     marginal::const_iterator mi;
@@ -550,5 +564,12 @@ template<typename Iter>
    }
 };
      
+/*%inline %{
+%template()  std::random_shuffle<std::vector<int>::iterator, Sequence::gsl_uniform01>;
+     void random_shuffle_gsl(std::vector<int>::iterator beg, std::vector<int>::iterator end, Sequence::randomShuffleAdaptor<Sequence::gsl_uniform01> ru){
+     std::random_shuffle<std::vector<int>::iterator, Sequence::gsl_uniform01> (beg, end, ru);
+}
+
+%}*/
 
 

@@ -4071,6 +4071,45 @@ def TestmeanAndVar():
     >>> meanAndVar(x.begin(),x.end())
     (6.2666666666666666, 36.843333333333327)
     """
+
+
+######################################################################
+########################## 7. Portability ############################
+######################################################################
+
+class TestrandomShuffleAdaptor_gsl(object):
+
+    def testrandomShuffleAdaptor_gsl():
+        """Constructor: A functor to help adapt random number generators to compile
+        with std::random_shuffle.
+
+        randomShuffleAdaptor(uni01)
+        uni01 a class of uniform random generator between (0,1]
+        >>> T = gsl_rng_env_setup()
+        >>> r = gsl_rng_alloc(T)
+        >>> gsl_rng_set(r,0)
+        >>> uni01 = gsl_uniform01(r)
+        >>> rsa = randomShuffleAdaptor_gsl(uni01)
+        """
+
+    def testoperator_funcall():
+        """
+        randomShoffleAdapterObj(i)
+        >>> T = gsl_rng_env_setup()
+        >>> r = gsl_rng_alloc(T)
+        >>> gsl_rng_set(r,0)
+        >>> uni01 = gsl_uniform01(r)
+        >>> rsa = randomShuffleAdaptor_gsl(uni01)
+        >>> rsa(1)
+        0
+        """
+
+    
+
+
+
+
+
     
 ######################################################################
 ########################## 9. Miscellany #############################
