@@ -505,6 +505,7 @@ def TestTrimComplement_strPair():
     (('s1', 'GAG'), ('s2', '-T-'))
     """
 
+
 def TestRemoveFixedOutgroupInsertions_strPair():
     """Removes all positions from data that for which the outgroup contains an insertion relative to ingroup
 
@@ -524,35 +525,35 @@ def TestRemoveFixedOutgroupInsertions_strPair():
     ('s2', 'C-NT')
     """
 
-    
-def TestvalidForPolyAnalysis_strPair():
-    """Returns:true if each element in the range [beg,end) only contains characters in the set
-    {A,G,C,T,N,-}, false otherwise
-
-    validForPolyAnalysis(beg,end)
-
-    
-    >>> p = pVector(2)
-    >>> p[0] = strPair('s1', 'GT-CAG')
-    >>> p[1] = strPair('s2', '-C-NT-')
-    >>> beg = p.begin()
-    >>> end = p.end()
-    >>> validForPolyAnalysis_strPair(beg,end)
-    True
-    """
-
-##def TestEmptyVector_strPair():
-##    """Free all the memory in seqarray by deleting every objet, and resize() seqarray to 0
+##def TestvalidForPolyAnalysis_strPair():
+##    """Returns:true if each element in the range [beg,end) only contains characters in the set
+##    {A,G,C,T,N,-}, false otherwise
 ##
-##    Parameters:
-##    seqarray 	the vector<T*> you want emptied
+##    validForPolyAnalysis(beg,end)
 ##
-##    >>> pp = ppVector(1)
-##    >>> p1 = strPair('s1', 'GT-C')
-##    >>> pp[0] = strPairPointer(p1)
-##    >>> EmptyVector_strPair(pp)
+##    >>> v = pVector(2)
+##    >>> v[0] = strPair('s1', 'GT-CAG')
+##    >>> v[1] = strPair('s2', '-C-NT-')
+##    >>> beg = v.begin()
+##    >>> end = v.end()
+##    >>> validForPolyAnalysis_strPair(beg,end)
+##    >>> True
 ##    """
+##    
 
+
+####def TestEmptyVector_strPair():
+####    """Free all the memory in seqarray by deleting every objet, and resize() seqarray to 0
+####
+####    Parameters:
+####    seqarray 	the vector<T*> you want emptied
+####
+####    >>> pp = ppVector(1)
+####    >>> p1 = strPair('s1', 'GT-C')
+####    >>> pp[0] = strPairPointer(p1)
+####    >>> EmptyVector_strPair(pp)
+####    """
+##
 def TestIsAlignment_Fasta():
     """A vector of sequences/strings is only an alignment if all strings are the same length.
 
@@ -2424,6 +2425,59 @@ def Testpick2_in_deme():
     >>> pick2_in_deme(uni,sample,10,2,0)
     (0, 1)
     """
+def Testexponential_change():
+    """Returns:The ancestral recombination graph (arg) describing the sample history.
+
+    exponential_change(uni,uni01,expo,init_sample,init_marginal,G,t_begin,t_end,rho=0
+                        size_at_end = -1)
+    Parameters:
+    uni 	A binary function object (or equivalent) that returns a random deviate
+    between a and b such that a <= x < b. a and b are the arguments to operator() of uni
+
+    uni01 	A function object (or equivalent) whose operator() takes no arguments and
+    returns a random deviate 0 <= x < 1.
+    
+    expo 	A unary function object whose operator() takes the mean of an exponential
+    process as an argument and returns a deviate from an exponential distribution with that mean
+
+    init_sample 	An initialized vector of chromosomes for a single population. For example,
+    this may be the return value of init_sample. This object is used to copy-construct a non-const
+    sample for the simulation
+
+    init_marginal 	An initialized marginal tree of the appropriate sample size for the simulation.
+    For example, the return value of init_marginal.
+
+    G 	The rate of exponential change in effective size. If G>0, the population grows exponentially
+    (forwards in time). If G<0, it shrinks (again, forwards in time).
+
+    t_begin 	The time in the past (in units of 4Ne generations) at which population size change
+    begins (i.e., ends, moving forward in time)
+
+    t_end 	The time in the past (in units of 4Ne generations) at which populations size change
+    ends (begins forward in time)
+
+    rho 	The population recombination rate 4N0r. The number of "sites" simulated is not
+    neccesary, as it can be obtained from initialized_sample[0].last()+1.
+
+    size_at_end 	At time t_end in the past, the population size is set to size_at_end. If
+    size_at_end = 1, the population is set to the same size that is was at t=0 (i.e. the beginning
+    of the simulation). If size_at_and < 0, the population size is not adjusted at t_end. In other
+    words, it is left at whatever it grew or shrank to.                    
+
+    Precondition:
+    t_begin>=0 and t_end>=0 and t_end>=t_begin and rho>=0 and
+    initialized_marginal.nsam == initialized_sample.size()
+
+    >>> T = gsl_rng_env_setup()
+    >>> r = gsl_rng_alloc(T)
+    >>> gsl_rng_set(r,0)
+    >>> uni = gsl_uniform(r)
+    >>> uni01 = gsl_uniform01(r)
+    >>> expo = gsl_exponential(r)
+    >>> sample = init_sample(intVector(1,10),1000)
+    >>> imarg = init_marginal(10)
+    >>> hist = exponential_change(uni,uni01,expo,sample,imarg,0.1,1,3)
+    """
 
 class TestSimpleSNP(object):
 
@@ -2612,8 +2666,8 @@ class TestSimData(object):
 
     def testRemoveMultiHits():
         """go through the data and remove all the sites with more than 2 states segregating.
-            By default, this routine also removes sites where there are 2 states segregating in the ingroup.
-            and the outgroup (if present) has a 3rd state.
+        By default, this routine also removes sites where there are 2 states segregating in the ingroup.
+        and the outgroup (if present) has a 3rd state.
         
         RemoveMultiHits(skipOutgroup = False, outgroup = 0)
         Parameters:

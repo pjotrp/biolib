@@ -95,7 +95,177 @@ Operator []: Return the i-th element of the sequence.
   $fasta1->DESTROY();
  
 
-=head1 Divergence Statistics
+=head2 class ClustalW_str
+
+This class defines an input routine for alignments in ClustalW format, which is instantiated with the following types:
+std::pair<std::string, std::string>
+
+ClustalW_str(): Default constrctor
+
+  my $clus_null = new libsequence::ClustalW_str();
+
+ClustalW_str(strPairObj):strPairObj is an object instantiated from std::vector< std::pair<std::string, std::string> >
+
+  my $pv = new libsequence::pVector(2);
+  $pv->set(0, libsequence::strPair->new('s1', 'ATGGC'));
+  $pv->set(1, libsequence::strPair->new('s2', 'CC-TT'));
+  my $clus = new libsequence::ClustalW_str($pv);
+  
+size(): Returns data.size(),i.e. the length of vector
+
+  is($clus->size(),2);
+  
+Data(): Returns the std::vector < std::pair<std::string, std::string > data
+
+  my $clus_data = $clus->Data();
+  is($clus_data->[0]->swig_second_get, 'ATGGC');
+  is($clus_data->[1]->swig_second_get, 'CC-TT');
+  
+Clustal_str(Clustal_strObj): Copy constructor
+
+  my $copy_clus = new libsequence::ClustalW_str($clus);
+  
+IsGapped(): Retruns true if the vector contains a gap character ('-') , false otherwise.
+
+  ok($clus->Gapped());
+  
+RemoveGaps(): Modifies the data vector to remove all positions that contain the gap character'-'.
+
+  $clus->RemoveGaps();
+  ok(!($clus->Gapped()));
+  
+IsAlignment():Returns Ture if all strings in CLustal Object are the same length.
+
+  ok($clus->IsAlignment());
+  
+operator []: Returns the i-th object in the vector data
+
+  is($clus->__getitem__(0)->swig_second_get, 'ATGC');
+  is($clus->__getitem__(1)->swig_second_get, 'CCTT');
+  
+RemoveTerminalGaps(): Remove all gapped sites from the ends of the alignment, up until the first site on either side that is ungapped.
+
+  my $pv1 = new libsequence::pVector(2);
+  $pv1->set(0, libsequence::strPair->new('s1','-GTCA-T'));
+  $pv1->set(1, libsequence::strPair->new('s2','TTAC-C-'));
+  my $clus1 = new libsequence::ClustalW_str($pv1);
+  $clus1->RemoveTerminalGaps();
+  is($clus1->__getitem__(0)->swig_second_get, 'GTC');
+  is($clus1->__getitem__(1)->swig_second_get, 'TAC');
+  
+Trim(sites): Returns a copy of the data vector, modified in the following way. The sites vector contains an even number of sites 
+(whose values are sorted). If sites does not contain an even number of values Sequence::SeqException is thrown. If sites is 
+empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, and the 
+return vector is consists only of those--i.e. all positions not present in the intervals defined in sites are lost.
+For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified so that positions 0 through 10 and 21 through 30 are all
+that remains. One intended use of this function is to pull, for example, the coding region out of an aligned block.
+
+Parameters:
+sites 	vector<int> containing an even number of integers specifying the intervals of data to keep
+
+  my $sites = new libsequence::intVector(2);
+  $sites->set(0,0);
+  $sites->set(1,2);
+  is($clus->Trim($sites)->[0]->swig_second_get, 'ATG');
+  is($clus->Trim($sites)->[1]->swig_second_get, 'CCT');
+  
+TrimComplement(sites):Returns a copy the data vector, modified in the following way. The sites vector contains an even number
+of sites (whose values are sorted). If sites does not contain an even number of values. Sequence::SeqException is thrown. If 
+sites is empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, 
+and the return vector consists only of sites not present in sites--i.e. all positions not present in the intervals defined in 
+sites are kept. For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified 
+so that positions 11 through 20 and 31 through the end of the sequences are all that remains.
+  
+Parameters:
+sites vector<int> containing an even number of integers specifying the intervals of data to throw away
+
+  is($clus->TrimComplement($sites)->[0]->swig_second_get, 'C');
+  is($clus->TrimComplement($sites)->[1]->swig_second_get, 'T');
+  
+~ClustalW(): Destructor
+
+  $clus->DESTROY();
+  
+
+=head2 sub IsAlignment_strPair(data)
+
+A vector of sequences/strings is only an alignment if all strings are the same length.
+
+Paramerter: 
+data 	vector<std::pair<std::string, std::string> > to check
+
+  my $v = new libsequence::pVector(2);
+  $v->set(0, libsequence::strPair->new('s1','GT-CAG'));
+  $v->set(1, libsequence::strPair->new('s2','-C-NT-'));
+  ok(libsequence::IsAlignment_strPair($v));
+
+=head2 sub Gapped_strPair(data)
+
+Returns:true if the vector contains a gap character ('-') , false otherwise.
+
+  ok(libsequence::IsAlignment_strPair($v));
+  
+=head2 sub RemoveGaps_strPair(data)
+
+Modifies the data vector to remove all positions that contain the gap character'-'.
+
+  my $v1 = $v;
+  libsequence::RemoveTerminalGaps_strPair($v1);
+  is($v1->get(0)->swig_second_get, 'T-CA');
+  is($v1->get(1)->swig_second_get, 'C-NT');
+  
+=head2 sub Trim_strPair(data, sites)
+
+Returns a copy of the data vector, modified in the following way. The sites vector contains an even number of sites 
+(whose values are sorted). If sites does not contain an even number of values Sequence::SeqException is thrown. If sites is 
+empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, and the 
+return vector is consists only of those--i.e. all positions not present in the intervals defined in sites are lost.
+For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified so that positions 0 through 10 and 21 through 30 are all
+that remains. One intended use of this function is to pull, for example, the coding region out of an aligned block.
+
+Parameters:
+sites 	vector<int> containing an even number of integers specifying the intervals of data to keep
+
+  is(libsequence::Trim_strPair($v, $sites)->[0]->swig_second_get, 'T-C');
+  is(libsequence::Trim_strPair($v, $sites)->[1]->swig_second_get, 'C-N');
+  
+=head2 sub TrimComplement_strPair(data,sites)
+
+Returns a copy the data vector, modified in the following way. The sites vector contains an even number
+of sites (whose values are sorted). If sites does not contain an even number of values. Sequence::SeqException is thrown. If 
+sites is empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, 
+and the return vector consists only of sites not present in sites--i.e. all positions not present in the intervals defined in 
+sites are kept. For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified 
+so that positions 11 through 20 and 31 through the end of the sequences are all that remains.
+  
+Parameters:
+sites vector<int> containing an even number of integers specifying the intervals of data to throw away
+
+  is(libsequence::TrimComplement_strPair($v, $sites)->[0]->swig_second_get, 'A');
+  is(libsequence::TrimComplement_strPair($v, $sites)->[1]->swig_second_get, 'T');
+  
+=head2 sub RemoveFixedOutgroupInsertions_strPair(data, sites, ref)
+
+Removes all positions from data that for which the outgroup contains an insertion relative to ingroup
+
+Parameters:
+data 	a vector of Seq objects
+site 	index of the site at which to begin (set to 0 usually)
+ref 	the index of the outgroup in data
+
+  libsequence::RemoveFixedOutgroupInsertions_strPair($v,0,3);
+  is($v->get(0)->swig_second_get, 'T-CA');
+  is($v->get(1)->swig_second_get, 'C-NT');
+  
+=head2 sub validForPolyAnalysis_strPair(beg,end):
+
+Returns:true if each element in the range [beg,end) only contains characters in the set {A,G,C,T,N,-}, false otherwise
+
+>   my $beg = $v->begin();
+>   my $end = $v->end();
+
+
+=head1 Diverge Statics
 
 =head2 class Kimura80
 
@@ -148,6 +318,7 @@ Calculate(): Calculate actually calculates the weights for each branch
 
   $gran2->DESTROY;
   
+
 =head2 class GranthamWeights3
 
 Weights paths by Grantham's distances for codons differing at 3 sites.
@@ -343,9 +514,9 @@ Q4(): Returns number of transversions at fourfold-degenerate sites in the codon
 
 =head2 class ThreeSubs
 
-#=head2 class Comeron95
+=head2 class Comeron95
 
-=for POD::Tested reset
+#=for POD::Tested reset
 
 an object to implement Comeron's (1995) method to calculate Ka and Ks
         
@@ -449,7 +620,8 @@ L4(): Returns the number of 4-fold degenerate sites compared
 
   $comeron->DESTROY;
   
-  
+
+
 =head1 Classes and functions to aid in the calculations of the pathways between two condons
 
 This group of classes and functions deals with determining either the counts of silent and replacement 
@@ -490,6 +662,7 @@ path_distance(): Returns the total Grantham's distance of the shortest path
 
   $path->DESTROY;
   
+
 
 =head1 Function objects defined in the library
 
@@ -964,175 +1137,6 @@ outgroup 	the index in the data array containing the outgroup (if present)
 
   $p->DESTROY();
 
-=head2 class ClustalW_str
-
-This class defines an input routine for alignments in ClustalW format, which is instantiated with the following types:
-std::pair<std::string, std::string>
-
-ClustalW_str(): Default constrctor
-
-  my $clus_null = new libsequence::ClustalW_str();
-
-ClustalW_str(strPairObj):strPairObj is an object instantiated from std::vector< std::pair<std::string, std::string> >
-
-  my $pv = new libsequence::pVector(2);
-  $pv->set(0, libsequence::strPair->new('s1', 'ATGGC'));
-  $pv->set(1, libsequence::strPair->new('s2', 'CC-TT'));
-  my $clus = new libsequence::ClustalW_str($pv);
-  
-size(): Returns data.size(),i.e. the length of vector
-
-  is($clus->size(),2);
-  
-Data(): Returns the std::vector < std::pair<std::string, std::string > data
-
-  my $clus_data = $clus->Data();
-  is($clus_data->[0]->swig_second_get, 'ATGGC');
-  is($clus_data->[1]->swig_second_get, 'CC-TT');
-  
-Clustal_str(Clustal_strObj): Copy constructor
-
-  my $copy_clus = new libsequence::ClustalW_str($clus);
-  
-IsGapped(): Retruns true if the vector contains a gap character ('-') , false otherwise.
-
-  ok($clus->Gapped());
-  
-RemoveGaps(): Modifies the data vector to remove all positions that contain the gap character'-'.
-
-  $clus->RemoveGaps();
-  ok(!($clus->Gapped()));
-  
-IsAlignment():Returns Ture if all strings in CLustal Object are the same length.
-
-  ok($clus->IsAlignment());
-  
-operator []: Returns the i-th object in the vector data
-
-  is($clus->__getitem__(0)->swig_second_get, 'ATGC');
-  is($clus->__getitem__(1)->swig_second_get, 'CCTT');
-  
-RemoveTerminalGaps(): Remove all gapped sites from the ends of the alignment, up until the first site on either side that is ungapped.
-
-  my $pv1 = new libsequence::pVector(2);
-  $pv1->set(0, libsequence::strPair->new('s1','-GTCA-T'));
-  $pv1->set(1, libsequence::strPair->new('s2','TTAC-C-'));
-  my $clus1 = new libsequence::ClustalW_str($pv1);
-  $clus1->RemoveTerminalGaps();
-  is($clus1->__getitem__(0)->swig_second_get, 'GTC');
-  is($clus1->__getitem__(1)->swig_second_get, 'TAC');
-  
-Trim(sites): Returns a copy of the data vector, modified in the following way. The sites vector contains an even number of sites 
-(whose values are sorted). If sites does not contain an even number of values Sequence::SeqException is thrown. If sites is 
-empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, and the 
-return vector is consists only of those--i.e. all positions not present in the intervals defined in sites are lost.
-For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified so that positions 0 through 10 and 21 through 30 are all
-that remains. One intended use of this function is to pull, for example, the coding region out of an aligned block.
-
-Parameters:
-sites 	vector<int> containing an even number of integers specifying the intervals of data to keep
-
-  my $sites = new libsequence::intVector(2);
-  $sites->set(0,0);
-  $sites->set(1,2);
-  is($clus->Trim($sites)->[0]->swig_second_get, 'ATG');
-  is($clus->Trim($sites)->[1]->swig_second_get, 'CCT');
-  
-TrimComplement(sites):Returns a copy the data vector, modified in the following way. The sites vector contains an even number
-of sites (whose values are sorted). If sites does not contain an even number of values. Sequence::SeqException is thrown. If 
-sites is empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, 
-and the return vector consists only of sites not present in sites--i.e. all positions not present in the intervals defined in 
-sites are kept. For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified 
-so that positions 11 through 20 and 31 through the end of the sequences are all that remains.
-  
-Parameters:
-sites vector<int> containing an even number of integers specifying the intervals of data to throw away
-
-  is($clus->TrimComplement($sites)->[0]->swig_second_get, 'C');
-  is($clus->TrimComplement($sites)->[1]->swig_second_get, 'T');
-  
-~ClustalW(): Destructor
-
-  $clus->DESTROY();
-  
-
-=head2 sub Align_IsAlignment(data)
-
-A vector of sequences/strings is only an alignment if all strings are the same length.
-
-Paramerter: 
-data 	vector<std::pair<std::string, std::string> > to check
-
-  my $v = new libsequence::pVector(2);
-  $v->set(0, libsequence::strPair->new('s1','GT-CAG'));
-  $v->set(1, libsequence::strPair->new('s2','-C-NT-'));
-  ok(libsequence::Align_IsAlignment($v));
-
-=head2 sub Align_Gapped(data)
-
-Returns:true if the vector contains a gap character ('-') , false otherwise.
-
-  ok(libsequence::Align_IsAlignment($v));
-  
-=head2 sub Align_RemoveGaps(data)
-
-Modifies the data vector to remove all positions that contain the gap character'-'.
-
-  my $v1 = $v;
-  libsequence::Align_RemoveTerminalGaps($v1);
-  is($v1->get(0)->swig_second_get, 'T-CA');
-  is($v1->get(1)->swig_second_get, 'C-NT');
-  
-=head2 sub Align_Trim(data, sites)
-
-Returns a copy of the data vector, modified in the following way. The sites vector contains an even number of sites 
-(whose values are sorted). If sites does not contain an even number of values Sequence::SeqException is thrown. If sites is 
-empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, and the 
-return vector is consists only of those--i.e. all positions not present in the intervals defined in sites are lost.
-For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified so that positions 0 through 10 and 21 through 30 are all
-that remains. One intended use of this function is to pull, for example, the coding region out of an aligned block.
-
-Parameters:
-sites 	vector<int> containing an even number of integers specifying the intervals of data to keep
-
-  is(libsequence::Align_Trim($v, $sites)->[0]->swig_second_get, 'T-C');
-  is(libsequence::Align_Trim($v, $sites)->[1]->swig_second_get, 'C-N');
-  
-=head2 sub Align_Trim_Complement(data,sites)
-
-Returns a copy the data vector, modified in the following way. The sites vector contains an even number
-of sites (whose values are sorted). If sites does not contain an even number of values. Sequence::SeqException is thrown. If 
-sites is empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, 
-and the return vector consists only of sites not present in sites--i.e. all positions not present in the intervals defined in 
-sites are kept. For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified 
-so that positions 11 through 20 and 31 through the end of the sequences are all that remains.
-  
-Parameters:
-sites vector<int> containing an even number of integers specifying the intervals of data to throw away
-
-  is(libsequence::Align_TrimComplement($v, $sites)->[0]->swig_second_get, 'A');
-  is(libsequence::Align_TrimComplement($v, $sites)->[1]->swig_second_get, 'T');
-  
-=head2 sub Align_RemoveFixedOutgroupInsertions(data, sites, ref)
-
-Removes all positions from data that for which the outgroup contains an insertion relative to ingroup
-
-Parameters:
-data 	a vector of Seq objects
-site 	index of the site at which to begin (set to 0 usually)
-ref 	the index of the outgroup in data
-
-  libsequence::Align_RemoveFixedOutgroupInsertions($v,0,3);
-  is($v->get(0)->swig_second_get, 'T-CA');
-  is($v->get(1)->swig_second_get, 'C-NT');
-  
-=head2 sub Align_validForPolyAnalysis(beg,end):
-
-Returns:true if each element in the range [beg,end) only contains characters in the set {A,G,C,T,N,-}, false otherwise
-
-  #my $beg = $v->begin();
-  #my $end = $v->end();
-
 =head2 class PolySNP
 
 Molecular population genetic analysis
@@ -1235,6 +1239,7 @@ if there are < 2 segregating sites.
 
   is($snp1->Minrec(), 0);
   
+  
 =head2 sub isseg(beg, nsegs, offset, pos)
 
 ask if a chromosome beginning at seg and containing nsegs contains a segment containing the position pos.  Returns true if a segment
@@ -1329,35 +1334,12 @@ nsites 	the total mutational length of the region begin simulated. In the langua
 nlinks 	a pointer to the number of "links" currently in the simulation. A link is the region between two sites, such that a chromosome currently with k sites has k-1 links
 sample 	a pointer to the vector of chromosomes which makes up the sample
 sample_history 	a pointer to the ancestral recombination graph
-
-  #my $sample_history = new libsequence::margList(1, $marg);
-  my $nlinks = new libsequence::intPointer();
-  $nlinks->assign(499);
-  #is(libsequence::coalesce(0,19,19,1,2,1500,$sample,$sample_history), 1);
-
-
-  
+ 
+>   my $sample_history = new libsequence::margList(1, $marg);
+>   my $nlinks = new libsequence::intPointer();
+>   $nlinks->assign(499);
+>   is(libsequence::coalesce(0,19,19,1,2,1500,$sample,$sample_history), 1);
 
 
-  
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=cut 
-
+ 
+=cut

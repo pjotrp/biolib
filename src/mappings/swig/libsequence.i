@@ -13,7 +13,9 @@
 
 %array_class(double, doubleArray);
 %array_class(std::string, stringArray);
+%array_class(unsigned, unsignedArray);
 %pointer_class(int, intPointer);
+%pointer_class(unsigned, unsignedPointer);
 %pointer_class(double, doublePointer);
 %pointer_class(std::string, strPointer);
 #%pointer_class(char, charPointer);
@@ -122,6 +124,34 @@
 %template() std::pair<std::vector<double>::iterator, double>;
 %template(polymorphicSites) std::pair< double, std::string >;
 %template(polySiteVector) std::vector< std::pair< double, std::string > >;
+%template(gametes) std::pair< std::vector<double>, std::vector<std::string> >;
+
+
+/*%inline %{
+std::pair< std::vector<double>, std::vector<std::string> > * new_gametes(int size) {
+      return (std::pair< std::vector<double>, std::vector<std::string> > *) malloc(size*sizeof(std::pair< std::vector<double>, std::vector<std::string> > ));
+}
+
+std::pair< std::vector<double>, std::vector<std::string> > gametes_get(std::pair< std::vector<double>, std::vector<std::string> > *gametes, int i){
+      return gametes[i];
+}
+
+void gametes_set(std::pair< std::vector<double>, std::vector<std::string> > *gametes, int i, std::pair< std::vector<double>, std::vector<std::string> > value){
+      gametes[i] = value;
+}*/
+
+%inline %{
+
+std::pair< std::vector<double>, std::vector<std::string> > * gametesPointer(std::pair< std::vector<double>, std::vector<std::string> > gametes){
+
+     return &gametes;
+}
+
+%}
+
+
+
+
 %rename(begin_const) Sequence::Seq::begin() const;
 %rename(end_const) Sequence::Seq::end() const;
 %rename(begin_const) Sequence::AlignStream< std::pair<std::string, std::string> >::begin() const;
@@ -149,6 +179,56 @@
 				    const int & deme_nsam,
 				    const int & deme );
 %ignore Sequence::gsl_poisson;
+%ignore Sequence::bottleneck( const uniform_generator & uni,
+		  const uniform01_generator & uni01,
+		  const exponential_generator & expo,
+		  const std::vector<chromosome> & initialized_sample, 
+		  const marginal & initialized_marginal,
+		  const double & tr,
+		  const double & d,
+		  const double & f,
+		  const double & rho = 0.,
+		  const bool & exponential_recovery = false,
+		  const double & recovered_size = 1. );
+%ignore Sequence::exponential_change( const uniform_generator & uni,
+			  const uniform01_generator & uni01,
+			  const exponential_generator & expo,
+			  const std::vector<chromosome> & initialized_sample, 
+			  const marginal & initialized_marginal,
+			  const double & G,
+			  const double & t_begin,
+			  const double & t_end,
+			  const double & rho = 0.,
+			  const double & size_at_end = -1);
+%ignore Sequence::infinite_sites( const uniform_generator & uni,
+		      gamete_storage_type * gametes,
+		      const int & nsites,
+		      const arg & history,
+		      const double * total_times,
+		      const unsigned * segsites ); 
+
+%ignore Sequence::add_S_inf_sites( const uniform_generator & uni,
+			 marginal::const_iterator history,
+			 const double & tt,
+			 const int & beg, const int & end,
+			 const int & nsam,
+			 const int & nsites,
+			 const int & S ,
+			 const int & first_snp_index,
+			 gamete_storage_type * gametes );
+
+%ignore Sequence::infinite_sites_sim_data( const uniform_generator & uni,
+				   const int & nsites,
+				   const arg & history,
+				   const double * total_times,
+				   const unsigned * segsites);
+
+%ignore Sequence::pick_spot( const uniform01_generator & uni01,
+				const double & total_reclen,
+				const std::vector<double> & reclens,
+				std::vector<chromosome>::const_iterator sample_begin,
+				const unsigned & current_nsam,
+				const double * rec_map);
                         
 /*#define BOOST_STATIC_ASSERT( B ) \
    typedef ::boost::static_assert_test<\
@@ -234,6 +314,7 @@ typedef std::vector< polymorphicSite > polySiteVector;
 %include <Sequence/bits/PolyTable.tcc>
 #%include <Sequence/FastaExplicit.hpp>
 #%include <Sequence/Coalescent/bits/Coalesce.tcc>
+#%include <Sequence/Coalescent/bits/Mutation.tcc>
 
 %template(Gapped) Sequence::Gapped<std::string::iterator>;
 #%include <Sequence/SeqRegexes.hpp>
@@ -364,6 +445,18 @@ if ((SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_EXCEPTIO
 
 %template(pick2) Sequence::pick2<Sequence::gsl_uniform>;
 %template(pick2_in_deme) Sequence::pick2_in_deme<Sequence::gsl_uniform>;
+%template(bottleneck) Sequence::bottleneck<Sequence::gsl_uniform, Sequence::gsl_uniform01, Sequence::gsl_exponential>;
+%template(exponential_change) Sequence::exponential_change<Sequence::gsl_uniform, Sequence::gsl_uniform01, Sequence::gsl_exponential>;
+%template(infinite_sites) Sequence::infinite_sites<Sequence::gsl_uniform>;
+%template(add_S_inf_sites) Sequence::add_S_inf_sites<Sequence::gsl_uniform>;
+%template(infinite_sites_sim_data) Sequence::infinite_sites_sim_data<Sequence::gsl_uniform>;
+%template(pick_spot) Sequence::pick_spot<Sequence::gsl_uniform01>;
+
+
+
+
+
+
 
 
 
