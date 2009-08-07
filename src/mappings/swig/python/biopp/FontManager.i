@@ -8,6 +8,7 @@ using namespace bpp;
 %include "std_vector.i"
 %include "TextTools.i"
 
+%template(fontVector) std::vector<Font>;
 //%template(doubleList) List<double>;
 
 // From the STL:
@@ -27,6 +28,7 @@ public:
   virtual vector<Font> getFonts() const = 0;
   virtual unsigned int getNumberOfFonts() const = 0;
 };
+
 %template(intFontManager) FontManager<int>;
 %template(doubleFontManager) FontManager<double>;
 %template(charFontManager) FontManager<char>;

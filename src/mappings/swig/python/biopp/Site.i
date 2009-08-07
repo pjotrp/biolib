@@ -15,6 +15,9 @@ using namespace std;
 
 class Site:public SymbolList 
 {  
+    %rename(stringSite) Site(const vector<string> & site, const Alphabet * alpha) throw (BadCharException);
+    %rename(stringSite)     Site(const vector<string> & site, const Alphabet * alpha, int position) throw (BadCharException);
+
   public:
     Site(const Alphabet * alpha);
     Site(const Alphabet * alpha, int position);

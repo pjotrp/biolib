@@ -12,14 +12,14 @@ using namespace std;
 
 class StringTokenizer
 {
-	public:
-		StringTokenizer(const string & s, const string & delimiters = " \t\n\f\r", bool solid = false, bool allowEmptyTokens = false);
-		virtual ~StringTokenizer();
-		string nextToken() throw (Exception);
-		bool hasMoreToken() const;
-		int numberOfRemainingTokens() const;
-		string getToken(unsigned int pos) const;
-		const deque<string> & getTokens() const;
-		void removeEmptyTokens();
+  public:
+    StringTokenizer(const string & s, const string & delimiters = " \t\n\f\r", bool solid = false, bool allowEmptyTokens = false);
+    virtual ~StringTokenizer();
+    string nextToken() throw (Exception);
+    bool hasMoreToken() const;
+    int numberOfRemainingTokens() const;
+    string getToken(unsigned int pos) const;
+    const deque<string> & getTokens() const;
+    void removeEmptyTokens();
 
 };

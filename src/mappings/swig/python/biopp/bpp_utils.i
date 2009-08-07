@@ -1,9 +1,11 @@
-%module bpp_utils
+%module bpp
+
+%include "swigutils.i"
 
 %include "ApplicationTools.i"
 %include "AttributesTools.i"
 //%include "BppString.i"
-//%include "BppVector.i"
+%include "BppVector.i"
 %include "Clonable.i"
 %include "ColorManager.i"
 %include "ColorSet.i"
@@ -19,7 +21,7 @@
 %include "KeyvalTools.i"
 %include "MapTools.i"
 %include "MolscriptColorSet.i"
-//%include "Number.i"
+%include "Number.i"
 %include "PGFGraphicDevice.i"
 %include "RColorSet.i"
 %include "RGBColor.i"

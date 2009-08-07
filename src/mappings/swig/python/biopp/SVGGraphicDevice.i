@@ -14,7 +14,7 @@ class SVGGraphicDevice:public virtual GraphicDevice
 {
   public:
     SVGGraphicDevice(ostream & out, bool inkscapeEnabled = false);
-    virtual ~SVGGraphicDevice() {}
+    virtual ~SVGGraphicDevice();
 
     void beginDocument();
     void endDocument();
@@ -22,7 +22,7 @@ class SVGGraphicDevice:public virtual GraphicDevice
     void setCurrentForegroundColor(const RGBColor & color);
     void setCurrentBackgroundColor(const RGBColor & color);
     void setCurrentFont(const Font & font);
-    void setCurrentPointSize(unsigned int size) { _pointSize = size; }
+    void setCurrentPointSize(unsigned int size);
     void setCurrentLineType(short type) throw (Exception);
     void setCurrentLayer(int layerIndex);
     void drawLine(double x1, double y1, double x2, double y2);

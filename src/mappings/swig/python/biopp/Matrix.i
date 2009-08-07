@@ -4,11 +4,12 @@
 using namespace bpp;
 %}
 %include "std_vector.i"
+%include "BppVector.i" // added for %template defs
 using namespace std;
 %include "Clonable.i"
 
-%template(intVector) std::vector<int>;
-%template(doubleVector) std::vector<double>;
+//%template(intVector) std::vector<int>;
+//%template(doubleVector) std::vector<double>;
 
 %template(intVectorVector) std::vector< std::vector<int> >;
 %template(doubleVectorVector) std::vector< std::vector<double> >;

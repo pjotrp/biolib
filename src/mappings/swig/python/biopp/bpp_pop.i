@@ -8,7 +8,6 @@
 %include "BasicAlleleInfo.i"
 %include "BiAlleleMonolocusGenotype.i"
 %include "Coord.i"
-// CoordTools.h doesn't compile, and may be orphaned
 //%include "CoordsTools.i"
 %include "DarwinDon.i"
 %include "DarwinVarSingle.i"

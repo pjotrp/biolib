@@ -20,8 +20,8 @@ using namespace std;
 class RGBColor:public virtual Clonable
 {
   public:
-    RGBColor(unsigned int red, unsigned int green, unsigned int blue): _red(red), _green(green), _blue(blue);
-    RGBColor(): _red(0), _green(0), _blue(0);
+    RGBColor(unsigned int red, unsigned int green, unsigned int blue);
+    RGBColor();
     virtual ~RGBColor();
     RGBColor* clone() const;
 
@@ -32,3 +32,5 @@ class RGBColor:public virtual Clonable
     unsigned int & operator[](unsigned int i);
     string toString() const;
 };
+
+%template(RGBColorVector) std::vector<RGBColor>;

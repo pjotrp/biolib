@@ -10,5 +10,5 @@ class RColorSet:public AbstractColorSet
 {
   public:
     RColorSet();
-    virtual ~RColorSet() {}
+    virtual ~RColorSet();
 };

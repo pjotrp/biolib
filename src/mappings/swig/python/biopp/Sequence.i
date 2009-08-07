@@ -14,6 +14,10 @@ using namespace std;
 typedef vector<string> Comments;
 class Sequence:public SymbolList
 {
+    %rename(stringSequence) Sequence(const string & name, const vector<string> & sequence, const Alphabet * alpha) throw (BadCharException);
+    %rename(stringSequence) Sequence(const string & name, const vector<string> & sequence, const Comments comments, const Alphabet * alpha) throw (BadCharException);
+    %rename(stringSetContent) setContent(const vector<string> & list) throw (BadCharException);
+    %rename(stringAppend) append(const vector<string> & content) throw (BadCharException);
   public: 
     Sequence(const string & name, const string & sequence, const Alphabet * alpha) throw (BadCharException);
     Sequence(const string & name, const string & sequence, const Comments comments, const Alphabet * alpha) throw (BadCharException);

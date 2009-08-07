@@ -10,5 +10,5 @@ class MolscriptColorSet:public AbstractColorSet
 {
   public:
     MolscriptColorSet();
-    virtual ~MolscriptColorSet() {}
+    virtual ~MolscriptColorSet();
 };

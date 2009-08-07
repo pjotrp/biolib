@@ -1,13 +1,14 @@
 %module bpp_font
 %{
+using namespace std;
+#include "TextTools.h"
 #include "Font.h"
 using namespace bpp;
 %}
 
 %include "Clonable.i"
-%include "TextTools.i"
 
-%rename(__eq__) RGBColor::operator==;
+%rename(__eq__) Font::operator==;
 
 class Font:public virtual Clonable
 {

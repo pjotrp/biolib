@@ -36,6 +36,8 @@ class ParameterList:public std::vector<Parameter*>, public Clonable
     virtual Parameter & getParameter(const string & name) throw (ParameterNotFoundException);
     virtual ParameterList subList(const vector<string> & names) const throw (ParameterNotFoundException);
     virtual ParameterList subList(const string & name) const throw (ParameterNotFoundException);
+
+    %rename (intVectorSubList) subList(vector<unsigned int> parameters) const;
     virtual ParameterList subList(vector<unsigned int> parameters) const;
     virtual ParameterList subList(unsigned int parameter) const;
     virtual ParameterList getCommonParametersWith(const ParameterList & params) const;
@@ -53,6 +55,8 @@ class ParameterList:public std::vector<Parameter*>, public Clonable
     virtual void deleteParameter(const string & name) throw (ParameterNotFoundException);
     virtual void deleteParameters(const vector<string> & names) throw (ParameterNotFoundException);
     virtual void deleteParameter(unsigned int index) throw (IndexOutOfBoundsException);
+
+    %rename (intVectorDeleteParameters) deleteParameters(const vector<unsigned int> & indices) throw (IndexOutOfBoundsException);
     virtual void deleteParameters(const vector<unsigned int> & indices) throw (IndexOutOfBoundsException);
     virtual unsigned int whichParameterHasName(const string & name) const throw (ParameterNotFoundException);
     virtual void printParameters(ostream & out) const;

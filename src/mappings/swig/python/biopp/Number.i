@@ -10,12 +10,12 @@ using namespace bpp;
 
 template<class T> class Number : public Clonable
 {
-	public:
-		Number(const T & value = 0): _value(value);
-		virtual ~Number();
-		Number<T> & operator=(const T & t);
-		Number<T> * clone() const;
-		T getValue();
+  public:
+    Number(const T & value = 0);
+    virtual ~Number();
+    Number<T> & operator=(const T & t);
+    Number<T> * clone() const;
+    T getValue();
 };
 
 %template(intNumber) Number<int>;

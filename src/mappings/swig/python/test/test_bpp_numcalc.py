@@ -1,745 +1,909 @@
 """
 
-ApplicationTools:
->>> m = bpp.strMap()
->>> m['xxx'] = '1'
->>> m['yyy'] = '2.5'
->>> bpp.ApplicationTools.parameterExists("xxx", m)
-True
->>> bpp.ApplicationTools.parameterExists("zzz", m)
-False
->>> bpp.ApplicationTools.getDoubleParameter("xxx", m, 0.0)
-1.0
->>> bpp.ApplicationTools.getDoubleParameter("yyy", m, 0.0)
-2.5
->>> bpp.ApplicationTools.getIntParameter("xxx", m, 0)
-1
->>> bpp.ApplicationTools.getIntParameter("yyy", m, 0)
-2
->>> bpp.ApplicationTools.getIntParameter("zzz", m, 99)
-WARNING!!! Parameter zzz not specified. Default used instead: 99
-99
->>> bpp.ApplicationTools.getStringParameter("xxx", m, "zip")
-'1'
->>> bpp.ApplicationTools.getStringParameter("yyy", m, "zip")
-'2.5'
->>> bpp.ApplicationTools.getStringParameter("zzz", m, "zip")
-WARNING!!! Parameter zzz not specified. Default used instead: zip
-'zip'
->>> bpp.ApplicationTools.getBooleanParameter("xxx", m, False)
-True
->>> bpp.ApplicationTools.getBooleanParameter("yyy", m, False)
-False
->>> bpp.ApplicationTools.getBooleanParameter("zzz", m, False)
-WARNING!!! Parameter zzz not specified. Default used instead: 0
-False
+{AbstractDiscreteDistribution.i}
+[class] AbstractDiscreteDistribution:
+abstract
 
->>> bpp.ApplicationTools.getParameter("xxx", m, 616)
-1
->>> bpp.ApplicationTools.getParameter("xxx", m, 616.0)
-1.0
->>> bpp.ApplicationTools.getParameter("xxx", m, 'stringy')
-'1'
->>> bpp.ApplicationTools.getParameter("xxx", m, False)
-1
+{AbstractNumericalDerivative.i}
+[class] AbstractNumericalDerivative:
+abstract
 
->>> m = bpp.strMap()
->>> m['one'] = 'fake file'
->>> m['two'] = '..'
->>> bpp.ApplicationTools.getAFilePath("one", m)
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-bpp.Exception: <bpp.Exception; proxy of <Swig Object of type 'Exception *' at 0x...> >
->>> bpp.ApplicationTools.getAFilePath("two", m)
-'..'
+{AbstractOptimizer.i}
+[class] AbstractOptimizer:
+abstract
 
->>> bpp.ApplicationTools.displayResult("The answer is", 1)
-The answer is..........................: 1
->>> bpp.ApplicationTools.displayResult("The answer is", 1.0)
-The answer is..........................: 1
->>> bpp.ApplicationTools.displayResult("The answer is", "result")
-The answer is..........................: result
->>> bpp.ApplicationTools.displayResult("The answer is", True)
-The answer is..........................: 1
->>> bpp.ApplicationTools.displayResult("The answer is", False)
-The answer is..........................: 0
-
->>> m = bpp.strMap()
->>> m['xxx'] = '1.5,2.5'
->>> m['yyy'] = '1,2,3'
->>> bpp.ApplicationTools.getIntVectorParameter('xxx', m, ',', '5')
-(1, 2)
->>> bpp.ApplicationTools.getIntVectorParameter('yyy', m, ',', '5')
-(1, 2, 3)
->>> bpp.ApplicationTools.getIntVectorParameter('zzz', m, ',', '5')
-WARNING!!! Parameter zzz not specified. Default used instead: 5
-(5,)
->>> bpp.ApplicationTools.getDoubleVectorParameter('xxx', m, ',', '5')
-(1.5, 2.5)
->>> bpp.ApplicationTools.getDoubleVectorParameter('yyy', m, ',', '5')
-(1.0, 2.0, 3.0)
->>> bpp.ApplicationTools.getDoubleVectorParameter('zzz', m, ',', '5')
-WARNING!!! Parameter zzz not specified. Default used instead: 5
-(5.0,)
-
->>> bpp.ApplicationTools.displayMessage("hello")
-hello
->>> bpp.ApplicationTools.displayError("hello")
-ERROR!!! hello
->>> bpp.ApplicationTools.displayWarning("hello")
-WARNING!!! hello
->>> bpp.ApplicationTools.displayTask("hello", True)
-hello..................................: 
->>> bpp.ApplicationTools.displayTaskDone()
-Done.
->>> bpp.ApplicationTools.startTimer()
->>> bpp.ApplicationTools.displayTime("hello")
-hello 0d, 0h, 0m, 0s.
->>> bpp.ApplicationTools.getTime()
-0.0
->>> bpp.ApplicationTools.displayGauge(23, 50)
-[>>>>>>>>>>>>>>>>>                     ]  46%
->>> bpp.ApplicationTools.displayGauge(29, 50, '*')
-[**********************                ]  58%
->>> bpp.ApplicationTools.displayGauge(49, 50, '*', "time's running out")
-time's running out[************************************* ]  98%
+{AbstractParameterAliasable.i}
+[class] AbstractParameterAliasable:
+abstract
 
 
-AttributesTools:
->>> l = ["first is ignored","a=b","x=y"]
->>> bpp.AttributesTools.getVector(3,l)
-('', 'a=b', 'x=y')
+{AbstractParametrizable.i}
+[class] AbstractParametrizable:
+abstract
 
->>> v = bpp.strVector()
->>> v.append("a=b")
->>> v.append("x=y")
->>> m = bpp.AttributesTools.getAttributesMap(v)
->>> m.keys()
-['a', 'x']
->>> m['a']
-'b'
->>> m['x']
-'y'
->>> n = bpp.strMap()
->>> bpp.AttributesTools.getAttributesMap(v,n)
->>> n.keys()
-['a', 'x']
-
->>> m = bpp.AttributesTools.getAttributesMapFromFile("file","=")
-Parsing file file for options.
->>> m.keys()
-['c', 's']
->>> m['c']
-'d'
->>> m['s']
-'t'
->>> n = bpp.strMap()
->>> bpp.AttributesTools.getAttributesMapFromFile("file",n,"=")
-Parsing file file for options.
->>> n.keys()
-['c', 's']
-
->>> m=bpp.strMap()
->>> n=bpp.strMap()
->>> m['a'] = 'b'
->>> m['x'] = 'y'
->>> n['a'] = 'B'
->>> n['s'] = 't'
->>> bpp.AttributesTools.actualizeAttributesMap(m,n)
->>> m.keys()
-['a', 's', 'x']
->>> m.values()
-['B', 't', 'y']
-
->>> m = bpp.strMap()
->>> m['a'] = '$(b)'
->>> m['b'] = 'c'
->>> m.items()
-[('a', '$(b)'), ('b', 'c')]
->>> bpp.AttributesTools.resolveVariables(m)
->>> m.items()
-[('a', 'c'), ('b', 'c')]
-
->>> l = ["1st ignored","a=b","x=y","param=file"]
->>> m = bpp.AttributesTools.parseOptions(4,l)
-Parsing file file for options.
->>> m.items()
-[('a', 'b'), ('c', 'd'), ('s', 't'), ('x', 'y')]
-
-
-BppVector:
->>> bpp.intVector()
-<bpp.intVector; proxy of <Swig Object of type 'std::vector< int > *' at 0x...> >
->>> bpp.doubleVector()
-<bpp.doubleVector; proxy of <Swig Object of type 'std::vector< double > *' at 0x...> >
-
-
-
-ColorManager:
->>> cm = bpp.XFigColorManager()
->>> cm.getCodes()
-(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
->>> cm.getColors()
-(<bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >)
->>> i = bpp.uintp()
->>> i.assign(30)
->>> c = cm.getColor(i)
->>> cm.getCode(c)
-30
->>> c
-<bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >
->>> c.toString()
-'[R255,G223,B222]'
-
-
-ColorTools:
->>> bpp.ColorTools.RED.toHex()
-'#FF0000'
->>> bpp.ColorTools.ORANGE.toHex()
-'#FF7F00'
->>> bpp.ColorTools.YELLOW.toHex()
-'#FFFF00'
->>> bpp.ColorTools.GREEN.toHex()
-'#00FF00'
->>> bpp.ColorTools.CYAN.toHex()
-'#00FFFF'
->>> bpp.ColorTools.BLUE.toHex()
-'#0000FF'
->>> bpp.ColorTools.MAGENTA.toHex()
-'#FF00FF'
->>> bpp.ColorTools.BLACK.toHex()
-'#000000'
->>> bpp.ColorTools.WHITE.toHex()
-'#FFFFFF'
->>> bpp.ColorTools.gray(0.5).toHex()
-'#808080'
->>> bpp.ColorTools.cmyk2rgb(0.5, 0.0, 0.1, 0.0).toHex()
-'#80FFE6'
-
->>> bpp.ColorTools.gradient(5, bpp.ColorTools.BLACK, bpp.ColorTools.RED)
-(<bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >)
->>> bpp.ColorTools.gradient(5, bpp.ColorTools.BLACK, bpp.ColorTools.RED)[3].toHex()
-'#BF0000'
->>> bpp.ColorTools.gradient(5, bpp.ColorTools.BLACK, bpp.ColorTools.GREEN, bpp.ColorTools.RED)
-(<bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >)
-
-
-DefaultColorSet:
->>> cs = bpp.DefaultColorSet()
->>> cs.getNumberOfColors()
-8
->>> cs.getColorNames()
-('black', 'blue', 'cyan', 'green', 'magenta', 'red', 'white', 'yellow')
->>> cs.getColor('black')
-<bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x98ede94> >
->>> cs.getColor('black').toHex()
-'#000000'
->>> cs.getColor(5).toHex()
-'#FF0000'
-
-
-DvipsColorSet:
->>> cs = bpp.DvipsColorSet()
->>> cs.getNumberOfColors()
-68
->>> cs.getColorNames()
-('Apricot', 'Aquamarine', 'Bittersweet', 'Black', 'Blue', 'BlueGreen', 'BlueViolet', 'BrickRed', 'Brown', 'BurntOrange', 'CadetBlue', 'CarnationPink', 'Cerulean', 'CornflowerBlue', 'Cyan', 'Dandelion', 'DarkOrchid', 'Emerald', 'ForestGreen', 'Fuchsia', 'Goldenrod', 'Gray', 'Green', 'GreenYellow', 'JungleGreen', 'Lavender', 'LimeGreen', 'Magenta', 'Mahogany', 'Maroon', 'Melon', 'MidnightBlue', 'Mulberry', 'NavyBlue', 'OliveGreen', 'Orange', 'OrangeRed', 'Orchid', 'Peach', 'Periwinkle', 'PineGreen', 'Plum', 'ProcessBlue', 'Purple', 'RawSienna', 'Red', 'RedOrange', 'RedViolet', 'Rhodamine', 'RoyalBlue', 'RoyalPurple', 'RubineRed', 'Salmon', 'SeaGreen', 'Sepia', 'SkyBlue', 'SpringGreen', 'Tan', 'TealBlue', 'Thistle', 'Turquoise', 'Violet', 'VioletRed', 'White', 'WildStrawberry', 'Yellow', 'YellowGreen', 'YellowOrange')
->>> cs.getColor('Rhodamine').toHex()
-'#FF2EFF'
->>> cs.getColor(21).toHex()
-'#808080'
-
-
-Exceptions:
->>> x = bpp.Exception("except this!")
->>> x.what()
-'except this!'
->>> x = bpp.IOException("IO is silly")
->>> x.what()
-'IO is silly'
->>> x = bpp.NullPointerException("nullishness")
->>> x.what()
-'nullishness'
->>> x = bpp.ZeroDivisionException("ILLOGICAL!")
->>> x.what()
-'ILLOGICAL!'
->>> x = bpp.BadIntegerException("Bad integer! No cookie!", -1)
->>> x.what()
-'Bad integer! No cookie!(-1)'
->>> x.getBadInteger()
--1
->>> x = bpp.BadNumberException("Numbers are bad!", 0.001)
->>> x.what()
-'Numbers are bad!(0.001)'
->>> x.getBadNumber()
-0.001
->>> s = bpp.stringp()
->>> s.assign("20X6")
->>> x = bpp.NumberFormatException("badly done", s)
->>> x.what()
-'badly done(20X6)'
->>> x = bpp.IndexOutOfBoundsException("out of bounds!", -1, 1, 10)
->>> x.what()
-'out of [1, 10])out of bounds!(-1)'
->>> x.getBounds()
-<Swig Object of type 'int *' at 0x...>
-
-
-FileTools:
->>> bpp.FileTools.fileExists(".")
-True
->>> bpp.FileTools.fileExists("asdf")
-False
->>> bpp.FileTools.directoryExists("asdf")
-False
->>> bpp.FileTools.directoryExists(".")
-True
->>> bpp.FileTools.directoryExists("..")
-True
-
-This shouldn't be static
-#>>> bpp.FileTools.getParent("xxx/yyy.zzz")
-#'xxx'
->>> bpp.FileTools.getFileName("xxx/yyy.zzz")
-'yyy'
->>> bpp.FileTools.getFileName("xxx\yyy.zzz", '\\\\')
-'yyy'
->>> bpp.FileTools.getExtension("xxx/yyy.zzz")
-'zzz'
-
-
-Font:
->>> x = bpp.Font("default", "default", 12)
->>> y = x.clone()
->>> z = bpp.Font("default", "default", 13)
->>> x==y
-True
->>> x==z
-False
->>> x.getFamily()
-'default'
->>> x.getSeries()
+{AutoParameter.i}
+[class] AutoParameter:
+>>> p = bpp.Parameter("xxx",5)
+>>> ap = bpp.AutoParameter(p)
+>>> ap.getName()
+'xxx'
+>>> ap = bpp.AutoParameter()
+>>> ap.getName()
 ''
->>> x.getType()
-'default'
->>> x.getSize()
-12
->>> y.setFamily("family")
->>> y.setSeries("series")
->>> y.setType("type")
->>> y.setSize(24)
->>> y.toString()
-'family/series/type/24'
->>> x==y
+>>> ap = bpp.AutoParameter("name", 5)
+>>> ap.getName()
+'name'
+
+
+(Constraints)
+[class] Constraint:
+abstract
+[class] Interval:
+abstract
+
+[class] IncludingPositiveReal:
+>>> c = bpp.IncludingPositiveReal(1.0)
+>>> c.getDescription()
+'[ 1, +inf ['
+>>> c.getLowerBound()
+1.0
+>>> c.setLowerBound(2.0)
+>>> c.getLowerBound()
+2.0
+>>> c.isCorrect(3)
+True
+>>> c.isCorrect(1)
+False
+>>> c.isCorrect(2)
+True
+>>> c.getLimit(2)
+2.0
+>>> c.getLimit(3)
+3.0
+>>> c.getLimit(1)
+2.0
+
+[class] ExcludingPositiveReal:
+>>> c = bpp.ExcludingPositiveReal(1.0)
+>>> c.getDescription()
+'] 1, +inf ['
+>>> c.isCorrect(3)
+True
+>>> c.isCorrect(-1)
+False
+>>> c.isCorrect(1)
+False
+>>> c.getLimit(-1)
+1.0
+>>> c.setLowerBound(2)
+>>> c.getLowerBound()
+2.0
+
+[class] IncludingNegativeReal:
+>>> c = bpp.IncludingNegativeReal(1.0)
+>>> c.getDescription()
+'] -inf, 1 ]'
+>>> c.isCorrect(1)
+True
+>>> c.isCorrect(2)
+False
+>>> c.getLimit(2)
+1.0
+>>> c.getLimit(0)
+0.0
+>>> c.setUpperBound(-1)
+>>> c.getUpperBound()
+-1.0
+
+[class] ExcludingNegativeReal:
+>>> c = bpp.ExcludingNegativeReal(-3.0)
+>>> c.getDescription()
+'] -inf, -3 ['
+>>> c.isCorrect(1)
+False
+>>> c.isCorrect(-3)
+False
+>>> c.isCorrect(-4)
+True
+>>> c.getLimit(1)
+-3.0
+>>> c.getLimit(-4)
+-4.0
+>>> c.setUpperBound(-1)
+>>> c.getUpperBound()
+-1.0
+
+[class] IncludingInterval:
+>>> c = bpp.IncludingInterval(1, 3)
+>>> c.getDescription()
+'[ 1, 3 ]'
+>>> c.getLowerBound()
+1.0
+>>> c.getUpperBound()
+3.0
+>>> c.isCorrect(2)
+True
+>>> c.isCorrect(3)
+True
+>>> c.isCorrect(4)
+False
+>>> c.getLimit(4)
+3.0
+>>> c.getLimit(0)
+1.0
+>>> c.setUpperBound(4)
+>>> c.getUpperBound()
+4.0
+>>> c.setLowerBound(2)
+>>> c.getLowerBound()
+2.0
+
+[class] ExcludingInterval:
+>>> c = bpp.ExcludingInterval(1, 3)
+>>> c.getDescription()
+'] 1, 3 ['
+>>> c.getLowerBound()
+1.0
+>>> c.getUpperBound()
+3.0
+>>> c.isCorrect(2)
+True
+>>> c.isCorrect(3)
+False
+>>> c.isCorrect(4)
+False
+>>> c.getLimit(4)
+3.0
+>>> c.getLimit(0)
+1.0
+>>> c.setUpperBound(4)
+>>> c.setLowerBound(2)
+
+[class] IncludingExcludingInterval:
+>>> c = bpp.IncludingExcludingInterval(1, 3)
+>>> c.getDescription()
+'[ 1, 3 ['
+>>> c.isCorrect(1)
+True
+>>> c.isCorrect(3)
 False
 
-
-FontManager:
->>> fm = bpp.XFigLaTeXFontManager()
->>> fm
-<bpp.XFigLaTeXFontManager; proxy of <Swig Object of type 'XFigLaTeXFontManager *' at 0x...> >
->>> fm.getFonts()
-(<bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >)
->>> fm.getNumberOfFonts()
-6
->>> fm.getCodes()
-(0, 1, 2, 3, 4, 5)
->>> i = bpp.intp()
->>> i.assign(2)
->>> fm.getFont(i)
-<bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >
->>> f = fm.getFont(i)
->>> fm.getCode(f)
-2
-
->>> fm = bpp.XFigPostscriptFontManager()
->>> fm
-<bpp.XFigPostscriptFontManager; proxy of <Swig Object of type 'XFigPostscriptFontManager *' at 0x...> >
->>> fm.getFonts()
-(<bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >, <bpp.Font; proxy of <Swig Object of type 'Font *' at 0x...> >)
->>> fm.getNumberOfFonts()
-36
->>> fm.getCodes()
-(-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34)
->>> f = fm.getFont(i)
->>> fm.getCode(f)
-2
->>> f.toString()
-'Times//Bold/12'
+[class] ExcludingIncludingInterval:
+>>> c = bpp.ExcludingIncludingInterval(1, 3)
+>>> c.getDescription()
+'] 1, 3 ]'
+>>> c.isCorrect(1)
+False
+>>> c.isCorrect(3)
+True
 
 
-KeyvalTools:
-x = bpp.KeyvalException("bad keyval thingy")
+{Domain.i}
+[class] OutOfRangeException:
+>>> x = bpp.OutOfRangeException("you missed", -5.5, 1, 10)
 >>> x.what()
-'bad keyval thingy'
+'you missedValue -5.5 is out of range [1, 10[.'
 
->>> x = bpp.strp()
->>> y = bpp.strp()
->>> bpp.KeyvalTools.singleKeyval("a=b",x,y)
->>> x.value()
-'a'
->>> y.value()
-'b'
+[class] Domain:
+>>> d = bpp.Domain(1,10)
+>>> d.getBounds()
+(1.0, 10.0)
+>>> d.getSize()
+1
+>>> d.getLowerBound()
+1.0
+>>> d.getUpperBound()
+10.0
+>>> d = bpp.Domain([1,10])
+>>> d.getBounds()
+(1.0, 10.0)
 
->>> m = bpp.strMap()
->>> bpp.KeyvalTools.multipleKeyvals("a=b,c=d",m)
->>> m['a']
-'b'
->>> m['c']
-'d'
-
->>> bpp.KeyvalTools.parseProcedure("func(a=b,c=d)",x,m)
->>> x.value()
-'func'
->>> m['a']
-'b'
->>> m['c']
-'d'
-
-
-MapTools:
->>> m = bpp.intMap()
->>> m[0] = 1
->>> m[5] = 10
->>> bpp.MapTools.getKeys(m)
-(0, 5)
->>> bpp.MapTools.getValues(m)
-(1, 10)
-
->>> n = bpp.strMap()
->>> n["hello"] = "there"
->>> n["yippy"] = "skippy"
->>> bpp.MapTools.getStrKeys(n)
-('hello', 'yippy')
->>> bpp.MapTools.getStrValues(n)
-('there', 'skippy')
-
-
-MolscriptColorSet::
->>> cs = bpp.MolscriptColorSet()
->>> cs.getNumberOfColors()
-164
->>> cs.getColorNames()
-('aliceblue', 'antiquewhite', 'aquamarine', 'azure', 'beige', 'bisque', 'black', 'blanchedalmond', 'blue', 'blueviolet', 'brown', 'burlywood', 'cadetblue', 'chartreuse', 'chocolate', 'coral', 'cornflowerblue', 'cornsilk', 'crimson', 'cyan', 'darkblue', 'darkcyan', 'darkgoldenrod', 'darkgray', 'darkgreen', 'darkgrey', 'darkkhaki', 'darkmagenta', 'darkolivegreen', 'darkorange', 'darkorchid', 'darkred', 'darksalmon', 'darkseagreen', 'darkslateblue', 'darkslategray', 'darkslategrey', 'darkturquoise', 'darkviolet', 'deeppink', 'deepskyblue', 'dimgray', 'dimgrey', 'dodgerblue', 'firebrick', 'floralwhite', 'forestgreen', 'gainsboro', 'ghostwhite', 'gold', 'goldenrod', 'gray', 'green', 'greenyellow', 'grey', 'honeydew', 'hotpink', 'indianred', 'indigo', 'ivory', 'khaki', 'lavender', 'lavenderblush', 'lawngreen', 'lemonchiffon', 'lightblue', 'lightcoral', 'lightcyan', 'lightgoldenrod', 'lightgoldenrodyellow', 'lightgray', 'lightgreen', 'lightgrey', 'lightpink', 'lightsalmon', 'lightseagreen', 'lightskyblue', 'lightslateblue', 'lightslategray', 'lightslategrey', 'lightsteelblue', 'lightyellow', 'limegreen', 'linen', 'magenta', 'maroon', 'mediumaquamarine', 'mediumblue', 'mediumorchid', 'mediumpurple', 'mediumseagreen', 'mediumslateblue', 'mediumspringgreen', 'mediumturquoise', 'mediumvioletred', 'midnightblue', 'mintcream', 'mistyrose', 'moccasin', 'navajowhite', 'navy', 'navyblue', 'oldlace', 'olivedrab', 'orange', 'orangered', 'orchid', 'palegoldenrod', 'palegreen', 'paleturquoise', 'palevioletred', 'papayawhip', 'peachpuff', 'peru', 'pink', 'plum', 'powderblue', 'purple', 'red', 'rosybrown', 'royalblue', 'saddlebrown', 'salmon', 'sandybrown', 'seagreen', 'seashell', 'sgibeet', 'sgibrightgray', 'sgibrightgrey', 'sgichartreuse', 'sgidarkgray', 'sgidarkgrey', 'sgilightblue', 'sgilightgray', 'sgilightgrey', 'sgimediumgray', 'sgimediumgrey', 'sgiolivedrab', 'sgisalmon', 'sgislateblue', 'sgiteal', 'sgiverydarkgray', 'sgiverydarkgrey', 'sgiverylightgray', 'sgiverylightgrey', 'sienna', 'skyblue', 'slateblue', 'slategray', 'slategrey', 'snow', 'springgreen', 'steelblue', 'tan', 'thistle', 'tomato', 'turquoise', 'violet', 'violetred', 'wheat', 'white', 'whitesmoke', 'yellow', 'yellowgreen')
->>> cs.getColor('aliceblue').toHex()
-'#F0F8FF'
->>> cs.getColor(100).toHex()
-'#000080'
-
-
-Number:
->>> x = bpp.intNumber(5)
->>> x.getValue()
-5
->>> y = bpp.doubleNumber(5)
->>> y.getValue()
-5.0
->>> x.clone()
-<bpp.intNumber; proxy of <Swig Object of type 'Number< int > *' at 0x...> >
-
-
-PGFGraphicDevice:
->>> stream = bpp.ApplicationTools.getMessage()
->>> gd = bpp.PGFGraphicDevice(stream, 2.0)
->>> gd.beginDocument()
->>> gd.setCurrentForegroundColor(bpp.ColorTools.RED)
->>> gd.setCurrentBackgroundColor(bpp.ColorTools.BLUE)
->>> gd.setCurrentFont(bpp.Font())
->>> gd.setCurrentPointSize(1)
->>> gd.setCurrentLineType(gd.LINE_DASHED)
->>> gd.setCurrentLayer(0)
->>> gd.drawLine(5.0, 0.0, 1.7, 2.0)
->>> gd.drawRect(10.0, 20.0, 5.0, 10.0)
->>> gd.drawCircle(10.0, 10.0, 7.5)
->>> gd.drawText(5.0, 15.0, "Hiya!")
->>> gd.comment("this is a comment")
->>> gd.endDocument()
-\documentclass{article}
-% This figure was generated by the Bio++ PGF Graphic Device.
-% Althought this file can be compiled 'as is' it may not be displayed correctly, depending on the size of the picture.
-% You may consider copying the pgfpicture environment to your own LaTeX file and play with pgf settings (e.g. the pgfpages module).
-\usepackage{pgf}
-\definecolor{usercolor2}{rgb}{0,0,1}
-\definecolor{usercolor1}{rgb}{1,0,0}
-\begin{document}
-\pgfdeclarelayer{0}
-\pgfsetlayers{0}
-\begin{pgfpicture}
-\pgfsetxvec{\pgfpoint{2cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{-2cm}}
-\pgfsetstrokecolor{usercolor1}
-
-\pgfsetfillcolor{usercolor2}
-
-\fontfamily{default}
-\fontshape{}
-\fontsize{12}{12}
-\selectfont
-
-\pgfsetlinewidth{2}
-
-\pgfsetdash{{3mm}{2mm}}{0pt}
-
-\begin{pgfonlayer}{0}
-\pgfsetstrokecolor{usercolor1}
-\pgfsetfillcolor{usercolor2}
-
-\pgfpathmoveto{\pgfpointxy{5}{0}}
-\pgfpathlineto{\pgfpointxy{1.7}{2}}
-\pgfpathclose
-\pgfusepath{stroke}
-
-\pgfpathrectangle{\pgfpointxy{10}{20}}{\pgfpointxy{5}{10}}
-\pgfusepath{stroke}
-
-\pgfpathcircle{\pgfpointxy{10}{10}}{7.5}
-\pgfusepath{stroke}
-
-\pgftransformrotate{0}
-\pgftext[bottom,left,at=\pgfpointxy{5}{15}]{\textcolor{usercolor1}Hiya!}
-
-%this is a comment
-\end{pgfonlayer}{0}
-
-\end{pgfpicture}
-\end{document}
-
-
-RColorSet:
->>> cs = bpp.RColorSet()
->>> cs.getNumberOfColors()
-657
->>> cs.getColorNames()
-('aliceblue', 'antiquewhite', 'antiquewhite1', 'antiquewhite2', 'antiquewhite3', 'antiquewhite4', 'aquamarine', 'aquamarine1', 'aquamarine2', 'aquamarine3', 'aquamarine4', 'azure', 'azure1', 'azure2', 'azure3', 'azure4', 'beige', 'bisque', 'bisque1', 'bisque2', 'bisque3', 'bisque4', 'black', 'blanchedalmond', 'blue', 'blue1', 'blue2', 'blue3', 'blue4', 'blueviolet', 'brown', 'brown1', 'brown2', 'brown3', 'brown4', 'burlywood', 'burlywood1', 'burlywood2', 'burlywood3', 'burlywood4', 'cadetblue', 'cadetblue1', 'cadetblue2', 'cadetblue3', 'cadetblue4', 'chartreuse', 'chartreuse1', 'chartreuse2', 'chartreuse3', 'chartreuse4', 'chocolate', 'chocolate1', 'chocolate2', 'chocolate3', 'chocolate4', 'coral', 'coral1', 'coral2', 'coral3', 'coral4', 'cornflowerblue', 'cornsilk', 'cornsilk1', 'cornsilk2', 'cornsilk3', 'cornsilk4', 'cyan', 'cyan1', 'cyan2', 'cyan3', 'cyan4', 'darkblue', 'darkcyan', 'darkgoldenrod', 'darkgoldenrod1', 'darkgoldenrod2', 'darkgoldenrod3', 'darkgoldenrod4', 'darkgray', 'darkgreen', 'darkgrey', 'darkkhaki', 'darkmagenta', 'darkolivegreen', 'darkolivegreen1', 'darkolivegreen2', 'darkolivegreen3', 'darkolivegreen4', 'darkorange', 'darkorange1', 'darkorange2', 'darkorange3', 'darkorange4', 'darkorchid', 'darkorchid1', 'darkorchid2', 'darkorchid3', 'darkorchid4', 'darkred', 'darksalmon', 'darkseagreen', 'darkseagreen1', 'darkseagreen2', 'darkseagreen3', 'darkseagreen4', 'darkslateblue', 'darkslategray', 'darkslategray1', 'darkslategray2', 'darkslategray3', 'darkslategray4', 'darkslategrey', 'darkturquoise', 'darkviolet', 'deeppink', 'deeppink1', 'deeppink2', 'deeppink3', 'deeppink4', 'deepskyblue', 'deepskyblue1', 'deepskyblue2', 'deepskyblue3', 'deepskyblue4', 'dimgray', 'dimgrey', 'dodgerblue', 'dodgerblue1', 'dodgerblue2', 'dodgerblue3', 'dodgerblue4', 'firebrick', 'firebrick1', 'firebrick2', 'firebrick3', 'firebrick4', 'floralwhite', 'forestgreen', 'gainsboro', 'ghostwhite', 'gold', 'gold1', 'gold2', 'gold3', 'gold4', 'goldenrod', 'goldenrod1', 'goldenrod2', 'goldenrod3', 'goldenrod4', 'gray', 'gray0', 'gray1', 'gray10', 'gray100', 'gray11', 'gray12', 'gray13', 'gray14', 'gray15', 'gray16', 'gray17', 'gray18', 'gray19', 'gray2', 'gray20', 'gray21', 'gray22', 'gray23', 'gray24', 'gray25', 'gray26', 'gray27', 'gray28', 'gray29', 'gray3', 'gray30', 'gray31', 'gray32', 'gray33', 'gray34', 'gray35', 'gray36', 'gray37', 'gray38', 'gray39', 'gray4', 'gray40', 'gray41', 'gray42', 'gray43', 'gray44', 'gray45', 'gray46', 'gray47', 'gray48', 'gray49', 'gray5', 'gray50', 'gray51', 'gray52', 'gray53', 'gray54', 'gray55', 'gray56', 'gray57', 'gray58', 'gray59', 'gray6', 'gray60', 'gray61', 'gray62', 'gray63', 'gray64', 'gray65', 'gray66', 'gray67', 'gray68', 'gray69', 'gray7', 'gray70', 'gray71', 'gray72', 'gray73', 'gray74', 'gray75', 'gray76', 'gray77', 'gray78', 'gray79', 'gray8', 'gray80', 'gray81', 'gray82', 'gray83', 'gray84', 'gray85', 'gray86', 'gray87', 'gray88', 'gray89', 'gray9', 'gray90', 'gray91', 'gray92', 'gray93', 'gray94', 'gray95', 'gray96', 'gray97', 'gray98', 'gray99', 'green', 'green1', 'green2', 'green3', 'green4', 'greenyellow', 'grey', 'grey0', 'grey1', 'grey10', 'grey100', 'grey11', 'grey12', 'grey13', 'grey14', 'grey15', 'grey16', 'grey17', 'grey18', 'grey19', 'grey2', 'grey20', 'grey21', 'grey22', 'grey23', 'grey24', 'grey25', 'grey26', 'grey27', 'grey28', 'grey29', 'grey3', 'grey30', 'grey31', 'grey32', 'grey33', 'grey34', 'grey35', 'grey36', 'grey37', 'grey38', 'grey39', 'grey4', 'grey40', 'grey41', 'grey42', 'grey43', 'grey44', 'grey45', 'grey46', 'grey47', 'grey48', 'grey49', 'grey5', 'grey50', 'grey51', 'grey52', 'grey53', 'grey54', 'grey55', 'grey56', 'grey57', 'grey58', 'grey59', 'grey6', 'grey60', 'grey61', 'grey62', 'grey63', 'grey64', 'grey65', 'grey66', 'grey67', 'grey68', 'grey69', 'grey7', 'grey70', 'grey71', 'grey72', 'grey73', 'grey74', 'grey75', 'grey76', 'grey77', 'grey78', 'grey79', 'grey8', 'grey80', 'grey81', 'grey82', 'grey83', 'grey84', 'grey85', 'grey86', 'grey87', 'grey88', 'grey89', 'grey9', 'grey90', 'grey91', 'grey92', 'grey93', 'grey94', 'grey95', 'grey96', 'grey97', 'grey98', 'grey99', 'honeydew', 'honeydew1', 'honeydew2', 'honeydew3', 'honeydew4', 'hotpink', 'hotpink1', 'hotpink2', 'hotpink3', 'hotpink4', 'indianred', 'indianred1', 'indianred2', 'indianred3', 'indianred4', 'ivory', 'ivory1', 'ivory2', 'ivory3', 'ivory4', 'khaki', 'khaki1', 'khaki2', 'khaki3', 'khaki4', 'lavender', 'lavenderblush', 'lavenderblush1', 'lavenderblush2', 'lavenderblush3', 'lavenderblush4', 'lawngreen', 'lemonchiffon', 'lemonchiffon1', 'lemonchiffon2', 'lemonchiffon3', 'lemonchiffon4', 'lightblue', 'lightblue1', 'lightblue2', 'lightblue3', 'lightblue4', 'lightcoral', 'lightcyan', 'lightcyan1', 'lightcyan2', 'lightcyan3', 'lightcyan4', 'lightgoldenrod', 'lightgoldenrod1', 'lightgoldenrod2', 'lightgoldenrod3', 'lightgoldenrod4', 'lightgoldenrodyellow', 'lightgray', 'lightgreen', 'lightgrey', 'lightpink', 'lightpink1', 'lightpink2', 'lightpink3', 'lightpink4', 'lightsalmon', 'lightsalmon1', 'lightsalmon2', 'lightsalmon3', 'lightsalmon4', 'lightseagreen', 'lightskyblue', 'lightskyblue1', 'lightskyblue2', 'lightskyblue3', 'lightskyblue4', 'lightslateblue', 'lightslategray', 'lightslategrey', 'lightsteelblue', 'lightsteelblue1', 'lightsteelblue2', 'lightsteelblue3', 'lightsteelblue4', 'lightyellow', 'lightyellow1', 'lightyellow2', 'lightyellow3', 'lightyellow4', 'limegreen', 'linen', 'magenta', 'magenta1', 'magenta2', 'magenta3', 'magenta4', 'maroon', 'maroon1', 'maroon2', 'maroon3', 'maroon4', 'mediumaquamarine', 'mediumblue', 'mediumorchid', 'mediumorchid1', 'mediumorchid2', 'mediumorchid3', 'mediumorchid4', 'mediumpurple', 'mediumpurple1', 'mediumpurple2', 'mediumpurple3', 'mediumpurple4', 'mediumseagreen', 'mediumslateblue', 'mediumspringgreen', 'mediumturquoise', 'mediumvioletred', 'midnightblue', 'mintcream', 'mistyrose', 'mistyrose1', 'mistyrose2', 'mistyrose3', 'mistyrose4', 'moccasin', 'navajowhite', 'navajowhite1', 'navajowhite2', 'navajowhite3', 'navajowhite4', 'navy', 'navyblue', 'oldlace', 'olivedrab', 'olivedrab1', 'olivedrab2', 'olivedrab3', 'olivedrab4', 'orange', 'orange1', 'orange2', 'orange3', 'orange4', 'orangered', 'orangered1', 'orangered2', 'orangered3', 'orangered4', 'orchid', 'orchid1', 'orchid2', 'orchid3', 'orchid4', 'palegoldenrod', 'palegreen', 'palegreen1', 'palegreen2', 'palegreen3', 'palegreen4', 'paleturquoise', 'paleturquoise1', 'paleturquoise2', 'paleturquoise3', 'paleturquoise4', 'palevioletred', 'palevioletred1', 'palevioletred2', 'palevioletred3', 'palevioletred4', 'papayawhip', 'peachpuff', 'peachpuff1', 'peachpuff2', 'peachpuff3', 'peachpuff4', 'peru', 'pink', 'pink1', 'pink2', 'pink3', 'pink4', 'plum', 'plum1', 'plum2', 'plum3', 'plum4', 'powderblue', 'purple', 'purple1', 'purple2', 'purple3', 'purple4', 'red', 'red1', 'red2', 'red3', 'red4', 'rosybrown', 'rosybrown1', 'rosybrown2', 'rosybrown3', 'rosybrown4', 'royalblue', 'royalblue1', 'royalblue2', 'royalblue3', 'royalblue4', 'saddlebrown', 'salmon', 'salmon1', 'salmon2', 'salmon3', 'salmon4', 'sandybrown', 'seagreen', 'seagreen1', 'seagreen2', 'seagreen3', 'seagreen4', 'seashell', 'seashell1', 'seashell2', 'seashell3', 'seashell4', 'sienna', 'sienna1', 'sienna2', 'sienna3', 'sienna4', 'skyblue', 'skyblue1', 'skyblue2', 'skyblue3', 'skyblue4', 'slateblue', 'slateblue1', 'slateblue2', 'slateblue3', 'slateblue4', 'slategray', 'slategray1', 'slategray2', 'slategray3', 'slategray4', 'slategrey', 'snow', 'snow1', 'snow2', 'snow3', 'snow4', 'springgreen', 'springgreen1', 'springgreen2', 'springgreen3', 'springgreen4', 'steelblue', 'steelblue1', 'steelblue2', 'steelblue3', 'steelblue4', 'tan', 'tan1', 'tan2', 'tan3', 'tan4', 'thistle', 'thistle1', 'thistle2', 'thistle3', 'thistle4', 'tomato', 'tomato1', 'tomato2', 'tomato3', 'tomato4', 'turquoise', 'turquoise1', 'turquoise2', 'turquoise3', 'turquoise4', 'violet', 'violetred', 'violetred1', 'violetred2', 'violetred3', 'violetred4', 'wheat', 'wheat1', 'wheat2', 'wheat3', 'wheat4', 'white', 'whitesmoke', 'yellow', 'yellow1', 'yellow2', 'yellow3', 'yellow4', 'yellowgreen')
->>> cs.getColor('aliceblue').toHex()
-'#F0F8FF'
->>> cs.getColor(200).toHex()
-'#858585'
-
-
-RGBColor:
->>> x = bpp.RGBColor()
->>> x.toHex()
-'#000000'
->>> y = bpp.RGBColor(10,20,30)
->>> y.toString()
-'[R10,G20,B30]'
->>> z = bpp.RGBColor(0,0,0)
->>> x==z
-True
->>> x==y
-False
->>> x < z
-False
->>> x < y
-True
->>> bpp.uintp.frompointer(y.__aref__(0)).value()
-10
-
-
-StringTokenizer:
->>> st = bpp.StringTokenizer("Hi there! How are you?")
->>> st.getToken(0)
-'Hi'
->>> st.getToken(1)
-'there!'
->>> st.getToken(2)
-'How'
->>> st.getTokens()
-('Hi', 'there!', 'How', 'are', 'you?')
->>> st.getToken(2)
-'How'
->>> st.nextToken()
-'Hi'
->>> st.nextToken()
-'there!'
->>> st.numberOfRemainingTokens()
+>>> d = bpp.Domain(0,24,3)
+>>> d.getBounds()
+(0.0, 8.0, 16.0, 24.0)
+>>> d.getSize()
 3
->>> st.hasMoreToken()
-True
+>>> d.getBound(0)
+0.0
+>>> d.getBound(1)
+8.0
+>>> d.getValue(0)
+4.0
+>>> d.getValue(1)
+12.0
+>>> d.getLowerValue()
+4.0
+>>> d.getUpperValue()
+20.0
+>>> d.getIndex(15)
+1
+>>> d.getNearestValue(15)
+12.0
+>>> d.getIndex(17)
+2
+>>> d.getNearestValue(17)
+20.0
+
+>>> d = bpp.Domain([0,10,20,30],[4,13,21])
+>>> d.getNearestValue(19)
+13.0
+>>> d.getNearestValue(20)
+21.0
 
 
-SVGGraphicDevice:
->>> stream = bpp.ApplicationTools.getMessage()
->>> gd = bpp.SVGGraphicDevice(stream)
->>> gd.beginDocument()
->>> gd.setCurrentForegroundColor(bpp.ColorTools.RED)
->>> gd.setCurrentBackgroundColor(bpp.ColorTools.BLUE)
->>> gd.setCurrentFont(bpp.Font())
->>> gd.setCurrentPointSize(1)
->>> gd.setCurrentLineType(gd.LINE_DASHED)
->>> gd.setCurrentLayer(0)
->>> gd.drawLine(5.0, 0.0, 1.7, 2.0)
->>> gd.drawRect(10.0, 20.0, 5.0, 10.0)
->>> gd.drawCircle(10.0, 10.0, 7.5)
->>> gd.drawText(5.0, 15.0, "Hiya!")
->>> gd.endDocument()
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
-"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" version="1.1"
- xmlns="http://www.w3.org/2000/svg"
- >
-<g id="layer0" >
-<line x1="5" y1="0" x2="1.7" y2="2" style="stroke:rgb(255,0,0);stroke-width:1;stroke-dasharray:4,4" />
-<rect x="10" y="20" width="5" height="10" style="stroke:rgb(255,0,0);stroke-width:1" />
-<rect cx="10" cy="10" cr="7.5" style="stroke:rgb(255,0,0);stroke-width:1" />
-<text x="5" y="15" rotate="0" style="font-family:default;font-style:;font-size:12px;dominant-baseline:before-edge;text-anchor:start;fill:rgb(255,0,0)" >Hiya!</text>
-</g>
-</svg>
->>> bpp.SVGGraphicDevice.colorToText(bpp.ColorTools.CYAN)
-'rgb(0,255,255)'
+{EigenValue.i}
+[class] EigenValue:
+>>> m = bpp.doubleRowMatrix()
+>>> bpp.MatrixTools.getId(2,m)
+>>> bpp.MatrixTools.scale(m,2,1)
+>>> m[0],m[1]
+((3.0, 1.0), (1.0, 3.0))
+>>> ev = bpp.doubleEigenValue(m)
+>>> ev.getRealEigenValues()
+(2.0, 4.0)
+>>> ev.getImagEigenValues()
+(0.0, 0.0)
+>>> ev.getV()[0],ev.getV()[1]
+((0.70710678118654746, 0.70710678118654746), (-0.70710678118654746, 0.70710678118654746))
+>>> ev.getD()[0],ev.getD()[1]
+((2.0, 0.0), (0.0, 4.0))
 
 
-TextTools:
->>> bpp.TextTools.isEmpty("")
-True
->>> bpp.TextTools.isEmpty("a")
-False
+{Function.i}
+[class] Function:
+abstract
 
->>> bpp.TextTools.toUpper('aBc DeF')
-'ABC DEF'
+[class] DerivableFirstOrder:
+abstract
 
->>> bpp.TextTools.toLower('aBc DeF')
-'abc def'
+[class] DerivableSecondOrder:
+abstract
 
->>> bpp.TextTools.isWhiteSpaceCharacter(" ")
-True
->>> bpp.TextTools.isWhiteSpaceCharacter("a")
-False
->>> bpp.TextTools.isWhiteSpaceCharacter("  ")
-Traceback (most recent call last):
-...
-TypeError: in method 'TextTools_isWhiteSpaceCharacter', argument 1 of type 'char'
-
->>> bpp.TextTools.removeWhiteSpaces(" icky bicky beebop ")
-'ickybickybeebop'
->>> bpp.TextTools.removeFirstWhiteSpaces(" icky bicky beebop ")
-'icky bicky beebop '
->>> bpp.TextTools.removeLastWhiteSpaces(" icky bicky beebop ")
-' icky bicky beebop'
->>> bpp.TextTools.removeSurroundingWhiteSpaces(" icky bicky beebop ")
-'icky bicky beebop'
-
->>> bpp.TextTools.isNewLineCharacter("\\n")
-True
->>> bpp.TextTools.isNewLineCharacter("x")
-False
->>> bpp.TextTools.removeNewLines("hello\\nthere\\nwoohoo\\n")
-'hellotherewoohoo'
->>> bpp.TextTools.removeLastNewLines("hello\\nthere\\nwoohoo\\n")
-'hello\\nthere\\nwoohoo'
-
->>> bpp.TextTools.isDecimalNumber("9")
-True
->>> bpp.TextTools.isDecimalNumber("x")
-False
->>> bpp.TextTools.isDecimalNumber("987.6")
-True
->>> bpp.TextTools.isDecimalNumber("987.6","~")
-False
->>> bpp.TextTools.isDecimalNumber("987~6","~")
-True
-
->>> bpp.TextTools.toString(5);
-'5'
->>> bpp.TextTools.toString(-340);
-'-340'
->>> bpp.TextTools.toString('5');
-'5'
->>> bpp.TextTools.toString(5.1234567);
-'5.12346'
->>> bpp.TextTools.toInt('5.1234567');
-5
->>> bpp.TextTools.toDouble('5.25');
-5.25
-
->>> bpp.TextTools.resizeRight("abc", 6)
-'abc   '
->>> bpp.TextTools.resizeLeft("abc", 6, "!")
-'!!!abc'
-
->>> bpp.TextTools.removeSubstrings("one fish", 'n', 'i')
-'osh'
-
->>> bpp.TextTools.removeChar("fffishyf", 'f')
-'ishy'
->>> bpp.TextTools.count("fififishyf", 'fi')
-3
-
->>> bpp.TextTools.startsWith("fishy", "zz")
-False
->>> bpp.TextTools.startsWith("fishy", "fi")
-True
->>> bpp.TextTools.endsWith("fishy", "zz")
-False
->>> bpp.TextTools.endsWith("fishy", "shy")
-True
-
->>> bpp.TextTools.split("abcdef", 2)
-('ab', 'cd', 'ef')
-
->>> bpp.TextTools.intToString(51)
-'51'
->>> bpp.TextTools.intFromString("51")
-51
->>> bpp.TextTools.intTo("51")
-51
-
->>> bpp.TextTools.doubleToString(51.5)
-'51.5'
->>> bpp.TextTools.doubleToString(51.5555555, 5)
-'51.556'
->>> bpp.TextTools.doubleFromString("51.5")
-51.5
->>> bpp.TextTools.doubleTo("51.5")
-51.5
-
->>> bpp.TextTools.charToString('X')
-'X'
->>> bpp.TextTools.charFromString("X")
-'X'
->>> bpp.TextTools.charTo("X")
-'X'
+[class] FunctionWrapper:
+abstract
 
 
-XFigGraphicDevice:
->>> stream = bpp.ApplicationTools.getMessage()
->>> gd = bpp.XFigGraphicDevice(stream)
->>> gd.beginDocument()
->>> gd.setCurrentForegroundColor(bpp.ColorTools.RED)
->>> gd.setCurrentBackgroundColor(bpp.ColorTools.BLUE)
->>> gd.setCurrentFont(bpp.XFigPostscriptFontManager().getFonts()[1])
->>> gd.setCurrentPointSize(1)
->>> gd.setCurrentLineType(gd.LINE_DASHED)
->>> gd.setCurrentLayer(0)
->>> gd.drawLine(5.0, 0.0, 1.7, 2.0)
->>> gd.drawRect(10.0, 20.0, 5.0, 10.0)
->>> gd.drawCircle(10.0, 10.0, 7.5)
->>> gd.drawText(5.0, 15.0, "Hiya!")
->>> gd.endDocument()
-#FIG 3.2 Produced by TreeMap version 0.1
-Portrait
-Flush left
-Metric
-A4
-100
-Single
+{FunctionTools.i}
+[class] ParameterGrid:
+>>> grid = bpp.ParameterGrid()
+>>> grid.addDimension("x", [0,10])
+>>> grid.addDimension("y", [-5,5,10])
+>>> grid.getDimensionName(0)
+'x'
+>>> grid.getDimensionName(1)
+'y'
+>>> grid.getDimensionNames()
+('x', 'y')
+>>> grid.getNumberOfDimensions()
+2
+>>> grid.getTotalNumberOfPoints()
+6
+>>> grid.getPoints()
+((0.0, 10.0), (-5.0, 5.0, 10.0))
+>>> grid.getPointsForDimension(0)
+(0.0, 10.0)
+>>> grid.getPointsForDimension('y')
+(-5.0, 5.0, 10.0)
+
+
+{Matrix.i}
+[class] RowMatrix:
+>>> m = bpp.intRowMatrix()
+>>> m.nRows()
 0
-72 2
-#Color definitions:
-2 1 1 1 4 1 0 -1 -1 -1 0 0 0 0 0 2
-5 0
-1.7 2
-2 2 0 1 4 1 0 -1 -1 -1 0 0 0 0 0 5
-10 20
-15 20
-15 30
-10 30
-10 20
-1 3 0 1 4 1 0 -1 -1 -1 1 0 10 10 7.5 7.5 17.5 10 17.5 10
+>>> m.nCols()
+0
+>>> n = bpp.intRowMatrix(4, 5)
+>>> n.nRows()
+4
+>>> n.nCols()
+5
+>>> m.resize(3,4)
+>>> m.nRows()
+3
+>>> m.nCols()
+4
 
-4 0 4 50 -1 0 12 0 4 -1 -1 5 14 Hiya!\001
+>>> o = bpp.intRowMatrix(m)
+>>> o.nRows()
+3
+>>> o = n.clone()
+>>> o.nRows()
+4
+
+>>> m[0]
+(0, 0, 0, 0)
+>>> m.row(0)
+(0, 0, 0, 0)
+>>> m.col(1)
+(0, 0, 0)
+
+>>> x = bpp.doubleRowMatrix(3, 3)
+>>> x[0]
+(0.0, 0.0, 0.0)
+
+
+{MatrixTools.i}
+[class] MatrixTools:
+>>> m = bpp.intRowMatrix()
+>>> bpp.MatrixTools.getId(2,m)
+>>> m[0],m[1]
+((1, 0), (0, 1))
+>>> n = bpp.intRowMatrix()
+>>> bpp.MatrixTools.getId(2,n)
+>>> bpp.MatrixTools.add(m,n)
+>>> m[0],m[1]
+((2, 0), (0, 2))
+
+>>> bpp.MatrixTools.fill(m,5)
+>>> m[0],m[1]
+((5, 5), (5, 5))
+>>> bpp.MatrixTools.scale(m,3)
+>>> m[0],m[1]
+((15, 15), (15, 15))
+>>> bpp.MatrixTools.scale(m,2,2)
+>>> m[0],m[1]
+((32, 32), (32, 32))
+
+>>> m = bpp.intRowMatrix()
+>>> v = bpp.intVector()
+>>> v.append(1)
+>>> v.append(2)
+>>> v.append(3)
+>>> bpp.MatrixTools.diag(v,m)
+>>> m[0],m[1],m[2]
+((1, 0, 0), (0, 2, 0), (0, 0, 3))
+
+>>> bpp.MatrixTools.fill(5,m)
+>>> bpp.MatrixTools.diag(m,v)
+>>> v[0],v[1],v[2]
+(5, 5, 5)
+
+>>> bpp.MatrixTools.fill(m,5)
+>>> bpp.MatrixTools.getId(3,n)
+>>> n[0],n[1],n[2]
+((1, 0, 0), (0, 1, 0), (0, 0, 1))
+>>> a = bpp.intRowMatrix()
+>>> bpp.MatrixTools.mult(m,n,a)
+>>> a[0],a[1],a[2]
+((5, 5, 5), (5, 5, 5), (5, 5, 5))
+>>> bpp.MatrixTools.mult(m,v,n,a)
+>>> a[0],a[1],a[2]
+((25, 25, 25), (25, 25, 25), (25, 25, 25))
+
+>>> v.clear()
+>>> v.append(2)
+>>> v.append(4)
+>>> v.append(6)
+>>> bpp.MatrixTools.diag(v,m)
+>>> m[0],m[1],m[2]
+((2, 0, 0), (0, 4, 0), (0, 0, 6))
+>>> bpp.MatrixTools.whichmax(m)
+(2, 2)
+>>> bpp.MatrixTools.whichmin(m)
+(0, 1)
+>>> bpp.MatrixTools._print(m)
+3x3
+[
+[2, 0, 0]
+[0, 4, 0]
+[0, 0, 6]
+]
+>>> bpp.MatrixTools.isSquare(m)
+True
+
+>>> bpp.MatrixTools.getId(3,id)
+>>> bpp.MatrixTools.getId(2,i)
+>>> bpp.MatrixTools.inv(id,a)
+>>> a[0],a[1],a[2]
+((1, 0, 0), (0, 1, 0), (0, 0, 1))
+
+>>> bpp.MatrixTools.getId(2,id)
+>>> m = bpp.intRowMatrix(2,2)
+>>> bpp.MatrixTools.fill(m,3)
+>>> bpp.MatrixTools.kroneckerSum(id,m,a)
+>>> a[0],a[1],a[2],a[3]
+((1, 0, 5, 0), (0, 1, 5, 0), (5, 5, 3, 3), (0, 0, 3, 3))
+>>> bpp.MatrixTools.kroneckerMult(id,m,a)
+>>> a[0],a[1],a[2],a[3]
+((3, 3, 0, 0), (3, 3, 0, 0), (0, 0, 3, 3), (0, 0, 3, 3))
+>>> bpp.MatrixTools.copy(a,n)
+>>> n[0],n[1],n[2],n[3]
+((3, 3, 0, 0), (3, 3, 0, 0), (0, 0, 3, 3), (0, 0, 3, 3))
+
+>>> m = bpp.doubleRowMatrix(3,3)
+>>> a = bpp.doubleRowMatrix()
+>>> bpp.MatrixTools.fill(m,2)
+>>> bpp.MatrixTools.pow(m,3,a)
+>>> a[0],a[1],a[2]
+((72.0, 72.0, 72.0), (72.0, 72.0, 72.0), (72.0, 72.0, 72.0))
+
+>>> id = bpp.doubleRowMatrix()
+>>> bpp.MatrixTools.getId(2,id)
+>>> bpp.MatrixTools.exp(id,a)
+>>> a[0],a[1]
+((2.7182818284590451, 0.0), (0.0, 2.7182818284590451))
+
+>>> m = bpp.doubleRowMatrix(2,2)
+>>> a = bpp.doubleRowMatrix()
+>>> bpp.MatrixTools.fill(m,2)
+>>> m.resize(1,2)
+>>> m.resize(2,2)
+>>> m[0],m[1]
+((2.0, 2.0), (0.0, 0.0))
+>>> bpp.MatrixTools.transpose(m,a)
+>>> a[0],a[1]
+((2.0, 0.0), (2.0, 0.0))
+
+
+{NumCalcApplicationTools.i}
+[class] NumCalcApplicationTools:
+>>> bpp.NumCalcApplicationTools.seqFromString("2,4,6")
+(2, 4, 6)
+>>> bpp.NumCalcApplicationTools.seqFromString("2,4,6-10")
+(2, 4, 6, 7, 8, 9, 10)
+>>> bpp.NumCalcApplicationTools.getVector("1.0, 2.5, 3.25, 4.0")
+(1.0, 2.5, 3.25, 4.0)
+>>> bpp.NumCalcApplicationTools.getVector("seq(from=1,to=5,step=2)")
+(1.0, 3.0, 5.0)
+>>> bpp.NumCalcApplicationTools.getVector("seq(from=1,to=5,size=4)")
+(1.0, 2.0, 3.0, 5.0)
+
+>>> pl = bpp.ParameterList()
+>>> pl.addParameter(bpp.Parameter("a",1))
+>>> pl.addParameter(bpp.Parameter("b",2))
+>>> pl.addParameter(bpp.Parameter("c",3))
+>>> bpp.NumCalcApplicationTools.getDefaultValue(pl,"a",-666)
+1.0
+>>> bpp.NumCalcApplicationTools.getDefaultValue(pl,"d",-666)
+-666.0
+
+>>> map = bpp.strMap()
+>>> map["grid.number_of_parameters"] = '2'
+>>> map["grid.parameter1.name"] = 'x'
+>>> map["grid.parameter1.values"] = "5,6"
+>>> map["grid.parameter2.name"] = 'y'
+>>> map["grid.parameter2.values"] = "1,2,3"
+>>> g = bpp.NumCalcApplicationTools.getParameterGrid(map)
+>>> g.getPoints()
+((5.0, 6.0), (1.0, 2.0, 3.0))
+
+
+{NumConstants.i}
+[class] NumConstants:
+>>> bpp.NumConstants.GOLDEN_RATIO_PHI
+1.6180339887498949
+>>> bpp.NumConstants.GOLDEN_RATIO_R
+0.6180339887498949
+>>> bpp.NumConstants.GOLDEN_RATIO_C
+0.3819660112501051
+>>> bpp.NumConstants.TINY
+9.9999999999999998e-13
+>>> bpp.NumConstants.VERY_TINY
+9.9999999999999995e-21
+>>> bpp.NumConstants.VERY_BIG
+1.7e+23
+>>> bpp.NumConstants.PI
+3.1415929999999999
+
+
+{NumTools.i}
+[class] NumTools
+>>> bpp.NumTools.abs(-5)
+5
+>>> bpp.NumTools.abs(-5.0)
+5.0
+>>> bpp.NumTools.sign(5)
+1
+>>> bpp.NumTools.sign(-5)
+-1
+>>> bpp.NumTools.sign(600.0)
+1.0
+>>> bpp.NumTools.sign(4,-5)
+-4
+>>> bpp.NumTools.sign(4,23)
+4
+>>> bpp.NumTools.max(4,5)
+5
+>>> bpp.NumTools.min(4,5)
+4
+>>> bpp.NumTools.sqr(4)
+16
+>>> bpp.NumTools.pow(2,5)
+32
+>>> bpp.NumTools.fact(4)
+24
+>>> a = bpp.intp()
+>>> a.assign(4)
+>>> b = bpp.intp()
+>>> b.assign(21)
+>>> bpp.NumTools.swap(a,b)
+>>> a.value()
+21
+>>> b.value()
+4
+
+>>> bpp.NumTools.shift(a,b,5)
+>>> bpp.NumTools.shift(a,b,6)
+>>> a.value()
+5
+>>> b.value()
+6
+>>> bpp.NumTools.shift(a,b,36)
+>>> a.value()
+6
+>>> b.value()
+36
+>>> c = bpp.intp()
+>>> c.assign(-16)
+>>> bpp.NumTools.shift(a,b,c,30)
+>>> a.value()
+36
+>>> b.value()
+-16
+>>> c.value()
+30
+
+
+{Optimizer.i}
+[class] OptimizationEvent:
+>>> oe = bpp.OptimizationEvent(bpp.BrentOneDimension())
+>>> oe.getOptimizer()
+<bpp.Optimizer; proxy of <Swig Object of type 'Optimizer *' at 0x...> >
+
+[class] OptimizationListener:
+abstract, no known inheritor
+
+[class] Optimizer:
+abstract
+
+
+{Parameter.i}
+[class] Parameter:
+>>> p = bpp.Parameter("xxx", 5)
+>>> p.getName()
+'xxx'
+>>> p.getValue()
+5.0
+>>> p.setName("yyy")
+>>> p.setValue(6)
+>>> p.hasConstraint()
+False
+>>> p = bpp.Parameter("xxx", 5, bpp.IncludingPositiveReal(-5))
+>>> p.hasConstraint()
+True
+>>> p.getConstraint()
+<bpp.Constraint; proxy of <Swig Object of type 'Constraint *' at 0x...> >
+
+[class] ParameterListener:
+# other functions segfault, because they rely on ConstraintException (see ParameterExceptions)
+# ParameterListener is abstract
+# addParameterListener relies on classes inheriting from ParameterListener, which are all nested--they can't be done in SWIG right now
+
+[class] ParameterEvent:
+>>> e = bpp.ParameterEvent(bpp.Parameter())
+>>> e.clone()
+<bpp.Clonable; proxy of <Swig Object of type 'Clonable *' at 0x95afd58> >
+>>> e.getParameter()
+<bpp.Parameter; proxy of <Swig Object of type 'Parameter *' at 0x95a5538> >
+>>> e.getParameter().getName()
+
+
+{ParameterAliasable.i}
+[class] ParameterAliasable:
+abstract
+
+[class] ParameterAliasableAdapter:
+abstract
+
+
+{ParameterExceptions.i}
+[class] ParameterException:
+>>> x = bpp.ParameterException("bad parameter", bpp.Parameter())
+>>> x.what()
+'ParameterException: bad parameter()'
+
+[class] ParameterNotFoundException:
+>>> x = bpp.ParameterNotFoundException("aaa", "bbb")
+>>> x.what()
+'ParameternotFoundException: aaa(bbb)'
+
+[class] ConstraintException:
+# ConstraintException segfaults, even in straight C++
+
+
+{ParameterList.i}
+[class] ParameterList:
+>>> pl = bpp.ParameterList()
+>>> pl.addParameter(bpp.Parameter("one", 1))
+>>> pl.addParameter(bpp.Parameter("two", 2))
+>>> pl.addParameter(bpp.Parameter("three", 3))
+>>> pl.printParameters(bpp.ApplicationTools.getMessage())
+Name:	Value:	Constraint:
+_________________________________________________
+one	1
+two	2
+three	3
+>>> pl1 = pl.clone()
+>>> pl1.deleteParameter("one")
+>>> pl1.setParameterValue("two", -2)
+>>> pl1.printParameters(bpp.ApplicationTools.getMessage())
+Name:	Value:	Constraint:
+_________________________________________________
+two	-2
+three	3
+>>> pl1.setAllParametersValues(pl)
+>>> pl1.printParameters(bpp.ApplicationTools.getMessage())
+Name:	Value:	Constraint:
+_________________________________________________
+two	2
+three	3
+>>> pl.getParameterNames()
+('one', 'two', 'three')
+
+>>> pl2 = bpp.ParameterList()
+>>> pl2.addParameter(bpp.Parameter("four", 4))
+>>> pl2.addParameter(bpp.Parameter("five", 5))
+>>> pl.addParameters(pl2)
+>>> pl.deleteParameters(["two","four"])
+>>> pl.getParameterNames()
+('one', 'three', 'five')
+>>> pl.whichParameterHasName("five")
+2
+>>> pl3 = pl.subList(1)
+>>> pl3.getParameterNames()
+('three',)
+>>> pl3 = pl.intVectorSubList([1,2])
+>>> pl3.getParameterNames()
+('three', 'five')
+>>> pl3 = pl.subList(["one","three"])
+>>> pl3.getParameterNames()
+('one', 'three')
+>>> pl3.getParameter("one").getValue()
+1.0
+
+>>> pl3.hasParameter("two")
+False
+>>> pl1.getCommonParametersWith(pl3).getParameterNames()
+('three',)
+
+>>> pl1.getParameterNames()
+('two', 'three')
+>>> pl1.setParameterValue('two', -2)
+>>> pl1.setParameterValue('three', -3)
+>>> pl.matchParameters(pl1)
+>>> pl.printParameters(bpp.ApplicationTools.getMessage())
+Name:	Value:	Constraint:
+_________________________________________________
+one	1
+three	-3
+five	5
+>>> pl.setParameterValue('three', 3)
+>>> pl.matchParametersValues(pl1)
+>>> pl.printParameters(bpp.ApplicationTools.getMessage())
+Name:	Value:	Constraint:
+_________________________________________________
+one	1
+three	-3
+five	5
+
+>>> pl1.deleteParameter("two")
+>>> pl.setParameterValue('three', 3)
+>>> pl.setParameters(pl1)
+>>> pl.printParameters(bpp.ApplicationTools.getMessage())
+Name:	Value:	Constraint:
+_________________________________________________
+one	1
+three	-3
+five	5
+>>> pl.setParameterValue('three', 3)
+>>> pl.setParametersValues(pl1)
+>>> pl.printParameters(bpp.ApplicationTools.getMessage())
+Name:	Value:	Constraint:
+_________________________________________________
+one	1
+three	-3
+five	5
+
+>>> pl1 = pl.clone()
+>>> pl.setParameterValue('three', 3)
+>>> pl.setAllParametersValues(pl1)
+>>> pl.printParameters(bpp.ApplicationTools.getMessage())
+Name:	Value:	Constraint:
+_________________________________________________
+one	1
+three	-3
+five	5
+
+>>> pl1.intVectorDeleteParameters([0,2])
+>>> pl1.getParameterNames()
+('three',)
+>>> pl.reset()
+>>> pl.getParameterNames()
+()
+
+
+{Parametrizable.i}
+[class] Parametrizable:
+abstract
+
+[class] ParametrizableAdapter:
+abstract
+
+{RandomFactory.i}
+[class] RandomFactory:
+object is abstract
+
+
+{RandomTools.i}
+[class] RandomTools:
+>>> u = bpp.Uniform01K(3)
+>>> bpp.RandomTools.flipCoin(u)
+False
+>>> bpp.RandomTools.giveIntRandomNumberBetweenZeroAndEntry(100,u)
+31
+>>> bpp.RandomTools.giveRandomNumberBetweenZeroAndEntry(100.0,u)
+60.814047800000004
+>>> bpp.RandomTools.randGaussian(0.0, 1.0, u)
+-0.62069527689490023
+>>> bpp.RandomTools.randGamma(0.5, u)
+0.30268821638682947
+>>> bpp.RandomTools.randGamma(0.5, 1.0, u)
+0.01802603635810052
+>>> bpp.RandomTools.randExponential(10.0, u)
+19.300665788857199
+>>> bpp.RandomTools.setSeed(123)
+>>> bpp.RandomTools.intGetSample([1,2,3,10,20,30],4)
+(20, 2, 30, 10)
+>>> bpp.RandomTools.intGetSample([1,2,3,10,20,30],7,True)
+(3, 1, 2, 3, 1, 3, 2)
+>>> bpp.RandomTools.doubleGetSample([1.0,2.0,3.0,10.0,20.0,30.0],4)
+(1.0, 20.0, 2.0, 3.0)
+>>> bpp.RandomTools.doubleGetSample([1.0,2.0,3.0,10.0,20.0,30.0],7,True)
+(3.0, 30.0, 30.0, 10.0, 30.0, 3.0, 10.0)
+>>> bpp.RandomTools.randMultinomial(3, [0.1,0.2,0.7])
+(2, 1, 0)
+>>> bpp.RandomTools.qNorm(0.8)
+0.84162122160185238
+>>> bpp.RandomTools.lnGamma(10)
+12.801827480080648
+>>> bpp.RandomTools.incompleteGamma(1,2,3)
+0.013155790587229233
+>>> bpp.RandomTools.qChisq(0.5,1)
+0.45493642315776361
+>>> bpp.RandomTools.pChisq(2,2)
+0.63212055877757123
+>>> bpp.RandomTools.qGamma(0.5,1,1)
+0.69314718056711344
+>>> bpp.RandomTools.pGamma(2,1,1)
+0.86466471676068735
+
+
+{StatTest.i}
+[class] StatTest:
+object is abstract
+
+
+{TestUnit.i}
+[class] TestUnit:
+>>> bpp.TestUnit().testEigen()
+M=
+2x2
+[
+[2.3, 1.4]
+[5, -0.9]
+]
+D=
+2x2
+[
+[3.79192, 0]
+[0, -2.39192]
+]
+V1=
+2x2
+[
+[0.684285, -0.330851]
+[0.729215, 1.10881]
+]
+V2=
+2x2
+[
+[1.10881, 0.330851]
+[-0.729215, 0.684285]
+]
+V1 . D . V2=
+2x2
+[
+[2.3, 1.4]
+[5, -0.9]
+]
+False
+
+
+{Uniform01K.i}
+[class] Uniform01K:
+>>> u = bpp.Uniform01K(2)
+>>> u.drawNumber()
+0.29863335200000002
+>>> u.drawNumber()
+0.92540093800000001
+>>> u.setSeed(2)
+>>> u.drawNumber()
+0.29863335200000002
+
+
+{Uniform01QD.i}
+[class] Uniform01QD:
+>>> u = bpp.Uniform01QD(1)
+>>> u.drawNumber()
+0.51387007813900709
+>>> u.drawNumber()
+0.82425869675353169
+>>> u.setSeed(1)
+>>> u.drawNumber()
+0.51387007813900709
+
+
+{Uniform01WH.i}
+[class] Uniform01WH:
+>>> u = bpp.Uniform01WH(10000)
+>>> u.drawNumber()
+0.54945270025470894
+>>> u.drawNumber()
+0.95144549201369322
+>>> u.setSeed(10000)
+>>> u.drawNumber()
+0.54945270025470894
+
+{VectorExceptions.i}
+[class] VectorException:
+>>> vi = bpp.intVector()
+>>> vi.append(1)
+>>> vi.append(2)
+>>> vd = bpp.doubleVector()
+>>> vd.append(1.0)
+>>> vd.append(2.0)
+
+>>> x = bpp.intVectorException("silly vector", vi)
+>>> x.what()
+'VectorException: silly vector'
+>>> x.getVector()[0]
+1
+>>> x = bpp.doubleVectorException("silly double vector", vd)
+>>> x.what()
+'VectorException: silly double vector'
+>>> x.getVector()[0]
+1.0
+
+[class] EmptyVectorException:
+>>> x = bpp.intEmptyVectorException("silly empty vector", vi)
+>>> x.what()
+'VectorException: EmptyVectorException: silly empty vector'
+>>> x.getVector()[0]
+1
+
+[class] DimensionException:
+>>> x = bpp.DimensionException("bad dimension!", 2, 3)
+>>> x.what()
+'DimensionException (found 2, should be 3bad dimension!'
+>>> x.getDimension()
+2
+>>> x.getCorrectDimension()
+3
+
+[class] ElementNotFoundException:
+>>> p = bpp.intp()
+>>> x = bpp.intElementNotFoundException("I'm lost!", vi, p)
+>>> x.what()
+"VectorException: ElementNotFoundException: I'm lost!"
+>>> x.getVector()[0]
+1
+>>> x.getElement()
+<Swig Object of type 'int *' at 0x8fbf750>
+>>> bpp.intp.frompointer(x.getElement()).value()
+0
+
+
 """
 
 

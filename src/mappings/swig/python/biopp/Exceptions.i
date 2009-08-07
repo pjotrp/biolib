@@ -13,8 +13,8 @@ using namespace std;
 class Exception:public exception
 {
   public:
-    Exception(const char * text): _message(string(text));
-    Exception(const string & text): _message(text);
+    Exception(const char * text);
+    Exception(const string & text);
     virtual ~Exception() throw();
     const char * what() const throw();
 };
@@ -22,24 +22,24 @@ class Exception:public exception
 class IOException:public Exception
 {
   public: // Class constructors and destructor:
-    IOException(const char * text): Exception(text) {}
-    IOException(const string & text): Exception(text) {} 
-    virtual ~IOException() throw() {}
+    IOException(const char * text);
+    IOException(const string & text); 
+    virtual ~IOException() throw();
 };
 
 class NullPointerException:public Exception
 {
   public:
-    NullPointerException(const char * text): Exception(text);
-    NullPointerException(const string & text): Exception(text);
+    NullPointerException(const char * text);
+    NullPointerException(const string & text);
     virtual ~NullPointerException() throw();
 };
 
 class ZeroDivisionException:public Exception
 {
   public:
-    ZeroDivisionException(const char * text): Exception(text);
-    ZeroDivisionException(const string & text): Exception(text);
+    ZeroDivisionException(const char * text);
+    ZeroDivisionException(const string & text);
     virtual ~ZeroDivisionException() throw();
 };
 

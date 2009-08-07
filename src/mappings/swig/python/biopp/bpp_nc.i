@@ -1,4 +1,6 @@
-%module bpp_nc
+%module bpp
+
+%include "swigutils.i"
 
 %include "AbstractDiscreteDistribution.i"
 %include "AbstractNumericalDerivative.i"

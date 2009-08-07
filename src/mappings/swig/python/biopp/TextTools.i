@@ -9,11 +9,14 @@ using namespace bpp;
 %include "std_vector.i"
 %include "std_sstream.i"
 //#include <iomanip>
+%include "swigutils.i"  // added for vector defs
 
 using namespace std;
 
 %ignore TextTools::TextTools;
 %ignore TextTools::~TextTools;
+
+//%template(stringVector) std::vector<std::string>;
 
 class TextTools
 {
@@ -48,4 +51,17 @@ class TextTools
     static unsigned int count(const string& s, const string& pattern);
     static bool startsWith(const string& s, const string& pattern);
     static bool endsWith(const string& s, const string& pattern);
+
+    %template(intToString) toString<int>;
+    %template(intFromString) fromString<int>;
+    %template(intTo) to<int>;
+
+    %template(doubleToString) toString<double>;
+    %template(doubleFromString) fromString<double>;
+    %template(doubleTo) to<double>;
+
+    %template(charToString) toString<char>;
+    %template(charFromString) fromString<char>;
+    %template(charTo) to<char>;
+
 };

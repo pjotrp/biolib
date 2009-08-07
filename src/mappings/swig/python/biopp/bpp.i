@@ -1,5 +1,7 @@
 %module bpp
 
+%include "swigutils.i"
+
 %include "bpp_utils.i"
 %include "bpp_nc.i"
 %include "bpp_seq.i"

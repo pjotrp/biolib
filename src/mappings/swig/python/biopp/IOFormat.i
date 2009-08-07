@@ -11,11 +11,11 @@ using namespace std;
 
 class IOFormat
 {
-	public:
-		IOFormat() {}
-		virtual ~IOFormat() {}
+  public:
+    IOFormat();
+    virtual ~IOFormat();
 
-		virtual const string getDataType() const = 0;
-		virtual const string getFormatName() const = 0;
-		virtual const string getFormatDescription() const = 0;
+    virtual const string getDataType() const = 0;
+    virtual const string getFormatName() const = 0;
+    virtual const string getFormatDescription() const = 0;
 };

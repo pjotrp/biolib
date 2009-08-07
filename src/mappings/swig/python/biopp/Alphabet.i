@@ -10,6 +10,7 @@ using namespace std;
 
 class Alphabet
 {
+    %rename(stringGetGeneric) getGeneric(const vector<string> & states) const throw (AlphabetException);
   public:
     Alphabet();
     virtual ~Alphabet();

@@ -14,7 +14,7 @@ using namespace std;
 class KeyvalException:public Exception
 {
   public:
-    KeyvalException(const string& message) : Exception(message);
+    KeyvalException(const string& message);
 };
 
 %ignore KeyvalTools::KeyvalTools;

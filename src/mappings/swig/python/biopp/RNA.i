@@ -9,6 +9,7 @@ using namespace std;
 
 class RNA:public NucleicAlphabet
 {
+    %rename(stringGetGeneric) getGeneric(const vector<string> & states) const throw (BadCharException);
   public:
     RNA();
     ~RNA();
