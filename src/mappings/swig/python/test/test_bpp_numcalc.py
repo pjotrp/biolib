@@ -2,24 +2,158 @@
 
 {AbstractDiscreteDistribution.i}
 [class] AbstractDiscreteDistribution:
-abstract
+>>> gamma = bpp.GammaDiscreteDistribution(3,1.0,1.0,"namespace")
+>>> gamma._print(bpp.ApplicationTools.getMessage())
+Pr(0.18907) = 0.333333
+Pr(0.712318) = 0.333333
+Pr(2.09861) = 0.333333
+>>> gamma.getNumberOfCategories()
+3
+>>> gamma.getCategory(1)
+0.71231792758713031
+>>> gamma.getProbability(1)
+0.33333333333333331
+>>> gamma.getProbability(gamma.getCategory(1))
+0.33333333333333331
+>>> gamma.getCategories()
+(0.18906978373849975, 0.71231792758713031, 2.0986122886743699)
+>>> gamma.getProbabilities()
+(0.33333333333333331, 0.33333333333333331, 0.33333333333333331)
 
-{AbstractNumericalDerivative.i}
-[class] AbstractNumericalDerivative:
-abstract
+>>> gamma.rand()
+...
+>>> gamma.randC()
+...
 
-{AbstractOptimizer.i}
-[class] AbstractOptimizer:
-abstract
+>>> gamma.getDomain().getBounds()
+(0.0, 0.40546510813254732, 1.0986122886880603, 1.7e+23)
+
+>>> gamma.getInfCumulativeProbability(0)
+1.0
+>>> gamma.getInfCumulativeProbability(1)
+1.0
+>>> gamma.getInfCumulativeProbability(2)
+1.0
+>>> gamma.getIInfCumulativeProbability(0)
+0.0
+>>> gamma.getIInfCumulativeProbability(1)
+0.0
+>>> gamma.getIInfCumulativeProbability(2)
+0.0
+>>> gamma.getSupCumulativeProbability(0)
+0.0
+>>> gamma.getSupCumulativeProbability(1)
+0.0
+>>> gamma.getSupCumulativeProbability(2)
+0.0
+>>> gamma.getSSupCumulativeProbability(0)
+0.0
+>>> gamma.getSSupCumulativeProbability(1)
+0.0
+>>> gamma.getSSupCumulativeProbability(2)
+0.0
+
+
+
+>>> con = bpp.ConstantDistribution(0.5)
+>>> con.getCategories()
+(0.5,)
+>>> con.getProbabilities()
+(1.0,)
+>>> con.set(0.5, 0.25)
+>>> con.getCategories()
+(0.5,)
+>>> con.getProbabilities()
+(0.25,)
+>>> con.add(1.0,0.25)
+>>> con.getCategories()
+(0.5, 1.0)
+>>> con.getProbabilities()
+(0.25, 0.25)
+
 
 {AbstractParameterAliasable.i}
 [class] AbstractParameterAliasable:
-abstract
+>>> gamma = bpp.GammaDiscreteDistribution(3,1.0,1.0)
+>>> gamma.getIndependentParameters().getParameterNames()
+('alpha', 'beta')
+>>> gamma.getNumberOfIndependentParameters()
+2
+>>> gamma.aliasParameters("alpha", "beta")
+>>> gamma.getIndependentParameters().getParameterNames()
+('alpha',)
+>>> gamma.getParameterValue("alpha"), gamma.getParameterValue("beta")
+(1.0, 1.0)
+>>> gamma.setParameterValue("alpha", 2.0)
+>>> gamma.getParameterValue("alpha"), gamma.getParameterValue("beta")
+(2.0, 2.0)
+>>> gamma.setParameterValue("beta", 3.0)
+>>> gamma.getParameterValue("alpha"), gamma.getParameterValue("beta")
+(2.0, 3.0)
+>>> gamma.unaliasParameters("alpha", "beta")
+>>> gamma.getIndependentParameters().getParameterNames()
+('alpha', 'beta')
+>>> gamma.setNamespace("ns")
+>>> gamma.getIndependentParameters().getParameterNames()
+('nsalpha', 'nsbeta')
 
 
 {AbstractParametrizable.i}
 [class] AbstractParametrizable:
-abstract
+>>> gamma = bpp.GammaDiscreteDistribution(3,1.0,1.0,"namespace")
+>>> gamma.getNamespace()
+'namespace'
+>>> gamma.getNumberOfParameters()
+2
+>>> gamma.getParameters().getParameterNames()
+('namespacealpha', 'namespacebeta')
+>>> gamma.hasParameter("alpha")
+True
+>>> gamma.hasParameter("zeta")
+False
+>>> gamma.getParameter("alpha").getValue()
+1.0
+>>> gamma.getParameterValue("alpha")
+1.0
+>>> gamma.setParameterValue("beta", 2.0)
+>>> gamma.getParameterValue("beta")
+2.0
+>>> gamma.getParameterNameWithoutNamespace("namespaceblerg")
+'blerg'
+>>> gamma.setNamespace("")
+
+>>> pList = gamma.getParameters()
+>>> gamma.fireParameterChanged(pList)
+
+>>> gamma.getCategories()
+(0.094534891869249876, 0.35615896379356515, 1.0493061443371849)
+>>> gamma.getParameterValue("beta")
+2.0
+>>> gamma.setParameterValue("beta", 1.0)
+>>> gamma.getCategories()
+(0.18906978373849975, 0.71231792758713031, 2.0986122886743699)
+>>> gamma.getProbabilities()
+(0.33333333333333331, 0.33333333333333331, 0.33333333333333331)
+
+>>> pList = gamma.getParameters()
+>>> pList.getParameterNames()
+('alpha', 'beta')
+>>> b2List = pList.clone()
+>>> b2List.setParameterValue("beta", 2.0)
+
+>>> g1 = gamma.clone()
+>>> g1.getParameterValue("beta")
+1.0
+>>> g1.matchParametersValues(b2List)
+>>> g1.getParameterValue("beta")
+2.0
+>>> g1.setParametersValues(pList)
+>>> g1.getParameterValue("beta")
+1.0
+>>> g1.setAllParametersValues(b2List)
+>>> g1.getParameterValue("beta")
+2.0
+
 
 {AutoParameter.i}
 [class] AutoParameter:
@@ -35,11 +169,22 @@ abstract
 'name'
 
 
-(Constraints)
+{ConstantDistribution.i}
+[class] ConstantDistribution:
+>>> con = bpp.ConstantDistribution(0.5)
+>>> con._print(bpp.ApplicationTools.getMessage())
+Pr(0.5) = 1
+>>> con.randC()
+0.5
+>>> con.getDomain().getBounds()
+(0.5, 0.5)
+
+
+(Constraints.i)
 [class] Constraint:
-abstract
+abstract, see IncludingPositveReal
 [class] Interval:
-abstract
+abstract, see IncludingInterval
 
 [class] IncludingPositiveReal:
 >>> c = bpp.IncludingPositiveReal(1.0)
@@ -178,6 +323,119 @@ False
 True
 
 
+{DataTable.i}
+[class] DataTable:
+>>> table = bpp.DataTable(2,3)
+>>> table.getNumberOfRows()
+2
+>>> table.getNumberOfColumns()
+3
+>>> table.addRow(["a","b","c"])
+>>> table.deleteRow(0)
+>>> clone = table.clone()
+>>> bpp.DataTable.write(clone, bpp.ApplicationTools.getMessage())
+		
+a	b	c
+>>> table.getRow(0)
+('', '', '')
+>>> table.getRow(1)
+('a', 'b', 'c')
+>>> table.hasRowNames()
+False
+>>> table.hasColumnNames()
+False
+>>> table.setRowNames(["alice", "bob"])
+>>> table.getRow("alice")
+('', '', '')
+>>> table.deleteRow("alice")
+>>> table.hasRow("alice")
+False
+>>> table.getRowName(0)
+'bob'
+>>> table.addRow("carol", ["x","y","z"])
+>>> table.getRowNames()
+('bob', 'carol')
+>>> copy = bpp.DataTable(table)
+>>> copy.getColumn(1)
+<bpp.strVector; proxy of <Swig Object of type 'std::vector< std::string > *' at 0x...> >
+>>> copy.getColumn(1)[0], copy.getColumn(1)[1]
+('b', 'y')
+
+>>> copy.setColumnNames(["col1","col2","col3"])
+>>> copy.hasColumnNames()
+True
+>>> copy.getColumn("col3")
+<bpp.strVector; proxy of <Swig Object of type 'std::vector< std::string > *' at 0x...> >
+>>> copy.deleteColumn("col2")
+>>> copy.hasColumn("col2")
+False
+>>> copy.getColumnNames()
+('col1', 'col3')
+>>> copy.getRow("carol")
+('x', 'z')
+>>> copy.deleteColumn(1)
+>>> copy.getRow("bob")
+('a',)
+>>> copy.getColumnName(0)
+'col1'
+>>> named = bpp.DataTable(["alpha","bravo","charlie"])
+>>> named.getColumnNames()
+('alpha', 'bravo', 'charlie')
+
+
+{DataTableExceptions.i}
+[class] TableNameNotFoundException:
+>>> x = bpp.TableNameNotFoundException("Except this!","tablename")
+>>> x.getName()
+'tablename'
+>>> x.what()
+'TableNameNotFoundException: tablename. Except this!'
+
+[class] TableRowNameNotFoundException:
+>>> x = bpp.TableRowNameNotFoundException("Missing row!", "rowname")
+>>> x.getName()
+'rowname'
+>>> x.what()
+'TableNameNotFoundException: rowname. TableRowNameNotFoundException: rowname. Missing row!'
+
+[class] TableColumnNameNotFoundException:
+>>> x = bpp.TableColumnNameNotFoundException("Missing column!", "colname")
+>>> x.getName()
+'colname'
+>>> x.what()
+'TableNameNotFoundException: colname. TableColumnNameNotFoundException: colname. Missing column!'
+
+[class] NoTableRowNamesException:
+>>> x = bpp.NoTableRowNamesException("Stupid table!")
+>>> x.what()
+'NoTableRowNamesException: Stupid table!'
+
+[class] NoTableColumnNamesException:
+>>> x = bpp.NoTableColumnNamesException("No columns either!")
+>>> x.what()
+'NoTableColumnNamesException: No columns either!'
+
+[class] TableRowNamesException:
+>>> x = bpp.TableRowNamesException("Something's fishy")
+>>> x.what()
+"TableRowNamesException: Something's fishy"
+
+[class] TableColumnNamesException:
+>>> x = bpp.TableColumnNamesException("These tables suck!")
+>>> x.what()
+'TableColumnNamesException: These tables suck!'
+
+[class] DuplicatedTableRowNameException:
+>>> x = bpp.DuplicatedTableRowNameException("Seeing double!")
+>>> x.what()
+'DuplicatedTableRowNameException: Seeing double!'
+
+[class] DuplicatedTableColumnNameException:
+>>> x = bpp.DuplicatedTableColumnNameException("You listed Doric twice.")
+>>> x.what()
+'DuplicatedTableColumnNameException: You listed Doric twice.'
+
+
 {Domain.i}
 [class] OutOfRangeException:
 >>> x = bpp.OutOfRangeException("you missed", -5.5, 1, 10)
@@ -231,6 +489,11 @@ True
 21.0
 
 
+{DiscreteDistribution.i}
+[class] DiscreteDistribution:
+abstract, see AbstractDiscreteDistribution
+
+
 {EigenValue.i}
 [class] EigenValue:
 >>> m = bpp.doubleRowMatrix()
@@ -249,17 +512,28 @@ True
 ((2.0, 0.0), (0.0, 4.0))
 
 
+{ExponentialDiscreteDistribution.i}
+[class] ExponentialDiscreteDistribution:
+>>> exp = bpp.ExponentialDiscreteDistribution(2,1,False)
+>>> exp
+<bpp.ExponentialDiscreteDistribution; proxy of <Swig Object of type 'ExponentialDiscreteDistribution *' at 0xa27fba8> >
+>>> exp.getDomain().getBounds()
+(0.0, 0.69314718055994529, 1.7e+23)
+>>> exp.randC()
+2.7392485889299025
+
+
 {Function.i}
-[class] Function:
+[xlass] Function:
 abstract
 
-[class] DerivableFirstOrder:
+[xlass] DerivableFirstOrder:
 abstract
 
-[class] DerivableSecondOrder:
+[xlass] DerivableSecondOrder:
 abstract
 
-[class] FunctionWrapper:
+[xlass] FunctionWrapper:
 abstract
 
 
@@ -284,6 +558,17 @@ abstract
 (0.0, 10.0)
 >>> grid.getPointsForDimension('y')
 (-5.0, 5.0, 10.0)
+
+
+{GammaDiscreteDistribution.i}
+[GammaDiscreteDistribution]
+>>> gamma = bpp.GammaDiscreteDistribution(3,1.0,1.0,"namespace")
+>>> gamma.clone()
+<bpp.GammaDiscreteDistribution; proxy of <Swig Object of type 'GammaDiscreteDistribution *' at 0x...> >
+>>> gamma.randC()
+...
+>>> gamma.getDomain().getBounds()
+(0.0, 0.40546510813254732, 1.0986122886880603, 1.7e+23)
 
 
 {Matrix.i}
@@ -545,6 +830,32 @@ True
 30
 
 
+{OneDimensionOptimizationTools.i}
+[class] Point:
+>>> p = bpp.Point(1.0,2.0)
+>>> p.x
+1.0
+>>> p.f
+2.0
+>>> p.set(3,4)
+>>> p.x
+3.0
+>>> p.f
+4.0
+
+[class] Bracket:
+>>> bracket = bpp.Bracket()
+>>> bracket.setA(1,2)
+>>> bracket.setB(3,4)
+>>> bracket.setC(5,6)
+>>> bracket.a.x
+1.0
+>>> bracket.b.f
+4.0
+>>> bracket.c.x
+5.0
+
+
 {Optimizer.i}
 [class] OptimizationEvent:
 >>> oe = bpp.OptimizationEvent(bpp.BrentOneDimension())
@@ -554,7 +865,7 @@ True
 [class] OptimizationListener:
 abstract, no known inheritor
 
-[class] Optimizer:
+[xlass] Optimizer:
 abstract
 
 
@@ -591,10 +902,10 @@ True
 
 {ParameterAliasable.i}
 [class] ParameterAliasable:
-abstract
+abstract, see AbstractParameterAliasable
 
 [class] ParameterAliasableAdapter:
-abstract
+abstract, see AbstractParameterAliasable
 
 
 {ParameterExceptions.i}
@@ -725,14 +1036,15 @@ five	5
 
 {Parametrizable.i}
 [class] Parametrizable:
-abstract
+abstract, see AbstractParametrizable
 
 [class] ParametrizableAdapter:
-abstract
+abstract, see AbstractParametrizable
+
 
 {RandomFactory.i}
 [class] RandomFactory:
-object is abstract
+abstract, see Uniform01K
 
 
 {RandomTools.i}
@@ -781,7 +1093,7 @@ False
 
 {StatTest.i}
 [class] StatTest:
-object is abstract
+abstract, see seq/BowkerTest
 
 
 {TestUnit.i}
