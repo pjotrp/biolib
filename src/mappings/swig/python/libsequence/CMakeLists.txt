@@ -13,6 +13,8 @@ IF(NOT BUILD_LIBS)
   SET (CMAKE_MODULE_PATH ${MAP_ROOT}/tools/cmake-support/modules)
 ENDIF(NOT BUILD_LIBS)
 
+SET(USE_GSL TRUE)
+
 SET(BOOST_PATH ${MAP_ROOT}/contrib/boost)
 SET(GSL_CONTRIB_PATH ${MAP_ROOT}/contrib/gsl)
 

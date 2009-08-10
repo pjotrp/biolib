@@ -2479,6 +2479,86 @@ def Testexponential_change():
     >>> hist = exponential_change(uni,uni01,expo,sample,imarg,0.1,1,3)
     """
 
+def Testbottleneck():
+    """Returns:The ancestral recombination graph (arg) describing the sample history.
+
+
+    Precondition:
+    d>0 and tr>0 and f>0 and rho>=0 and recovered_size>0 and initialized_marginal.nsam == initialized_sample.size()
+
+    Note:
+    Preconditions are checked by the assert macro, and are therefore disabled when compiling with -DNDEBUG. No
+    checks or warnings are otherwised performed nor given.
+
+    bottleneck(uni,uni01,expo,init_sample,init_marginal,tr,d,f,rho=0,exponential_recovery=False,recovered_size=1)
+
+    Parameters:
+    uni 	A binary function object (or equivalent) that returns a random deviate between a and b such that
+    a <= x < b. a and b are the arguments to operator() of uni
+    
+    uni01 	A function object (or equivalent) whose operator() takes no arguments and returns a random deviate
+    0 <= x < 1.
+
+    expo 	A unary function object whose operator() takes the mean of an exponential process as an argument
+    and returns a deviate from an exponential distribution with that mean
+    
+    init_sample 	An initialized vector of chromosomes for a single population. For example, this may be the
+    return value of init_sample. This object is used to copy-construct a non-const sample for the simulation
+
+    initialized_marginal 	An initialized marginal tree of the appropriate sample size for the simulation. For
+    example, the return value of init_marginal.
+
+    tr 	The time at which the population recovers from the bottleneck. In units of 4N0 generations, where N0 is the
+    effective size before the bottleneck.
+    
+    d 	The duration of the bottleneck, in units of 4N0 generations, where N0 is the effective size before the bottleneck.
+    
+    f 	Bottleneck severity. Define Nb as the effective size during the bottleneck, and N0 the effective size prior to
+    the bottleneck. f=Nb/N0.
+    
+    rho 	The population recombination rate 4N0r. The number of "sites" simulated is not neccesary, as it can be
+    obtained from initialized_sample[0].last()+1.
+
+    exponential_recovery 	If true, the population recovers from the bottleneck according to an exponential growth
+    model. If false, a stepwise bottleneck is assumed.
+
+    recovered_size 	If 1, the population recovers to N0 at time tr. If 0.5, the population recovers to 1/2 the pre-bottleneck size, etc.
+
+
+    >>> T = gsl_rng_env_setup()
+    >>> r = gsl_rng_alloc(T)
+    >>> gsl_rng_set(r,0)
+    >>> sample = init_sample(intVector(1,10),1000)
+    >>> imarg = init_marginal(10)
+    >>> uni = gsl_uniform(r)
+    >>> uni01 = gsl_uniform01(r)
+    >>> expo = gsl_exponential(r)
+    >>> hist = bottleneck(uni,uni01,expo,sample,imarg,.1,.2,.2,10,True,1)
+    """
+
+def Testinfinites_sites_sim_data():
+    """Returns:an object of type SimData that represent the sample. (the gametes are also stored
+    in gametes). The SimData object can be passed directly into class PolySIM for analysis
+
+    infinite_sites_sim_data(poiss,uni,nsites,history,theta)
+    Parameters:
+    poiss 	a Poisson random number generator which takes the mean of the poisson as an argument
+    uni 	a uniform random number generator that takes two doubles as an argument
+    nsites 	the length of the region begin simulated
+    history 	the list of marginal histories for the sample
+    theta 	the coalescent-scaled mutation rate
+
+    >>> T = gsl_rng_env_setup()
+    >>> r = gsl_rng_alloc(T)
+    >>> gsl_rng_set(r,0)
+    >>> pos = gsl_poisson(r)
+    >>> uni = gsl_uniform(r)
+    >>> imarg = init_marginal(10)
+    >>> sample_history = margList(1,imarg)
+    >>> d = infinite_sites_sim_data(pos,uni,1500,sample_history,10)
+    """
+ 
+
 class TestSimpleSNP(object):
 
     def testSimpleSNP(self):

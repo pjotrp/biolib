@@ -121,13 +121,24 @@ Data(): Returns the std::vector < std::pair<std::string, std::string > data
   is($clus_data->[0]->swig_second_get, 'ATGGC');
   is($clus_data->[1]->swig_second_get, 'CC-TT');
   
+assign(): Assign data to object. Since the value type for these iterators evaluates to std::vector<T>::const_iterator, any vector<T> 
+can be the data source
+
+  $clus_null->assign($clus->begin_const(), $clus->end_const());
+  is($clus_null->Data()->[0]->swig_second_get, 'ATGGC');
+
 Clustal_str(Clustal_strObj): Copy constructor
 
   my $copy_clus = new libsequence::ClustalW_str($clus);
   
-IsGapped(): Retruns true if the vector contains a gap character ('-') , false otherwise.
+Gapped(): Retruns true if the vector contains a gap character ('-') , false otherwise.
 
   ok($clus->Gapped());
+  
+UnGappedLength():  """Returns the number of sites in the alignment for which all objects do not contain the gap character '-'. If the
+data are not aligned, the value Sequence::SEQMAXUNSIGNED is returned as an error
+
+  is($clus->UnGappedLength(), 4);
   
 RemoveGaps(): Modifies the data vector to remove all positions that contain the gap character'-'.
 
@@ -203,7 +214,8 @@ data 	vector<std::pair<std::string, std::string> > to check
 
 Returns:true if the vector contains a gap character ('-') , false otherwise.
 
-  ok(libsequence::IsAlignment_strPair($v));
+  ok(libsequence::Gapped_strPair($v));
+  
   
 =head2 sub RemoveGaps_strPair(data)
 
@@ -213,6 +225,13 @@ Modifies the data vector to remove all positions that contain the gap character'
   libsequence::RemoveTerminalGaps_strPair($v1);
   is($v1->get(0)->swig_second_get, 'T-CA');
   is($v1->get(1)->swig_second_get, 'C-NT');
+  
+=head2 sub UnGappedLength_strPair(data)
+
+Returns the number of sites in the alignment for which all objects do not contain the gap character '-'. If the data are not aligned,
+the value Sequence::SEQMAXUNSIGNED is returned as an error
+
+  is(libsequence::UnGappedLength_strPair($v), 3);
   
 =head2 sub Trim_strPair(data, sites)
 
@@ -264,6 +283,110 @@ Returns:true if each element in the range [beg,end) only contains characters in 
 >   my $beg = $v->begin();
 >   my $end = $v->end();
 
+=head2 sub EmptyVector_strPair(*seqarray)
+
+Free all the memory in seqarray by deleting every objet, and resize() seqarray to 0
+
+  my $pp = new libsequence::ppVector(2);
+  my $p1 = $v->get(0);
+  my $p2 = $v->get(1);
+  $pp->set(0, libsequence::strPairPointer($p1));
+  $pp->set(1, libsequence::strPairPointer($p2));
+  #print $pp->get(0)->swig_second_get;
+  #print $p1->swig_second_get;
+  #libsequence::EmptyVector_strPair($pp);
+
+#=for POD::Tested reset
+
+=head2 sub IsAlignment_Fasta(data)
+
+A vector of sequences/strings is only an alignment if all strings are the same length.
+
+Paramerter: 
+data 	vector<Sequence::Fasta> to check
+
+  my $v = new libsequence::fastaVector(2);
+  $v->set(0, libsequence::Fasta->new('s1','GT-CAG'));
+  $v->set(1, libsequence::Fasta->new('s2','-C-NT-'));
+  ok(libsequence::IsAlignment_Fasta($v));
+
+=head2 sub Gapped_Fasta(data)
+
+Returns:true if the vector contains a gap character ('-') , false otherwise.
+
+  ok(libsequence::Gapped_Fasta($v)); 
+  
+=head2 sub RemoveGaps_Fasta(data)
+
+Modifies the data vector to remove all positions that contain the gap character'-'.
+
+  my $v1 = $v;
+  libsequence::RemoveTerminalGaps_Fasta($v1);
+  is($v1->get(0)->swig_second_get, 'T-CA');
+  is($v1->get(1)->swig_second_get, 'C-NT');
+
+=head2 sub UnGappedLength_Fasta(data)
+
+Returns the number of sites in the alignment for which all objects do not contain the gap character '-'. If the data are not aligned,
+the value Sequence::SEQMAXUNSIGNED is returned as an error
+
+  is(libsequence::UnGappedLength_Fasta($v), 3);
+    
+=head2 sub Trim_Fasta(data, sites)
+
+Returns a copy of the data vector, modified in the following way. The sites vector contains an even number of sites 
+(whose values are sorted). If sites does not contain an even number of values Sequence::SeqException is thrown. If sites is 
+empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, and the 
+return vector is consists only of those--i.e. all positions not present in the intervals defined in sites are lost.
+For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified so that positions 0 through 10 and 21 through 30 are all
+that remains. One intended use of this function is to pull, for example, the coding region out of an aligned block.
+
+Parameters:
+sites 	vector<int> containing an even number of integers specifying the intervals of data to keep
+
+  my $sites = new libsequence::intVector(2);
+  $sites->set(0,0);
+  $sites->set(1,2);
+  is(libsequence::Trim_Fasta($v, $sites)->[0]->swig_second_get, 'T-C');
+  is(libsequence::Trim_Fasta($v, $sites)->[1]->swig_second_get, 'C-N');
+  
+=head2 sub TrimComplement_Fasta(data,sites)
+
+Returns a copy the data vector, modified in the following way. The sites vector contains an even number
+of sites (whose values are sorted). If sites does not contain an even number of values. Sequence::SeqException is thrown. If 
+sites is empty, Sequence::SeqException is thrown. The values in sites represent a series of intervals that you wish to keep, 
+and the return vector consists only of sites not present in sites--i.e. all positions not present in the intervals defined in 
+sites are kept. For example, if you pass a vector<int> containing the values 0,10,21, and 30, then the data vector is modified 
+so that positions 11 through 20 and 31 through the end of the sequences are all that remains.
+  
+Parameters:
+sites vector<int> containing an even number of integers specifying the intervals of data to throw away
+
+  is(libsequence::TrimComplement_Fasta($v, $sites)->[0]->swig_second_get, 'A');
+  is(libsequence::TrimComplement_Fasta($v, $sites)->[1]->swig_second_get, 'T');
+  
+
+=head2 sub RemoveFixedOutgroupInsertions_Fasta(data, sites, ref)
+
+Removes all positions from data that for which the outgroup contains an insertion relative to ingroup
+
+Parameters:
+data 	a vector of Seq objects
+site 	index of the site at which to begin (set to 0 usually)
+ref 	the index of the outgroup in data
+
+  my $nv = $v;
+  libsequence::RemoveFixedOutgroupInsertions_Fasta($nv,0,3);
+  is($nv->get(0)->swig_second_get, 'T-CA');
+  is($nv->get(1)->swig_second_get, 'C-NT');  
+
+=head2 sub validForPolyAnalysis_strPair(beg,end):
+
+Returns:true if each element in the range [beg,end) only contains characters in the set {A,G,C,T,N,-}, false otherwise
+
+>   my $beg = $v->begin();
+>   my $end = $v->end();
+
 
 =head1 Diverge Statics
 
@@ -301,18 +424,19 @@ GranthamWeights2(): Constructor
 weights(): Returns:a double * of size 2 (1 value for each branch)
 
   my $weights2 = $gran2->weights();
-  ok(defined($weights2));
   print "$weights2\n";
+  print libsequence::Dereference($weights2,0);
   #my $a = new libsequence::doubleArray(2);
   #print $a;
   #my $y = $a->getitem(0);
-  #my $w = libsequence::doubleArray->frompointer($a);
+  #my $w = libsequence::doubleArray->frompointer($weights2);
 
 
 
 Calculate(): Calculate actually calculates the weights for each branch
 
   $gran2->Calculate('CGU', 'AGG');
+  is(libsequence::Dereference($gran2->weights(),0), 0);
   
 ~GranthamWeights2(): Destructor
 

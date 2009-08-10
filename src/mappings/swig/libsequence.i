@@ -178,7 +178,7 @@ std::pair< std::vector<double>, std::vector<std::string> > * gametesPointer(std:
 				    const int & ttl_nsam,
 				    const int & deme_nsam,
 				    const int & deme );
-%ignore Sequence::gsl_poisson;
+#%ignore Sequence::gsl_poisson;
 %ignore Sequence::bottleneck( const uniform_generator & uni,
 		  const uniform01_generator & uni01,
 		  const exponential_generator & expo,
@@ -207,6 +207,13 @@ std::pair< std::vector<double>, std::vector<std::string> > * gametesPointer(std:
 		      const double * total_times,
 		      const unsigned * segsites ); 
 
+%ignore Sequence::infinite_sites( const poisson_generator & poiss,
+		      const uniform_generator & uni,
+		      gamete_storage_type * gametes,
+		      const int & nsites,
+		      const arg & history,
+		      const double & theta );
+
 %ignore Sequence::add_S_inf_sites( const uniform_generator & uni,
 			 marginal::const_iterator history,
 			 const double & tt,
@@ -222,6 +229,12 @@ std::pair< std::vector<double>, std::vector<std::string> > * gametesPointer(std:
 				   const arg & history,
 				   const double * total_times,
 				   const unsigned * segsites);
+
+%ignore Sequence::infinite_sites_sim_data( const poisson_generator & poiss,
+				   const uniform_generator & uni,
+				   const int & nsites,
+				   const arg & history,
+				   const double & theta);
 
 %ignore Sequence::pick_spot( const uniform01_generator & uni01,
 				const double & total_reclen,
@@ -280,7 +293,7 @@ typedef std::vector< polymorphicSite > polySiteVector;
 %include <Sequence/Coalescent/Recombination.hpp>
 %include <Sequence/Coalescent/TreeOperations.hpp>
 %include <Sequence/Coalescent/NeutralSample.hpp>
-%include <Sequence/Coalescent/DemographicModels.hpp>
+#%include <Sequence/Coalescent/DemographicModels.hpp>
 %include <Sequence/Correlations.hpp>
 %include <Sequence/Crit.hpp>
 #%include <boost/type_traits.hpp>
@@ -288,8 +301,8 @@ typedef std::vector< polymorphicSite > polySiteVector;
 #%include <boost/type_traits/is_convertible.hpp>
 %include <Sequence/shortestPath.hpp>
 %include <Sequence/SeqEnums.hpp>
-#%include <Sequence/ensureFloating.hpp>
-#%include <Sequence/preferFloatingTypes.hpp>
+%include <Sequence/ensureFloating.hpp>
+%include <Sequence/preferFloatingTypes.hpp>
 %include <Sequence/PolySNPimpl.hpp>
 %include <Sequence/PathwayHelper.hpp>
 #%include <Sequence/AlignStream.hpp>
@@ -314,7 +327,10 @@ typedef std::vector< polymorphicSite > polySiteVector;
 %include <Sequence/bits/PolyTable.tcc>
 #%include <Sequence/FastaExplicit.hpp>
 #%include <Sequence/Coalescent/bits/Coalesce.tcc>
-#%include <Sequence/Coalescent/bits/Mutation.tcc>
+%include <Sequence/Coalescent/bits/Mutation.tcc>
+#%include <Sequence/bits/Correlations.tcc>
+%include <Sequence/Coalescent/bits/DemographicModels.tcc>
+
 
 %template(Gapped) Sequence::Gapped<std::string::iterator>;
 #%include <Sequence/SeqRegexes.hpp>
@@ -448,10 +464,21 @@ if ((SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_EXCEPTIO
 %template(bottleneck) Sequence::bottleneck<Sequence::gsl_uniform, Sequence::gsl_uniform01, Sequence::gsl_exponential>;
 %template(exponential_change) Sequence::exponential_change<Sequence::gsl_uniform, Sequence::gsl_uniform01, Sequence::gsl_exponential>;
 %template(infinite_sites) Sequence::infinite_sites<Sequence::gsl_uniform>;
+%template(infinite_sites) Sequence::infinite_sites<Sequence::gsl_poisson, Sequence::gsl_uniform>;
 %template(add_S_inf_sites) Sequence::add_S_inf_sites<Sequence::gsl_uniform>;
 %template(infinite_sites_sim_data) Sequence::infinite_sites_sim_data<Sequence::gsl_uniform>;
+%template(infinite_sites_sim_data) Sequence::infinite_sites_sim_data<Sequence::gsl_poisson, Sequence::gsl_uniform>;
 %template(pick_spot) Sequence::pick_spot<Sequence::gsl_uniform01>;
+%template(neutral_sample) Sequence::neutral_sample< Sequence::gsl_uniform, Sequence::gsl_uniform01, Sequence::gsl_exponential, Sequence::gsl_poisson>;
 
+%template(preferFloatingTypes_double) Sequence::preferFloatingTypes<int,double>;
+%template(ensureFloating_double) Sequence::ensureFloating<int, double>;
+
+/*%extend Sequence::ProductMoment {
+    %template(__funcall__) operator() < std::vector<int>::iterator, std::vector<double>::iterator >;
+};*/
+
+#%template(funcall) Sequence::ProductMoment::operator()< std::vector<int>::iterator, std::vector<double>::iterator >;
 
 
 

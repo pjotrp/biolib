@@ -39,7 +39,7 @@ namespace Sequence
   typedef std::pair< std::vector<double>, 
 		     std::vector<std::string> > gamete_storage_type;
 
-  template<typename uniform_generator>
+ /* template<typename uniform_generator>
   void add_S_inf_sites ( uniform_generator & uni ,
 			 marginal::const_iterator history,
 			 const double & tt,
@@ -123,7 +123,7 @@ namespace Sequence
 				   const int & nsites,
 				   const arg & history,
 				   const double * total_times,
-				   const unsigned * segsites);
+				   const unsigned * segsites);*/
 
   void output_gametes(FILE * fp,const unsigned & segsites,
 		      const unsigned & nsam,
