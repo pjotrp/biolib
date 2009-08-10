@@ -527,7 +527,6 @@ ${GSL_CONTRIB_PATH}/specfunc/expint3.c
 ${GSL_CONTRIB_PATH}/specfunc/expint.c
 ${GSL_CONTRIB_PATH}/specfunc/fermi_dirac.c
 ${GSL_CONTRIB_PATH}/specfunc/gamma.c
-${GSL_CONTRIB_PATH}/specfunc/gamma_inc.c
 ${GSL_CONTRIB_PATH}/specfunc/gegenbauer.c
 ${GSL_CONTRIB_PATH}/specfunc/hyperg_0F1.c
 ${GSL_CONTRIB_PATH}/specfunc/hyperg_1F1.c
