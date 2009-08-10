@@ -11,6 +11,8 @@ IF(NOT BUILD_LIBS)
   SET (CMAKE_MODULE_PATH ${MAP_ROOT}/tools/cmake-support/modules)
 ENDIF()
 
+SET(USE_GSL TRUE)
+
 FIND_PACKAGE(Map)
 
 SET(CONTRIB_PATH ${MAP_ROOT}/contrib/libsequence-1.6.6)
@@ -37,7 +39,7 @@ ADD_LIBRARY(${LIBNAME} SHARED
 )
 
 # ---- The following may be required for OSX
-# TARGET_LINK_LIBRARIES(${LIBNAME} ${ZLIB_NAME})
+TARGET_LINK_LIBRARIES(${LIBNAME} ${ZLIB_NAME})
 
 INSTALL_CLIB()
 
