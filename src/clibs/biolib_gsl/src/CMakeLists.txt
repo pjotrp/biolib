@@ -31,7 +31,15 @@ IF (NOT EXISTS ${GSL_CONFIG})
   message("Configuring ./contrib/gsl")
   EXECUTE_PROCESS(
     COMMAND /bin/bash -c ./autogen.sh
+    WORKING_DIRECTORY ${GSL_CONTRIB_PATH}
+    RESULT_VARIABLE result_gsl
+  )
+  EXECUTE_PROCESS(
     COMMAND /bin/bash -c autoreconf -i
+    WORKING_DIRECTORY ${GSL_CONTRIB_PATH}
+    RESULT_VARIABLE result_gsl
+  )
+  EXECUTE_PROCESS(
     COMMAND /bin/bash -c ./configure --enable-maintainer-mode
     WORKING_DIRECTORY ${GSL_CONTRIB_PATH}
     RESULT_VARIABLE result_gsl
