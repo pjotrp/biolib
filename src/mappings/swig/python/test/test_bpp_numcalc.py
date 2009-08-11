@@ -53,8 +53,6 @@ Pr(2.09861) = 0.333333
 >>> gamma.getSSupCumulativeProbability(2)
 0.0
 
-
-
 >>> con = bpp.ConstantDistribution(0.5)
 >>> con.getCategories()
 (0.5,)
@@ -516,7 +514,7 @@ abstract, see AbstractDiscreteDistribution
 [class] ExponentialDiscreteDistribution:
 >>> exp = bpp.ExponentialDiscreteDistribution(2,1,False)
 >>> exp
-<bpp.ExponentialDiscreteDistribution; proxy of <Swig Object of type 'ExponentialDiscreteDistribution *' at 0xa27fba8> >
+<bpp.ExponentialDiscreteDistribution; proxy of <Swig Object of type 'ExponentialDiscreteDistribution *' at 0x...> >
 >>> exp.getDomain().getBounds()
 (0.0, 0.69314718055994529, 1.7e+23)
 >>> exp.randC()
@@ -569,6 +567,79 @@ abstract
 ...
 >>> gamma.getDomain().getBounds()
 (0.0, 0.40546510813254732, 1.0986122886880603, 1.7e+23)
+
+
+{IntervalData.i}
+[class IntervalData]
+>>> d = bpp.Domain(0,100,10)
+>>> data = bpp.IntervalData(d, "decile-buckets")
+>>> data.getName()
+'decile-buckets'
+>>> data.getFrequencies()
+(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+>>> data.getDensities()
+(nan, nan, nan, nan, nan, nan, nan, nan, nan, nan)
+>>> data.addValue(21.5)
+>>> data.addValue(35.4)
+>>> data.addValue(16)
+>>> data.addValue(41)
+>>> data.addValue(89.25)
+>>> data.addValue(15.5)
+>>> data.addValue(12)
+>>> data.addValue(24)
+
+>>> data._print(bpp.ApplicationTools.getMessage())
+midpoint	lowerB	upperB	freq	density
+5	0	10	0	0
+15	10	20	3	0.375
+25	20	30	2	0.25
+35	30	40	1	0.125
+45	40	50	1	0.125
+55	50	60	0	0
+65	60	70	0	0
+75	70	80	0	0
+85	80	90	1	0.125
+95	90	100	0	0
+
+>>> data.getFrequencies()
+(0, 3, 2, 1, 1, 0, 0, 0, 1, 0)
+>>> data.getDensities()
+(0.0, 0.375, 0.25, 0.125, 0.125, 0.0, 0.0, 0.0, 0.125, 0.0)
+
+>>> data.getFreq(3)
+1
+data.getDensity(3)
+0.125
+
+>>> data.getSize()
+8
+>>> data.getMinValue()
+12.0
+>>> data.getMaxValue()
+89.25
+>>> data.getMean()
+31.831250000000001
+>>> data.getSD()
+559.0493359374999
+>>> data.getSDP()
+559.0493359374999
+
+>>> data.getDomain()
+<bpp.Domain; proxy of <Swig Object of type 'Domain *' at 0x...> >
+>>> data.getDomainValue(36.4)
+35.0
+>>> data.reset()
+
+
+{InvariantMixedDiscreteDistribution.i}
+[class] InvariantMixedDiscreteDistribution:
+note: known bug in getDomain()--aborts
+>>> con = bpp.ConstantDistribution(3)
+>>> invar = bpp.InvariantMixedDiscreteDistribution(con,0.5);
+>>> invar.rand()
+...
+>>> i1 = invar.clone()
+>>> i2 = bpp.InvariantMixedDiscreteDistribution(invar)
 
 
 {Matrix.i}
@@ -894,9 +965,9 @@ True
 [class] ParameterEvent:
 >>> e = bpp.ParameterEvent(bpp.Parameter())
 >>> e.clone()
-<bpp.Clonable; proxy of <Swig Object of type 'Clonable *' at 0x95afd58> >
+<bpp.Clonable; proxy of <Swig Object of type 'Clonable *' at 0x...> >
 >>> e.getParameter()
-<bpp.Parameter; proxy of <Swig Object of type 'Parameter *' at 0x95a5538> >
+<bpp.Parameter; proxy of <Swig Object of type 'Parameter *' at 0x...> >
 >>> e.getParameter().getName()
 
 
@@ -1091,6 +1162,19 @@ False
 0.86466471676068735
 
 
+
+{SimpleDiscreteDistribution.i}
+[class] SimpleDiscreteDistribution:
+note: known bug in getDomain()--aborts
+>>> import bpp
+>>> map = bpp.doubleMap()
+>>> map[.5] = .25
+>>> map[1] = .75
+>>> dist = bpp.SimpleDiscreteDistribution(map)
+>>> dist.rand()
+...
+
+
 {StatTest.i}
 [class] StatTest:
 abstract, see seq/BowkerTest
@@ -1211,7 +1295,7 @@ False
 >>> x.getVector()[0]
 1
 >>> x.getElement()
-<Swig Object of type 'int *' at 0x8fbf750>
+<Swig Object of type 'int *' at 0x...>
 >>> bpp.intp.frompointer(x.getElement()).value()
 0
 

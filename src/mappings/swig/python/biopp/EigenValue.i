@@ -19,3 +19,5 @@ class EigenValue
     const vector<Real> & getImagEigenValues() const;
     const RowMatrix<Real>& getD() const;
 };
+
+%template(doubleEigenValue) EigenValue<double>;

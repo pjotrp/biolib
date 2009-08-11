@@ -12,7 +12,7 @@ class DirectionFunction:public Function,public ParametrizableAdapter
   public:
     DirectionFunction(Function * function = NULL): _function(function), _constraintPolicy(AutoParameter::CONSTRAINTS_KEEP), _messenger(&cout);
     virtual ~DirectionFunction();
-     DirectionFunction* clone() const;
+    DirectionFunction* clone() const;
 
     void setParameters(const ParameterList & parameters) throw (ParameterNotFoundException, ConstraintException);
     double getValue() const throw (Exception);

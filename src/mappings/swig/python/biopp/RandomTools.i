@@ -26,8 +26,10 @@ class RandomTools
     static double randGamma(double dblAlpha, const RandomFactory * generator = DEFAULT_GENERATOR);
     static double randGamma(double alpha, double beta, const RandomFactory * generator = DEFAULT_GENERATOR);
     static double randExponential(double mean, const RandomFactory * generator = DEFAULT_GENERATOR);
-    template<class T> 
-    static vector<T> getSample(const vector<T> & v, unsigned int size, bool replace = false) throw (IndexOutOfBoundsException);
+    template<class T> static vector<T> getSample(const vector<T> & v, unsigned int size, bool replace = false) throw (IndexOutOfBoundsException);
+    %template(intGetSample) getSample<int>;
+    %template(doubleGetSample) getSample<double>;
+
     static vector<unsigned int> randMultinomial(unsigned int n, const vector<double>& probs);
     static double qNorm(double prob);
     static double lnGamma (double alpha);

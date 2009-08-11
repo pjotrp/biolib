@@ -6,6 +6,7 @@ using namespace bpp;
 
 %include "Clonable.i"
 %include "std_vector.i"
+%include "swigutils.i"
 
 template<class TYPE> class Vector: public std::vector<TYPE>, public Clonable
 {

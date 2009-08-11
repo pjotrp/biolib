@@ -330,6 +330,12 @@ This shouldn't be static
 >>> bpp.FileTools.getExtension("xxx/yyy.zzz")
 'zzz'
 
+>>> bpp.FileTools.putStreamIntoVectorOfStrings(bpp.ifstream("file"))
+...
+>>> stream = bpp.ifstream("file")
+>>> bpp.FileTools.getNextLine(stream)
+...
+
 
 [class] Font:
 >>> x = bpp.Font("default", "default", 12)
@@ -393,6 +399,17 @@ False
 'Times//Bold/12'
 
 
+{IOFormat.i}
+[class] IOFormat
+>>> gb = bpp.GenBank()
+>>> gb.getFormatName()
+'GenBank file'
+>>> gb.getFormatDescription()
+'Sequences following the GenBank data base format.'
+>>> gb.getDataType()
+'Sequence container'
+
+
 {KeyvalTools.i}
 [class] KeyvalTools:
 x = bpp.KeyvalException("bad keyval thingy")
@@ -428,9 +445,9 @@ x = bpp.KeyvalException("bad keyval thingy")
 >>> m = bpp.intMap()
 >>> m[0] = 1
 >>> m[5] = 10
->>> bpp.MapTools.getKeys(m)
+>>> bpp.MapTools.getIntKeys(m)
 (0, 5)
->>> bpp.MapTools.getValues(m)
+>>> bpp.MapTools.getIntValues(m)
 (1, 10)
 
 >>> n = bpp.strMap()

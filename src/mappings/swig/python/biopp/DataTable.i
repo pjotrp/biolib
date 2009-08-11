@@ -13,6 +13,7 @@ using namespace bpp;
 using namespace std;
 
 %rename(__assign__) DataTable::operator=;
+%rename(__funcall__) DataTable::operator();
 
 class DataTable:public Clonable
 {
@@ -27,18 +28,12 @@ class DataTable:public Clonable
 
     string & operator()(unsigned int rowIndex, unsigned int colIndex) throw (IndexOutOfBoundsException);
     const string & operator()(unsigned int rowIndex, unsigned int colIndex) const throw (IndexOutOfBoundsException);
-    string & operator()(const string & rowName, const string & colName)
-            throw (NoTableRowNamesException, NoTableColumnNamesException, TableNameNotFoundException);
-    const string & operator()(const string & rowName, const string & colName) const
-            throw (NoTableRowNamesException, NoTableColumnNamesException, TableNameNotFoundException);
-    string & operator()(const string & rowName, unsigned int colIndex)
-            throw (NoTableRowNamesException, TableNameNotFoundException, IndexOutOfBoundsException);
-    const string & operator()(const string & rowName, unsigned int colIndex) const
-            throw (NoTableRowNamesException, TableNameNotFoundException, IndexOutOfBoundsException);
-    string & operator()(unsigned int rowIndex, const string & colName)
-            throw (IndexOutOfBoundsException, NoTableColumnNamesException, TableNameNotFoundException);
-    const string & operator()(unsigned int rowIndex, const string & colName) const
-            throw (IndexOutOfBoundsException, NoTableColumnNamesException, TableNameNotFoundException);
+    string & operator()(const string & rowName, const string & colName) throw (NoTableRowNamesException, NoTableColumnNamesException, TableNameNotFoundException);
+    const string & operator()(const string & rowName, const string & colName) const throw (NoTableRowNamesException, NoTableColumnNamesException, TableNameNotFoundException);
+    string & operator()(const string & rowName, unsigned int colIndex) throw (NoTableRowNamesException, TableNameNotFoundException, IndexOutOfBoundsException);
+    const string & operator()(const string & rowName, unsigned int colIndex) const throw (NoTableRowNamesException, TableNameNotFoundException, IndexOutOfBoundsException);
+    string & operator()(unsigned int rowIndex, const string & colName) throw (IndexOutOfBoundsException, NoTableColumnNamesException, TableNameNotFoundException);
+    const string & operator()(unsigned int rowIndex, const string & colName) const throw (IndexOutOfBoundsException, NoTableColumnNamesException, TableNameNotFoundException);
     unsigned int getNumberOfColumns() const;
     void setColumnNames(const vector<string> & colNames) throw (DimensionException, DuplicatedTableColumnNameException);
     vector<string> getColumnNames() const throw (NoTableColumnNamesException);
@@ -66,7 +61,6 @@ class DataTable:public Clonable
     void addRow(const vector<string> & newRow) throw (DimensionException, TableRowNamesException);
     void addRow(const string & rowName, const vector<string> & newRow) throw (DimensionException, NoTableRowNamesException, DuplicatedTableRowNameException);
 
-    static DataTable * read(istream & in, const string & sep = "\t", bool header=true, int rowNames=-1)
-      throw (DimensionException, IndexOutOfBoundsException, DuplicatedTableRowNameException);
+    static DataTable * read(istream & in, const string & sep = "\t", bool header=true, int rowNames=-1) throw (DimensionException, IndexOutOfBoundsException, DuplicatedTableRowNameException);
     static void write(const DataTable & data, ostream & out, const string & sep = "\t");
 };

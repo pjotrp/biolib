@@ -26,6 +26,7 @@
 %template(stringDeque) std::deque<std::string>;
 
 %template(intMap) std::map<int,int>;
+%template(doubleMap) std::map<double,double>;
 %template(strMap) std::map<std::string,std::string>;
 
 

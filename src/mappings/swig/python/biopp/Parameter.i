@@ -38,8 +38,7 @@ class Parameter:public virtual Clonable
 {
   public: 
 
-    Parameter(const string & name = "", double value = 0, Constraint * constraint = NULL, bool attachConstraint = false)
-    throw (ConstraintException);
+    Parameter(const string & name = "", double value = 0, Constraint * constraint = NULL, bool attachConstraint = false) throw (ConstraintException);
     Parameter(const Parameter & param);
     Parameter & operator=(const Parameter & param);
     virtual ~Parameter();

@@ -46,7 +46,8 @@ class RowMatrix : public Matrix<Scalar>, public vector< vector<Scalar> > {
     virtual ~RowMatrix();
 
     RowMatrix<Scalar> & operator=(const Matrix<Scalar> & m);
-    Clonable * clone() const;
+    //Clonable * clone() const;
+    RowMatrix<Scalar> * clone() const;
     const Scalar & operator()(unsigned int i, unsigned int j) const;
     Scalar & operator()(unsigned int i, unsigned int j);
     unsigned int nRows() const;
@@ -58,3 +59,7 @@ class RowMatrix : public Matrix<Scalar>, public vector< vector<Scalar> > {
 
 %template(intRowMatrix) RowMatrix<int>;
 %template(doubleRowMatrix) RowMatrix<double>;
+
+%template(intRowMatrixVector) std::vector<RowMatrix<int> *>;
+%template(doubleRowMatrixVector) std::vector<RowMatrix<double> *>;
+
