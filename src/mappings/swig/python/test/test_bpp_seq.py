@@ -17,6 +17,51 @@
 >>> 
 
 
+{AAIndex1Entry.i}
+# aa1.txt is as follows:
+I
+0 1 2 3 4 5 6 7 8 9
+10 11 12 13 14 15 16 17 18 19
+[class] AAIndex1Entry:
+>>> stream = bpp.ifstream("aa1.txt")
+>>> aa1 = bpp.AAIndex1Entry(stream)
+>>> aa1.clone()
+<bpp.AAIndex1Entry; proxy of <Swig Object of type 'AAIndex1Entry *' at 0x...> >
+>>> bpp.AAIndex1Entry(aa1)
+<bpp.AAIndex1Entry; proxy of <Swig Object of type 'AAIndex1Entry *' at 0x...> >
+
+>>> aa1.getIndex(1)
+1.0
+>>> aa1.getIndex('r')
+1.0
+>>> aa1.getAlphabet().getAlphabetType()
+'Proteic alphabet'
+>>> bpp.VectorTools._print(aa1.getIndexVector())
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
+
+
+{AAIndex2Entry.i}
+# aa2.txt is as follows:
+M
+<space-separated 20x20 matrix>
+[class] AAIndex2Entry:
+>>> stream = bpp.ifstream("aa2.txt")
+>>> aa2 = bpp.AAIndex2Entry(stream)
+>>> aa2.clone()
+<bpp.AAIndex2Entry; proxy of <Swig Object of type 'AAIndex2Entry *' at 0x...> >
+>>> bpp.AAIndex2Entry(aa2)
+<bpp.AAIndex2Entry; proxy of <Swig Object of type 'AAIndex2Entry *' at 0x...> >
+
+>>> aa2.getIndex(0,1)
+2.0
+>>> aa2.getIndex('a','r')
+2.0
+>>> aa2.getIndexMatrix()
+<bpp.doubleMatrix; proxy of <Swig Object of type 'Matrix< double > *' at 0x...> >
+>>> aa2.getAlphabet().getAlphabetType()
+'Proteic alphabet'
+
+
 {AbstractAlphabet.i}
 [class] AbstractAlphabet:
 see Alphabet--partial implementation of interface
@@ -254,6 +299,46 @@ True
 <bpp.NucleicAlphabet; proxy of <Swig Object of type 'NucleicAlphabet *' at 0x...> >
 
 
+{CodonSiteTools.i}
+[class] CodonSiteTools:
+>>> import bpp
+>>> dna = bpp.DNA()
+>>> code = bpp.StandardGeneticCode(dna)
+>>> alpha = bpp.StandardCodonAlphabet(dna)
+>>> site = bpp.Site(['TAG','AAA','CCC'],alpha,300)
+>>> site1 = bpp.Site(['TAT','AAA','CCC'],alpha,600)
+
+>>> bpp.CodonSiteTools.hasGapOrStop(site1)
+True
+>>> bpp.CodonSiteTools.hasStop(site1)
+True
+>>> bpp.CodonSiteTools.isMonoSitePolymorphic(site)
+False
+>>> bpp.CodonSiteTools.isSynonymousPolymorphic(site,code)
+False
+>>> site2 = bpp.CodonSiteTools.generateCodonSiteWithoutRareVariant(site, 0.25)
+>>> site2.getContent()
+(49, 0, 21)
+>>> bpp.CodonSiteTools.numberOfDifferences(3,4,alpha)
+2
+>>> bpp.CodonSiteTools.numberOfSynonymousDifferences(2,4,code)
+1.0
+>>> bpp.CodonSiteTools.piSynonymous(site,code,False)
+0.5
+>>> bpp.CodonSiteTools.piNonSynonymous(site,code,False)
+2.166...
+>>> bpp.CodonSiteTools.numberOfSynonymousPositions(1,code,1.0)
+0.333...
+>>> bpp.CodonSiteTools.meanNumberOfSynonymousPositions(site,code,1.0)
+0.555...
+>>> bpp.CodonSiteTools.numberOfSubsitutions(site,0.0)
+5
+>>> bpp.CodonSiteTools.numberOfNonSynonymousSubstitutions(site,code,0.0)
+4
+>>> bpp.CodonSiteTools.fixedDifferences(site,site1,0,1,code)
+(0, 0)
+
+
 {DefaultAlphabet.i}
 [class] DefaultAlphabet:
 >>> alpha = bpp.DefaultAlphabet()
@@ -290,6 +375,39 @@ False
 [-1, -5, 7, -3]
 [-4, 0, -3, 8]
 ]
+
+
+{DistanceMatrix.i}
+[class] DistanceMatrix:
+>>> dm = bpp.DistanceMatrix(["a","b","c"])
+>>> dm.size()
+3
+>>> dm.getNames()
+('a', 'b', 'c')
+>>> dm.getName(0)
+'a'
+>>> dm.getNameIndex('a')
+0
+>>> dm[0]
+(0.0, 0.0, 0.0)
+>>> dm[0][0]
+0.0
+>>> dm.setName(1, 'B')
+>>> dm.getNames()
+('a', 'B', 'c')
+>>> dm.setNames(['A','B','C'])
+>>> dm.getNames()
+('A', 'B', 'C')
+
+>>> dm.nRows()
+3
+>>> bpp.DistanceMatrix(dm)
+<bpp.DistanceMatrix; proxy of <Swig Object of type 'DistanceMatrix *' at 0x...> >
+>>> bpp.DistanceMatrix(5)
+<bpp.DistanceMatrix; proxy of <Swig Object of type 'DistanceMatrix *' at 0x...> >
+>>> bpp.DistanceMatrix(5).nRows()
+5
+>>> dm.reset()
 
 
 {DNA.i}
@@ -666,6 +784,24 @@ True
 >>> seq = bpp.strVecSequence("test", ['a','g'], ["comment1","comment2"], dna)
 >>> seq = bpp.intVecSequence("test", [0,1], dna)
 >>> seq = bpp.intVecSequence("test", [0,1], ["comment1","comment2"], dna)
+
+
+{SequenceContainerExceptions.i}
+[class] SequenceNotFoundException:
+>>> x = bpp.SequenceNotFoundException("can't find it!", "AGCT")
+>>> x.getSequenceId()
+'AGCT'
+>>> x.what()
+"SequenceNotFoundException: can't find it!(AGCT)"
+
+[class] EmptyContainerException:
+>>> dna = bpp.DNA()
+>>> vsc = bpp.VectorSiteContainer(3,dna)
+>>> x = bpp.EmptyContainerException("container's empty", vsc)
+>>> x.getContainer()
+<bpp.SequenceContainer; proxy of <Swig Object of type 'SequenceContainer *' at 0x...> >
+>>> x.what()
+"EmptyContainerException: container's empty"
 
 
 {SequenceExceptions.i}
