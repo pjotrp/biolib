@@ -5,7 +5,7 @@
 #%rename(begin_const) std::vector<Sequence::chromosome>::begin() const;
 %include <std_vector.i>
 %include <std_list.i>
-#%include <file.i>
+%include <file.i>
 %include <typemaps.i>
 #%include <std_iostream.i>
 %include <carrays.i>
@@ -404,7 +404,7 @@ std::pair<std::string, std::string> * strPairPointer(std::pair<std::string, std:
 %template(validForPolyAnalysis_strPair) Sequence::Alignment::validForPolyAnalysis< std::vector< std::pair< std::string, std::string> >::iterator>; 
 %template(validForPolyAnalysis_Fasta) Sequence::Alignment::validForPolyAnalysis< std::vector< Sequence::Fasta >::iterator>; 
 
-
+#%template(GetData_strPair) Sequence::Alignment::GetData<  std::pair< std::string, std::string> >;
 
 
 
