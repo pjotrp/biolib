@@ -1,0 +1,6 @@
+//
+setsites:2
+positions: 0.25 0.32
+01
+11
+

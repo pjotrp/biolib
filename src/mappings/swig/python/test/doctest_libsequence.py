@@ -2925,7 +2925,20 @@ class TestSimData(object):
         >>> d[1]
         'TC'
         """
-    
+    def testfromfile():
+        """This method provies a routine to read in objects of type Sequence::SimData
+        using C-style I/O routines
+
+        Returns:an integer that is the the return value from fscanf, so that you can
+        check for EOF
+
+        >>> f = open("simdata.txt","r")
+        >>> d = SimData()
+        >>> d.fromfile(f)
+        1
+        >>> d.GetPositions()
+        (0.25, 0.32000000000000001)
+        """
 
 
 class TestPolySites():
