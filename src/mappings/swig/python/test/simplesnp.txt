@@ -1,0 +1,11 @@
+6 6
+679 1004 1153 1155 1277 1295 
+N N N N N N 
+Sim2 A C C G A A
+Sim3 G C T G A C
+Sim4 A C C T G C
+Sim5 A C C T G C
+Sim7 A T C T A C
+Sim8 A C C G A A
+
+
