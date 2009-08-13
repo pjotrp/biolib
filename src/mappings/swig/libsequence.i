@@ -104,6 +104,7 @@
 %apply unsigned int {Sequence::AlignStream<std::pair<std::string,std::string > >::size_type};
 #%apply char {Sequence::Seq::reference};
 #%apply const char {Sequence::Seq::const_reference};
+#%apply std::vector< Sequence::chromosome >::const_iterator {std::vector< Sequence::chromosome >::iterator};
 %constant const double CMAX = 10000;
 %constant const double PRESICION = FLT_EPSILON;
 %ignore Sequence::Seq::operator[];
@@ -379,10 +380,12 @@ typedef std::vector< polymorphicSite > polySiteVector;
 
 %template(IsAlignment_strPair) Sequence::Alignment::IsAlignment< std::pair< std::string, std::string > >;
 %template(IsAlignment_Fasta) Sequence::Alignment::IsAlignment< Sequence::Fasta >;
+#%template(IsAlignment) Sequence::Alignment::IsAlignment< std::string >;
 %template(Gapped_strPair) Sequence::Alignment::Gapped< std::pair< std::string, std::string> >;
 %template(Gapped_Fasta) Sequence::Alignment::Gapped< Sequence::Fasta >;
 %template(RemoveGaps_strPair) Sequence::Alignment::RemoveGaps< std::pair< std::string, std::string> >;
 %template(RemoveGaps_Fasta) Sequence::Alignment::RemoveGaps< Sequence::Fasta >;
+#%template(RemoveGaps) Sequence::Alignment::RemoveGaps< std::string >;
 %template(RemoveTerminalGaps_strPair) Sequence::Alignment::RemoveTerminalGaps< std::pair<std::string, std::string> >;
 %template(RemoveTerminalGaps_Fasta) Sequence::Alignment::RemoveTerminalGaps< Sequence::Fasta >;
 %template(UnGappedLength_strPair) Sequence::Alignment::UnGappedLength< std::pair< std::string, std::string> >;
@@ -659,6 +662,14 @@ struct randomU : public std::unary_function<void,double> {
    }
 };
 
+/*%extend std::vector<Sequence::chromosome>{
+   std::vector<Sequence::chromosome>::const_iterator begin_const()
+    {
+      return $self->begin();
+    }
+};*/
+
+ 
 %extend Sequence::AlignStream< std::pair<std::string, std::string> >{
    std::pair<std::string, std::string> __getitem__(const unsigned &i)
    {
@@ -691,5 +702,4 @@ struct randomU : public std::unary_function<void,double> {
 }
 
 %}*/
-
 
