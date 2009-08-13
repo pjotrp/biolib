@@ -66,6 +66,55 @@ M
 [class] AbstractAlphabet:
 see Alphabet--partial implementation of interface
 
+
+{AbstractISequence.i}
+[class] (partial) AbstractISequence:
+>>> fasta = bpp.Fasta()
+>>> dna = bpp.DNA()
+
+>>> container0 = bpp.VectorSequenceContainer(dna)
+>>> container0.getNumberOfSequences()
+0
+>>> input = bpp.ifstream("data1.fas")
+>>> fasta.read(input, container0)
+>>> container0.getNumberOfSequences()
+3
+
+>>> container1 = bpp.VectorSequenceContainer(dna)
+>>> container1.getNumberOfSequences()
+0
+>>> fasta.read("data1.fas", container1)
+>>> container1.getNumberOfSequences()
+3
+
+>>> input = bpp.ifstream("data1.fas")
+>>> container2 = fasta.read(input, dna)
+>>> container2.getNumberOfSequences()
+3
+
+>>> container3 = fasta.read("data1.fas", dna)
+>>> container3.getNumberOfSequences()
+3
+
+
+{AbstractOSequence.i}
+[class] (partial) AbstractOSequence:
+>>> fasta = bpp.Fasta()
+>>> input = bpp.ifstream("data1.fas")
+>>> dna = bpp.DNA()
+>>> container = bpp.VectorSequenceContainer(dna)
+>>> fasta.appendFromStream(input, container)
+
+>>> fasta.write(bpp.ApplicationTools.getMessage(), container)
+>seq1
+ATGCCGTGGTCCCGT
+>seq2
+TTTGGCGACCGTAACCCGT
+>seq3
+GAGACTAGCTGA
+>>> fasta.write("output-file.fas", container)
+
+
 {Alphabet.i}
 [class] Alphabet:
 >>> alpha = bpp.DefaultAlphabet()
@@ -488,6 +537,55 @@ True
 'NA'
 
 
+{Fasta.i}
+[class] Fasta:
+>>> fasta = bpp.Fasta()
+>>> fasta.getFormatName()
+'FASTA file'
+>>> fasta.getFormatDescription()
+'Sequence name (preceded by >) in one line, sequence content, no comments'
+>>> fasta.checkNames()
+True
+>>> fasta.checkNames(True)
+>>> fasta.checkNames()
+True
+>>> fasta.checkNames(False)
+>>> fasta.checkNames()
+False
+>>> fasta.checkNames(True)
+
+>>> input = bpp.ifstream("data1.fas")
+>>> dna = bpp.DNA()
+>>> container = bpp.VectorSequenceContainer(dna)
+>>> fasta.appendFromStream(input, container)
+
+>>> fasta.write(bpp.ApplicationTools.getMessage(), container)
+>seq1
+ATGCCGTGGTCCCGT
+>seq2
+TTTGGCGACCGTAACCCGT
+>seq3
+GAGACTAGCTGA
+>>> fasta.write("output-file.fas", container)
+
+
+{Genbank.i}
+[class] GenBank:
+>>> genbank = bpp.GenBank()
+>>> genbank.getFormatName()
+'GenBank file'
+>>> genbank.getFormatDescription()
+'Sequences following the GenBank data base format.'
+
+>>> input = bpp.ifstream("data.gb")
+>>> container = bpp.VectorSequenceContainer(dna)
+>>> container.getNumberOfSequences()
+0
+>>> genbank.appendFromStream(input, container)
+>>> container.getNumberOfSequences()
+1
+
+
 {GeneticCode.i}
 [class] StopCodonException
 >>> x = bpp.StopCodonException("stop!!!!!", "TAG")
@@ -614,6 +712,21 @@ True
 'Sequence container'
 
 
+{ISequence.i}
+[class] (interface) ISequence:
+>>> fasta = bpp.Fasta()
+>>> dna = bpp.DNA()
+
+>>> input = bpp.ifstream("data1.fas")
+>>> container0 = fasta.read(input, dna)
+>>> container0.getNumberOfSequences()
+3
+
+>>> container1 = fasta.read("data1.fas", dna)
+>>> container1.getNumberOfSequences()
+3
+
+
 {KleinAANetChargeIndex.i}
 [class] KleinAANetChargeIndex
 >>> klein = bpp.KleinAANetChargeIndex()
@@ -630,6 +743,37 @@ True
 >>> klein.clone()
 <bpp.KleinAANetChargeIndex; proxy of <Swig Object of type 'KleinAANetChargeIndex *' at 0x...> >
 
+
+{Mase.i}
+[class] Mase:
+>>> mase = bpp.Mase()
+>>> mase.getFormatName()
+'MASE file'
+>>> mase.getFormatDescription()
+'Optional file comments (preceeded by ;;), sequence comments (preceeded by ;), sequence name, sequence'
+>>> input = bpp.ifstream("data1.mase")
+>>> dna = bpp.DNA()
+>>> container = bpp.VectorSequenceContainer(dna)
+>>> mase.appendFromStream(input, container)
+
+>>> mase.write(bpp.ApplicationTools.getMessage(), container)
+;this is seq1
+seq1
+ATGCCGTGGTCCCGT
+;this is seq2
+seq2
+TTTGGCGACCGTAACCCGT
+;this is seq3
+seq3
+GAGACTAGCTGA
+>>> mase.write("output.mase", container)
+>>> mase.checkNames()
+True
+>>> mase.checkNames(False)
+
+
+{MiyataAAChemicalDistance.i}
+[class] MiyataAAChemicalDistance.i:
 >>> miyata = bpp.MiyataAAChemicalDistance()
 >>> miyata.isSymmetric()
 True
@@ -685,6 +829,42 @@ True
 14
 >>> dna.isUnresolved(10)
 True
+
+
+{OSequence.i}
+[class] (interface) OSequence:
+>>> fasta = bpp.Fasta()
+>>> input = bpp.ifstream("data1.fas")
+>>> dna = bpp.DNA()
+>>> container = bpp.VectorSequenceContainer(dna)
+>>> fasta.appendFromStream(input, container)
+
+>>> fasta.write(bpp.ApplicationTools.getMessage(), container)
+>seq1
+ATGCCGTGGTCCCGT
+>seq2
+TTTGGCGACCGTAACCCGT
+>seq3
+GAGACTAGCTGA
+>>> fasta.write("output-file.fas", container)
+
+
+{PhredPhd.i}
+[class] PhredPhd:
+>>> phredphd = bpp.PhredPhd()
+>>> phredphd.getFormatName()
+'phd file'
+>>> phredphd.getFormatDescription()
+'Sequences following the phd format as describe in the phred documentation.'
+
+>>> input = bpp.ifstream("data.phd")
+>>> dna = bpp.DNA()
+>>> container = bpp.VectorSequenceContainer(dna)
+>>> phredphd.appendFromStream(input,container)
+>>> container.getNumberOfSequences()
+1
+>>> container.getSequencesNames()
+('ML4924R',)
 
 
 {ProteicAlphabet.i}
