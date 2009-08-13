@@ -1,5 +1,6 @@
 %module libsequence
 
+%include <file.i>
 %include ../../libsequence.i
 %include <std_iostream.i>
 

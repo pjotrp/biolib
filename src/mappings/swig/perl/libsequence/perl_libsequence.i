@@ -3,9 +3,12 @@
 %include ../../libsequence.i
 
 %inline %{
-
-double Dereference( double *x, int i ){
+using namespace std;
+template<typename T>  T Dereference( T x[], int i ){
     return x[i];
 }
 
 %}
+
+%template(doubleDeref) Dereference<double>;
+%template(strDeref) Dereference<string>;

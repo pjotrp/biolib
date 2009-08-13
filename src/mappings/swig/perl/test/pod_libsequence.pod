@@ -424,8 +424,6 @@ GranthamWeights2(): Constructor
 weights(): Returns:a double * of size 2 (1 value for each branch)
 
   my $weights2 = $gran2->weights();
-  print "$weights2\n";
-  print libsequence::Dereference($weights2,0);
   #my $a = new libsequence::doubleArray(2);
   #print $a;
   #my $y = $a->getitem(0);
@@ -436,7 +434,7 @@ weights(): Returns:a double * of size 2 (1 value for each branch)
 Calculate(): Calculate actually calculates the weights for each branch
 
   $gran2->Calculate('CGU', 'AGG');
-  is(libsequence::Dereference($gran2->weights(),0), 0);
+  is(libsequence::doubleDeref($gran2->weights(),0), 0);
   
 ~GranthamWeights2(): Destructor
 
@@ -458,8 +456,8 @@ weights(): Returns:a double * of size 6 (1 value for each branch)
 Calculate(): Calculate actually calculates the weights for each branch
 
   $gran3->Calculate('AAA', 'CCC');
-  #print libsequence::Dereference($gran3->weights(),1);
-  is(libsequence::Dereference($gran3->weights(),1), 0.15905190450646806);
+  #print libsequence::doubleDeref($gran3->weights(),1);
+  is(libsequence::doubleDeref($gran3->weights(),1), 0.15905190450646806);
   
 ~GranthamWeights3(): Destructor
 
@@ -478,7 +476,7 @@ weights(): Returns:a double * of size 2 (1 value for each branch)
 Calculate(): Calculate actually calculates the weights for each branch
 
   $unwei2->Calculate('CGU', 'AGG');
-  is(libsequence::Dereference($unwei2->weights(),0), 0.5);
+  is(libsequence::doubleDeref($unwei2->weights(),0), 0.5);
 
   
 ~Unweighted2(): Destructor
@@ -498,7 +496,7 @@ weights(): Returns:a double * of size 6 (1 value for each branch)
 Calculate(): Calculate actually calculates the weights for each branch
 
   $unwei3->Calculate('AAA', 'CCC');
-  is(libsequence::Dereference($unwei3->weights(),0), 0.16666666666666666);
+  is(libsequence::doubleDeref($unwei3->weights(),0), 0.16666666666666666);
  
 ~Unweighted3(): Destructor
 
@@ -891,48 +889,86 @@ L4(): Returns the number of 4-fold degenerate sites compared
   $comeron->DESTROY;
   
 
-> =head1 Classes and functions to aid in the calculations of the pathways between two condons
-> 
-> This group of classes and functions deals with determining either the counts of silent and replacement 
-> differences between codons or the intermedate codons that occurs between two different codons
->   
-> =head2 class shortestPath
-> 
-> Calculate shortest path between 2 codons. The length of a path is in terms of the sum
-> of the Grantham's distances along it's branches.
-> 
-> shortestPath(codon1, codon2, code = UNIVERSAL): Constructor
-> Parameters:
-> codon1 	a std::string of length 3
-> codon2 	a std::string of length 3
-> code 	which genetic code to use
-> 
-> Precondition:
-> (codon1.length() == 3 && codon2.length() ==3)
-> Note:
-> If either codon1 or codon2 contain characters other than {A,G,C,T}, the pathway type will be assigned shortestPath::AMBIG
-> 
->   my $path = new libsequence::shortestPath('ATG', 'ACG');
-> 
-> type(): Returns:a value from the enum type shortestPath.pathType representing the type of the shortest path.
-> Note:enum   pathType { 
->                               S, N, SS, SN, 
->                               NN, SSS, SSN, SNN, 
->                               NNN, NONE, AMBIG 
->                             }
->                             
->   is($path->type(), 1);
->   
-> path_distance(): Returns the total Grantham's distance of the shortest path
-> 
->   is($path->path_distance(), 81.039692790000004);
->   
-> ~shortestPath(): Destructor
-> 
->   $path->DESTROY;
->   
-> 
-> 
+=head1 Classes and functions to aid in the calculations of the pathways between two condons
+
+This group of classes and functions deals with determining either the counts of silent and replacement 
+differences between codons or the intermedate codons that occurs between two different codons
+  
+=head2 class shortestPath
+
+Calculate shortest path between 2 codons. The length of a path is in terms of the sum
+of the Grantham's distances along it's branches.
+
+shortestPath(codon1, codon2, code = UNIVERSAL): Constructor
+Parameters:
+codon1 	a std::string of length 3
+codon2 	a std::string of length 3
+code 	which genetic code to use
+
+Precondition:
+(codon1.length() == 3 && codon2.length() ==3)
+Note:
+If either codon1 or codon2 contain characters other than {A,G,C,T}, the pathway type will be assigned shortestPath::AMBIG
+
+  my $path = new libsequence::shortestPath('ATG', 'ACG');
+
+type(): Returns:a value from the enum type shortestPath.pathType representing the type of the shortest path.
+Note:enum   pathType { 
+                              S, N, SS, SN, 
+                              NN, SSS, SSN, SNN, 
+                              NNN, NONE, AMBIG 
+                            }
+                            
+  is($path->type(), 1);
+  
+path_distance(): Returns the total Grantham's distance of the shortest path
+
+  is($path->path_distance(), 81.039692790000004);
+  
+~shortestPath(): Destructor
+
+  $path->DESTROY;
+  
+=head2 sub Intermidates2(intermediates, codon1, codon2)
+
+Calculate the intermediate codons between a pair of codons diverged at 2 positions.
+
+Parameters:
+intermediates 	a string[2] in which we will place the intermediate codons
+codon1 	a codon
+codon2 	a codon
+
+  my $c = new libsequence::stringArray(2);
+  libsequence::Intermediates2($c, 'ATG', 'CGG');
+  is($c->getitem(0), 'CTG');
+  is($c->getitem(1), 'AGG');
+  
+=head2 sub Intermidates3(intermediates, codon1, codon2)
+
+Calculate the intermediate codons between a pair of codons diverged at 3 positions.
+
+Parameters:
+intermediates 	a string[9] in which we will place the intermediate codons
+codon1 	a codon
+codon2 	a codon
+
+  my $c = new libsequence::stringArray(9);
+  libsequence::Intermediates3($c, 'ACG', 'CTT');
+  is($c->getitem(0), 'CCG');
+  is($c->getitem(3), 'ATG');
+  is($c->getitem(5), 'ATT');
+  is($c->getitem(8), 'ATT');
+
+=head2 mustShortestPath():
+
+Returns a std::pair<unsigned,unsigned> representing the number of silentand replacement changes b/w 2 codons, as 
+calculated by shortestPath. The first member of the pair is the number of silent changes in the shortest path, and 
+the second the number of replacement changes. If the pathway type is shortestPath::AMBIG, both members of the return 
+value will be equal to SEQMAXUNSIGNED, which is declared in <Sequence/SeqConstants.hpp>
+
+ my $path = libsequence::mutsShortestPath('AAA','GGG');
+ is($path->swig_first_get, 1);
+
 > =head1 Function objects defined in the library
 > 
 > =head2 class stateCounter

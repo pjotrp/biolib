@@ -5,7 +5,6 @@
 #%rename(begin_const) std::vector<Sequence::chromosome>::begin() const;
 %include <std_vector.i>
 %include <std_list.i>
-%include <file.i>
 %include <typemaps.i>
 #%include <std_iostream.i>
 %include <carrays.i>
@@ -120,7 +119,7 @@
 #%ignore boost::noncopyable;
 #%rename(__getitem__) Sequence::PolyTable::operator[];
 %template(strPair) std::pair<std::string, std::string>;
-%template() std::pair<unsigned, unsigned>;
+%template(unsignedPair) std::pair<unsigned, unsigned>;
 %template() std::pair<unsigned, Sequence::shortestPath::pathType>;
 %template() std::pair<std::vector<double>::iterator, double>;
 %template(polymorphicSites) std::pair< double, std::string >;
