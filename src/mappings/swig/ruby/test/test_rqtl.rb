@@ -3,7 +3,8 @@ require 'biolib/rqtl'
 
 if $0 == __FILE__
 
-  Biolib::Rqtl.R_scanone_mr()
+  res = Biolib::Rqtl.scanone_mr(0,0,0,[],[],0,[],0,[],[])
+  print "result = #{res}"
   print "Success!"
   exit 0
 end

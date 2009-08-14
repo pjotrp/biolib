@@ -4,26 +4,24 @@ cmake_minimum_required(VERSION 2.6)
 ENABLE_TESTING()
 
 SET (M_NAME rqtl)
-# SET (M_VERSION 1.11.6)
+# SET (M_VERSION 1.12)
 SET (INTERFACE ruby_${M_NAME}.i)
 
 IF(NOT BUILD_LIBS)
-  SET (CMAKE_MODULE_PATH ../../../../../cmake_modules)
+  SET (MAP_ROOT ../../../../..)
+  SET (CMAKE_MODULE_PATH ${MAP_ROOT}/tools/cmake-support/modules)
 ENDIF(NOT BUILD_LIBS)
 
-SET (USE_ZLIB TRUE)
 SET (USE_RLIB TRUE)
-# SET (USE_INCLUDEPATH io_lib)
+# SET (USE_ZLIB TRUE)
 
-INCLUDE(CMakeBackwardCompatibilityC)
+# INCLUDE(CMakeBackwardCompatibilityC)
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
+SET(USE_C_LINKAGE TRUE)
 
 FIND_PACKAGE(MapRuby)
 
-ADD_TEST(TestRubyRQTLLib ${RUBY_EXECUTABLE} -I../${M_NAME} ./../test/test_${M_NAME}.rb)
-
-INSTALL(TARGETS ${M_MODULE}
-  LIBRARY DESTINATION ${RUBY_LIB_PATH}/biolib
-)
+TEST_RUBY_BINDINGS()
+INSTALL_RUBY_BINDINGS()
 
 

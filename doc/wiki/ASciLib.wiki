@@ -29,27 +29,29 @@
     <title>ASciLib</title>
     <id>19</id>
     <revision>
-      <id>198</id>
-      <timestamp>2009-04-09T21:48:54Z</timestamp>
+      <id>254</id>
+      <timestamp>2009-05-22T16:32:58Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
+      <comment>/* MILESTONES */</comment>
       <text xml:space="preserve">= ASciLib: ''A Science Library'' =
 
 A Science Lib (ASciLib) brings together a set of opensource C/C++ libraries and makes them available to the common high level languages: Perl, Ruby, Python, JAVA and R.
 
-ASciLib is a sister project of BioLib - where functionality of interest to a broader community of scientists is included. Currently the GNU Science Library (GSL) is being mapped to Perl and Ruby (using the original Perl Math::GSL SWIG mappings by Jonathan Leto).
+ASciLib is a 'forked' sister project of BioLib, with functionality of interest to a broader community of scientists. Currently the GNU Science Library (GSL) is being mapped to Perl and Ruby (using the original Perl Math::GSL SWIG mappings by Jonathan Leto).
 
 See [http://github.com/pjotrp/ascilib/ Github ASciLib] for more.
 
 == MODULES ==
 
-* GNU Science Library GSL module
+* GNU Science Library [[GSL]] module
 
 == MILESTONES ==
 
-* GSL support is added to the new [[ASciLib]] (A Science Lib) (April 2009)
+* Both Ruby and Perl bindings build and integration test succeeds (May 2009)
+* [[GSL]] support is added to the new [[ASciLib]] (A Science Library) (April 2009)
 
 == INTRODUCTION ==
 

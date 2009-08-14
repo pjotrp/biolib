@@ -29,14 +29,13 @@
     <title>Add C Library</title>
     <id>11</id>
     <revision>
-      <id>146</id>
-      <timestamp>2009-02-05T19:10:52Z</timestamp>
+      <id>222</id>
+      <timestamp>2009-05-05T22:17:16Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <minor/>
-      <comment>/* Define SWIG bindings */</comment>
+      <comment>/* Create a CMake file */</comment>
       <text xml:space="preserve">= Adding a C library to BioLib =
 
 == Creating a module ==
@@ -52,21 +51,31 @@ The BioLib API is added to:
 
 == Create a CMake file ==
 
-BioLib uses [[CMake]] to generate makefiles. These tend to be simple because of BioLib modules included. An affyio example:
+BioLib uses [[CMake]] to generate makefiles. These tend to be simple because of BioLib modules included. An example:
 
-  PROJECT(Biolib_affyio)
-  # ---- Include the modules:
-  FIND_PACKAGE(RLibs)
-  FIND_PACKAGE(BioLib)
-  # ---- Library name:
-  SET(LIBNAME biolib_affyio-${BIOLIB_VERSION})
-  # ---- Location for include files (.h)
+  PROJECT(Biolib_staden_iolib)
+  SET (M_NAME staden_io_lib)
+  SET (M_VERSION 1.11.6)
+  IF(NOT BUILD_LIBS)
+    SET (CMAKE_MODULE_PATH ../../../../cmake_modules)
+  ENDIF(NOT BUILD_LIBS)
+  FIND_PACKAGE(Map REQUIRED)
+  FIND_PACKAGE(ZLIB REQUIRED)
   INCLUDE_DIRECTORIES(.)
-  INCLUDE_DIRECTORIES(${R_INCLUDE_PATH})
-  # ---- Create a shared library from .c files
+  INCLUDE_DIRECTORIES(..)
+  INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_PATH})
+  BUILD_CLIB()
   ADD_LIBRARY(${LIBNAME} SHARED
-     biolib_affyio.c 
+  array.c
+  compress.c
+  compression.c
+  ...
+  write_scf.c
+  xalloc.c
+  ztr.c
+  ztr_translate.c
   )
+  INSTALL_CLIB()
 
 For the latest version see the BioLib source tree.
 

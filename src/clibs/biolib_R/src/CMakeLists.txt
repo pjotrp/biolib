@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 
-PROJECT(Biolib_core)
-SET (M_NAME biolib_core)
+PROJECT(Biolib_R)
+SET (M_NAME biolib_R)
 
 IF(NOT BUILD_LIBS)
   # Building in a local module: Set the module search path manually
@@ -19,8 +19,8 @@ SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../build)
 INCLUDE_DIRECTORIES(../include)
 
 BUILD_CLIB()
-SET(LIBNAME biolib_core-${MAP_VERSION})   # override
+SET(LIBNAME biolib_R-${MAP_VERSION})   # override
 
-ADD_LIBRARY(${LIBNAME} SHARED biolib_error.c)
+ADD_LIBRARY(${LIBNAME} SHARED biolib_R_map.c)
 
 INSTALL_CLIB()

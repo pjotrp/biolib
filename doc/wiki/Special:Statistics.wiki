@@ -74,28 +74,28 @@ var wgRestrictionMove = [];
 			<div id="contentSub"></div>
 									<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>			<!-- start content -->
 			<a name="BioLib_statistics"></a><h2> <span class="mw-headline">BioLib statistics</span></h2>
-<p>There are <b>19</b> total pages in the database.
+<p>There are <b>25</b> total pages in the database.
 This includes "talk" pages, pages about BioLib, minimal "stub" pages, redirects, and others that probably do not qualify as content pages.
-Excluding those, there are <b>11</b> pages that are probably legitimate content pages.
+Excluding those, there are <b>14</b> pages that are probably legitimate content pages.
 </p><p><b>0</b> files have been uploaded.
-</p><p>There have been a total of <b>3,850</b> page views, and <b>200</b> page edits since BioLib was setup.
-That comes to <b>10.53</b> average edits per page, and <b>19.25</b> views per edit.
+</p><p>There have been a total of <b>4,725</b> page views, and <b>266</b> page edits since BioLib was setup.
+That comes to <b>10.64</b> average edits per page, and <b>17.76</b> views per edit.
 </p><p>The <a href="http://www.mediawiki.org/wiki/Manual:Job_queue" class="external text" title="http://www.mediawiki.org/wiki/Manual:Job_queue" rel="nofollow">job queue</a> length is <b>0</b>.
 </p>
 <a name="User_statistics"></a><h2> <span class="mw-headline">User statistics</span></h2>
-<p>There are <b>5</b> registered <a href="/wiki/Special:ListUsers" title="Special:ListUsers">users</a>, of which <b>3</b> (or <b>60.00%</b>) have <a href="/w/index.php?title=BioLib:Administrators&amp;action=edit&amp;redlink=1" class="new" title="BioLib:Administrators (not yet written)">Sysops</a> rights.
+<p>There are <b>6</b> registered <a href="/wiki/Special:ListUsers" title="Special:ListUsers">users</a>, of which <b>3</b> (or <b>50.00%</b>) have <a href="/w/index.php?title=BioLib:Administrators&amp;action=edit&amp;redlink=1" class="new" title="BioLib:Administrators (not yet written)">Sysops</a> rights.
 </p>
 <a name="Most_viewed_pages"></a><h2> <span class="mw-headline">Most viewed pages</span></h2>
-<ul><li> <a href="/wiki/Main_Page" title="Main Page">Main Page</a> (1,358)
-</li><li> <a href="/wiki/BioLib_Affymetrix" title="BioLib Affymetrix">BioLib Affymetrix</a> (467)
-</li><li> <a href="/wiki/Add_C_Library" title="Add C Library">Add C Library</a> (380)
-</li><li> <a href="/wiki/Road_map" title="Road map">Road map</a> (287)
-</li><li> <a href="/wiki/NIX" title="NIX">NIX</a> (261)
-</li><li> <a href="/wiki/Interesting_libraries" title="Interesting libraries">Interesting libraries</a> (217)
-</li><li> <a href="/wiki/SWIG" title="SWIG">SWIG</a> (166)
-</li><li> <a href="/wiki/BioLib_best_practises" title="BioLib best practises">BioLib best practises</a> (144)
-</li><li> <a href="/wiki/Supported_data_types" title="Supported data types">Supported data types</a> (125)
-</li><li> <a href="/wiki/CMake" title="CMake">CMake</a> (91)
+<ul><li> <a href="/wiki/Main_Page" title="Main Page">Main Page</a> (1,727)
+</li><li> <a href="/wiki/BioLib_Affymetrix" title="BioLib Affymetrix">BioLib Affymetrix</a> (494)
+</li><li> <a href="/wiki/Add_C_Library" title="Add C Library">Add C Library</a> (406)
+</li><li> <a href="/wiki/Road_map" title="Road map">Road map</a> (317)
+</li><li> <a href="/wiki/NIX" title="NIX">NIX</a> (305)
+</li><li> <a href="/wiki/Interesting_libraries" title="Interesting libraries">Interesting libraries</a> (237)
+</li><li> <a href="/wiki/SWIG" title="SWIG">SWIG</a> (194)
+</li><li> <a href="/wiki/BioLib_best_practises" title="BioLib best practises">BioLib best practises</a> (161)
+</li><li> <a href="/wiki/Supported_data_types" title="Supported data types">Supported data types</a> (144)
+</li><li> <a href="/wiki/CMake" title="CMake">CMake</a> (111)
 </li></ul>
 <div class="printfooter">
 Retrieved from "<a href="http://biolib.open-bio.org/wiki/Special:Statistics">http://biolib.open-bio.org/wiki/Special:Statistics</a>"</div>
@@ -169,4 +169,4 @@ Retrieved from "<a href="http://biolib.open-bio.org/wiki/Special:Statistics">htt
 </div>
 
 		<script type="text/javascript">if (window.runOnloadHook) runOnloadHook();</script>
-<!-- Served in 0.719 secs. --></body></html>
+<!-- Served in 0.356 secs. --></body></html>
