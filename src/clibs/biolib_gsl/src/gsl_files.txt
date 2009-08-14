@@ -451,7 +451,7 @@ ${GSL_CONTRIB_PATH}/rng/ranlux.c
 ${GSL_CONTRIB_PATH}/rng/ranlxd.c
 ${GSL_CONTRIB_PATH}/rng/ranlxs.c
 ${GSL_CONTRIB_PATH}/rng/ranmar.c
-${GSL_CONTRIB_PATH}/rng/rng.c
+./rng.c
 ${GSL_CONTRIB_PATH}/rng/schrage.c
 ${GSL_CONTRIB_PATH}/rng/slatec.c
 ${GSL_CONTRIB_PATH}/rng/taus113.c

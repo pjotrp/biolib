@@ -1834,8 +1834,9 @@ class TestHKAdata(object):
 
 #class TestHKAresults(object):
 
-def calcHKA(self):
-    """Performs the calculations necessary for the HKA test.Returns an object of type multiLocusHKAparams.
+def TestcalcHKA(self):
+    """Performs the calculations necessary for the HKA test.Returns an object of
+    type multiLocusHKAparams.
 
     calcHKA(data)
     Parameters:
@@ -3138,14 +3139,11 @@ def TestrotatePolyTable():
 ##        totMuts 	if true (the default) use the total number of inferred mutations,
 ##        otherwise use the total number of polymorphic sites in calculations
 ##
-##        >>> v = fastaVector(2)
+##        >>> v = fastaVector(3)
 ##        >>> v[0] = Fasta('s1', 'ATGCNC')
 ##        >>> v[1] = Fasta('s2', 'GCCA-T')
-##        >>> p = PolySites(v)
-##        """
 ##        >>> v[2] = Fasta('s3', '0GG1TC')
-##        >>> poly = PolySites(v)
-##        """
+##        >>> p = PolySites(v)
 ##        >>> snp = PolySNP(p)
 ##        """
 ##
@@ -3316,7 +3314,8 @@ def TestrotatePolyTable():
 ##        """
 ##
 ##    def testTajimasD():
-##        """A common summary of the site frequency spectrum. Proportional to . This routine does calculate the denominator of the test statistic.
+##        """A common summary of the site frequency spectrum.  This routine does
+ #        calculate the denominator of the test statistic.
 ##
 ##        Warning:
 ##        statistic undefined if there are untyped SNPs
@@ -3466,6 +3465,20 @@ def TestrotatePolyTable():
 ##        >>> snp = PolySNP(p,True,1,True)
 ##        >>> snp.Minrec()
 ##        0
+##        """
+##    def testDisequilibrium():
+##        """Returns:A vector of statistics related to LD and distance in the sample. An empty vector
+##        is returned if there are < 2 polymorphic sites in the sample. See the documentation for
+##        Recombination::Disequilibrium for a description of the return vector.
+##
+##        >>> v = fastaVector(3)
+##        >>> v[0] = Fasta('s1', 'ATGCNC')
+##        >>> v[1] = Fasta('s2', 'GCCA-T')
+##        >>> v[2] = Fasta('s3', '0GA1TC')
+##        >>> p = PolySites(v)
+##        >>> snp = PolySNP(p,True,1,True)
+##        >>> snp.Disequilibrium()
+##        ()
 ##        """
 
 class TestPolySIM(object):
