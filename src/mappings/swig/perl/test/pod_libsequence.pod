@@ -889,6 +889,7 @@ L4(): Returns the number of 4-fold degenerate sites compared
   $comeron->DESTROY;
   
 
+
 =head1 Classes and functions to aid in the calculations of the pathways between two condons
 
 This group of classes and functions deals with determining either the counts of silent and replacement 
@@ -968,683 +969,973 @@ value will be equal to SEQMAXUNSIGNED, which is declared in <Sequence/SeqConstan
 
  my $path = libsequence::mutsShortestPath('AAA','GGG');
  is($path->swig_first_get, 1);
+ is($path->swig_second_get, 2);
 
-> =head1 Function objects defined in the library
-> 
-> =head2 class stateCounter
-> 
-> keep track of state counts at a site in an alignment or along a sequence
-> 
-> stateCounter(): Constructor
-> 
->   my $states = new libsequence::stateCounter();
->   
-> operator (): function call, add the character in position i,j in an alignment
-> characters are from {A, T, G, C, N, 0, 1, -}
-> 
-> nStates(): Returns the number of states counted, excluding gaps and missing data
-> 
-> =head1 Miscellany
-> 
-> =head2 sub Translate
-> 
-> =head2 sub TsTv(i, j)
-> 
-> akes two chars, assumed to be nucleotides. The integer returned by this function is a
-> member of the enumeration type Mutations.
-> 
->   is(libsequence::TsTv('A', 'G'), 1);
->   
-> Takes two ints, assumed to be integer representations of nucleotides.The way to ensure that
-> the int represents a nucleotide in a valid way is to use Nucleotides. The return value is
-> determined by a call to TsTv(int i, int j), where the ints are defined in turn by Nucleotides
-> 
->   is(libsequence::TsTv(1, 2), 2);
->   
-> =head2 sub Different(seq1, seq2, skip_missing = 1, nucleic_data = 1)
-> 
-> Ask if two strings are different. While this can normally be done by asking if (seq1 != seq2) {},
-> missing data poses a problem here. If skip-missing == 1, missing data (the 'N' character
-> for nucleotide data, 'X' for amino acid) are not used to determine if the sequences are different.
-> If nucleic_acid ==1, nucleotide data are assumed, if nucleic_acid==0, protein data are assumed.
-> Returns 1 if the seqs are different, 0 otherwise. If the two sequences are of different length, true is returned.
-> 
->   ok(libsequence::Different('ATGNT', 'ATGT', 1, 1));
->   ok(!libsequence::Different('CCN', 'CCT', 1, 1));
->   
-> =head2 sub Gapped()
-> 
-> Returns 1 if the string contains gaps, 0 otherwise
-> Note: The only gap character checked so far is '-'. Use template version for other gap characters
-> 
->   ok(libsequence::Gapped('A-G-T'));
-> 
-> =head2 sub NotAGap()  
-> 
-> Returns true if a c is not a gap character, false otherwise.
-> Note: Currently, only '-' is considered to be a gap character
-> 
->   ok(!libsequence::NotAGap('-'));
-> 
-> =head2 sub NumDiffs(seq1, seq2, skip_missing = 1, nucleic_acid = 1)
-> 
-> Returns:the number of differences between two std::strings.
-> Can skip missing data in the same fashion as Comparisons::Different.
-> If one sequence is shorter than the other, the number of positions compared is the length of the shorter sequence.
-> 
->   is(libsequence::NumDiffs('AATGC-CT', 'A-T-CCGT'), 4);
->   
-> =head2 class ambiguousNucleotide()
-> 
-> judge if a char is ambigousNuclectide. In other words,
-> if char(can be lower letter) is not within{A,T,G,C},Return 0 if it is, otherwise 1
-> 
-> 
-> =head1 Molecular Population Genetics
-> 
-> =head2 class segment
-> 
-> A portion of a recombining chromosome.
-> 
-> segment(): Default Constructor
-> 
->   my $seg_null = new libsequence::segment();
-> 
-> segment(beg, end, desc = 0): Constructor.
-> Parameters:
-> beg: the first site in the segment
-> end: the last site in the segment
-> desc: the individual in the sample to which the segment leads
->   
->   my $seg = new libsequence::segment(1, 3, 0);
->   
-> =head2 class chromosome
-> 
-> A chromosome is a container of segments. 
-> 
-> chromosome(): Default constructor.
-> 
->   my $chro_null = new libsequence::chromosome();
-> 
-> chromosome(initial_segs, population = 0): Constructor
-> Parameters:
-> initial_segs 	a vector of segments
-> population 	used to set pop
-> 
->   my $segs = new libsequence::segVector(3);
->   my $seg1 = new libsequence::segment();
->   $segs->set(0,$seg1);
->   my $seg2 = new libsequence::segment(1,4,0);
->   $segs->set(1,$seg2);
->   my $seg3 = new libsequence::segment(1,3,1);
->   $segs->set(2,$seg3);
->   my $chro = new libsequence::chromosome($segs);
->   #$segs{0} = new libsequence::segment();
-> 
-> chromosome(chroObj):Copy constructor
-> 
->   my $copy_chro = new libsequence::chromosome($chro);
->   
-> first(): Returns the first position in the chromosome
-> 
->   is($chro->first(), 0);
->   
-> last(): Returns the last position in the chromosome
-> 
->   is($chro->last(), 3);
->   
-> links(): Computes and returns the number of positions at which recombination can occur 
-> in the chromosome. Returns (segs+nsegs-1)->end - segs->beg.
-> 
->   is($chro->links(), 3);
->   
-> swap_with(): Swaps the data members of the current chromosome with chromosome ch. Called by the coalesce routine, 
-> and is necessary to prevent nastiness such as multiple calls to free when vectors of chromosomes go out of scope. 
-> Implemented as: std::swap(this->segs,ch.segs); std::swap(this->nsegs,ch.nsegs); std::swap(this->pop,ch.pop);
-> 
->   my $segs1 = new libsequence::segVector(2);
->   my $seg11 = new libsequence::segment(2,5,0);
->   $segs1->set(0,$seg11);
->   my $seg12 = new libsequence::segment(1,8,1);
->   $segs1->set(1,$seg12);
->   my $chro1 = new libsequence::chromosome($segs1);
->   
->   $chro->swap_with($chro1);
->   is($chro->first(), 2);
->   
-> assign_allocated_segs(newsegs, new_nsegs)
-> Parameters:
-> newsegs 	an array of segments allocated with malloc
-> new_nsegs 	the number of segs stored in newsegs
-> 
->   my $newsegs = new libsequence::segArray(2);
->   my $new1 = new libsequence::segment(3,4,1);
->   my $new2 = new libsequence::segment(2,5,0);
->   $newsegs->setitem(0, $new1);
->   $newsegs->setitem(1, $new2);
->   
->   $chro->assign_allocated_segs($newsegs, 2);
->   is($chro->first(), 3); 
->   
-> ~chromosome(): Destructor
-> 
->   $chro->DESTROY;
->   $chro1->DESTROY;
->   
-> =head2 class HKAdata
-> 
-> Data from a single locus for an HKA test.
-> 
-> HKAdata(): Default constructor
-> 
->   my $hka_null = new libsequence::HKAdata();
->   
-> HKAdata(sa, sb, d, na, nb): Constructor
-> sa 	Num. polymorphic sites in species a
-> sb 	Num. polymorphic sites in species b
-> d 	Divergence between species a and b (per locus)
-> na 	sample size for species a
-> nb 	sample size for species b
->   
->   my $hka = new libsequence::HKAdata(3,5,2,1,1);
->   
-> HKAdata(hkaObj): Copy contructor
-> 
->   my $hka_copy = new libsequence::HKAdata($hka);
->   
-> =head2 class node
-> 
-> A point on a marginal tree at which a coalescent event occurs.
-> 
-> Parameters:
-> t 	The (coalescent-scaled) time at which the node was generated
-> a 	The index in the marginal tree that is the ancestor of the current node
->       
->   my $node = new libsequence::node();
->   
->   
-> =head2 class marginal
-> 
-> The genealogy of a portion of a chromosome on which no recombination has occurred.
-> A marginal history is a coalscent tree for a region in which no recombination has occured in the history of a sample.
->         
-> marginal(beg, nsam, nnodes, tree): 
-> Parameters:
-> marginal(beg, nsam, nnodes, tree)
-> beg:The (mutational) site at which the current marginal tree begins
-> nsam: The sample size being simulated. The 2*nsam-1 nodes in the tree are therefore indexed from 0 to 2*nsam-2
-> nnodes: The current number of nodes in the tree
-> tree: the coalescent history of this marginal tree
-> 
->   my $tree = new libsequence::nodeVector(3);
->   my $n1 = new libsequence::node();
->   my $n2 = new libsequence::node(1,3);
->   my $n3 = new libsequence::node(3,10);
->   $tree->set(0, $n1);
->   $tree->set(1, $n2);
->   $tree->set(2, $n3);
->   my $marg = new libsequence::marginal(5, 10, 19, $tree);
->   
-> = head2 operator <: Returns marginalObj1.beg < marginalObj.beg
-> 
->   my $tree1 = new libsequence::nodeVector(1);
->   $tree1->set(0, $n1);
->   my $marg1 = new libsequence::marginal(1,5,10,$tree1);
->   ok($marg1 < $marg);
->   
->   #$marg[0];
->   #my $newick = new libsequence::newick_stream_marginal_tree($marg);
->   
-> =head2 class SimParams:
-> 
-> Parameters for Hudson's simulation program
-> 
-> SimParams(): Constructor
-> 
->   my $para = new libsequence::SimParams();
->   
-> params(): Returns the command-line input to ms
-> 
->   $para->params();
->   
-> totsam(): Returns the total sample size (# gametes)
-> 
->   is($para->totsam(), 0);
->   
-> runs(): Returns number of genealogies to generate
-> 
->   is($para->runs(), 0);
-> 
-> 
-> =head2 class SimData:
-> 
-> Data from coalescent simulations.
-> 
-> SimData(nsame = 0, nsnps = 0): Default Constructor
-> nsama    sample size
-> 
->   my $sdata = new libsequence::SimData();
->   
-> SimData(pos, dat)
-> Parameters:
-> pos     vector of doubles representing segregating positions
-> dat     vector of strings representing sequence data.
-> 
->   my $pos = new libsequence::doubleVector(4);
->   $pos->set(0, .25);
->   $pos->set(1, .32);
->   $pos->set(2, .34);
->   $pos->set(3, .44);
->   my $dat = new libsequence::strVector(2);
->   $dat->set(0, 'A-TC');
->   $dat->set(1, 'N0G1');
->   my $d = new libsequence::SimData($pos,$dat);
->   
-> SimData(sbegin, send)
-> 
->   my $beg = $d->sbegin();
->   my $end = $d->send();
->   my $d1 = new libsequence::SimData($beg,$end);
->   
-> empty():Returns true if object contains no data, false otherwise
-> 
->   ok($sdata->empty());
->   
-> GetData():Returns PolyTable::data, a vector of std::strings containing polymorphic sites. Assuming the vector is returned 
-> to a vector<string> called data, accessing data[i][j] accesses the j-th site of the i-th sequence
-> 
->   is($d->GetData()->[0], 'A-TC');
->   is($d->GetData()->[1], 'N0G1');
->  
-> GetPositions(): Returns PolyTable::positions
-> 
->   is($d->GetPositions()->[1], .32);
->   is($d->GetPositions()->[3], .44);
-> 
-> assign(): Returns true if the assignment was successful, false otherwise. The only case where false is returned is if the 
-> number of individuals at each site is not the constan from beg to end.
-> 
->   my $d2 = new libsequence::SimData();
->   ok($d2->assign($beg, $end));
->   
-> RemoveMissing(): go through the data and remove all the sites with missing data (the character N).
-> 
->   $d1->RemoveMissing();
->   is($d1->GetData()->[1], '0G1');
->   is($d1->GetData()->[0], '-TC');
->   
-> RemoveAmbiguous():go through the data and remove all the sites with states other than {A,G,C,T,N,0,1,-}
-> 
->   $dat->set(1, 'NEG1');
->   my $d3 = new libsequence::SimData($pos, $dat);
->   $d3->RemoveAmbiguous();
->   is($d3->GetData()->[0], 'ATC');
->   is($d3->GetData()->[1], 'NG1');
->   
-> RemoveMultiHits(skipOutgroup = False, outgroup = 0): go through the data and remove all the sites with more than 2 states 
-> segregating. By default, this routine also removes sites where there are 2 states segregating in the ingroup. and the 
-> outgroup (if present) has a 3rd state.
-> Parameters:
-> skipOutgroup 	default is false. If true, the character state of the outgroup is ignored.
-> outgroup 	the index of the outgroup in the data vector
-> 
->   my $dat2 = new libsequence::strVector(3);
->   $dat2->set(0, 'A-TC');
->   $dat2->set(1, 'N0G1');
->   $dat2->set(2, 'T-CC');
->   my $d4 = new libsequence::SimData($pos,$dat2);
->   $d4->RemoveMultiHits();
->   is($d4->GetData()->[0], 'A-C');
->   is($d4->GetData()->[1], 'N01');
->   is($d4->GetData()->[2], 'T-C');
->   
-> ApplyFreqFilter(mincount, haveOutgroup = False, outgroup = 0): go through the data and remove all positions where there is a 
-> variant at count (# of occurences in the sample) < minfreq
-> Parameters:
-> mincount 	minimum count of a variant in the data. Variants that occur < mincount times are thrown out.
-> haveOutgroup 	true if an outgroup is present in the data, false otherwise
-> outgroup 	the index in the data array containing the outgroup (if present)
-> 
->   $d4->ApplyFreqFilter(2);
->   is($d4->GetData()->[0], '');
->   
-> Binary(haveOutgroup = false, outgroup = 0, strictInfSites = true)
-> Parameters:
-> haveOutgroup 	use true if an outgroup is present, false otherwise
-> outgroup 	the index of the outgroup in the data vector used to construct the object
-> strictInfSites 	if true, throw out all sites with > 2 character states (including outgroup!)
-> 
-> Note:
-> if haveOutgroup== true, then 0 means an ancestral state and 1 a derived state in the resulting. 
-> note If haveOutgroup == true, and there are sites with missing data in the outrgroup sequence,
-> those sites are removed from the data, since its assumed you actually want to know ancestral/derived
-> for every site
-> 
->   $d3->Binary();
->   #print $d3->GetData()->[0];
-> 
-> segsites(): Returns the number of segregating sites in the data block
-> 
->   is($d->segsites(), 4);
->   
-> size(): Return how many std::strings are stored in PolyTable::data
-> 
->   is($d->size(), 2);
->   
-> numsites(): Returns number of sites
-> 
->   is($d->numsites(), 4);
->   
-> position():Return the i-th position from the PolyTable::positions.
-> 
->   is($d->position(2), 0.34);
->   
-> operator =: Returns true if two SimData object are the same, otherwise false
-> 
->   ok($d == $d2);
->   
-> operator !=:Returns False if two SimData object are the same, otherwise True
-> 
->   ok($d1 != $d3);
->   
-> operator []:Return the i-th element of PolyTable::data.
-> 
->   is($d->__getitem__(0), 'A-TC');
->   
-> ~SimData(): Destructor
-> 
->   $d->DESTROY();
->   
-> 
-> =head2 class PolySites()
-> 
-> Polymorphism tables for sequence data. 
-> 
-> PolySites(alignment, strictInfsites = 0, ignoregaps = 1, skipMissing = False, skipAdjSNP = False, freqfilter = 0): This is the
-> constructor if you are using "string-like" data, such as std::string, or Sequence::Fasta. Note that the vector name is aligment,
-> and that means that every sequence had better be the same length!
-> 
-> Parameters:
-> alignment 	vector of data
-> strictInfSites 	if true, throw out all sites with > 2 states
-> ignoregaps 	if true, do not count gapped sites as polymorphisms
-> skipMissing 	if true, ignore ALL sites with missing data ('N')
-> skipAdjSNP 	if does nothing. a placeholder for a future feature
-> freqfilter 	Defaults to 0. For a polymorphic site to be included in the final table,
-> the minor allele count in the data (i.e. the number of times the minor allele occurs at that site)
-> must be strictly greater than freqfilter
-> 
-> Note:
-> segsite positions are stored as positions (starting from 1)
-> 
-> Warning:
-> when ignoregaps=false, this class does not do the right thing
-> 
->   my $v = new libsequence::fastaVector(2);
->   $v->set(0, libsequence::Fasta->new('s1', 'ANTGC-C'));
->   $v->set(1, libsequence::Fasta->new('s2', '-GGTCCA'));
->   my $p = new libsequence::PolySites($v);
->   
-> PolySites(List, stringList):
-> Parameters:
-> List 	a list of doubles representing positions of polymorphic positions
-> stringList 	a vector of strings representing the polymorphic characters
-> 
->   my $l = new libsequence::doubleVector(2);
->   $l->set(0, 0);
->   $l->set(1, 4);
->   my $strl = new libsequence::strVector(2);
->   $strl->set(0, 'ATG-');
->   $strl->set(1, 'CCCT');
->   my $p1 = new libsequence::PolySites($l, $strl);
->   
-> GetData():Returns PolyTable::data, a vector of std::strings containing polymorphic sites. Assuming the vector is returned to 
-> a vector<string> called data, accessing data[i][j] accesses the j-th site of the i-th sequence
-> 
->   is($p->GetData()->[0], 'TGC');
->   is($p->GetData()->[1], 'GTA');
->   
-> GetPositions(): Returns PolyTable::positions.
-> 
->   is($p->GetPositions()->[0], 3.0);
->   is($p->GetPositions()->[1], 4.0);
->   is($p->GetPositions()->[2], 7.0);
->   
-> empty(): Returns true if object contains no data, false otherwise
->   
->   ok($p1->empty());
->   
-> size(): Return how many std::strings are stored in PolyTable::data
-> 
->   is($p->size(), 2);
->   
-> numsites(): Return how many positions are stored in PolyTable::positions
-> 
->   is($p->numsites(), 3);
->   
-> Binary(): Recode the polymorphism table in 0,1 (binary notation)
->             
->   $p->Binary();
->   is($p->GetData->[0], '000');
->   is($p->GetData->[1], '111');
-> 
-> ApplyFreqFilter(mincount, haveOutgroup = False, outgrp = 0): go through the data and remove all positions where there is a 
-> variant at count (# of occurences in the sample) < minfreq
-> Parameters:
-> mincount 	minimum count of a variant in the data. Variants that occur < mincount times are thrown out.
-> haveOutgroup 	true if an outgroup is present in the data, false otherwise
-> outgroup 	the index in the data array containing the outgroup (if present)
-> 
->   $p->ApplyFreqFilter(2);
->   ok($p->empty());
->   
-> ~PolySites(): Destructor
-> 
->   $p->DESTROY();
-> 
-> =head2 class PolySNP
-> 
-> Molecular population genetic analysis
-> 
-> PolySNP(fastaVectorObj):
-> Parameters:
-> data 	a valid object of type Sequence::PolyTable
-> haveOutgroup 	true if an outgroup is present, false otherwise
-> outgroup 	if haveOutgroup is true, outgroup is the index of that sequence in data
-> totMuts 	if true (the default) use the total number of inferred mutations,otherwise use the total number of polymorphic sites in calculations
-> 
->   my $v = new libsequence::fastaVector(3);
->   $v->set(0, libsequence::Fasta->new('s1', 'ATGCNC'));
->   $v->set(1, libsequence::Fasta->new('s2', 'GCCA-T'));
->   $v->set(2, libsequence::Fasta->new('s3', '0GA1TC'));
->   my $p = new libsequence::PolySites($v);
->   my $snp = new libsequence::PolySNP($p);
->   
-> ThetaPi(): Calculated here as the sum of 1.0 - sum of site homozygosity accross sites.
-> 
->   is($snp->ThetaPi(), 4.666666666666667);
->   
-> ThetaW(): The classic "Watterson's Theta" statistic, generalized to missing data and multiple mutations per site:
-> 
->   is($snp->ThetaW(), 6.0);
->   
-> ThetaH(): Calculate Theta ( = 4Nu) from site homozygosity, a la Fay and Wu (2000). This statistic is problematic in general to 
-> calculate when there are multiple hits. The test requires that the ancestral state (inferred from the outgroup) still be segregating
-> in the ingroup. If that is not true, the site is skipped.
-> 
->   my $snp1 = new libsequence::PolySNP($p,1,1,1);
->   is($snp1->ThetaH(), 0);
->   
-> ThetaL(): Calculate Theta ( = 4Nu) from site homozygosity, corresponding to equation 1 in Thornton and Andolfatto (Genetics) 
-> "Approximate Bayesian Inference reveals evidence for a recent, severe, bottleneck in a Netherlands population of Drosophila melanogaster," 
-> (although we labelled in  in that paper) The test requires that the ancestral state (inferred from the outgroup) still be segregating in
-> the ingroup. If that is not true, the site is skipped.
-> 
->   is($snp1->ThetaL(), 0);
->   
-> VarPi():Total variance of mean pairwise differences. Tajima in Takahata/Clark book, (13).
-> 
->   is($snp->VarPi(), 9.7777777777777803);
->   
-> StochasticVarPi(): Stochastic variance of mean pairwise differences. Tajima in Takahata/Clark book, (14).
-> 
->   is($snp->StochasticVarPi(), 4.2222222222222232);
->   
-> SamplingVarPi(): Component of variance of mean pairwise differences from sampling. Tajima in Takahata/Clark book, (15)
-> 
->   is($snp->SamplingVarPi(), 5.5555555555555562);
->   
-> NumPoly(): Returns: the number of polymorphic (segregating) sites in data
-> 
->   is($snp->NumPoly(), 5);
->   
-> NumMutations(): Returns:the total number of mutations in the data. The number of mutations per site = number of states per site - 1
->   
->   is($snp->NumMutations(), 9);
->   
-> NumSingletons(): Returns:number of polymorphisms that appear once in the data, without respect to ancestral/derived
-> 
->   is($snp->NumSingletons(), 13);
-> 
-> NumExternalMutations(): Returns:the number of derived singletons.
-> 
->   is($snp->NumExternalMutations(), 4294967295);
->   
-> Dnominator(): Returns Denominator of Tajima's D, or nan if there are no polymorphic sites
-> 
->   is($snp->Dnominator(), 0);
->   
-> DandVH():  Returns the haplotype diversity of the data.
-> 
->   is($snp1->DandVH(), 1.0);
->   
-> DandVK(): Returns number of haplotypes in the sample
-> 
->   is($snp1->DandVK(), 2);
->   
-> WallsB(): Returns Wall's B Statistic.
-> 
->   is($snp1->WallsB(), 1.0);
->   
-> WallsBprime(): Returns Wall's B Statistic.
-> 
->   is($snp1->WallsBprime(), 3);
->   
-> WallsQ(): Returns Wall's Q Statistic.
-> 
->   is($snp1->WallsQ(), 1.0);
->   
-> HudsonsC(): Returns Returns:Hudson's (1987) estimator of , an estimator of the population recombination rate that depends on the 
-> variance of the site frequencies. The calculation is made by a call to Recombination::HudsonsC
-> 
->   is($snp1->HudsonsC(), 10000.0);
-> 
-> Minrec(): Returns:The minimum number of recombination events observed in the sample (Hudson and Kaplan 1985). Will return SEQMAXUNSIGNED
-> if there are < 2 segregating sites.
-> 
->   is($snp1->Minrec(), 0);
->   
->   
-> =head2 sub isseg(beg, nsegs, offset, pos)
-> 
-> ask if a chromosome beginning at seg and containing nsegs contains a segment containing the position pos.  Returns true if a segment
-> exists that contains the point pos
-> 
-> Parameters:
-> seg 	a pointer to a segment of a chromosome (this should be the 1st segment, such as the return value of chromosome::begin())
-> nsegs 	the number of segs in the chromosome pointed to by seg
-> offset 	a pointer to an integer. This integer is used for repeated pointer arithmetic, and should be initalized to 0 before the first call.
-> pos 	a position a long a chromosome. This function asks if pos is contained in the ancestral material of the chromosome whose segments begin at seg
-> 
->   my $segs = new libsequence::segVector(3);
->   $segs->set(0, libsequence::segment->new(1,4,0));
->   $segs->set(1, libsequence::segment->new());
->   $segs->set(2, libsequence::segment->new(2,8,1));
->   my $chro = new libsequence::chromosome($segs);
->   my $seg = $chro->begin();
->   my $offset = new libsequence::intPointer();
->   $offset->assign(0);
->   ok(libsequence::isseg($seg,3,1,$offset));
->   
-> =head2 sub calculate_scales(fragments, sample_scale, mutation_scale)
-> 
-> This is a helper function that rescales physical distance in base pairs to continuous distance on the interval 0,1.
-> 
-> Parameters:
-> fragments 	A vector of pairs, representing physical distance in bp. For each pair, the first element is the distance to the next 
-> fragment,and the second element is the length of the fragment. For example,two 1kb fragments separated by 10kb would be represented 
-> by the pairs (0,1000) (10000,1000).
-> 
-> sample_scale 	This vector will be filled with values representing the positions of the fragments on the continuous interval, without
-> any space betwen them. This is because we will actually do the simulation using a non-uniform genetic map to represent the high
-> recombination rates between fragments
-> 
-> mutation_scale 	This is a direct mapping of the data contained in fragments to the continuous scale, and can be used to rescale the positions of mutations
-> 
->   my $fragments = new libsequence::fragVector(3);
->   $fragments->push(libsequence::intPair->new(0,500));
->   $fragments->push(libsequence::intPair->new(1000,500));
->   $fragments->push(libsequence::intPair->new(1000,500));
->   my $sample = new libsequence::scaleVector(3);
->   my $mutation = new libsequence::scaleVector(3);
->   libsequence::calculate_scales($fragments,$sample,$mutation);
->   
-> =head2 sub sample_length(fragments)
-> 
-> When simulating partially linked regions, return the total length of sample material that we are simulating. Returns The sum of 
-> fragments[i].second for i=0 to i=fragments.size()-1
-> 
->   is(libsequence::sample_length($fragments), 1500);
->   
-> =head2 sub total_length(fragments)
-> 
-> When simulating partially linked regions, return the total length of the region. Returns The sum of fragments[i].first + fragments[i].second
-> for i=0 to i=fragments.size()-1
-> 
->   is(libsequence::total_length($fragments), 3500);
->   
-> =head2 sub init_sample(pop_config, nsites)
-> 
-> A simple function to initialize a sample of chromosomes. Returns a vector of chromosome.
-> 
-> Parameters:
-> pop_config 	For a k-population model, this vector contains the sample size for each pop. Individuals are labeled as beloning to 
-> population 0 to k-1, in the order specified in this vector
-> nsites 	The number of sites at which mutations occur. For a k-site model,recombination occurs at any of the k-1 "links" between 
-> sites. Eaach chromosome is assigned a single segment starting at position 0 and ending at nsites-1.
-> 
->   my $intv = new libsequence::intVector(1,10);  
->   my $chroVectorObj = libsequence::init_sample($intv, 1500);
->   
-> =head2 sub init_marginal(nsam)
-> 
-> Simple function to initialize and return a marginal tree.
-> 
-> Parameters:
-> nsam 	the total sample size (i.e. summed over all populations) that you want to simulate
-> 
->   my $marg = libsequence::init_marginal(10);
->   
-> =head2 sub coalesce(time, ttl_nsam, current_nsam, c1, c2, nsites, nlinks, sample, sample_history)
-> 
-> Common ancestor routine for coalescent simulation. Merges chromosome segments and updates marginal trees.
-> 
-> Parameters:
-> time 	the time at which the coalecent event is occuring
-> ttl_nsam 	the total sample size being simulated
-> current_nsam 	the current sample size in the simulation
-> c1 	the array index of the first chromosome involved in the coalescent event
-> c2 	the array index of the second chromosome involved in the coalescent event
-> nsites 	the total mutational length of the region begin simulated. In the language of Hudson (1983), this is the number of infinitely-many-alleles loci in the simulation.
-> nlinks 	a pointer to the number of "links" currently in the simulation. A link is the region between two sites, such that a chromosome currently with k sites has k-1 links
-> sample 	a pointer to the vector of chromosomes which makes up the sample
-> sample_history 	a pointer to the ancestral recombination graph
->  
-> >   my $sample_history = new libsequence::margList(1, $marg);
-> >   my $nlinks = new libsequence::intPointer();
-> >   $nlinks->assign(499);
-> >   is(libsequence::coalesce(0,19,19,1,2,1500,$sample,$sample_history), 1);
-> 
+=head1 Function objects defined in the library
+
+=head2 class stateCounter
+
+keep track of state counts at a site in an alignment or along a sequence
+
+stateCounter(): Constructor
+
+  my $states = new libsequence::stateCounter();
+  
+operator (): function call, add the character in position i,j in an alignment
+characters are from {A, T, G, C, N, 0, 1, -}
+
+  $states->__call__('A');
+  is($states->{a}, 1);
+  $states->__call__('C');
+  is($states->{c}, 1);
+  $states->__call__('C');
+  is($states->{c}, 2);
+
+nStates(): Returns the number of states counted, excluding gaps and missing data
+
+  $states->__call__('g');
+  $states->__call__('n');
+  $states->__call__('0');
+  $states->__call__('-');
+  is($states->nStates(), 4);
+  
+  
+  
+=head1 Miscellany
+
+=head2 sub Translate(beg, end, genetic_code = UNIVERSAL, gapchar = '-')
+
+Returns:a string representing the translation of the range
+Translate(beg, end, genetic_code = UNIVERSAL, gapchar = '-')
+Parameters:
+beg 	a pointer to the beginning of the region to translate
+end 	a pointer to 1 past the end of the region to translate
+genetic_code 	must be a value from the enumeration list Sequence::GeneticCodes
+gapchar 	a character representing an alignment gap
+
+  my $seq = new libsequence::Fasta('dna', 'atcgatcct');
+  my $beg = $seq->begin_const();
+  my $end = $seq->end_const();
+  is(libsequence::Translate($beg,$end), 'IDP');
+
+
+=head2 sub TsTv(i, j)
+
+akes two chars, assumed to be nucleotides. The integer returned by this function is a
+member of the enumeration type Mutations.
+
+  is(libsequence::TsTv('A', 'G'), 1);
+  
+Takes two ints, assumed to be integer representations of nucleotides.The way to ensure that
+the int represents a nucleotide in a valid way is to use Nucleotides. The return value is
+determined by a call to TsTv(int i, int j), where the ints are defined in turn by Nucleotides
+
+  is(libsequence::TsTv(1, 2), 2);
+  
+=head2 sub Different(seq1, seq2, skip_missing = 1, nucleic_data = 1)
+
+Ask if two strings are different. While this can normally be done by asking if (seq1 != seq2) {},
+missing data poses a problem here. If skip-missing == 1, missing data (the 'N' character
+for nucleotide data, 'X' for amino acid) are not used to determine if the sequences are different.
+If nucleic_acid ==1, nucleotide data are assumed, if nucleic_acid==0, protein data are assumed.
+Returns 1 if the seqs are different, 0 otherwise. If the two sequences are of different length, true is returned.
+
+  ok(libsequence::Different('ATGNT', 'ATGT', 1, 1));
+  ok(!libsequence::Different('CCN', 'CCT', 1, 1));
+  
+=head2 sub Gapped(data) or sub Gapped(beg, end, gapchar='-')
+
+Returns 1 if the string contains gaps, 0 otherwise
+Note: The only gap character checked so far is '-'. Use template version for other gap characters
+
+  ok(libsequence::Gapped('A-G-T'));
+  
+Parameters:
+beg 	an iterator
+end 	an iterator
+gapchar 	a character representing an aligment gap
+Returns:true if gapchar is present in the range [beg,end), false otherwise
+  
+  my $fasta = new libsequence::Fasta('seq', 'A++GTC');
+  my $beg = $fasta->begin();
+  my $end = $fasta->end();
+  
+  ok(libsequence::Gapped($beg,$end,'+'));
+
+
+=head2 sub NotAGap()  
+
+Returns true if a c is not a gap character, false otherwise.
+Note: Currently, only '-' is considered to be a gap character
+
+  ok(!libsequence::NotAGap('-'));
+
+=head2 sub NumDiffs(seq1, seq2, skip_missing = 1, nucleic_acid = 1)
+
+Returns:the number of differences between two std::strings.
+Can skip missing data in the same fashion as Comparisons::Different.
+If one sequence is shorter than the other, the number of positions compared is the length of the shorter sequence.
+
+  is(libsequence::NumDiffs('AATGC-CT', 'A-T-CCGT'), 4);
+  
+=head2 class ambiguousNucleotide()
+
+judge if a char is ambigousNuclectide. In other words,
+if char(can be lower letter) is not within{A,T,G,C},Return 0 if it is, otherwise 1
+
+  my $amb = new libsequence::ambiguousNucleotide();
+  ok(!($amb->__call__('A')));
+  
+=head2 class invalidPolyChar():
+
+This functor can be used to determine if a range contains characters that the SNP analysis routines in this library 
+cannot handle gracefully if char (can be lower letter) is not within{A,T,G,C,N,-,.},Return False if it is, otherwise Ture
+
+  my $inv = new libsequence::invalidPolyChar();
+  ok($inv->__call__('F'));
+
+=head1 Molecular Population Genetics
+
+=head2 class segment
+
+A portion of a recombining chromosome.
+
+segment(): Default Constructor
+
+  my $seg_null = new libsequence::segment();
+
+segment(beg, end, desc = 0): Constructor.
+Parameters:
+beg: the first site in the segment
+end: the last site in the segment
+desc: the individual in the sample to which the segment leads
+  
+  my $seg = new libsequence::segment(1, 3, 0);
+  
+=head2 class chromosome
+
+A chromosome is a container of segments. 
+
+chromosome(): Default constructor.
+
+  my $chro_null = new libsequence::chromosome();
+
+chromosome(initial_segs, population = 0): Constructor
+Parameters:
+initial_segs 	a vector of segments
+population 	used to set pop
+
+  my $segs = new libsequence::segVector(3);
+  my $seg1 = new libsequence::segment();
+  $segs->set(0,$seg1);
+  my $seg2 = new libsequence::segment(1,4,0);
+  $segs->set(1,$seg2);
+  my $seg3 = new libsequence::segment(1,3,1);
+  $segs->set(2,$seg3);
+  my $chro = new libsequence::chromosome($segs);
+  #$segs{0} = new libsequence::segment();
+
+chromosome(chroObj):Copy constructor
+
+  my $copy_chro = new libsequence::chromosome($chro);
+  
+first(): Returns the first position in the chromosome
+
+  is($chro->first(), 0);
+  
+last(): Returns the last position in the chromosome
+
+  is($chro->last(), 3);
+  
+links(): Computes and returns the number of positions at which recombination can occur 
+in the chromosome. Returns (segs+nsegs-1)->end - segs->beg.
+
+  is($chro->links(), 3);
+  
+swap_with(): Swaps the data members of the current chromosome with chromosome ch. Called by the coalesce routine, 
+and is necessary to prevent nastiness such as multiple calls to free when vectors of chromosomes go out of scope. 
+Implemented as: std::swap(this->segs,ch.segs); std::swap(this->nsegs,ch.nsegs); std::swap(this->pop,ch.pop);
+
+  my $segs1 = new libsequence::segVector(2);
+  my $seg11 = new libsequence::segment(2,5,0);
+  $segs1->set(0,$seg11);
+  my $seg12 = new libsequence::segment(1,8,1);
+  $segs1->set(1,$seg12);
+  my $chro1 = new libsequence::chromosome($segs1);
+  
+  $chro->swap_with($chro1);
+  is($chro->first(), 2);
+  
+assign_allocated_segs(newsegs, new_nsegs)
+Parameters:
+newsegs 	an array of segments allocated with malloc
+new_nsegs 	the number of segs stored in newsegs
+
+  my $newsegs = new libsequence::segArray(2);
+  
+  my $new1 = new libsequence::segment(3,4,1);
+  my $new2 = new libsequence::segment(2,5,0);
+  $newsegs->setitem(0, $new1);
+  $newsegs->setitem(1, $new2);
+  
+  my $newchro = $chro;
+  $newchro->assign_allocated_segs($newsegs, 2);
+  is($newchro->first(), 3);
+  
+  
+~chromosome(): Destructor
+
+  $chro->DESTROY();
+  
+=head2 class HKAdata
+
+Data from a single locus for an HKA test.
+
+HKAdata(): Default constructor
+
+  my $hka_null = new libsequence::HKAdata();
+  
+HKAdata(sa, sb, d, na, nb): Constructor
+sa 	Num. polymorphic sites in species a
+sb 	Num. polymorphic sites in species b
+d 	Divergence between species a and b (per locus)
+na 	sample size for species a
+nb 	sample size for species b
+  
+  my $hka = new libsequence::HKAdata(3,5,2,1,1);
+  
+HKAdata(hkaObj): Copy contructor
+
+  my $hka_copy = new libsequence::HKAdata($hka);
+  
+=head2 sub calcHKA(data):
+
+Performs the calculations necessary for the HKA test.Returns an object of type multiLocusHKAparams.
+Parameters:
+data 	a vector of HKAdata objects
+
+  my $hv = new libsequence::hkaVector(3);
+  $hv->set(0, libsequence::HKAdata->new());
+  $hv->set(1, libsequence::HKAdata->new(3,5,2,1,1));
+  $hv->set(2, libsequence::HKAdata->new(4,8,10,5,0));
+  my $hkaRes = libsequence::calcHKA($hv);
+  
+=head2 class node
+
+A point on a marginal tree at which a coalescent event occurs.
+
+Parameters:
+t 	The (coalescent-scaled) time at which the node was generated
+a 	The index in the marginal tree that is the ancestor of the current node
+      
+  my $node = new libsequence::node();
+  
+  
+=head2 class marginal
+
+The genealogy of a portion of a chromosome on which no recombination has occurred.
+A marginal history is a coalscent tree for a region in which no recombination has occured in the history of a sample.
+        
+marginal(beg, nsam, nnodes, tree): 
+Parameters:
+marginal(beg, nsam, nnodes, tree)
+beg:The (mutational) site at which the current marginal tree begins
+nsam: The sample size being simulated. The 2*nsam-1 nodes in the tree are therefore indexed from 0 to 2*nsam-2
+nnodes: The current number of nodes in the tree
+tree: the coalescent history of this marginal tree
+
+  my $tree = new libsequence::nodeVector(3);
+  my $n1 = new libsequence::node();
+  my $n2 = new libsequence::node(1,3);
+  my $n3 = new libsequence::node(3,10);
+  $tree->set(0, $n1);
+  $tree->set(1, $n2);
+  $tree->set(2, $n3);
+  my $marg = new libsequence::marginal(5, 10, 19, $tree);
+  
+operator <: Returns marginalObj1.beg < marginalObj.beg
+
+  my $tree1 = new libsequence::nodeVector(1);
+  $tree1->set(0, $n1);
+  my $marg1 = new libsequence::marginal(1,5,10,$tree1);
+  ok($marg1 < $marg);
+
+ 
+operator []: Returns node in tree with index i
+
+  is($marg->__getitem__(0)->{time}, 0);
+  
+=head2 class newick_stream_marginal_tree
+
+Class that provides a typecast-on-output of a marginal tree to a newick tree 
+
+newick_stream_marginal_tree(marg):Constructor
+marg: a mariginal tree
+
+  my $imarg = libsequence::init_marginal(10);
+  my $n = new libsequence::newick_stream_marginal_tree($imarg);
+  
+get_tree():if a tree has been read in from a stream, return it, else return an empty tree
+
+  my $tree = $n->get_tree();
+
+
+=head2 class SimParams:
+
+Parameters for Hudson's simulation program
+
+SimParams(): Constructor
+
+  my $para = new libsequence::SimParams();
+  
+params(): Returns the command-line input to ms
+
+  $para->params();
+  
+totsam(): Returns the total sample size (# gametes)
+
+  is($para->totsam(), 0);
+  
+runs(): Returns number of genealogies to generate
+
+  is($para->runs(), 0);
+
+
+=head2 class SimData:
+
+Data from coalescent simulations.
+
+SimData(nsame = 0, nsnps = 0): Default Constructor
+nsama    sample size
+
+  my $sdata = new libsequence::SimData();
+  
+SimData(pos, dat)
+Parameters:
+pos     vector of doubles representing segregating positions
+dat     vector of strings representing sequence data.
+
+  my $pos = new libsequence::doubleVector(4);
+  $pos->set(0, .25);
+  $pos->set(1, .32);
+  $pos->set(2, .34);
+  $pos->set(3, .44);
+  my $dat = new libsequence::strVector(2);
+  $dat->set(0, 'A-TC');
+  $dat->set(1, 'N0G1');
+  my $d = new libsequence::SimData($pos,$dat);
+  
+SimData(sbegin, send)
+
+  my $beg = $d->sbegin();
+  my $end = $d->send();
+  my $d1 = new libsequence::SimData($beg,$end);
+  
+empty():Returns true if object contains no data, false otherwise
+
+  ok($sdata->empty());
+  
+GetData():Returns PolyTable::data, a vector of std::strings containing polymorphic sites. Assuming the vector is returned 
+to a vector<string> called data, accessing data[i][j] accesses the j-th site of the i-th sequence
+
+  is($d->GetData()->[0], 'A-TC');
+  is($d->GetData()->[1], 'N0G1');
+ 
+GetPositions(): Returns PolyTable::positions
+
+  is($d->GetPositions()->[1], .32);
+  is($d->GetPositions()->[3], .44);
+
+assign(): Returns true if the assignment was successful, false otherwise. The only case where false is returned is if the 
+number of individuals at each site is not the constan from beg to end.
+
+  my $d2 = new libsequence::SimData();
+  ok($d2->assign($beg, $end));
+  
+RemoveMissing(): go through the data and remove all the sites with missing data (the character N).
+
+  $d1->RemoveMissing();
+  is($d1->GetData()->[1], '0G1');
+  is($d1->GetData()->[0], '-TC');
+  
+RemoveAmbiguous():go through the data and remove all the sites with states other than {A,G,C,T,N,0,1,-}
+
+  $dat->set(1, 'NEG1');
+  my $d3 = new libsequence::SimData($pos, $dat);
+  $d3->RemoveAmbiguous();
+  is($d3->GetData()->[0], 'ATC');
+  is($d3->GetData()->[1], 'NG1');
+  
+RemoveMultiHits(skipOutgroup = False, outgroup = 0): go through the data and remove all the sites with more than 2 states 
+segregating. By default, this routine also removes sites where there are 2 states segregating in the ingroup. and the 
+outgroup (if present) has a 3rd state.
+Parameters:
+skipOutgroup 	default is false. If true, the character state of the outgroup is ignored.
+outgroup 	the index of the outgroup in the data vector
+
+  my $dat2 = new libsequence::strVector(3);
+  $dat2->set(0, 'A-TC');
+  $dat2->set(1, 'N0G1');
+  $dat2->set(2, 'T-CC');
+  my $d4 = new libsequence::SimData($pos,$dat2);
+  $d4->RemoveMultiHits();
+  is($d4->GetData()->[0], 'A-C');
+  is($d4->GetData()->[1], 'N01');
+  is($d4->GetData()->[2], 'T-C');
+  
+ApplyFreqFilter(mincount, haveOutgroup = False, outgroup = 0): go through the data and remove all positions where there is a 
+variant at count (# of occurences in the sample) < minfreq
+Parameters:
+mincount 	minimum count of a variant in the data. Variants that occur < mincount times are thrown out.
+haveOutgroup 	true if an outgroup is present in the data, false otherwise
+outgroup 	the index in the data array containing the outgroup (if present)
+
+  $d4->ApplyFreqFilter(2);
+  is($d4->GetData()->[0], '');
+  
+Binary(haveOutgroup = false, outgroup = 0, strictInfSites = true)
+Parameters:
+haveOutgroup 	use true if an outgroup is present, false otherwise
+outgroup 	the index of the outgroup in the data vector used to construct the object
+strictInfSites 	if true, throw out all sites with > 2 character states (including outgroup!)
+
+Note:
+if haveOutgroup== true, then 0 means an ancestral state and 1 a derived state in the resulting. 
+note If haveOutgroup == true, and there are sites with missing data in the outrgroup sequence,
+those sites are removed from the data, since its assumed you actually want to know ancestral/derived
+for every site
+
+  $d3->Binary();
+  is($d3->GetData()->[0], 'ATC');
+
+segsites(): Returns the number of segregating sites in the data block
+
+  is($d->segsites(), 4);
+  
+size(): Return how many std::strings are stored in PolyTable::data
+
+  is($d->size(), 2);
+  
+numsites(): Returns number of sites
+
+  is($d->numsites(), 4);
+  
+position():Return the i-th position from the PolyTable::positions.
+
+  is($d->position(2), 0.34);
+  
+operator =: Returns true if two SimData object are the same, otherwise false
+
+  ok($d == $d2);
+  
+operator !=:Returns False if two SimData object are the same, otherwise True
+
+  ok($d1 != $d3);
+  
+operator []:Return the i-th element of PolyTable::data.
+
+  is($d->__getitem__(0), 'A-TC');
+  
+~SimData(): Destructor
+
+  $d->DESTROY();
+  
+
+=head2 class PolySites()
+
+Polymorphism tables for sequence data. 
+
+PolySites(alignment, strictInfsites = 0, ignoregaps = 1, skipMissing = False, skipAdjSNP = False, freqfilter = 0): This is the
+constructor if you are using "string-like" data, such as std::string, or Sequence::Fasta. Note that the vector name is aligment,
+and that means that every sequence had better be the same length!
+
+Parameters:
+alignment 	vector of data
+strictInfSites 	if true, throw out all sites with > 2 states
+ignoregaps 	if true, do not count gapped sites as polymorphisms
+skipMissing 	if true, ignore ALL sites with missing data ('N')
+skipAdjSNP 	if does nothing. a placeholder for a future feature
+freqfilter 	Defaults to 0. For a polymorphic site to be included in the final table,
+the minor allele count in the data (i.e. the number of times the minor allele occurs at that site)
+must be strictly greater than freqfilter
+
+Note:
+segsite positions are stored as positions (starting from 1)
+
+Warning:
+when ignoregaps=false, this class does not do the right thing
+
+  my $v = new libsequence::fastaVector(2);
+  $v->set(0, libsequence::Fasta->new('s1', 'ANTGC-C'));
+  $v->set(1, libsequence::Fasta->new('s2', '-GGTCCA'));
+  my $p = new libsequence::PolySites($v);
+  
+PolySites(List, stringList):
+Parameters:
+List 	a list of doubles representing positions of polymorphic positions
+stringList 	a vector of strings representing the polymorphic characters
+
+  my $l = new libsequence::doubleVector(2);
+  $l->set(0, 0);
+  $l->set(1, 4);
+  my $strl = new libsequence::strVector(2);
+  $strl->set(0, 'ATG-');
+  $strl->set(1, 'CCCT');
+  my $p1 = new libsequence::PolySites($l, $strl);
+  
+GetData():Returns PolyTable::data, a vector of std::strings containing polymorphic sites. Assuming the vector is returned to 
+a vector<string> called data, accessing data[i][j] accesses the j-th site of the i-th sequence
+
+  is($p->GetData()->[0], 'TGC');
+  is($p->GetData()->[1], 'GTA');
+  
+GetPositions(): Returns PolyTable::positions.
+
+  is($p->GetPositions()->[0], 3.0);
+  is($p->GetPositions()->[1], 4.0);
+  is($p->GetPositions()->[2], 7.0);
+  
+empty(): Returns true if object contains no data, false otherwise
+  
+  ok($p1->empty());
+  
+size(): Return how many std::strings are stored in PolyTable::data
+
+  is($p->size(), 2);
+  
+numsites(): Return how many positions are stored in PolyTable::positions
+
+  is($p->numsites(), 3);
+  
+Binary(): Recode the polymorphism table in 0,1 (binary notation)
+            
+  $p->Binary();
+  is($p->GetData->[0], '000');
+  is($p->GetData->[1], '111');
+
+ApplyFreqFilter(mincount, haveOutgroup = False, outgrp = 0): go through the data and remove all positions where there is a 
+variant at count (# of occurences in the sample) < minfreq
+Parameters:
+mincount 	minimum count of a variant in the data. Variants that occur < mincount times are thrown out.
+haveOutgroup 	true if an outgroup is present in the data, false otherwise
+outgroup 	the index in the data array containing the outgroup (if present)
+
+  $p->ApplyFreqFilter(2);
+  ok($p->empty());
+  
+~PolySites(): Destructor
+
+  $p->DESTROY();
+  
+=head2 sub rotatePolyTable(fastaVecObj)
+
+Return how many positions are stored in PolyTable::positions
+
+  my $v = new libsequence::fastaVector(2);
+  $v->set(0, libsequence::Fasta->new('s1', 'ATGCG'));
+  $v->set(1, libsequence::Fasta->new('s2', 'CG-TT'));
+  my $p = new libsequence::PolySites($v);
+  
+  my $psv = libsequence::rotatePolyTable($p);
+  is($psv->[0]->swig_first_get, 1);
+  is($psv->[0]->swig_second_get, 'AC');
+  is($psv->[3]->swig_first_get, 5);
+  is($psv->[3]->swig_second_get, 'GT');
+
+=head2 class PolySNP
+
+Molecular population genetic analysis
+
+PolySNP(fastaVectorObj):
+Parameters:
+data 	a valid object of type Sequence::PolyTable
+haveOutgroup 	true if an outgroup is present, false otherwise
+outgroup 	if haveOutgroup is true, outgroup is the index of that sequence in data
+totMuts 	if true (the default) use the total number of inferred mutations,otherwise use the total number of polymorphic sites in calculations
+
+  my $v = new libsequence::fastaVector(3);
+  $v->set(0, libsequence::Fasta->new('s1', 'ATGCNC'));
+  $v->set(1, libsequence::Fasta->new('s2', 'GCCA-T'));
+  $v->set(2, libsequence::Fasta->new('s3', '0GA1TC'));
+  my $p = new libsequence::PolySites($v);
+  my $snp = new libsequence::PolySNP($p);
+  
+ThetaPi(): Calculated here as the sum of 1.0 - sum of site homozygosity accross sites.
+
+  is($snp->ThetaPi(), 4.666666666666667);
+  
+ThetaW(): The classic "Watterson's Theta" statistic, generalized to missing data and multiple mutations per site:
+
+  is($snp->ThetaW(), 6.0);
+  
+ThetaH(): Calculate Theta ( = 4Nu) from site homozygosity, a la Fay and Wu (2000). This statistic is problematic in general to 
+calculate when there are multiple hits. The test requires that the ancestral state (inferred from the outgroup) still be segregating
+in the ingroup. If that is not true, the site is skipped.
+
+  my $snp1 = new libsequence::PolySNP($p,1,1,1);
+  is($snp1->ThetaH(), 0);
+  
+ThetaL(): Calculate Theta ( = 4Nu) from site homozygosity, corresponding to equation 1 in Thornton and Andolfatto (Genetics) 
+"Approximate Bayesian Inference reveals evidence for a recent, severe, bottleneck in a Netherlands population of Drosophila melanogaster," 
+(although we labelled in  in that paper) The test requires that the ancestral state (inferred from the outgroup) still be segregating in
+the ingroup. If that is not true, the site is skipped.
+
+  is($snp1->ThetaL(), 0);
+  
+VarPi():Total variance of mean pairwise differences. Tajima in Takahata/Clark book, (13).
+
+  is($snp->VarPi(), 9.7777777777777803);
+  
+StochasticVarPi(): Stochastic variance of mean pairwise differences. Tajima in Takahata/Clark book, (14).
+
+  is($snp->StochasticVarPi(), 4.2222222222222232);
+  
+SamplingVarPi(): Component of variance of mean pairwise differences from sampling. Tajima in Takahata/Clark book, (15)
+
+  is($snp->SamplingVarPi(), 5.5555555555555562);
+  
+NumPoly(): Returns the number of polymorphic (segregating) sites in data
+
+  is($snp->NumPoly(), 5);
+  
+VarThetaW(): Returns:Variance of Watterson's Theta (ThetaW()).
+
+  is($snp->VarThetaW(), 15.428571428571429);
+  
+NumMutations(): Returns:the total number of mutations in the data. The number of mutations per site = number of states per site - 1
+  
+  is($snp->NumMutations(), 9);
+  
+NumSingletons(): Returns:number of polymorphisms that appear once in the data, without respect to ancestral/derived
+
+  is($snp->NumSingletons(), 13);
+
+NumExternalMutations(): Returns:the number of derived singletons.
+
+  is($snp->NumExternalMutations(), 4294967295);
+  
+TajimasD(): A common summary of the site frequency spectrum.  This routine does calculate the denominator of the test statistic.
+  
+  print $snp1->TajimasD();
+  
+Hprime(): ReturnsThetaPi-ThetaH/(~Var(ThetaPi-ThetaH)). This corresponds to Equation 5 in Thornton and Andolfatto 
+(Genetics) "Approximate Bayesian Inference reveals evidence for a recent, severe, bottleneck in a Netherlands population
+of Drosophila melanogaster"
+
+  print $snp1->Hprime();
+
+FuLiD(): Returns The Fu and Li (1993) D statistic, or nan if there are no polymorphic sites.  
+
+  print $snp1->FuLiD();
+  
+FuLiF(): Returns The Fu and Li (1993) F statistic, or nan if there are no polymorphic sites.  
+
+  print $snp1->FuLiF();
+  
+FuLiDStar(): Returns The Fu and Li (1993) D * statistic, or nan if there are no polymorphic sites. 
+
+  print $snp1->FuLiDStar();
+  
+FuLiFStar(): Returns The Fu and Li (1993) F * statistic, or nan if there are no polymorphic sites. 
+
+  print $snp1->FuLiFStar();
+  
+Dnominator(): Returns Denominator of Tajima's D, or nan if there are no polymorphic sites
+
+  is($snp->Dnominator(), 0);
+  
+DandVH():  Returns the haplotype diversity of the data.
+
+  is($snp1->DandVH(), 1.0);
+  
+DandVK(): Returns number of haplotypes in the sample
+
+  is($snp1->DandVK(), 2);
+  
+WallsB(): Returns Wall's B Statistic.
+
+  is($snp1->WallsB(), 1.0);
+  
+WallsBprime(): Returns Wall's B Statistic.
+
+  is($snp1->WallsBprime(), 3);
+  
+WallsQ(): Returns Wall's Q Statistic.
+
+  is($snp1->WallsQ(), 1.0);
+  
+HudsonsC(): Returns Returns:Hudson's (1987) estimator of , an estimator of the population recombination rate that depends on the 
+variance of the site frequencies. The calculation is made by a call to Recombination::HudsonsC
+
+  is($snp1->HudsonsC(), 10000.0);
+
+Minrec(): Returns:The minimum number of recombination events observed in the sample (Hudson and Kaplan 1985). Will return SEQMAXUNSIGNED
+if there are < 2 segregating sites.
+
+  is($snp1->Minrec(), 0);
+  
+~PolySNP(): Destructor
+
+  $snp->DESTROY();
+  
+=head2 class PolySIM
+
+Analysis of coalescent simulation data.
+
+PolySIM(data): Constructor. data is a valid object of type Sequence::Simdata
+
+  my $pos = new libsequence::doubleVector(4);
+  $pos->set(0, .25);
+  $pos->set(1, .32);
+  $pos->set(2, .34);
+  $pos->set(3, .44);
+  my $dat = new libsequence::strVector(2);
+  $dat->set(0, 'A-TC');
+  $dat->set(1, 'NAGG');
+  my $d = new libsequence::SimData($pos,$dat);
+  my $sim = new libsequence::PolySIM($d);
+  
+ThetaPi(): Calculated here as the sum of 1.0 - sum of site homozygosity accross sites.
+
+  is($sim->ThetaPi(), 0);
+  
+ThetaW(): The classic "Watterson's Theta" statistic, generalized to missing data and multiple mutations per site:
+
+  is($sim->ThetaW(), 2.0);
+    
+ThetaH(): Calculate Theta ( = 4Nu) from site homozygosity, a la Fay and Wu (2000). This statistic is problematic in general to 
+calculate when there are multiple hits. The test requires that the ancestral state (inferred from the outgroup) still be segregating
+in the ingroup. If that is not true, the site is skipped.
+
+  is($sim->ThetaH(), 0);
+  
+ThetaL(): Calculate Theta ( = 4Nu) from site homozygosity, corresponding to equation 1 in Thornton and Andolfatto (Genetics) 
+"Approximate Bayesian Inference reveals evidence for a recent, severe, bottleneck in a Netherlands population of Drosophila melanogaster," 
+(although we labelled in  in that paper) The test requires that the ancestral state (inferred from the outgroup) still be segregating in
+the ingroup. If that is not true, the site is skipped.
+
+  is($sim->ThetaL(), 0);
+  
+VarPi():Total variance of mean pairwise differences. Tajima in Takahata/Clark book, (13).
+
+  is($sim->VarPi(), 0);
+  
+StochasticVarPi(): Stochastic variance of mean pairwise differences. Tajima in Takahata/Clark book, (14).
+
+  is($sim->StochasticVarPi(), 0);
+  
+SamplingVarPi(): Component of variance of mean pairwise differences from sampling. Tajima in Takahata/Clark book, (15)
+
+  is($sim->SamplingVarPi(), 0);
+  
+NumPoly(): Returns the number of polymorphic (segregating) sites in data
+
+  is($sim->NumPoly(), 2);
+  
+VarThetaW(): Returns:Variance of Watterson's Theta (ThetaW()).
+
+  is($sim->VarThetaW(), 3.0);
+  
+NumMutations(): Returns:the total number of mutations in the data. The number of mutations per site = number of states per site - 1
+  
+  is($sim->NumMutations(), 2);
+  
+NumSingletons(): Returns:number of polymorphisms that appear once in the data, without respect to ancestral/derived
+
+  is($sim->NumSingletons(), 0);
+
+NumExternalMutations(): Returns:the number of derived singletons.
+
+  is($sim->NumExternalMutations(), 0);
+  
+TajimasD(): A common summary of the site frequency spectrum.  This routine does calculate the denominator of the test statistic.
+  
+  print $sim->TajimasD();
+  
+Hprime(): ReturnsThetaPi-ThetaH/(~Var(ThetaPi-ThetaH)). This corresponds to Equation 5 in Thornton and Andolfatto 
+(Genetics) "Approximate Bayesian Inference reveals evidence for a recent, severe, bottleneck in a Netherlands population
+of Drosophila melanogaster"
+
+  print $sim->Hprime();
+
+FuLiD(): Returns The Fu and Li (1993) D statistic, or nan if there are no polymorphic sites.  
+
+  print $sim->FuLiD();
+  
+FuLiF(): Returns The Fu and Li (1993) F statistic, or nan if there are no polymorphic sites.  
+
+  print $sim->FuLiF();
+  
+FuLiDStar(): Returns The Fu and Li (1993) D * statistic, or nan if there are no polymorphic sites. 
+
+  print $sim->FuLiDStar();
+  
+FuLiFStar(): Returns The Fu and Li (1993) F * statistic, or nan if there are no polymorphic sites. 
+
+  print $sim->FuLiFStar();
+  
+Dnominator(): Returns Denominator of Tajima's D, or nan if there are no polymorphic sites
+
+  is($sim->Dnominator(), 0);
+  
+DandVH():  Returns the haplotype diversity of the data.
+
+  is($sim->DandVH(), 1.0);
+  
+DandVK(): Returns number of haplotypes in the sample
+
+  is($sim->DandVK(), 2);
+  
+WallsB(): Returns Wall's B Statistic.
+
+  is($sim->WallsB(), 0.0);
+  
+WallsBprime(): Returns Wall's B Statistic.
+
+  is($sim->WallsBprime(), 0);
+  
+WallsQ(): Returns Wall's Q Statistic.
+
+  is($sim->WallsQ(), 0.0);
+  
+HudsonsC(): Returns Returns:Hudson's (1987) estimator of , an estimator of the population recombination rate that depends on the 
+variance of the site frequencies. The calculation is made by a call to Recombination::HudsonsC
+
+  is($sim->HudsonsC(), 1.5646219209131118e-07);
+
+Minrec(): Returns:The minimum number of recombination events observed in the sample (Hudson and Kaplan 1985). Will return SEQMAXUNSIGNED
+if there are < 2 segregating sites.
+
+  is($sim->Minrec(), 0);
+  
+HudsonsHaplogypeTest(subsize,subss): returns a 1 if the number of polymorphisms in a randomly generated subsample of the
+data is less than or equal to subss, 0 otherwise.
+
+Parameters:
+subsize 	the size of the subsample
+subss 	the number of segregating sites in the subsample
+
+  is($sim->HudsonsHaplotypeTest(2,4), 1);
+
+Disequilibrium(): Returns:A vector of statistics related to LD and distance in the sample. An empty vector is returned
+if there are < 2 polymorphic sites in the sample. See the documentation for Recombination::Disequilibrium for a description 
+of the return vector.
+
+  is($sim->Disequilibrium()->[0]->get(0), 0.34);
+  is($sim->Disequilibrium()->[0]->get(1), 0.44);
+  is($sim->Disequilibrium()->[0]->get(2), 1);
+  is($sim->Disequilibrium()->[0]->get(3), 0.25);
+  is($sim->Disequilibrium()->[0]->get(4), 1);
+
+  
+~PolySNP(): Destructor
+
+  $snp->DESTROY();
+    
+  
+  
+  
+=head2 sub isseg(beg, nsegs, offset, pos)
+
+ask if a chromosome beginning at seg and containing nsegs contains a segment containing the position pos.  Returns true if a segment
+exists that contains the point pos
+
+Parameters:
+seg 	a pointer to a segment of a chromosome (this should be the 1st segment, such as the return value of chromosome::begin())
+nsegs 	the number of segs in the chromosome pointed to by seg
+offset 	a pointer to an integer. This integer is used for repeated pointer arithmetic, and should be initalized to 0 before the first call.
+pos 	a position a long a chromosome. This function asks if pos is contained in the ancestral material of the chromosome whose segments begin at seg
+
+  my $segs = new libsequence::segVector(3);
+  $segs->set(0, libsequence::segment->new(1,4,0));
+  $segs->set(1, libsequence::segment->new());
+  $segs->set(2, libsequence::segment->new(2,8,1));
+  my $chro = new libsequence::chromosome($segs);
+  my $seg = $chro->begin();
+  my $offset = new libsequence::intPointer();
+  $offset->assign(0);
+  ok(libsequence::isseg($seg,3,1,$offset));
+  
+=head2 sub calculate_scales(fragments, sample_scale, mutation_scale)
+
+This is a helper function that rescales physical distance in base pairs to continuous distance on the interval 0,1.
+
+Parameters:
+fragments 	A vector of pairs, representing physical distance in bp. For each pair, the first element is the distance to the next 
+fragment,and the second element is the length of the fragment. For example,two 1kb fragments separated by 10kb would be represented 
+by the pairs (0,1000) (10000,1000).
+
+sample_scale 	This vector will be filled with values representing the positions of the fragments on the continuous interval, without
+any space betwen them. This is because we will actually do the simulation using a non-uniform genetic map to represent the high
+recombination rates between fragments
+
+mutation_scale 	This is a direct mapping of the data contained in fragments to the continuous scale, and can be used to rescale the positions of mutations
+
+  my $fragments = new libsequence::fragVector(3);
+  $fragments->push(libsequence::intPair->new(0,500));
+  $fragments->push(libsequence::intPair->new(1000,500));
+  $fragments->push(libsequence::intPair->new(1000,500));
+  my $sample = new libsequence::scaleVector(3);
+  my $mutation = new libsequence::scaleVector(3);
+  libsequence::calculate_scales($fragments,$sample,$mutation);
+  
+=head2 sub sample_length(fragments)
+
+When simulating partially linked regions, return the total length of sample material that we are simulating. Returns The sum of 
+fragments[i].second for i=0 to i=fragments.size()-1
+
+  is(libsequence::sample_length($fragments), 1500);
+  
+=head2 sub total_length(fragments)
+
+When simulating partially linked regions, return the total length of the region. Returns The sum of fragments[i].first + fragments[i].second
+for i=0 to i=fragments.size()-1
+
+  is(libsequence::total_length($fragments), 3500);
+  
+=head2 sub init_sample(pop_config, nsites)
+
+A simple function to initialize a sample of chromosomes. Returns a vector of chromosome.
+
+Parameters:
+pop_config 	For a k-population model, this vector contains the sample size for each pop. Individuals are labeled as beloning to 
+population 0 to k-1, in the order specified in this vector
+nsites 	The number of sites at which mutations occur. For a k-site model,recombination occurs at any of the k-1 "links" between 
+sites. Eaach chromosome is assigned a single segment starting at position 0 and ending at nsites-1.
+
+  my $intv = new libsequence::intVector(1,10);  
+  my $sample = libsequence::init_sample($intv, 1500);
+  
+=head2 sub init_marginal(nsam)
+
+Simple function to initialize and return a marginal tree.
+
+Parameters:
+nsam 	the total sample size (i.e. summed over all populations) that you want to simulate
+
+  my $marg = libsequence::init_marginal(10);
+  
+=head2 sub coalesce(time, ttl_nsam, current_nsam, c1, c2, nsites, nlinks, sample, sample_history)
+
+Common ancestor routine for coalescent simulation. Merges chromosome segments and updates marginal trees.
+
+Parameters:
+time 	the time at which the coalecent event is occuring
+ttl_nsam 	the total sample size being simulated
+current_nsam 	the current sample size in the simulation
+c1 	the array index of the first chromosome involved in the coalescent event
+c2 	the array index of the second chromosome involved in the coalescent event
+nsites 	the total mutational length of the region begin simulated. In the language of Hudson (1983), this is the number of infinitely-many-alleles loci in the simulation.
+nlinks 	a pointer to the number of "links" currently in the simulation. A link is the region between two sites, such that a chromosome currently with k sites has k-1 links
+sample 	a pointer to the vector of chromosomes which makes up the sample
+sample_history 	a pointer to the ancestral recombination graph
+
+  #my $te = new libsequence::margVector(1, $marg);
+  #my $sample_history = new libsequence::margList(1, $marg);
+  #my $nlinks = new libsequence::intPointer();
+  #$nlinks->assign(499);
+  #is(libsequence::coalesce(0,19,19,1,2,1500,$sample,$sample_history), 1);
+
 
  
 =cut
