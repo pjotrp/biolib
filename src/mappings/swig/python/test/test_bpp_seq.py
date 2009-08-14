@@ -14,7 +14,6 @@
 <bpp.doubleVector; proxy of <Swig Object of type 'std::vector< double > *' at 0x...> >
 >>> charges.getAlphabet().getAlphabetType()
 'Proteic alphabet'
->>> 
 
 
 {AAIndex1Entry.i}
@@ -113,6 +112,40 @@ TTTGGCGACCGTAACCCGT
 >seq3
 GAGACTAGCTGA
 >>> fasta.write("output-file.fas", container)
+
+
+{AbstractSequenceContainer.i}
+[class] (partial) AbstractSequenceContainer:
+>>> dna = bpp.DNA()
+>>> seq0 =  bpp.Sequence("Sequence_0", "AGGTCT", dna)
+>>> seq1 =  bpp.Sequence("Sequence_1", "TGTCAT", dna)
+>>> vsc = bpp.VectorSequenceContainer([seq0,seq1],dna)
+
+>>> vsc.getAlphabet().getAlphabetType()
+'DNA alphabet'
+>>> vsc.getName(0)
+'Sequence_0'
+>>> vsc.getContent(0)
+(0, 2, 2, 3, 1, 3)
+>>> vsc.getContent("Sequence_0")
+(0, 2, 2, 3, 1, 3)
+>>> vsc.toString(0)
+'AGGTCT'
+>>> vsc.toString("Sequence_0")
+'AGGTCT'
+
+>>> vsc.setComments(0, ["this is a comment", "so is this"])
+>>> vsc.getComments(0)
+('this is a comment', 'so is this')
+>>> vsc.setComments("Sequence_1", ["these are comments too", "yup"])
+>>> vsc.getComments("Sequence_1")
+('these are comments too', 'yup')
+>>> vsc.setGeneralComments(["well hello there"])
+>>> vsc.getGeneralComments()
+('well hello there',)
+>>> vsc.deleteGeneralComments()
+>>> vsc.getGeneralComments()
+()
 
 
 {Alphabet.i}
@@ -527,7 +560,7 @@ True
 >>> dna = bpp.DNA()
 >>> emca = bpp.EchinodermMitochondrialCodonAlphabet(dna)
 >>> seq = bpp.Sequence("seq", "AAAGCT", emca)
->>> 
+
 >>> emgc = bpp.EchinodermMitochondrialGeneticCode(dna)
 >>> emgc.translate("AAA")
 'N'
@@ -712,6 +745,32 @@ True
 'Sequence container'
 
 
+{IOSequenceFactory.i}
+[class] IOSequenceFactory:
+>>> factory = bpp.IOSequenceFactory()
+>>> factory.createReader(factory.FASTA_FORMAT).getFormatName()
+'FASTA file'
+>>> factory.createWriter(factory.FASTA_FORMAT).getFormatName()
+'FASTA file'
+
+>>> factory.FASTA_FORMAT
+'Fasta'
+>>> factory.MASE_FORMAT
+'Mase'
+>>> factory.CLUSTAL_FORMAT
+'Clustal'
+>>> factory.DCSE_FORMAT
+'DCSE'
+>>> factory.PHYLIP_FORMAT_INTERLEAVED
+'Phylip I'
+>>> factory.PHYLIP_FORMAT_SEQUENTIAL
+'Phylip S'
+>>> factory.PAML_FORMAT_INTERLEAVED
+'PAML I'
+>>> factory.PAML_FORMAT_SEQUENTIAL
+'PAML S'
+
+
 {ISequence.i}
 [class] (interface) ISequence:
 >>> fasta = bpp.Fasta()
@@ -829,6 +888,38 @@ True
 14
 >>> dna.isUnresolved(10)
 True
+
+
+{OrderedSequenceContainer.i}
+[class] (interface) OrderedSequenceContainer:
+>>> dna = bpp.DNA()
+>>> site1 = bpp.Site(["A","G"], dna, 1)
+>>> site2 = bpp.Site(["A","A"], dna, 2)
+>>> site3 = bpp.Site(["C","C"], dna, 3)
+>>> vsc = bpp.VectorSiteContainer([site1,site2,site3],dna)
+
+>>> vsc.getContent(0)
+(0, 0, 1)
+>>> vsc.toString(0)
+'AAC'
+>>> vsc.getName(0)
+'Seq_0'
+>>> vsc.getSequencesNames()
+('Seq_0', 'Seq_1')
+>>> vsc.setComments(0, ["yup--comments", "more comments"])
+>>> vsc.getComments(0)
+('yup--comments', 'more comments')
+>>> vsc.getSequencePosition("Seq_0")
+0
+
+>>> bpp.intp.frompointer(vsc.valueAt(0,1)).value()
+0
+>>> bpp.intp.frompointer(vsc.valueAt("Seq_0",1)).value()
+0
+>>> bpp.intp.frompointer(vsc(0,1)).value()
+0
+>>> bpp.intp.frompointer(vsc("Seq_0",1)).value()
+0
 
 
 {OSequence.i}
@@ -964,6 +1055,116 @@ True
 >>> seq = bpp.strVecSequence("test", ['a','g'], ["comment1","comment2"], dna)
 >>> seq = bpp.intVecSequence("test", [0,1], dna)
 >>> seq = bpp.intVecSequence("test", [0,1], ["comment1","comment2"], dna)
+
+
+{SequenceApplicationTools.i}
+[class] SequenceApplicationTools:
+>>> dna = bpp.DNA()
+
+>>> options = bpp.strMap()
+>>> options["alphabet"] = "RNA"
+>>> alpha = bpp.SequenceApplicationTools.getAlphabet(options)
+Alphabet type .........................: RNA
+
+>>> options = bpp.strMap()
+>>> options["sequence.file"] = "data1.fas"
+>>> options["sequence.format"] = "Fasta"
+>>> seqs = bpp.SequenceApplicationTools.getSequenceContainer(dna, options)
+Sequence format .......................: Fasta
+Sequence file .........................: data1.fas
+>>> seqs.getSequencesNames()
+('seq1', 'seq2', 'seq3')
+>>> seqs.toString('seq1')
+'ATGCCGTGGTCCCGT'
+>>> seqs.toString('seq2')
+'TTTGGCGACCGTAACCCGT'
+>>> seqs.toString('seq3')
+'GAGACTAGCTGA'
+
+>>> options = bpp.strMap()
+>>> options["sequence.file"] = "data2.fas"
+>>> options["sequence.format"] = "Fasta"
+>>> sites = bpp.SequenceApplicationTools.getSiteContainer(dna, options)
+Sequence format .......................: Fasta
+Sequence file .........................: data2.fas
+>>> sites.getPositions()
+(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)
+>>> sites.getSite(0).toString()
+'ATG'
+
+>>> options = bpp.strMap()
+>>> options["sequence.sites_to_use"] = "all"
+>>> options["sequence.max_gap_allowed"] = "100%"
+>>> sites1 = bpp.SequenceApplicationTools.getSitesToAnalyse(sites, options)
+Sites to use...........................: all
+>>> sites1.getPositions()
+(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)
+>>> options["sequence.max_gap_allowed"] = "1"
+>>> sites1 = bpp.SequenceApplicationTools.getSitesToAnalyse(sites, options)
+Sites to use...........................: all
+>>> sites1.getPositions()
+(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
+
+>>> options = bpp.strMap()
+>>> options["sequence.sites_to_use"] = "nogap"
+>>> sites1 = bpp.SequenceApplicationTools.getSitesToAnalyse(sites, options)
+Sites to use...........................: nogap
+Sites without gap......................: 12
+>>> sites1.getPositions()
+(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+
+>>> options = bpp.strMap()
+>>> options["sequence.sites_to_use"] = "complete"
+>>> sites1 = bpp.SequenceApplicationTools.getSitesToAnalyse(sites, options)
+Sites to use...........................: complete
+Complete sites.........................: 10
+>>> sites1.getPositions()
+(1, 2, 3, 4, 7, 8, 9, 10, 11, 12)
+
+>>> options = bpp.strMap()
+>>> options["output.sequence.file"] = "output.fas"
+>>> options["output.sequence.format"] = "Fasta"
+>>> options["output.sequence.length"] = "100"
+>>> bpp.SequenceApplicationTools.writeSequenceFile(seqs, options)
+Output file format.....................: Fasta
+Output file ...........................: output.fas
+
+>>> bpp.SequenceApplicationTools.printInputAlignmentHelp()
+Input sequence file and format:
+alphabet                      | the alphabet to use [DNA|RNA|Protein]
+sequence.format               | [Fasta|Mase|Phylip|Clustal|DCSE]
+sequence.format_phylip.order  | [interleaved|sequential]
+sequence.format_phylip.ext    | [classic|extended]
+sequence.sites_to_use         | [all|nogap|complete]
+______________________________|___________________________________________
+>>> bpp.SequenceApplicationTools.printOutputSequenceHelp()
+Output sequence file and format:
+output.sequence.format        | [Fasta|Mase|Phylip|Clustal|DCSE]
+output.sequence.              |
+           format_phylip.order| [interleaved|sequential]
+output.sequence.              |
+             format_phylip.ext| [classic|extended]
+  format_phylip.extended.split| [spaces|tab] the split sequence
+______________________________|___________________________________________
+
+
+{SequenceContainer.i}
+[class] (interface) SequenceContainer:
+>>> dna = bpp.DNA()
+>>> seq0 =  bpp.Sequence("Sequence_0", "AGGTCT", dna)
+>>> seq1 =  bpp.Sequence("Sequence_1", "TGTCAT", dna)
+>>> vsc = bpp.VectorSequenceContainer([seq0,seq1],dna)
+
+>>> vsc.getAlphabet().getAlphabetType()
+'DNA alphabet'
+>>> vsc.setComments(0, ["this is a comment", "so is this"])
+>>> vsc.getComments(0)
+('this is a comment', 'so is this')
+>>> vsc.setGeneralComments(["well hello there"])
+>>> vsc.getGeneralComments()
+('well hello there',)
+>>> vsc.deleteGeneralComments()
+>>> vsc.getGeneralComments()
 
 
 {SequenceContainerExceptions.i}
@@ -1153,6 +1354,33 @@ True
 <bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...> >
 
 
+{SiteContainer.i}
+[class] (interface) SiteContainer:
+>>> dna = bpp.DNA()
+>>> site1 = bpp.Site(["A","G"], dna, 1)
+>>> site2 = bpp.Site(["A","A"], dna, 2)
+>>> site3 = bpp.Site(["C","C"], dna, 3)
+>>> site4 = bpp.Site(["G","G"], dna, 4)
+>>> site5 = bpp.Site(["T","T"], dna, 5)
+>>> sites = bpp.VectorSiteContainer([site1,site2,site3,site4],dna)
+
+>>> sites.getSite(0).toString()
+'AG'
+>>> sites.setSite(0, site5)
+>>> sites.getSite(0).toString()
+'TT'
+>>> sites.removeSite(1)
+<bpp.Site; proxy of <Swig Object of type 'Site *' at 0xa188f48> >
+>>> sites.deleteSite(1)
+>>> sites.getNumberOfSites()
+2
+>>> sites.getSitePositions()
+(5, 4)
+>>> sites.reindexSites()
+>>> sites.getSitePositions()
+(1, 2)
+
+
 {SiteContainerExceptions.i}
 [class] SiteNotFoundException
 >>> x = bpp.SiteNotFoundException("can't find!", "xxx")
@@ -1188,6 +1416,53 @@ True
 'gappy site!(47)'
 >>> x.getSite().toString()
 'AG-TC'
+
+
+{SiteIterator.i}
+[class] (interface) SiteIterator:
+[class] (partial) AbstractSiteIterator:
+[class] SimpleSiteIterator:
+>>> dna = bpp.DNA()
+>>> site1 = bpp.Site(["A","-"], dna, 1)
+>>> site2 = bpp.Site(["A","N"], dna, 2)
+>>> site3 = bpp.Site(["A","A"], dna, 3)
+>>> sites = bpp.VectorSiteContainer([site1,site2,site3],dna)
+
+>>> it = bpp.SimpleSiteIterator(sites)
+>>> it.hasMoreSites()
+True
+>>> it.nextSite().toString()
+'A-'
+>>> it.nextSite().toString()
+'AN'
+>>> it.nextSite().toString()
+'AA'
+>>> it.hasMoreSites()
+False
+
+[class] NoGapsSiteIterator:
+>>> it = bpp.NoGapSiteIterator(sites)
+>>> it.hasMoreSites()
+True
+>>> it.nextSite().toString()
+'AN'
+>>> it.nextSiteWithoutGapPosition(0)
+1
+>>> it.previousSiteWithoutGapPosition(1)
+-1
+
+[class] CompleteSiteIterator:
+>>> it = bpp.CompleteSiteIterator(sites)
+>>> it.hasMoreSites()
+True
+>>> it.nextSite().toString()
+'AA'
+>>> it.nextCompleteSitePosition(0)
+2
+>>> it.previousCompleteSitePosition(2)
+-1
+>>> it.nextCompleteSitePosition(2)
+3
 
 
 {SiteTools.i}
@@ -1354,7 +1629,7 @@ True
 >>> bpp.SymbolListTools.getCounts(symlist,counts,False)
 >>> counts[0],counts[1],counts[2],counts[3]
 (2.0, 3.0, 1.0, 2.0)
->>> 
+
 >>> bpp.SymbolListTools.getCounts(symlist,counts,True)
 >>> counts[0],counts[1],counts[2],counts[3]
 (4.25, 6.25, 2.25, 4.25)
@@ -1440,6 +1715,159 @@ True
 'T'
 >>> d2r.reverse(rSeq).toString()
 'ACGT'
+
+
+{VectorSequenceContainer.i}
+[class] VectorSequenceContainer:
+>>> dna = bpp.DNA()
+>>> seq0 =  bpp.Sequence("Sequence_0", "AGGTCT", dna)
+>>> seq1 =  bpp.Sequence("Sequence_1", "TGTCAT", dna)
+>>> vsc = bpp.VectorSequenceContainer(dna)
+>>> vsc.getNumberOfSequences()
+0
+>>> vsc.addSequence(seq0)
+>>> vsc.getNumberOfSequences()
+1
+>>> vsc.addSequence(seq1,0)
+>>> vsc.getNumberOfSequences()
+2
+>>> vsc.getSequencesNames()
+('Sequence_1', 'Sequence_0')
+>>> vsc.getSequence(0).getName()
+'Sequence_1'
+>>> vsc.getSequence("Sequence_0").getName()
+'Sequence_0'
+>>> vsc.getSequencePosition("Sequence_0")
+1
+>>> vsc.removeSequence(0).getName()
+'Sequence_1'
+>>> vsc.removeSequence("Sequence_0").getName()
+'Sequence_0'
+
+>>> vsc = bpp.VectorSequenceContainer([seq0,seq1],dna)
+>>> vsc.setSequencesNames(["Seq-A","Seq-B"])
+>>> vsc.getSequencesNames()
+('Seq-A', 'Seq-B')
+>>> vsc.valueAt("Seq-A",1)
+<Swig Object of type 'int *' at 0x95ae5d4>
+>>> bpp.intp.frompointer(vsc.valueAt("Seq-A",1)).value()
+2
+>>> bpp.intp.frompointer(vsc("Seq-A",1)).value()
+2
+>>> bpp.intp.frompointer(vsc.valueAt(0,1)).value()
+2
+>>> bpp.intp.frompointer(vsc(0,1)).value()
+2
+>>> empty = vsc.createEmptyContainer()
+>>> bpp.VectorSequenceContainer(empty).getNumberOfSequences()
+0
+
+>>> vsc.setComments(0, "this is a comment")
+>>> vsc.setComments("Seq-B", "this is a comment too")
+>>> vscC = bpp.VectorSequenceContainer(vsc)
+>>> vscC.deleteSequence(1)
+>>> vscC.deleteSequence("Seq-A")
+>>> vscC.getNumberOfSequences()
+0
+>>> vsc.setSequence(0, seq0)
+>>> vsc.setSequence("Seq-B", seq1)
+>>> vsc.getSequencesNames()
+('Sequence_0', 'Sequence_1')
+>>> vsc.clear()
+>>> vsc.getNumberOfSequences()
+0
+>>> vsc.clone()
+<bpp.Clonable; proxy of <Swig Object of type 'Clonable *' at 0x95ad340> >
+
+
+{VectorSiteContainer.i}
+[class] VectorSiteContainer:
+>>> dna = bpp.DNA()
+>>> site1 = bpp.Site(["A","G"], dna, 1)
+>>> site2 = bpp.Site(["A","A"], dna, 2)
+>>> site3 = bpp.Site(["C","C"], dna, 3)
+>>> site4 = bpp.Site(["G","G"], dna, 4)
+>>> site5 = bpp.Site(["T","T"], dna, 5)
+>>> seqX = bpp.Sequence("seq-X", "AAA", dna)
+>>> seqY = bpp.Sequence("seq-Y", "CCC", dna)
+>>> vsc = bpp.VectorSiteContainer([site1,site3,site5],dna)
+
+>>> vsc.getNumberOfSites()
+3
+>>> vsc.getSite(0).toString()
+'AG'
+>>> vsc.getNumberOfSequences()
+2
+>>> vsc.getSequencesNames()
+('Seq_0', 'Seq_1')
+
+>>> vsc.getPositions()
+(1, 3, 5)
+>>> vsc.getSitePositions()
+(1, 3, 5)
+
+>>> vsc.getSequence(0).toString()
+'ACT'
+>>> vsc.getSequence("Seq_1").toString()
+'GCT'
+>>> vsc.getSequencePosition("Seq_1")
+1
+>>> clone = vsc.clone()
+>>> clone.setSequencesNames(["seq-A","seq-B"])
+>>> clone.removeSequence("seq-A")
+<bpp.Sequence; proxy of <Swig Object of type 'Sequence *' at 0x9808d30> >
+>>> clone.removeSequence(0)
+<bpp.Sequence; proxy of <Swig Object of type 'Sequence *' at 0x95eb880> >
+>>> clone.addSequence(seqY)
+>>> clone.addSequence(seqX,0)
+>>> clone.getSite(0).toString()
+'AC'
+>>> clone.setComments(0, ["more comments"])
+>>> clone.getComments(0)
+('more comments',)
+
+>>> clone.setSequence("seq-X", seqY,False)
+>>> clone.setSequence(1, seqX, True)
+>>> clone.getSequencesNames()
+('seq-Y', 'seq-X')
+>>> clone.deleteSequence("seq-Y")
+>>> clone.deleteSequence(0)
+>>> clone.getNumberOfSequences()
+0
+>>> clone.getNumberOfSites()
+3
+
+>>> vsc.setSite(1, site2)
+>>> vsc.addSite(site3)
+>>> vsc.addSite(site4, 3)
+>>> vsc.getPositions()
+(1, 2, 5, 4, 3)
+>>> vsc.reindexSites()
+>>> vsc.getPositions()
+(1, 2, 3, 4, 5)
+>>> vsc.getSequence(0).toString()
+'AATGC'
+>>> vsc.removeSite(3)
+<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x97cde20> >
+>>> vsc.deleteSite(3)
+
+>>> bpp.intp.frompointer(vsc.valueAt(0,1)).value()
+1
+>>> bpp.intp.frompointer(vsc.valueAt("Seq_0",1)).value()
+1
+>>> bpp.intp.frompointer(vsc(0,1)).value()
+1
+>>> bpp.intp.frompointer(vsc("Seq_0",1)).value()
+1
+
+>>> bpp.VectorSiteContainer(vsc.createEmptyContainer()).getNumberOfSequences()
+0
+>>> bpp.VectorSiteContainer(500,dna).getNumberOfSequences()
+500
+>>> bpp.VectorSiteContainer(dna).getNumberOfSequences()
+0
+>>> bpp.VectorSiteContainer(["a","b"],dna).getNumberOfSequences()
+2
 
 
 {VertebrateMitochondrialCodonAlphabet.i}
