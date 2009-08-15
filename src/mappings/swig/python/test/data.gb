@@ -1,0 +1,70 @@
+LOCUS       AF171097                1231 bp    DNA     linear   BCT 21-AUG-2001
+DEFINITION  Yersinia enterocolitica transcriptional regulator RovA (rovA) gene,
+            complete cds.
+ACCESSION   AF171097
+VERSION     AF171097.1  GI:5805368
+KEYWORDS    .
+SOURCE      Yersinia enterocolitica
+  ORGANISM  Yersinia enterocolitica
+            Bacteria; Proteobacteria; Gammaproteobacteria; Enterobacteriales;
+            Enterobacteriaceae; Yersinia.
+REFERENCE   1  (bases 1 to 1231)
+  AUTHORS   Revell,P.A. and Miller,V.L.
+  TITLE     A chromosomally encoded regulator is required for expression of the
+            Yersinia enterocolitica inv gene and for virulence
+  JOURNAL   Mol. Microbiol. 35 (3), 677-685 (2000)
+  MEDLINE   20138369
+   PUBMED   10672189
+REFERENCE   2  (bases 1 to 1231)
+  AUTHORS   Revell,P.A. and Miller,V.L.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (22-JUL-1999) Molecular Microbiology, Washington
+            University School of Medicine, Campus Box 8230, 660 South Euclid,
+            St. Louis, MO 63110, USA
+FEATURES             Location/Qualifiers
+     source          1..1231
+                     /organism="Yersinia enterocolitica"
+                     /mol_type="genomic DNA"
+                     /strain="JB580v"
+                     /serotype="O:8"
+                     /db_xref="taxon:630"
+     gene            369..811
+                     /gene="rovA"
+     RBS             369..374
+                     /gene="rovA"
+     CDS             380..811
+                     /gene="rovA"
+                     /note="regulates inv expression; regulator of virulence"
+                     /codon_start=1
+                     /transl_table=11
+                     /product="transcriptional regulator RovA"
+                     /protein_id="AAD51968.1"
+                     /db_xref="GI:5805369"
+                     /translation="MESTLGSDLARLVRVWRALIDHRLKPLELTQTHWVTLHNINRLP
+                     PEQSQIQLAKAIGIEQPSLVRTLDQLEEKGLITRHTCANDRRAKRIKLTEQSSPIIEQ
+                     VDGVICSTRKEILGGISPDEIELLSGLIDKLERNIIQLQSK"
+BASE COUNT      385 a    269 c    265 g    312 t
+ORIGIN      
+        1 gcaatgacaa aaatggacag atccattaat attggatgcc agatatcacc cgagtagatc
+       61 caattccgca gcatatgatg gatcagtagc cataacacca aacctagcat aaccgcctta
+      121 aaaattggcg ggaaatagat agaggcacct aaaaccaagt ctgacagggg tgcatttgtg
+      181 gataatatag atacatacat aaggttaatc cttaagaggt aattttagta aatacataat
+      241 ttttgctaaa ggattccccg tatttattgc tattgtccta gcatcgacgg tatatataca
+      301 ttgtgttttt aatgttaatt acccaaaata gactggactc tggtagttat gctagcacgc
+      361 taaataaaag gaggggcaat tggaatcgac attaggatct gatttagcac gattagttcg
+      421 cgtttggcgc gcgctaatag accaccggtt gaagccgttg gagctgaccc aaacgcattg
+      481 ggttaccttg cataacatta atcgtttacc acctgagcaa tcccagattc aactggcgaa
+      541 agcgattggt atcgaacaac catcattggt tagaacctta gatcaactgg aggagaaagg
+      601 tctaatcaca cgccatacct gtgcaaatga tcggcgtgca aagaggataa aactgacgga
+      661 acagtcttca ccgataatag agcaggttga tggagtcatc tgttccaccc gtaaagaaat
+      721 tcttggggga atttcaccag atgaaattga attgttatct ggtttgattg acaagcttga
+      781 gagaaacatt attcaactac aaagtaagta aaataaagtt ttaagactca attcacagca
+      841 gaaagaaaat ttttagcagt aaaaataagc cagagatcgc aatgatctct ggctttacgg
+      901 atgacatcat aaaatatatt acacagaggt gattagcgcg ggctaacagt cactgtactg
+      961 ccactgctgg cgagcatcac gcgctggcct acgctaaagc gggttgggcc ttgtttctga
+     1021 acaaccagaa tagtggtgcc atcatcttta cgcacttcaa gttgcacgcc gtcagtacgg
+     1081 ttcattgcac cttgaacacc ttgtcctgcc ataccaccag caactgcacc agctgctgtc
+     1141 gccaggctac ggcctgtgcc gcaccgacag tattcccgag gaaaccaccc agtacagcac
+     1201 caccgattgc gcccataaca ttgttgtcat t
+//
+

@@ -1,0 +1,75 @@
+Clustal
+
+Extension: .aln
+Aligned:   yes
+
+----- BEGIN -----
+CLUSTAL W (1.82) multiple sequence alignment
+
+
+MOUSE           MFQAFPGDYDSGSRCSSSPSAESQYLSSVDSFGSPPTAAASQECAGLGEMPGSFVPTVTA 60
+HUMAN           MFQAFPGDYDSGSRCSSSPSAESQYLSSVDSFGSPPTAAASQECAGLGEMPGSFVPTVTA 60
+                ************************************************************
+
+MOUSE           GGPSTSTTTSGPVSARPARAR 81
+HUMAN           GGPSTSGTTSGPGPARPARAR 81
+                ****** ***** .*******
+-----  END  -----
+
+The Clustal format starts with a one-line header, with CLUSTAL W and
+the version number.  The rest of the file is a series of blocks.  In a
+block, each line except the last represents a stretch of one of the
+sequences.  The name is first, followed by whitespace, the sequence
+itself, and then possibly a space and the position of the last
+element.  The last line compares the sequences as follows:
+
+*  Total conservation.
+:  Conservation of strong group (STA, NEQK, NHQK, NDEQ, QHRK, MILV,
+   MILF, HY, FYW)
+.  Conservation of weak group (CSA, ATV, SAG, STNK, STPA, SGND,
+   SNDEQK, NDEQHK, NEQHRK, FVLIM, HFY)
+
+Blocks are separated by a blank line.
+
+Note that Bio++ currently doesn't support terminating position numbers.
+
+
+DSCE
+
+Extension: .ali
+Aligned:   yes
+
+----- BEGIN -----
+R   5    15
+
+silly text
+doesn't really matter
+ A C G[A C G]G U N U     1 F. catus
+ A C G[A{C}G]G C - U     2 C. familiaris
+ A A A[A C G]G C - U     3 O. cuniculus
+ C C G[A(C)G]- C A U     4 E. Caballus
+-----  END  -----
+
+The DSCE format is mostly used to store aligned RNA sequence
+information, along with information on helices and other structures.
+The file starts with 4 header lines.  The first line starts with R, D,
+or P (for RNA, DNA, or protein), 3 spaces, the starting position, 4
+spaces, and the last position of the series.  The second line is
+blank.  The second through fourth lines contain other information 
+about the sequences, and can be ignored.  The secon line is often 
+blank.
+
+Each sequence line after that starts with the sequence itself.  Each
+character is surrounded by spaces or other characters indicating
+structure:
+
+[]  Strand of a helix
+^   Indicates ][ (a helix starting immediately after a previous one)
+{}  Internal loop or bulge loop interrupting a helix strand 
+()  Base forms part of a non-standard pair (not G-C, A-U, or G-U)
+
+There is then a space, and an index 5 characters long (often mostly 
+spaces), another space, and a name up to 40 characters long.
+
+Note that Bio++ requires the header to be only one line long.
+Information in the header is ignored.
