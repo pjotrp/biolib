@@ -43,7 +43,7 @@ class MatrixTools
     %template(scale) scale<Matrix<double>, double>;
 
     template<class Scalar> static void mult(const Matrix<Scalar> & A, const Matrix<Scalar> & B, Matrix<Scalar> & O) throw (DimensionException);
-    //template<class Scalar> static void mult(const Matrix<Scalar> & A, const vector<Scalar> & D, const Matrix<Scalar> & B, Matrix<Scalar> & O) throw (DimensionException);
+    template<class Scalar> static void mult(const Matrix<Scalar> & A, const vector<Scalar> & D, const Matrix<Scalar> & B, Matrix<Scalar> & O) throw (DimensionException);
     %template(mult) mult<int>;
     %template(mult) mult<double>;
 

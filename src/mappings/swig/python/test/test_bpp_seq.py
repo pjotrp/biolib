@@ -35,8 +35,10 @@ I
 1.0
 >>> aa1.getAlphabet().getAlphabetType()
 'Proteic alphabet'
->>> bpp.VectorTools._print(aa1.getIndexVector())
-0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
+>>> aa1.getIndexVector()[0]
+0.0
+>>> aa1.getIndexVector()[19]
+19.0
 
 
 {AAIndex2Entry.i}
@@ -96,6 +98,36 @@ see Alphabet--partial implementation of interface
 3
 
 
+{AbstractISequence2.i}
+[class] (partial) AbstractISequence2:
+>>> dcse = bpp.DCSE()
+>>> rna = bpp.RNA()
+
+>>> aseqs0 = bpp.AlignedSequenceContainer(rna)
+>>> aseqs0.getNumberOfSequences()
+0
+>>> input = bpp.ifstream("data.bpp-ali")
+>>> dcse.read(input, aseqs0)
+>>> aseqs0.getNumberOfSequences()
+4
+
+>>> aseqs1 = bpp.AlignedSequenceContainer(rna)
+>>> aseqs1.getNumberOfSequences()
+0
+>>> dcse.read("data.bpp-ali", aseqs1)
+>>> aseqs1.getNumberOfSequences()
+4
+
+>>> input = bpp.ifstream("data.bpp-ali")
+>>> aseqs2 = dcse.read(input, rna)
+>>> aseqs2.getNumberOfSequences()
+4
+
+>>> aseqs3 = dcse.read("data.bpp-ali", rna)
+>>> aseqs3.getNumberOfSequences()
+4
+
+
 {AbstractOSequence.i}
 [class] (partial) AbstractOSequence:
 >>> fasta = bpp.Fasta()
@@ -104,13 +136,13 @@ see Alphabet--partial implementation of interface
 >>> container = bpp.VectorSequenceContainer(dna)
 >>> fasta.appendFromStream(input, container)
 
->>> fasta.write(bpp.ApplicationTools.getMessage(), container)
->seq1
-ATGCCGTGGTCCCGT
->seq2
-TTTGGCGACCGTAACCCGT
->seq3
-GAGACTAGCTGA
+#>>> fasta.write(bpp.ApplicationTools.getMessage(), container)
+#>seq1
+#ATGCCGTGGTCCCGT
+#>seq2
+#TTTGGCGACCGTAACCCGT
+#>seq3
+#GAGACTAGCTGA
 >>> fasta.write("output-file.fas", container)
 
 
@@ -146,6 +178,57 @@ GAGACTAGCTGA
 >>> vsc.deleteGeneralComments()
 >>> vsc.getGeneralComments()
 ()
+
+
+{AlignedSequenceContainer.i}
+[class] AlignedSequenceContainer:
+>>> dna = bpp.DNA()
+>>> seq1 = bpp.Sequence("seq1", "AAAAA", dna)
+>>> seq2 = bpp.Sequence("seq2", "CCCCC", dna)
+>>> seq3 = bpp.Sequence("seq3", "G-G-G", dna)
+>>> seqX = bpp.Sequence("seqX", "AAAAAA", dna)
+>>> site1 = bpp.Site(['G','G'], dna, 11)
+>>> site2 = bpp.Site(['T','T'], dna, 12)
+>>> seqs = bpp.AlignedSequenceContainer(dna)
+
+>>> seqs.addSequence(seq1)
+>>> seqs.addSequence(seqX)
+Traceback (most recent call last):
+...
+Exception: <bpp.Exception; proxy of <Swig Object of type 'Exception *' at 0x...> >
+>>> seqs.addSequence(seq3, 0)
+>>> 
+>>> seqs.setSequence("seq1", seq2)
+>>> seqs.setSequence(0, seq1)
+>>> 
+>>> seqs.getNumberOfSites()
+5
+>>> seqs.getSitePositions()
+(1, 2, 3, 4, 5)
+>>> seqs.getSite(0).toString()
+'AC'
+>>> 
+>>> seqs.addSite(site1)
+>>> seqs.addSite(site2,0)
+>>> seqs.getSitePositions()
+(12, 1, 2, 3, 4, 5, 11)
+>>> seqs.reindexSites()
+>>> seqs.getSitePositions()
+(1, 2, 3, 4, 5, 6, 7)
+>>> seqs.getSequence(0).toString()
+'TAAAAAG'
+>>> seqs.toString(0)
+'TAAAAAG'
+>>> seqs.removeSite(0)
+<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...> >
+>>> seqs.deleteSite(5)
+>>> seqs.createEmptyContainer().getNumberOfSequences()
+0
+>>> seqs.clear()
+>>> seqs.clone()
+<bpp.AlignedSequenceContainer; proxy of <Swig Object of type 'AlignedSequenceContainer *' at 0x...> >
+>>> bpp.AlignedSequenceContainer(seqs)
+<bpp.AlignedSequenceContainer; proxy of <Swig Object of type 'AlignedSequenceContainer *' at 0x...> >
 
 
 {Alphabet.i}
@@ -221,8 +304,8 @@ False
 [class] AlphabetException
 >>> alpha = bpp.DefaultAlphabet()
 >>> x = bpp.AlphabetException("bad alphabet!", alpha)
->>> x.getAlphabet()
-<bpp.Alphabet; proxy of <Swig Object of type 'Alphabet *' at 0x...> >
+>>> x.getAlphabet().getAlphabetType()
+'Default alphabet'
 >>> x.what()
 'AlphabetException: bad alphabet!(Default alphabet)'
 
@@ -275,14 +358,15 @@ False
 -3.0
 >>> scores.getIndex('a','c')
 -3.0
->>> bpp.MatrixTools._print(scores.getIndexMatrix())
-4x4
-[
-[10, -3, -1, -4]
-[-3, 9, -5, 0]
-[-1, -5, 7, -3]
-[-4, 0, -3, 8]
-]
+
+#>>> bpp.MatrixTools._print(scores.getIndexMatrix())
+#4x4
+#[
+#[10, -3, -1, -4]
+#[-3, 9, -5, 0]
+#[-1, -5, 7, -3]
+#[-4, 0, -3, 8]
+#]
 
 
 
@@ -330,6 +414,29 @@ True
 <bpp.doubleMatrix; proxy of <Swig Object of type 'Matrix< double > *' at 0x...> >
 
 
+{Clustal.i}
+[class] Clustal:
+>>> clustal = bpp.Clustal()
+>>> clustal.getFormatName()
+'Clustal'
+>>> clustal.getFormatDescription()
+'The Clustal alignment tool output format.'
+>>> prot = bpp.ProteicAlphabet()
+>>> aseqs = bpp.AlignedSequenceContainer(prot)
+>>> stream = bpp.ifstream("data.bpp-aln")
+>>> 
+>>> clustal.appendFromStream(stream, aseqs)
+>>> aseqs.getNumberOfSequences()
+2
+>>> aseqs.toString(0)
+'FQA...
+>>> clustal.checkNames()
+True
+>>> clustal.checkNames(False)
+>>> clustal.checkNames()
+False
+
+
 {CodonAlphabet.i}
 [class] CodonAlphabet:
 note--bug in tested version in getPositions()--likely fixed in current version
@@ -372,7 +479,7 @@ True
 >>> sca.getFirstPosition("CAG")
 ''
 >>> sca.getPositions("CAG")
-...
+(...)
 >>> sca.isStop(-2)
 True
 >>> sca.isStop("TAG")
@@ -390,35 +497,52 @@ True
 >>> site = bpp.Site(['TAG','AAA','CCC'],alpha,300)
 >>> site1 = bpp.Site(['TAT','AAA','CCC'],alpha,600)
 
->>> bpp.CodonSiteTools.hasGapOrStop(site1)
+>>> bpp.CodonSiteTools.hasGapOrStop(site)
 True
->>> bpp.CodonSiteTools.hasStop(site1)
+>>> bpp.CodonSiteTools.hasStop(site)
 True
->>> bpp.CodonSiteTools.isMonoSitePolymorphic(site)
+>>> bpp.CodonSiteTools.isMonoSitePolymorphic(site1)
 False
->>> bpp.CodonSiteTools.isSynonymousPolymorphic(site,code)
+>>> bpp.CodonSiteTools.isSynonymousPolymorphic(site1,code)
 False
->>> site2 = bpp.CodonSiteTools.generateCodonSiteWithoutRareVariant(site, 0.25)
+>>> site2 = bpp.CodonSiteTools.generateCodonSiteWithoutRareVariant(site1, 0.25)
 >>> site2.getContent()
 (49, 0, 21)
 >>> bpp.CodonSiteTools.numberOfDifferences(3,4,alpha)
 2
 >>> bpp.CodonSiteTools.numberOfSynonymousDifferences(2,4,code)
 1.0
->>> bpp.CodonSiteTools.piSynonymous(site,code,False)
+>>> bpp.CodonSiteTools.piSynonymous(site1,code,False)
 0.5
->>> bpp.CodonSiteTools.piNonSynonymous(site,code,False)
+>>> bpp.CodonSiteTools.piNonSynonymous(site1,code,False)
 2.166...
 >>> bpp.CodonSiteTools.numberOfSynonymousPositions(1,code,1.0)
 0.333...
->>> bpp.CodonSiteTools.meanNumberOfSynonymousPositions(site,code,1.0)
+>>> bpp.CodonSiteTools.meanNumberOfSynonymousPositions(site1,code,1.0)
 0.555...
 >>> bpp.CodonSiteTools.numberOfSubsitutions(site,0.0)
 5
->>> bpp.CodonSiteTools.numberOfNonSynonymousSubstitutions(site,code,0.0)
+>>> bpp.CodonSiteTools.numberOfNonSynonymousSubstitutions(site1,code,0.0)
 4
 >>> bpp.CodonSiteTools.fixedDifferences(site,site1,0,1,code)
 (0, 0)
+
+
+{DCSE.i}
+[class] DCSE:
+>>> dcse = bpp.DCSE()
+>>> dcse.getFormatName()
+'DCSE'
+>>> dcse.getFormatDescription()
+'RNA structure format'
+>>> rna = bpp.RNA()
+>>> aseqs = bpp.AlignedSequenceContainer(rna)
+>>> stream = bpp.ifstream("data.bpp-ali")
+>>> dcse.appendFromStream(stream, aseqs)
+>>> aseqs.getNumberOfSequences()
+4
+>>> aseqs.toString(0)
+'ACGACGGUNU'
 
 
 {DefaultAlphabet.i}
@@ -450,13 +574,6 @@ False
 >>> scores.clone()
 <bpp.DefaultNucleotideScore; proxy of <Swig Object of type 'DefaultNucleotideScore *' at 0x...> >
 >>> bpp.MatrixTools._print(scores.getIndexMatrix())
-4x4
-[
-[10, -3, -1, -4]
-[-3, 9, -5, 0]
-[-1, -5, 7, -3]
-[-4, 0, -3, 8]
-]
 
 
 {DistanceMatrix.i}
@@ -593,12 +710,6 @@ False
 >>> fasta.appendFromStream(input, container)
 
 >>> fasta.write(bpp.ApplicationTools.getMessage(), container)
->seq1
-ATGCCGTGGTCCCGT
->seq2
-TTTGGCGACCGTAACCCGT
->seq3
-GAGACTAGCTGA
 >>> fasta.write("output-file.fas", container)
 
 
@@ -659,6 +770,7 @@ True
 {GranthamAAChemicalDistance.i}
 [class] GranthamAAChemicalDistance:
 >>> gDist = bpp.GranthamAAChemicalDistance()
+>>> gDist.setSymmetric(True)
 >>> gDist.isSymmetric()
 True
 >>> gDist.getIndex(0,1)
@@ -785,6 +897,19 @@ True
 >>> container1.getNumberOfSequences()
 3
 
+[class] (interface) ISequence2:
+>>> dcse = bpp.DCSE()
+>>> rna = bpp.RNA()
+>>> aseqs = dcse.read("data.bpp-ali", rna)
+>>> aseqs.getNumberOfSequences()
+4
+
+>>> dcse = bpp.DCSE()
+>>> rna = bpp.RNA()
+>>> stream = bpp.ifstream("data.bpp-ali")
+>>> aseqs1 = dcse.read(stream, rna)
+>>> aseqs1.getNumberOfSequences()
+4
 
 {KleinAANetChargeIndex.i}
 [class] KleinAANetChargeIndex
@@ -816,15 +941,6 @@ True
 >>> mase.appendFromStream(input, container)
 
 >>> mase.write(bpp.ApplicationTools.getMessage(), container)
-;this is seq1
-seq1
-ATGCCGTGGTCCCGT
-;this is seq2
-seq2
-TTTGGCGACCGTAACCCGT
-;this is seq3
-seq3
-GAGACTAGCTGA
 >>> mase.write("output.mase", container)
 >>> mase.checkNames()
 True
@@ -834,6 +950,7 @@ True
 {MiyataAAChemicalDistance.i}
 [class] MiyataAAChemicalDistance.i:
 >>> miyata = bpp.MiyataAAChemicalDistance()
+>>> miyata.setSymmetric(True)
 >>> miyata.isSymmetric()
 True
 >>> miyata.getIndex(0,1)
@@ -931,12 +1048,6 @@ True
 >>> fasta.appendFromStream(input, container)
 
 >>> fasta.write(bpp.ApplicationTools.getMessage(), container)
->seq1
-ATGCCGTGGTCCCGT
->seq2
-TTTGGCGACCGTAACCCGT
->seq3
-GAGACTAGCTGA
 >>> fasta.write("output-file.fas", container)
 
 
@@ -1063,15 +1174,13 @@ True
 
 >>> options = bpp.strMap()
 >>> options["alphabet"] = "RNA"
->>> alpha = bpp.SequenceApplicationTools.getAlphabet(options)
-Alphabet type .........................: RNA
+>>> bpp.SequenceApplicationTools.getAlphabet(options).getAlphabetType()
+'RNA alphabet'
 
 >>> options = bpp.strMap()
 >>> options["sequence.file"] = "data1.fas"
 >>> options["sequence.format"] = "Fasta"
 >>> seqs = bpp.SequenceApplicationTools.getSequenceContainer(dna, options)
-Sequence format .......................: Fasta
-Sequence file .........................: data1.fas
 >>> seqs.getSequencesNames()
 ('seq1', 'seq2', 'seq3')
 >>> seqs.toString('seq1')
@@ -1085,8 +1194,6 @@ Sequence file .........................: data1.fas
 >>> options["sequence.file"] = "data2.fas"
 >>> options["sequence.format"] = "Fasta"
 >>> sites = bpp.SequenceApplicationTools.getSiteContainer(dna, options)
-Sequence format .......................: Fasta
-Sequence file .........................: data2.fas
 >>> sites.getPositions()
 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)
 >>> sites.getSite(0).toString()
@@ -1096,28 +1203,22 @@ Sequence file .........................: data2.fas
 >>> options["sequence.sites_to_use"] = "all"
 >>> options["sequence.max_gap_allowed"] = "100%"
 >>> sites1 = bpp.SequenceApplicationTools.getSitesToAnalyse(sites, options)
-Sites to use...........................: all
 >>> sites1.getPositions()
 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19)
 >>> options["sequence.max_gap_allowed"] = "1"
 >>> sites1 = bpp.SequenceApplicationTools.getSitesToAnalyse(sites, options)
-Sites to use...........................: all
 >>> sites1.getPositions()
 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
 
 >>> options = bpp.strMap()
 >>> options["sequence.sites_to_use"] = "nogap"
 >>> sites1 = bpp.SequenceApplicationTools.getSitesToAnalyse(sites, options)
-Sites to use...........................: nogap
-Sites without gap......................: 12
 >>> sites1.getPositions()
 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 
 >>> options = bpp.strMap()
 >>> options["sequence.sites_to_use"] = "complete"
 >>> sites1 = bpp.SequenceApplicationTools.getSitesToAnalyse(sites, options)
-Sites to use...........................: complete
-Complete sites.........................: 10
 >>> sites1.getPositions()
 (1, 2, 3, 4, 7, 8, 9, 10, 11, 12)
 
@@ -1126,26 +1227,9 @@ Complete sites.........................: 10
 >>> options["output.sequence.format"] = "Fasta"
 >>> options["output.sequence.length"] = "100"
 >>> bpp.SequenceApplicationTools.writeSequenceFile(seqs, options)
-Output file format.....................: Fasta
-Output file ...........................: output.fas
 
 >>> bpp.SequenceApplicationTools.printInputAlignmentHelp()
-Input sequence file and format:
-alphabet                      | the alphabet to use [DNA|RNA|Protein]
-sequence.format               | [Fasta|Mase|Phylip|Clustal|DCSE]
-sequence.format_phylip.order  | [interleaved|sequential]
-sequence.format_phylip.ext    | [classic|extended]
-sequence.sites_to_use         | [all|nogap|complete]
-______________________________|___________________________________________
 >>> bpp.SequenceApplicationTools.printOutputSequenceHelp()
-Output sequence file and format:
-output.sequence.format        | [Fasta|Mase|Phylip|Clustal|DCSE]
-output.sequence.              |
-           format_phylip.order| [interleaved|sequential]
-output.sequence.              |
-             format_phylip.ext| [classic|extended]
-  format_phylip.extended.split| [spaces|tab] the split sequence
-______________________________|___________________________________________
 
 
 {SequenceContainer.i}
@@ -1165,6 +1249,7 @@ ______________________________|___________________________________________
 ('well hello there',)
 >>> vsc.deleteGeneralComments()
 >>> vsc.getGeneralComments()
+()
 
 
 {SequenceContainerExceptions.i}
@@ -1239,7 +1324,7 @@ ______________________________|___________________________________________
 [class] SequenceTools
 >>> dna = bpp.DNA()
 >>> seq = bpp.Sequence("test", "AGGTCT", dna)
->>> seq1 = bpp.Sequence("test1", "GGG", dna)
+>>> seq1 = bpp.Sequence("test", "GGG", dna)
 >>> seqA = bpp.Sequence("aligned", "AG--TT", dna)
 
 >>> bpp.SequenceTools.subseq(seq,0,4).toString()
@@ -1260,11 +1345,13 @@ ______________________________|___________________________________________
 50.0
 >>> bpp.SequenceTools.getNumberOfCompleteSites(bpp.Sequence("test", "AH--TT", dna))
 3
->>> bpp.SequenceTools.getNumberOfSites(bpp.Sequence("test", "AH--TT", dna))4
+>>> bpp.SequenceTools.getNumberOfSites(bpp.Sequence("test", "AH--TT", dna))
+4
 >>> bpp.SequenceTools.removeGaps(seqA).toString()
 'AGTT'
 
 >>> bpp.SequenceTools.bowkerTest(seq,seqA)
+<bpp.BowkerTest; proxy of <Swig Object of type 'BowkerTest *' at 0x...> >
 
 >>> hetero = bpp.Sequence("heterozygous", "ATTCGGGKWTATRYRM", dna)
 >>> haplo = bpp.Sequence("haplotype", "ATTCGGGTATATGCAA", dna)
@@ -1279,6 +1366,7 @@ ______________________________|___________________________________________
 >>> klein = bpp.KleinAANetChargeIndex()
 >>> klein2 = bpp.doubleSimpleIndexDistance(klein)
 
+>>> klein2.setSymmetric(True)
 >>> klein2.isSymmetric()
 True
 >>> klein2.getIndex(0,1)
@@ -1322,24 +1410,24 @@ True
 >>> ss.getAlphabet().getAlphabetType()
 'Default alphabet'
 >>> ss.getIndexMatrix()
-<bpp.doubleMatrix; proxy of <Swig Object of type 'Matrix< double > *' at 0x..> >
+<bpp.doubleMatrix; proxy of <Swig Object of type 'Matrix< double > *' at 0x...> >
 
 
 {Site.i}
 [class] Site:
 >>> dna = bpp.DNA()
 >>> bpp.Site("acg",dna)
-<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...>> >
+<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...> >
 >>> bpp.Site("acg",dna,52)
-<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...>> >
+<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...> >
 >>> bpp.Site(['a','c','g'],dna)
-<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...>> >
+<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...> >
 >>> bpp.Site(['a','c','g'],dna,52)
-<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...>> >
+<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...> >
 >>> bpp.intVecSite([0,1,2],dna)
-<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...>> >
+<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...> >
 >>> bpp.intVecSite([0,1,2],dna,52)
-<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...>> >
+<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...> >
 
 >>> site = bpp.Site("acg",dna,52)
 >>> site.getPosition()
@@ -1370,7 +1458,7 @@ True
 >>> sites.getSite(0).toString()
 'TT'
 >>> sites.removeSite(1)
-<bpp.Site; proxy of <Swig Object of type 'Site *' at 0xa188f48> >
+<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...> >
 >>> sites.deleteSite(1)
 >>> sites.getNumberOfSites()
 2
@@ -1526,6 +1614,7 @@ True
 {StandardGeneticCode.i}
 [class] StandardGeneticCode;
 >>> dna = bpp.DNA()
+>>> codons = bpp.StandardCodonAlphabet(dna)
 >>> code = bpp.StandardGeneticCode(dna)
 >>> code.getSourceAlphabet().getAlphabetType()
 'Standard codon alphabet'
@@ -1571,12 +1660,12 @@ True
 <bpp.SymbolList; proxy of <Swig Object of type 'SymbolList *' at 0x...> >
 >>> bpp.intVecSymbolList([1,2],dna)
 <bpp.SymbolList; proxy of <Swig Object of type 'SymbolList *' at 0x...> >
+
+>>> symlist = bpp.SymbolList(["a","c"],dna)
 >>> symlist.clone()
 <bpp.SymbolList; proxy of <Swig Object of type 'SymbolList *' at 0x...> >
 >>> bpp.SymbolList(symlist)
 <bpp.SymbolList; proxy of <Swig Object of type 'SymbolList *' at 0x...> >
-
->>> symlist = bpp.SymbolList(["a","c"],dna)
 
 >>> symlist.getAlphabet().getAlphabetType()
 'DNA alphabet'
@@ -1621,11 +1710,13 @@ True
 [class] SymbolListTools:
 >>> dna = bpp.DNA()
 >>> symlist = bpp.SymbolList("accttacgn",dna)
+>>> symlist1 = bpp.SymbolList("catcatcat",dna)
 >>> counts = bpp.intUintMap()
 >>> bpp.SymbolListTools.getCounts(symlist,counts)
 >>> counts[0],counts[1],counts[2],counts[3]
 (2, 3, 1, 2)
 
+>>> counts = bpp.intDoubleMap()
 >>> bpp.SymbolListTools.getCounts(symlist,counts,False)
 >>> counts[0],counts[1],counts[2],counts[3]
 (2.0, 3.0, 1.0, 2.0)
@@ -1637,16 +1728,16 @@ True
 >>> counts = bpp.intIuiMapMap()
 >>> bpp.SymbolListTools.getCounts(symlist,symlist1,counts)
 >>> counts[1].keys()
-[1, 3]
+[0, 1, 3]
 >>> counts[1][1], counts[1][3]
-(1, 2)
+(1, 1)
 
 >>> counts = bpp.intIdMapMap()
 >>> bpp.SymbolListTools.getCounts(symlist,symlist1,counts,True)
 >>> counts[1].keys()
-[1, 2, 3]
->>> counts[1][1],counts[1][2],counts[1][3]
-(1.0, 0.25, 2.0)
+[0, 1, 3]
+>>> counts[0][1],counts[0][3]
+(1.0, 1.25)
 
 >>> freqs = bpp.intDoubleMap()
 >>> bpp.SymbolListTools.getFrequencies(symlist,freqs,False)
@@ -1656,9 +1747,9 @@ True
 >>> freqs = bpp.intIdMapMap()
 >>> bpp.SymbolListTools.getFrequencies(symlist,symlist1,freqs,False)
 >>> freqs[1].keys()
-[1, 3]
+[0, 1, 3]
 >>> freqs[1][1],freqs[1][3]
-(0.0123..., 0.0246...)
+(0.012345679012345678, 0.012345679012345678)
 
 >>> bpp.SymbolListTools.getGCContent(symlist)
 0.5
@@ -1670,7 +1761,7 @@ True
 'ACCTTACG-'
 >>> bpp.SymbolListTools.changeUnresolvedCharactersToGaps(symlist1)
 >>> bpp.SymbolListTools.getNumberOfPositionsWithoutGap(symlist,symlist1)
-7
+8
 
 >>> bpp.SymbolListTools.changeGapsToUnknownCharacters(symlist)
 >>> symlist.toString()
@@ -1681,6 +1772,7 @@ True
 [class] interface Translator:
 [class] partial AbstractTranslator:
 >>> dna = bpp.DNA()
+>>> codons = bpp.StandardCodonAlphabet(dna)
 >>> code = bpp.StandardGeneticCode(dna)
 >>> code.getSourceAlphabet().getAlphabetType()
 'Standard codon alphabet'
@@ -1749,7 +1841,7 @@ True
 >>> vsc.getSequencesNames()
 ('Seq-A', 'Seq-B')
 >>> vsc.valueAt("Seq-A",1)
-<Swig Object of type 'int *' at 0x95ae5d4>
+<Swig Object of type 'int *' at 0x...>
 >>> bpp.intp.frompointer(vsc.valueAt("Seq-A",1)).value()
 2
 >>> bpp.intp.frompointer(vsc("Seq-A",1)).value()
@@ -1777,7 +1869,7 @@ True
 >>> vsc.getNumberOfSequences()
 0
 >>> vsc.clone()
-<bpp.Clonable; proxy of <Swig Object of type 'Clonable *' at 0x95ad340> >
+<bpp.Clonable; proxy of <Swig Object of type 'Clonable *' at 0x...> >
 
 
 {VectorSiteContainer.i}
@@ -1815,9 +1907,9 @@ True
 >>> clone = vsc.clone()
 >>> clone.setSequencesNames(["seq-A","seq-B"])
 >>> clone.removeSequence("seq-A")
-<bpp.Sequence; proxy of <Swig Object of type 'Sequence *' at 0x9808d30> >
+<bpp.Sequence; proxy of <Swig Object of type 'Sequence *' at 0x...> >
 >>> clone.removeSequence(0)
-<bpp.Sequence; proxy of <Swig Object of type 'Sequence *' at 0x95eb880> >
+<bpp.Sequence; proxy of <Swig Object of type 'Sequence *' at 0x...> >
 >>> clone.addSequence(seqY)
 >>> clone.addSequence(seqX,0)
 >>> clone.getSite(0).toString()
@@ -1848,17 +1940,17 @@ True
 >>> vsc.getSequence(0).toString()
 'AATGC'
 >>> vsc.removeSite(3)
-<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x97cde20> >
+<bpp.Site; proxy of <Swig Object of type 'Site *' at 0x...> >
 >>> vsc.deleteSite(3)
 
 >>> bpp.intp.frompointer(vsc.valueAt(0,1)).value()
-1
+0
 >>> bpp.intp.frompointer(vsc.valueAt("Seq_0",1)).value()
-1
+0
 >>> bpp.intp.frompointer(vsc(0,1)).value()
-1
+0
 >>> bpp.intp.frompointer(vsc("Seq_0",1)).value()
-1
+0
 
 >>> bpp.VectorSiteContainer(vsc.createEmptyContainer()).getNumberOfSequences()
 0

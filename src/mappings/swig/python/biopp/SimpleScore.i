@@ -13,7 +13,7 @@ using namespace std;
 
 class SimpleScore:public AlphabetIndex2<double>
 {
-	public:
+  public:
     SimpleScore(const Alphabet * alphabet, double match, double mismatch);
     virtual ~SimpleScore();
     SimpleScore * clone() const;

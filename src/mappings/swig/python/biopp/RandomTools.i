@@ -11,6 +11,8 @@ using namespace std;
 %ignore RandomTools::RandomTools;
 %ignore RandomTools::~RandomTools;
 
+%warnfilter(454) RandomTools;
+
 class RandomTools
 {
   public:

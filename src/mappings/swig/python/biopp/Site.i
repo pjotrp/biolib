@@ -15,8 +15,8 @@ using namespace std;
 
 class Site:public SymbolList 
 {  
-    %rename(stringSite) Site(const vector<string> & site, const Alphabet * alpha) throw (BadCharException);
-    %rename(stringSite)     Site(const vector<string> & site, const Alphabet * alpha, int position) throw (BadCharException);
+    %rename(intVecSite) Site(const vector<int> & site, const Alphabet * alpha) throw (BadCharException);
+    %rename(intVecSite)     Site(const vector<int> & site, const Alphabet * alpha, int position) throw (BadCharException);
 
   public:
     Site(const Alphabet * alpha);
@@ -39,3 +39,5 @@ class Site:public SymbolList
 
 bool operator == (const Site & site1, const Site & site2);
 bool operator < (const Site & site1, const Site & site2);
+
+%template(siteVector) std::vector<Site*>;

@@ -13,6 +13,8 @@ using namespace std;
 %ignore ApplicationTools::ApplicationTools;
 %ignore ApplicationTools::~ApplicationTools;
 
+%warnfilter(454) ApplicationTools;
+
 class ApplicationTools
 {
   public:

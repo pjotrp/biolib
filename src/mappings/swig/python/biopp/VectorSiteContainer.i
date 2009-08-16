@@ -16,8 +16,16 @@ using namespace std;
 
 %rename(__assign__) VectorSiteContainer::operator=;
 
+%warnfilter(509) VectorSiteContainer::VectorSiteContainer;
+
 class VectorSiteContainer:public AbstractSequenceContainer,public virtual SiteContainer
 {
+  protected:
+    vector<Site     *> _sites;
+    vector<string   *> _names;
+    vector<Comments *> _comments; //Sequences comments.
+    mutable vector<Sequence *> _sequences; //To store pointer toward sequences retrieves (cf. AlignedSequenceContainer).
+  
   public:
     VectorSiteContainer(const vector<const Site *> & vs, const Alphabet * alpha, bool checkPositions = true) throw (Exception);
     VectorSiteContainer(unsigned int size, const Alphabet * alpha);
@@ -69,4 +77,15 @@ class VectorSiteContainer:public AbstractSequenceContainer,public virtual SiteCo
     void addSequence(const Sequence & sequence, unsigned int sequenceIndex, bool checkName = true) throw (Exception);
     void setSequence(const string & name, const Sequence & sequence, bool checkName) throw (Exception);
     void setSequence(unsigned int sequenceIndex, const Sequence & sequence, bool checkName) throw (Exception);
+
+    // This is another (pseudo-)constructor, for vectors of Sites that aren't const
+  %extend {
+    VectorSiteContainer(const vector<Site *> vs, const Alphabet * alpha, bool checkPositions = true) throw (Exception) 
+    {
+      vector<const Site *> *newVs = new vector<const Site *>(vs.size());
+      for (int i=0; i<vs.size(); i++) (*newVs)[i] = (const Site *)vs[i];
+      return new VectorSiteContainer(*newVs, alpha, checkPositions);
+    }
+  }
+
 };

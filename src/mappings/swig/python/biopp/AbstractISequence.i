@@ -18,12 +18,7 @@ class AbstractISequence:public virtual ISequence
     virtual ~AbstractISequence();
 
     virtual void read(istream & input, VectorSequenceContainer & sc) const throw (Exception);
-
     virtual void read(const string & path , VectorSequenceContainer & sc) const throw (Exception);
-
     virtual VectorSequenceContainer * read(istream & input, const Alphabet * alpha) const throw (Exception);
-
     virtual VectorSequenceContainer * read(const string & path , const Alphabet * alpha) const throw (Exception);
-
-    readFromFile(const string & path , const Alphabet * alpha) const throw (Exception);
 };

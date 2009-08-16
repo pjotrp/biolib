@@ -2,6 +2,11 @@
 
 {ApplicationTools.i}
 [class] ApplicationTools:
+
+ApplicationTools is a static class that provides a number of methods
+to parse files and maps of parameters.  Most of the methods are
+straightforward.
+
 >>> m = bpp.strMap()
 >>> m['xxx'] = '1'
 >>> m['yyy'] = '2.5'
@@ -9,6 +14,10 @@
 True
 >>> bpp.ApplicationTools.parameterExists("zzz", m)
 False
+
+The third parameter indicates a default value, if the first is not
+found in the map.
+
 >>> bpp.ApplicationTools.getDoubleParameter("xxx", m, 0.0)
 1.0
 >>> bpp.ApplicationTools.getDoubleParameter("yyy", m, 0.0)
@@ -18,21 +27,18 @@ False
 >>> bpp.ApplicationTools.getIntParameter("yyy", m, 0)
 2
 >>> bpp.ApplicationTools.getIntParameter("zzz", m, 99)
-WARNING!!! Parameter zzz not specified. Default used instead: 99
 99
 >>> bpp.ApplicationTools.getStringParameter("xxx", m, "zip")
 '1'
 >>> bpp.ApplicationTools.getStringParameter("yyy", m, "zip")
 '2.5'
 >>> bpp.ApplicationTools.getStringParameter("zzz", m, "zip")
-WARNING!!! Parameter zzz not specified. Default used instead: zip
 'zip'
 >>> bpp.ApplicationTools.getBooleanParameter("xxx", m, False)
 True
 >>> bpp.ApplicationTools.getBooleanParameter("yyy", m, False)
 False
 >>> bpp.ApplicationTools.getBooleanParameter("zzz", m, False)
-WARNING!!! Parameter zzz not specified. Default used instead: 0
 False
 
 >>> bpp.ApplicationTools.getParameter("xxx", m, 616)
@@ -50,20 +56,23 @@ False
 >>> bpp.ApplicationTools.getAFilePath("one", m)
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
-bpp.Exception: <bpp.Exception; proxy of <Swig Object of type 'Exception *' at 0x...> >
+Exception: <bpp.Exception; proxy of <Swig Object of type 'Exception *' at 0x...> >
 >>> bpp.ApplicationTools.getAFilePath("two", m)
 '..'
 
->>> bpp.ApplicationTools.displayResult("The answer is", 1)
-The answer is..........................: 1
->>> bpp.ApplicationTools.displayResult("The answer is", 1.0)
-The answer is..........................: 1
->>> bpp.ApplicationTools.displayResult("The answer is", "result")
-The answer is..........................: result
->>> bpp.ApplicationTools.displayResult("The answer is", True)
-The answer is..........................: 1
->>> bpp.ApplicationTools.displayResult("The answer is", False)
-The answer is..........................: 0
+These are commented out because they display directly to stdout, not
+to Python.
+
+#>>> bpp.ApplicationTools.displayResult("The answer is", 1)
+#The answer is..........................: 1
+#>>> bpp.ApplicationTools.displayResult("The answer is", 1.0)
+#The answer is..........................: 1
+#>>> bpp.ApplicationTools.displayResult("The answer is", "result")
+#The answer is..........................: result
+#>>> bpp.ApplicationTools.displayResult("The answer is", True)
+#The answer is..........................: 1
+#>>> bpp.ApplicationTools.displayResult("The answer is", False)
+#The answer is..........................: 0
 
 >>> m = bpp.strMap()
 >>> m['xxx'] = '1.5,2.5'
@@ -73,41 +82,54 @@ The answer is..........................: 0
 >>> bpp.ApplicationTools.getIntVectorParameter('yyy', m, ',', '5')
 (1, 2, 3)
 >>> bpp.ApplicationTools.getIntVectorParameter('zzz', m, ',', '5')
-WARNING!!! Parameter zzz not specified. Default used instead: 5
 (5,)
 >>> bpp.ApplicationTools.getDoubleVectorParameter('xxx', m, ',', '5')
 (1.5, 2.5)
 >>> bpp.ApplicationTools.getDoubleVectorParameter('yyy', m, ',', '5')
 (1.0, 2.0, 3.0)
 >>> bpp.ApplicationTools.getDoubleVectorParameter('zzz', m, ',', '5')
-WARNING!!! Parameter zzz not specified. Default used instead: 5
 (5.0,)
 
->>> bpp.ApplicationTools.displayMessage("hello")
-hello
->>> bpp.ApplicationTools.displayError("hello")
-ERROR!!! hello
->>> bpp.ApplicationTools.displayWarning("hello")
-WARNING!!! hello
->>> bpp.ApplicationTools.displayTask("hello", True)
-hello..................................: 
->>> bpp.ApplicationTools.displayTaskDone()
-Done.
+These also display directly to stdout.
+
+#>>> bpp.ApplicationTools.displayMessage("hello")
+#hello
+#>>> bpp.ApplicationTools.displayError("hello")
+#ERROR!!! hello
+#>>> bpp.ApplicationTools.displayWarning("hello")
+#WARNING!!! hello
+#>>> bpp.ApplicationTools.displayTask("hello", True)
+#hello..................................: 
+#>>> bpp.ApplicationTools.displayTaskDone()
+#Done.
+
+getTime() gets the amount of time since the timer was started.
+
 >>> bpp.ApplicationTools.startTimer()
->>> bpp.ApplicationTools.displayTime("hello")
-hello 0d, 0h, 0m, 0s.
+
+#>>> bpp.ApplicationTools.displayTime("hello")
+#hello 0d, 0h, 0m, 0s.
 >>> bpp.ApplicationTools.getTime()
 0.0
->>> bpp.ApplicationTools.displayGauge(23, 50)
-[>>>>>>>>>>>>>>>>>                     ]  46%
->>> bpp.ApplicationTools.displayGauge(29, 50, '*')
-[**********************                ]  58%
->>> bpp.ApplicationTools.displayGauge(49, 50, '*', "time's running out")
-time's running out[************************************* ]  98%
+
+Again, direclty to stdout.
+
+#>>> bpp.ApplicationTools.displayGauge(23, 50)
+#[>>>>>>>>>>>>>>>>>                     ]  46%
+#>>> bpp.ApplicationTools.displayGauge(29, 50, '*')
+#[**********************                ]  58%
+#>>> bpp.ApplicationTools.displayGauge(49, 50, '*', "time's running out")
+#time's running out[************************************* ]  98%
 
 
 {AttributesTools.i}
 [class] AttributesTools:
+
+AttributesTools is another static class, that focuses especially on
+maps of parameters.  Many of the other tools in Bio++ rely on maps in
+which the key is some parameter, and the value is the value of that
+parameter.
+
 >>> l = ["first is ignored","a=b","x=y"]
 >>> bpp.AttributesTools.getVector(3,l)
 ('', 'a=b', 'x=y')
@@ -127,8 +149,10 @@ time's running out[************************************* ]  98%
 >>> n.keys()
 ['a', 'x']
 
+In getAttributesMapFromFile, each line of the file looks like "c=d".
+The "=" argument is the string that divides key from value.
+
 >>> m = bpp.AttributesTools.getAttributesMapFromFile("file","=")
-Parsing file file for options.
 >>> m.keys()
 ['c', 's']
 >>> m['c']
@@ -137,9 +161,11 @@ Parsing file file for options.
 't'
 >>> n = bpp.strMap()
 >>> bpp.AttributesTools.getAttributesMapFromFile("file",n,"=")
-Parsing file file for options.
 >>> n.keys()
 ['c', 's']
+
+actualizeAttributesMap() takes the keys in the second map and places
+them in the first, overwriting common keys.
 
 >>> m=bpp.strMap()
 >>> n=bpp.strMap()
@@ -153,6 +179,9 @@ Parsing file file for options.
 >>> m.values()
 ['B', 't', 'y']
 
+resolveVariables() searches for the $ symbol, and replaces 
+the variable inside the ()s with its assigned value.
+
 >>> m = bpp.strMap()
 >>> m['a'] = '$(b)'
 >>> m['b'] = 'c'
@@ -164,22 +193,27 @@ Parsing file file for options.
 
 >>> l = ["1st ignored","a=b","x=y","param=file"]
 >>> m = bpp.AttributesTools.parseOptions(4,l)
-Parsing file file for options.
 >>> m.items()
 [('a', 'b'), ('c', 'd'), ('s', 't'), ('x', 'y')]
 
 
 {BppVector.i}
 [class] BppVector:
+
+BppVector simply creates a vector that inherits from Clonable. It
+doesn't really get used from within scripting languages.
+
 >>> bpp.intVector()
 <bpp.intVector; proxy of <Swig Object of type 'std::vector< int > *' at 0x...> >
 >>> bpp.doubleVector()
 <bpp.doubleVector; proxy of <Swig Object of type 'std::vector< double > *' at 0x...> >
 
 
-
 {ColorManager.i}
 [class] XFigColorManager:
+
+The XFigColorManager maintains several standard RGBColors, to be called as needed.
+
 >>> cm = bpp.XFigColorManager()
 >>> cm.getCodes()
 (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
@@ -198,6 +232,10 @@ Parsing file file for options.
 
 {ColorTools.i}
 [class] ColorTools:
+
+ColorTools is another static class, that also contains a number of constant 
+color values.
+
 >>> bpp.ColorTools.RED.toHex()
 '#FF0000'
 >>> bpp.ColorTools.ORANGE.toHex()
@@ -221,6 +259,10 @@ Parsing file file for options.
 >>> bpp.ColorTools.cmyk2rgb(0.5, 0.0, 0.1, 0.0).toHex()
 '#80FFE6'
 
+The gradient() functions return an array of RGBColors whose length is
+determined by the first argument.  The colors range smoothly between 
+the values of the RGBColors passed.
+
 >>> bpp.ColorTools.gradient(5, bpp.ColorTools.BLACK, bpp.ColorTools.RED)
 (<bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >, <bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >)
 >>> bpp.ColorTools.gradient(5, bpp.ColorTools.BLACK, bpp.ColorTools.RED)[3].toHex()
@@ -231,13 +273,17 @@ Parsing file file for options.
 
 {DefaultColorSet.i}
 [class] DefaultColorSet:
+
+DefaultColorSet just holds a bunch of standard colors. Its methods are 
+intuitive.
+
 >>> cs = bpp.DefaultColorSet()
 >>> cs.getNumberOfColors()
 8
 >>> cs.getColorNames()
 ('black', 'blue', 'cyan', 'green', 'magenta', 'red', 'white', 'yellow')
 >>> cs.getColor('black')
-<bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x98ede94> >
+<bpp.RGBColor; proxy of <Swig Object of type 'RGBColor *' at 0x...> >
 >>> cs.getColor('black').toHex()
 '#000000'
 >>> cs.getColor(5).toHex()
@@ -246,6 +292,10 @@ Parsing file file for options.
 
 {DvipsColorSet.i}
 [class] DvipsColorSet:
+
+DvipsColorSet is another class for holding a bunch of colors.  In this 
+case they're the standard DVIPS colors.
+
 >>> cs = bpp.DvipsColorSet()
 >>> cs.getNumberOfColors()
 68
@@ -259,26 +309,41 @@ Parsing file file for options.
 
 {Exceptions.i}
 [class] Exception:
+
+Exception is the standard bpp exception, from which all others inherit.
+
 >>> x = bpp.Exception("except this!")
 >>> x.what()
 'except this!'
 
 [class] IOException:
+
+IOException is thrown when there's a problem with reading or writing.
+
 >>> x = bpp.IOException("IO is silly")
 >>> x.what()
 'IO is silly'
 
 [class] NullPointerException:
+
+NullPointerException is thrown when there's a pointer to 0.
+
 >>> x = bpp.NullPointerException("nullishness")
 >>> x.what()
 'nullishness'
 
 [class] ZeroDivisionException:
+
+ZeroDivisionException is thrown when we try to divide by 0.
+
 >>> x = bpp.ZeroDivisionException("ILLOGICAL!")
 >>> x.what()
 'ILLOGICAL!'
 
 [class] BadIntegerException:
+
+BadIntegerException is thrown when an int somehow unnacceptable.
+
 >>> x = bpp.BadIntegerException("Bad integer! No cookie!", -1)
 >>> x.what()
 'Bad integer! No cookie!(-1)'
@@ -286,6 +351,9 @@ Parsing file file for options.
 -1
 
 [class] BadNumberException:
+
+BadNumberException is thrown when a double/real is unnacceptable.
+
 >>> x = bpp.BadNumberException("Numbers are bad!", 0.001)
 >>> x.what()
 'Numbers are bad!(0.001)'
@@ -293,13 +361,20 @@ Parsing file file for options.
 0.001
 
 [class] NumberFormatException:
->>> s = bpp.stringp()
->>> s.assign("20X6")
->>> x = bpp.NumberFormatException("badly done", s)
+
+NumberFormatException is thrown when a number can't be read for some
+reason.
+
+#>>> s = bpp.stringp()
+#>>> s.assign("20X6")
+>>> x = bpp.NumberFormatException("badly done", "20X6")
 >>> x.what()
 'badly done(20X6)'
 
 [class] IndexOutOfBoundsException:
+
+IndexOutOfBoundsException is thrown when a number is out of range.
+
 >>> x = bpp.IndexOutOfBoundsException("out of bounds!", -1, 1, 10)
 >>> x.what()
 'out of [1, 10])out of bounds!(-1)'
@@ -309,6 +384,10 @@ Parsing file file for options.
 
 {FileTools.i}
 [class] FileTools:
+
+FileTools is another static class, whose methods provide several 
+I/O methods.  Most of them are intuitive.
+
 >>> bpp.FileTools.fileExists(".")
 True
 >>> bpp.FileTools.fileExists("asdf")
@@ -320,7 +399,7 @@ True
 >>> bpp.FileTools.directoryExists("..")
 True
 
-This shouldn't be static
+getParent() should be static, but it's not.
 #>>> bpp.FileTools.getParent("xxx/yyy.zzz")
 #'xxx'
 >>> bpp.FileTools.getFileName("xxx/yyy.zzz")
@@ -330,14 +409,25 @@ This shouldn't be static
 >>> bpp.FileTools.getExtension("xxx/yyy.zzz")
 'zzz'
 
+putStreamIntoVectorOfStrings() takes a stream to a file and places
+each line in a string, all of which are returned as a vector.
+
 >>> bpp.FileTools.putStreamIntoVectorOfStrings(bpp.ifstream("file"))
-...
+(...)
+
+getNextLine() just reads the next line of a file.
+
 >>> stream = bpp.ifstream("file")
 >>> bpp.FileTools.getNextLine(stream)
-...
+'...'
 
 
+{Font.i}
 [class] Font:
+Font represents a font for use in output.  Important properties of a 
+Font are family (e.g. Times), series (serif), type (bold), and size (12).
+
+
 >>> x = bpp.Font("default", "default", 12)
 >>> y = x.clone()
 >>> z = bpp.Font("default", "default", 13)
@@ -365,6 +455,10 @@ False
 
 {FontManager.i}
 [class] XFigLaTeXFontManager:
+
+XFigLaTeXFontManager holds a bunch of fonts that are often used in LaTeX.  They 
+are indexed by "code."
+
 >>> fm = bpp.XFigLaTeXFontManager()
 >>> fm
 <bpp.XFigLaTeXFontManager; proxy of <Swig Object of type 'XFigLaTeXFontManager *' at 0x...> >
@@ -383,6 +477,10 @@ False
 2
 
 [class] XFigPostscriptFontManager:
+
+XFigPostscriptFontManager contains fonts for Postscript, again indexed
+by code.
+
 >>> fm = bpp.XFigPostscriptFontManager()
 >>> fm
 <bpp.XFigPostscriptFontManager; proxy of <Swig Object of type 'XFigPostscriptFontManager *' at 0x...> >
@@ -400,7 +498,12 @@ False
 
 
 {IOFormat.i}
-[class] IOFormat
+[class] (interface) IOFormat
+
+IOFormat is a very basic object which is inherited by many objects in other 
+Bio++ libraries.  Objects which inherit this tell how to read files (or streams) 
+into a Bio++ object--or write the object into a file.
+
 >>> gb = bpp.GenBank()
 >>> gb.getFormatName()
 'GenBank file'
@@ -411,10 +514,20 @@ False
 
 
 {KeyvalTools.i}
-[class] KeyvalTools:
-x = bpp.KeyvalException("bad keyval thingy")
+[class] KeyvalException:
+
+KeyvalException is thrown when keyvals can't be extracted, as from a
+string.
+
+>>> x = bpp.KeyvalException("bad keyval thingy")
 >>> x.what()
 'bad keyval thingy'
+
+[class] KeyvalTools:
+
+KeyvalTools is another static class, with methods for extracting key-value 
+pairs from strings.  These pairs are stored as maps.  The class is closely 
+related to AttributesTools.
 
 >>> x = bpp.strp()
 >>> y = bpp.strp()
@@ -442,25 +555,34 @@ x = bpp.KeyvalException("bad keyval thingy")
 
 {MapTools.i}
 [class] MapTools:
+
+MapTools is a static class, with several methods for reading 
+and writing maps.
+
 >>> m = bpp.intMap()
 >>> m[0] = 1
 >>> m[5] = 10
->>> bpp.MapTools.getIntKeys(m)
+>>> bpp.MapTools.getKeys(m)
 (0, 5)
->>> bpp.MapTools.getIntValues(m)
+>>> bpp.MapTools.getValues(m)
 (1, 10)
 
 >>> n = bpp.strMap()
 >>> n["hello"] = "there"
 >>> n["yippy"] = "skippy"
->>> bpp.MapTools.getStrKeys(n)
+>>> bpp.MapTools.getKeys(n)
 ('hello', 'yippy')
->>> bpp.MapTools.getStrValues(n)
+>>> bpp.MapTools.getValues(n)
 ('there', 'skippy')
 
 
 {MolscriptColorSet.i}
 [class] MolscriptColorSet:
+
+MolscriptColorSet holds another bunch of standard colors.  MolScript
+is a program for displaying molecular 3D structures; see
+http://www.avatar.se/molscript/.
+
 >>> cs = bpp.MolscriptColorSet()
 >>> cs.getNumberOfColors()
 164
@@ -474,6 +596,10 @@ x = bpp.KeyvalException("bad keyval thingy")
 
 {Number.i}
 [class] Number:
+
+Number is just a wrapper for a real/double value.  It is not used much
+in scripting languages.
+
 >>> x = bpp.intNumber(5)
 >>> x.getValue()
 5
@@ -487,6 +613,10 @@ x = bpp.KeyvalException("bad keyval thingy")
 
 {PGFGraphicDevice.i}
 [class] PGFGraphicDevice:
+
+PGFGraphicDevice takes graphics commands and writes the output to a
+stream. The format can be used within LaTeX documents.
+
 >>> stream = bpp.ApplicationTools.getMessage()
 >>> gd = bpp.PGFGraphicDevice(stream, 2.0)
 >>> gd.beginDocument()
@@ -501,7 +631,10 @@ x = bpp.KeyvalException("bad keyval thingy")
 >>> gd.drawCircle(10.0, 10.0, 7.5)
 >>> gd.drawText(5.0, 15.0, "Hiya!")
 >>> gd.comment("this is a comment")
->>> gd.endDocument()
+
+This is commented out, because it writes directly to stdout.
+#>>> gd.endDocument()
+
 \documentclass{article}
 % This figure was generated by the Bio++ PGF Graphic Device.
 % Althought this file can be compiled 'as is' it may not be displayed correctly, depending on the size of the picture.
@@ -555,6 +688,10 @@ x = bpp.KeyvalException("bad keyval thingy")
 
 {RColorSet.i}
 [class] RColorSet:
+
+RColorSet is another collection of RGBColors.  These ones are used in
+R.
+
 >>> cs = bpp.RColorSet()
 >>> cs.getNumberOfColors()
 657
@@ -568,6 +705,10 @@ x = bpp.KeyvalException("bad keyval thingy")
 
 {RGBColor.i}
 [class] RGBColor:
+
+RGBColor represents one single color.  It is used by the various
+colorset and graphic device objects.
+
 >>> x = bpp.RGBColor()
 >>> x.toHex()
 '#000000'
@@ -589,6 +730,10 @@ True
 
 {StringTokenizer.i}
 [class] StringTokenizer:
+
+StringTokenizer splits a string into multiple tokens, based on a 
+delimiter.
+
 >>> st = bpp.StringTokenizer("Hi there! How are you?")
 >>> st.getToken(0)
 'Hi'
@@ -608,10 +753,17 @@ True
 3
 >>> st.hasMoreToken()
 True
+>>> st = bpp.StringTokenizer("Hi there! How are you?", "e")
+>>> st.getTokens()
+('Hi th', 'r', '! How ar', ' you?')
 
 
 {SVGGraphicDevice.i}
 [class] SVGGraphicDevice:
+
+SVGGraphicDevice outputs an SVG image to a stream.  This is a
+highly-used, vector-based open format.
+
 >>> stream = bpp.ApplicationTools.getMessage()
 >>> gd = bpp.SVGGraphicDevice(stream)
 >>> gd.beginDocument()
@@ -625,7 +777,10 @@ True
 >>> gd.drawRect(10.0, 20.0, 5.0, 10.0)
 >>> gd.drawCircle(10.0, 10.0, 7.5)
 >>> gd.drawText(5.0, 15.0, "Hiya!")
->>> gd.endDocument()
+
+The final output is commented out because it outputs directly to stdout.
+#>>> gd.endDocument()
+
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
 "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -645,6 +800,10 @@ True
 
 {TextTools.i}
 [class] TextTools:
+
+TextTools is another static object, that contains several methods for manipulating 
+strings.
+
 >>> bpp.TextTools.isEmpty("")
 True
 >>> bpp.TextTools.isEmpty("a")
@@ -689,6 +848,10 @@ True
 False
 >>> bpp.TextTools.isDecimalNumber("987.6")
 True
+
+The second argument in isDecimalNumber is the decimal point.  For
+example, if it were a comma, it would parse European-style numbers.
+
 >>> bpp.TextTools.isDecimalNumber("987.6","~")
 False
 >>> bpp.TextTools.isDecimalNumber("987~6","~")
@@ -711,6 +874,9 @@ True
 'abc   '
 >>> bpp.TextTools.resizeLeft("abc", 6, "!")
 '!!!abc'
+
+In this example, removeSubstrings() removes everything between the 'n'
+and the 'i'.
 
 >>> bpp.TextTools.removeSubstrings("one fish", 'n', 'i')
 'osh'
@@ -758,6 +924,10 @@ True
 
 {XFigGraphicDevice.i}
 [class] XFigGraphicDevice:
+
+XFigGraphicDevice is another object for outputing a graphic to a
+stream. XFig is a common X-Windows graphics program.
+
 >>> stream = bpp.ApplicationTools.getMessage()
 >>> gd = bpp.XFigGraphicDevice(stream)
 >>> gd.beginDocument()
@@ -771,7 +941,9 @@ True
 >>> gd.drawRect(10.0, 20.0, 5.0, 10.0)
 >>> gd.drawCircle(10.0, 10.0, 7.5)
 >>> gd.drawText(5.0, 15.0, "Hiya!")
->>> gd.endDocument()
+
+#>>> gd.endDocument()
+
 #FIG 3.2 Produced by TreeMap version 0.1
 Portrait
 Flush left

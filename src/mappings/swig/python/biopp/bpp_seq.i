@@ -1,4 +1,9 @@
-%module bpp_seq
+%module bpp
+
+%include "swigutils.i"
+
+%include "ApplicationTools.i"
+%include "MatrixTools.i"
 
 %include "AAChargeIndex.i"
 %include "AAIndex1Entry.i"

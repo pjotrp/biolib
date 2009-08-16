@@ -53,5 +53,15 @@ class VectorSequenceContainer:public AbstractSequenceContainer
     void deleteSequence(unsigned int sequenceIndex) throw (IndexOutOfBoundsException);
     virtual void addSequence(const Sequence & sequence, bool checkName = true) throw (Exception);
     virtual void addSequence(const Sequence & sequence, unsigned int sequenceIndex, bool checkName = true) throw (Exception);
+
+    // This is another (pseudo-)constructor, for vectors of Sequences that aren't const
+  %extend {
+    VectorSequenceContainer(const vector<Sequence *> vs, const Alphabet * alpha) throw (AlphabetMismatchException)
+    {
+      vector<const Sequence *> *newVs = new vector<const Sequence *>(vs.size());
+      for (int i=0; i<vs.size(); i++) (*newVs)[i] = (const Sequence *)vs[i];
+      return new VectorSequenceContainer(*newVs, alpha);
+    }
+  }
 };
  

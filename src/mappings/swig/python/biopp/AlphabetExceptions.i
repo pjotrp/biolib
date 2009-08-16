@@ -5,9 +5,15 @@ using namespace bpp;
 %}
 %include "Exceptions.i"
 %include "std_vector.i"
+%include "Alphabet.i"
 using namespace std;
 
-class Alphabet;
+%template(alphabetVector) std::vector< Alphabet * >;
+%template(alphabetXVector) std::vector< Alphabet *,std::allocator< Alphabet const * > >;
+//                        std::vector< Alphabet const *,std::allocator< Alphabet const * > > *
+//%template(alphabetVector2) std::vector< Alphabet >;
+
+//class Alphabet;
 class AlphabetException:public Exception
 {
   public:
@@ -46,7 +52,7 @@ class AlphabetMismatchException : public Exception
     AlphabetMismatchException(const string & text = "", const Alphabet * alpha1 = NULL, const Alphabet * alpha2 = NULL);
     virtual ~AlphabetMismatchException() throw();
 
-    vector<const Alphabet *> getAlphabets() const;
+    std::vector<const Alphabet *> getAlphabets() const;
 };
 
 class CharStateNotSupportedException : public AlphabetException

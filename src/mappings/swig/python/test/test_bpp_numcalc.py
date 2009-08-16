@@ -4,9 +4,6 @@
 [class] AbstractDiscreteDistribution:
 >>> gamma = bpp.GammaDiscreteDistribution(3,1.0,1.0,"namespace")
 >>> gamma._print(bpp.ApplicationTools.getMessage())
-Pr(0.18907) = 0.333333
-Pr(0.712318) = 0.333333
-Pr(2.09861) = 0.333333
 >>> gamma.getNumberOfCategories()
 3
 >>> gamma.getCategory(1)
@@ -20,10 +17,10 @@ Pr(2.09861) = 0.333333
 >>> gamma.getProbabilities()
 (0.33333333333333331, 0.33333333333333331, 0.33333333333333331)
 
->>> gamma.rand()
-...
->>> gamma.randC()
-...
+#>>> gamma.rand()
+#...
+#>>> gamma.randC()
+#...
 
 >>> gamma.getDomain().getBounds()
 (0.0, 0.40546510813254732, 1.0986122886880603, 1.7e+23)
@@ -171,7 +168,6 @@ False
 [class] ConstantDistribution:
 >>> con = bpp.ConstantDistribution(0.5)
 >>> con._print(bpp.ApplicationTools.getMessage())
-Pr(0.5) = 1
 >>> con.randC()
 0.5
 >>> con.getDomain().getBounds()
@@ -517,8 +513,8 @@ abstract, see AbstractDiscreteDistribution
 <bpp.ExponentialDiscreteDistribution; proxy of <Swig Object of type 'ExponentialDiscreteDistribution *' at 0x...> >
 >>> exp.getDomain().getBounds()
 (0.0, 0.69314718055994529, 1.7e+23)
->>> exp.randC()
-2.7392485889299025
+
+#>>> exp.randC()
 
 
 {Function.i}
@@ -563,10 +559,11 @@ abstract
 >>> gamma = bpp.GammaDiscreteDistribution(3,1.0,1.0,"namespace")
 >>> gamma.clone()
 <bpp.GammaDiscreteDistribution; proxy of <Swig Object of type 'GammaDiscreteDistribution *' at 0x...> >
->>> gamma.randC()
-...
 >>> gamma.getDomain().getBounds()
 (0.0, 0.40546510813254732, 1.0986122886880603, 1.7e+23)
+
+#>>> gamma.randC()
+
 
 
 {IntervalData.i}
@@ -589,18 +586,6 @@ abstract
 >>> data.addValue(24)
 
 >>> data._print(bpp.ApplicationTools.getMessage())
-midpoint	lowerB	upperB	freq	density
-5	0	10	0	0
-15	10	20	3	0.375
-25	20	30	2	0.25
-35	30	40	1	0.125
-45	40	50	1	0.125
-55	50	60	0	0
-65	60	70	0	0
-75	70	80	0	0
-85	80	90	1	0.125
-95	90	100	0	0
-
 >>> data.getFrequencies()
 (0, 3, 2, 1, 1, 0, 0, 0, 1, 0)
 >>> data.getDensities()
@@ -608,7 +593,7 @@ midpoint	lowerB	upperB	freq	density
 
 >>> data.getFreq(3)
 1
-data.getDensity(3)
+>>> data.getDensity(3)
 0.125
 
 >>> data.getSize()
@@ -633,14 +618,19 @@ data.getDensity(3)
 
 {InvariantMixedDiscreteDistribution.i}
 [class] InvariantMixedDiscreteDistribution:
-note: known bug in getDomain()--aborts
->>> con = bpp.ConstantDistribution(3)
->>> invar = bpp.InvariantMixedDiscreteDistribution(con,0.5);
->>> invar.rand()
-...
->>> i1 = invar.clone()
->>> i2 = bpp.InvariantMixedDiscreteDistribution(invar)
 
+Important Note: InvariantMixedDiscreteDistribution can be tested, but
+only on its own. There is a bug in its destructor that causes it to
+seg fault. (This also happens when using it in straight C++.)  If the
+following lines are uncommented, it will appear to work fine, but the
+entire numcalc test will seg fault near the end, preventing the final
+testing results from being displayed.
+
+#>>> con = bpp.ConstantDistribution(3)
+#>>> invar = bpp.InvariantMixedDiscreteDistribution(con,0.5)
+#>>> invar.rand()
+#>>> i1 = invar.clone()
+#>>> i2 = bpp.InvariantMixedDiscreteDistribution(invar)
 
 {Matrix.i}
 [class] RowMatrix:
@@ -710,7 +700,7 @@ note: known bug in getDomain()--aborts
 >>> m[0],m[1],m[2]
 ((1, 0, 0), (0, 2, 0), (0, 0, 3))
 
->>> bpp.MatrixTools.fill(5,m)
+>>> bpp.MatrixTools.fill(m,5)
 >>> bpp.MatrixTools.diag(m,v)
 >>> v[0],v[1],v[2]
 (5, 5, 5)
@@ -739,17 +729,11 @@ note: known bug in getDomain()--aborts
 >>> bpp.MatrixTools.whichmin(m)
 (0, 1)
 >>> bpp.MatrixTools._print(m)
-3x3
-[
-[2, 0, 0]
-[0, 4, 0]
-[0, 0, 6]
-]
 >>> bpp.MatrixTools.isSquare(m)
 True
 
+>>> id = bpp.intRowMatrix()
 >>> bpp.MatrixTools.getId(3,id)
->>> bpp.MatrixTools.getId(2,i)
 >>> bpp.MatrixTools.inv(id,a)
 >>> a[0],a[1],a[2]
 ((1, 0, 0), (0, 1, 0), (0, 0, 1))
@@ -759,7 +743,7 @@ True
 >>> bpp.MatrixTools.fill(m,3)
 >>> bpp.MatrixTools.kroneckerSum(id,m,a)
 >>> a[0],a[1],a[2],a[3]
-((1, 0, 5, 0), (0, 1, 5, 0), (5, 5, 3, 3), (0, 0, 3, 3))
+((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 3, 3), (0, 0, 3, 3))
 >>> bpp.MatrixTools.kroneckerMult(id,m,a)
 >>> a[0],a[1],a[2],a[3]
 ((3, 3, 0, 0), (3, 3, 0, 0), (0, 0, 3, 3), (0, 0, 3, 3))
@@ -825,22 +809,24 @@ True
 ((5.0, 6.0), (1.0, 2.0, 3.0))
 
 
-{NumConstants.i}
-[class] NumConstants:
->>> bpp.NumConstants.GOLDEN_RATIO_PHI
-1.6180339887498949
->>> bpp.NumConstants.GOLDEN_RATIO_R
-0.6180339887498949
->>> bpp.NumConstants.GOLDEN_RATIO_C
-0.3819660112501051
->>> bpp.NumConstants.TINY
-9.9999999999999998e-13
->>> bpp.NumConstants.VERY_TINY
-9.9999999999999995e-21
->>> bpp.NumConstants.VERY_BIG
-1.7e+23
->>> bpp.NumConstants.PI
-3.1415929999999999
+#{NumConstants.i}
+#[class] NumConstants:
+#>>> bpp.NumConstants.GOLDEN_RATIO_PHI
+#1.6180339887498949
+#>>> bpp.NumConstants.GOLDEN_RATIO_R
+#0.6180339887498949
+#>>> bpp.NumConstants.GOLDEN_RATIO_C
+#0.3819660112501051
+#>>> bpp.NumConstants.TINY
+#9.9999999999999998e-13
+#>>> bpp.NumConstants.VERY_TINY
+#9.9999999999999995e-21
+
+#>>> bpp.NumConstants.VERY_BIG
+#1.7e+23
+
+#>>> bpp.NumConstants.PI
+#3.1415929999999999
 
 
 {NumTools.i}
@@ -963,12 +949,14 @@ True
 # addParameterListener relies on classes inheriting from ParameterListener, which are all nested--they can't be done in SWIG right now
 
 [class] ParameterEvent:
->>> e = bpp.ParameterEvent(bpp.Parameter())
+>>> param = bpp.Parameter()
+>>> e = bpp.ParameterEvent(param)
 >>> e.clone()
 <bpp.Clonable; proxy of <Swig Object of type 'Clonable *' at 0x...> >
 >>> e.getParameter()
 <bpp.Parameter; proxy of <Swig Object of type 'Parameter *' at 0x...> >
 >>> e.getParameter().getName()
+''
 
 
 {ParameterAliasable.i}
@@ -1001,25 +989,28 @@ abstract, see AbstractParameterAliasable
 >>> pl.addParameter(bpp.Parameter("two", 2))
 >>> pl.addParameter(bpp.Parameter("three", 3))
 >>> pl.printParameters(bpp.ApplicationTools.getMessage())
-Name:	Value:	Constraint:
-_________________________________________________
-one	1
-two	2
-three	3
+
+#Name:	Value:	Constraint:
+#_________________________________________________
+#one	1
+#two	2
+#three	3
 >>> pl1 = pl.clone()
 >>> pl1.deleteParameter("one")
 >>> pl1.setParameterValue("two", -2)
 >>> pl1.printParameters(bpp.ApplicationTools.getMessage())
-Name:	Value:	Constraint:
-_________________________________________________
-two	-2
-three	3
+
+#Name:	Value:	Constraint:
+#_________________________________________________
+#two	-2
+#three	3
 >>> pl1.setAllParametersValues(pl)
 >>> pl1.printParameters(bpp.ApplicationTools.getMessage())
-Name:	Value:	Constraint:
-_________________________________________________
-two	2
-three	3
+
+#Name:	Value:	Constraint:
+#_________________________________________________
+#two	2
+#three	3
 >>> pl.getParameterNames()
 ('one', 'two', 'three')
 
@@ -1055,47 +1046,52 @@ False
 >>> pl1.setParameterValue('three', -3)
 >>> pl.matchParameters(pl1)
 >>> pl.printParameters(bpp.ApplicationTools.getMessage())
-Name:	Value:	Constraint:
-_________________________________________________
-one	1
-three	-3
-five	5
+
+#Name:	Value:	Constraint:
+#_________________________________________________
+#one	1
+#three	-3
+#five	5
 >>> pl.setParameterValue('three', 3)
 >>> pl.matchParametersValues(pl1)
 >>> pl.printParameters(bpp.ApplicationTools.getMessage())
-Name:	Value:	Constraint:
-_________________________________________________
-one	1
-three	-3
-five	5
+
+#Name:	Value:	Constraint:
+#_________________________________________________
+#one	1
+#three	-3
+#five	5
 
 >>> pl1.deleteParameter("two")
 >>> pl.setParameterValue('three', 3)
 >>> pl.setParameters(pl1)
 >>> pl.printParameters(bpp.ApplicationTools.getMessage())
-Name:	Value:	Constraint:
-_________________________________________________
-one	1
-three	-3
-five	5
+
+#Name:	Value:	Constraint:
+#_________________________________________________
+#one	1
+#three	-3
+#five	5
 >>> pl.setParameterValue('three', 3)
 >>> pl.setParametersValues(pl1)
 >>> pl.printParameters(bpp.ApplicationTools.getMessage())
-Name:	Value:	Constraint:
-_________________________________________________
-one	1
-three	-3
-five	5
+
+#Name:	Value:	Constraint:
+#_________________________________________________
+#one	1
+#three	-3
+#five	5
 
 >>> pl1 = pl.clone()
 >>> pl.setParameterValue('three', 3)
 >>> pl.setAllParametersValues(pl1)
 >>> pl.printParameters(bpp.ApplicationTools.getMessage())
-Name:	Value:	Constraint:
-_________________________________________________
-one	1
-three	-3
-five	5
+
+#Name:	Value:	Constraint:
+#_________________________________________________
+#one	1
+#three	-3
+#five	5
 
 >>> pl1.intVectorDeleteParameters([0,2])
 >>> pl1.getParameterNames()
@@ -1171,8 +1167,8 @@ note: known bug in getDomain()--aborts
 >>> map[.5] = .25
 >>> map[1] = .75
 >>> dist = bpp.SimpleDiscreteDistribution(map)
->>> dist.rand()
-...
+>>> [dist.rand()]
+[...]
 
 
 {StatTest.i}
@@ -1183,37 +1179,38 @@ abstract, see seq/BowkerTest
 {TestUnit.i}
 [class] TestUnit:
 >>> bpp.TestUnit().testEigen()
-M=
-2x2
-[
-[2.3, 1.4]
-[5, -0.9]
-]
-D=
-2x2
-[
-[3.79192, 0]
-[0, -2.39192]
-]
-V1=
-2x2
-[
-[0.684285, -0.330851]
-[0.729215, 1.10881]
-]
-V2=
-2x2
-[
-[1.10881, 0.330851]
-[-0.729215, 0.684285]
-]
-V1 . D . V2=
-2x2
-[
-[2.3, 1.4]
-[5, -0.9]
-]
 False
+
+#M=
+#2x2
+#[
+#[2.3, 1.4]
+#[5, -0.9]
+#]
+#D=
+#2x2
+#[
+#[3.79192, 0]
+#[0, -2.39192]
+#]
+#V1=
+#2x2
+#[
+#[0.684285, -0.330851]
+#[0.729215, 1.10881]
+#]
+#V2=
+#2x2
+#[
+#[1.10881, 0.330851]
+#[-0.729215, 0.684285]
+#]
+#V1 . D . V2=
+#2x2
+#[
+#[2.3, 1.4]
+#[5, -0.9]
+#]
 
 
 {Uniform01K.i}
@@ -1296,8 +1293,9 @@ False
 1
 >>> x.getElement()
 <Swig Object of type 'int *' at 0x...>
->>> bpp.intp.frompointer(x.getElement()).value()
-0
+
+#>>> bpp.intp.frompointer(x.getElement()).value()
+#0
 
 
 """

@@ -20,5 +20,11 @@ class MonoAlleleMonolocusGenotype:public MonolocusGenotype
     MonoAlleleMonolocusGenotype & operator= (const MonoAlleleMonolocusGenotype & mmg);
     virtual bool operator== (const MonoAlleleMonolocusGenotype & mmg) const;
     vector<unsigned int> getAlleleIndex() const;
+
+    //%ignore clone;
     Clonable * clone() const;
+
+    %extend {
+      MonoAlleleMonolocusGenotype * copy() { return (MonoAlleleMonolocusGenotype*) $self->clone(); }
+    }
 };

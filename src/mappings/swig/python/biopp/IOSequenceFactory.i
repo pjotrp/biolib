@@ -3,11 +3,13 @@
 #include "IOSequenceFactory.h"
 using namespace bpp;
 %}
+
 %include "ioseq"
 %include "Alphabet.i"
 
 class IOSequenceFactory
 {
+  public:
     static const string FASTA_FORMAT;  
     static const string MASE_FORMAT;  
     static const string CLUSTAL_FORMAT;  

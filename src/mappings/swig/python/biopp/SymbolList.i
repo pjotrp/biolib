@@ -14,8 +14,8 @@ using namespace std;
 
 class SymbolList:public virtual Clonable
 {
-    %rename(stringSymbolList) SymbolList(const vector<string> & list, const Alphabet * alpha) throw (BadCharException);
-    %rename(stringSetContent) setContent(const vector<string> & list) throw (BadCharException);
+    %rename(intVecSymbolList) SymbolList(const vector<int> & list, const Alphabet * alpha) throw (BadCharException);
+    %rename(intVecSetContent) setContent(const vector<int> & list) throw (BadCharException);
   public: 
     SymbolList(const Alphabet * alpha);
     SymbolList(const vector<string> & list, const Alphabet * alpha) throw (BadCharException);

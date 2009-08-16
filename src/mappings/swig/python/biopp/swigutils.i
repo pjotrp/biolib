@@ -3,6 +3,7 @@
 %include "std_map.i"
 %include "std_string.i"
 %include "std_vector.i"
+%include "std_iostream.i"
 
 %include "cpointer.i"
 %include "carrays.i"
@@ -28,6 +29,11 @@
 %template(intMap) std::map<int,int>;
 %template(doubleMap) std::map<double,double>;
 %template(strMap) std::map<std::string,std::string>;
+%template(intUintMap) std::map<int,unsigned int>;
+%template(intDoubleMap) std::map<int,double>;
+
+%template(intIuiMapMap) std::map<int, std::map<int, unsigned int> >;
+%template(intIdMapMap) std::map<int, std::map<int, double> >;
 
 
 // This tells SWIG to treat char ** as a special case
@@ -57,4 +63,11 @@
 // This cleans up the char ** array we malloc'd before the function call
 %typemap(freearg) char ** {
   free((char *) $1);
+}
+
+namespace std {
+  class ifstream : public istream {
+    public:
+      ifstream(const char *fname);
+  };
 }

@@ -1,4 +1,6 @@
-%module bpp_pop
+%module bpp
+
+%include "swigutils.i"
 
 %include "AbstractIDataSet.i"
 %include "AbstractODataSet.i"
@@ -8,7 +10,7 @@
 %include "BasicAlleleInfo.i"
 %include "BiAlleleMonolocusGenotype.i"
 %include "Coord.i"
-//%include "CoordsTools.i"
+%include "CoordsTools.i"
 %include "DarwinDon.i"
 %include "DarwinVarSingle.i"
 %include "DataSet.i"
