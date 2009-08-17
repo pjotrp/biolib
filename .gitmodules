@@ -8,3 +8,18 @@
 	path = tools/rubydoctest
 	url = git://github.com/pjotrp/rubydoctest.git
 
+[submodule "contrib/biopp/numcalc"]
+	path = contrib/biopp/numcalc
+	url = git@github.com:pjotrp/biopp-numcalc.git
+[submodule "contrib/biopp/phyllib"]
+	path = contrib/biopp/phyllib
+	url = git@github.com:pjotrp/biopp-phyllib.git
+[submodule "contrib/biopp/popgenlib"]
+	path = contrib/biopp/popgenlib
+	url = git@github.com:pjotrp/biopp-popgenlib.git
+[submodule "contrib/biopp/seqlib"]
+	path = contrib/biopp/seqlib
+	url = git@github.com:pjotrp/biopp-seqlib.git
+[submodule "contrib/biopp/utils"]
+	path = contrib/biopp/utils
+	url = git@github.com:pjotrp/biopp-utils.git
