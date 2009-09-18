@@ -26,7 +26,7 @@ for ASciLib:
 * automake (development)
 
 NOTE: The AffyIO module does not yet work on Cygwin - there is a
-dependency on the R libraries.
+dependency on the R libraries. Should be easily fixed, though.
 
 == Native Windows install ==
 
