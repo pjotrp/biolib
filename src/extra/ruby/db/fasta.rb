@@ -6,5 +6,6 @@
 # by Pjotr Prins (c) 2009
 #
 
-require 'fasta/fastareader'
-require 'fasta/fastawriter'
+require 'db/fasta/fastarecord'
+require 'db/fasta/fastareader'
+require 'db/fasta/fastawriter'
