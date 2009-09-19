@@ -11,14 +11,16 @@ module Indexer
     end
   end
 
-  def indexer_set key, value
+  def indexer_set key, fpos
     raise "Trying to use 'set' when there is no index" if @indexer == nil
     raise "Indexer key #{key} alread in use!" if @indexer[key]
-    @indexer[key] = value
+    # p [key, fpos]
+    @indexer[key] = fpos
   end
 
   def indexer_get key
     raise "Trying to use 'get' when there is no index" if @indexer == nil
+    raise "Indexer key #{key} not found!" if !@indexer[key]
     @indexer[key] 
   end
 

@@ -62,7 +62,9 @@ we use the :index option an indexer is built up at the same time (or the
 first time an indexing function is used). So
 
   >> na_in = FastaReader.new(NA_FILE, :regex => '(\d+)\s', :index => true)
-  >> na_in.get("123").id
+  >> rec = na_in.get("123")
+  >> p rec
+  >> rec.id
   => "123"
 
 Fetching more information from the FASTA file does not parse the whole file
@@ -80,12 +82,20 @@ $: << '..'
 require 'db/fasta'
 require 'test/unit'
 
+TESTDIR = '../../../test/data/fasta'
+NA_FILE = TESTDIR + "/na.fa"
+AA_FILE = TESTDIR + "/aa.fa"
+
 class TestBiolibFasta < Test::Unit::TestCase
 
   def setup
   end
 
-  def test_info
+  def test_indexer
+    na_in = FastaReader.new(NA_FILE, :regex => '(\d+)\s', :index => true)
+    rec = na_in.get("122")
+    assert_equal("122",rec.id)
+    assert_equal("121",na_in.get("121").id)
   end
 
 end
