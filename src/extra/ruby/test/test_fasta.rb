@@ -62,10 +62,9 @@ we use the :index option an indexer is built up at the same time (or the
 first time an indexing function is used). So
 
   >> na_in = FastaReader.new(NA_FILE, :regex => '(\d+)\s', :index => true)
-  >> rec = na_in.get("123")
-  >> p rec
+  >> rec = na_in.get("122")
   >> rec.id
-  => "123"
+  => "122"
 
 Fetching more information from the FASTA file does not parse the whole file
 again
@@ -73,7 +72,7 @@ again
   >> na_in.get("121").id
   => "121"
   >> na_in.get("121").seq
-  => "xxx"
+  => "CAATTTTTTAAACATTTACTGGTTACTAAATTTGGAGATAGTATCACATTTCTAAAGGGTAAGTTGGAAAATAAATTTACAGAAAAATTATAAGTATAAAAAGTATACAGATGGATTACTTAGACAGCAGCGGGTGTGGGGGCTGATGCGGAGTGGTCGTGGTCGAAGAAGGAACCCGGTTTCCGGGGGGATCTCAGTAAACTCGGAAAGAATGGCCCGAATTCGTCACCGCCAACTAGTTCTTCCTCGAGAAGCACTTCAACGAGCTTATCATGGGCTTCACGATTGTTCTTTATGTGGGTTAGAGCTATCTCATATGCACTGGCTGATAGTTTCTTCACCGGCAGAATCAATGTCTTCTGGAAGCTTCTCAGAAATGGAGTTTCTTGGCACCATCCT"
 
 =end
 

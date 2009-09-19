@@ -72,7 +72,7 @@ class FastaReader
   def digest_tag tag
     tag =~ /^>/
     descr = $'.strip
-    tag =~ /#{@regex}/
+    descr =~ /#{@regex}/
     id = $1
     return id, descr
   end
