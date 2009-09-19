@@ -35,6 +35,8 @@ Open a reader and walk the file to find a FASTA record
   >> na_in = FastaReader.new(NA_FILE)
   >> fastarec = nil
   >> na_in.each { | rec | fastarec = rec if rec.id =~ /-Arabidopsis_thaliana-126/ }
+  >> fastarec.id
+  => "PUT-157a-Arabidopsis_thaliana-126"
 
 Open a writer and write the record
 
@@ -45,6 +47,15 @@ Open a writer and write the record
 Cleanup 
 
   >> File.unlink("na.fa")
+
+The ID in the FASTA file can vary between implementations. Therefore a regex is
+allowed to find the ID - the default is /^(\S+)/ - or the first non-white space
+making up the tag. Here we grab the first relevant number
+
+  >> na_in = FastaReader.new(NA_FILE, :regex => '(\d+)\s')
+  >> na_in.each { | rec | fastarec = rec if rec.id == "126" }
+  >> fastarec.id
+  => "126"
 
 =end
 

@@ -12,7 +12,7 @@ class FastaReader
     @curr_line = @f.gets
   end
 
-  def each
+  def parse_each
     # rewind file
     @f.seek 0
     begin
@@ -28,8 +28,13 @@ class FastaReader
         seq += line.strip 
       end while !@f.eof 
       @curr_line = line
-      yield FastaRecord.new(id, descr, seq)
+      yield id, descr, seq
     end while !@f.eof
+  end
+
+  # returns a FastaRecord for every item
+  def each
+    parse_each { | id, descr, seq | yield FastaRecord.new(id, descr, seq) }
   end
 
   def close
