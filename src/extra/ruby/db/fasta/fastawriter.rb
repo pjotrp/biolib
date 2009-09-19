@@ -9,8 +9,8 @@ class FastaWriter
 
   # write a FASTA item
   def write item
-    @f.write "> ",item.descr,"\n"
-    @f.write item.seq.strip, "\n"
+    @f.write "> "+item.descr+"\n"
+    @f.write item.seq.strip+"\n"
   end
 
   def close

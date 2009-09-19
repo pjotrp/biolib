@@ -30,13 +30,21 @@ if $UNITTEST
 BioLib's reference FASTA reader and writer contain a number of useful properties.
 First RAM usage is limited. Second the interface is simple and to the point.
 
+Open a reader and walk the file to find a FASTA record
+
   >> na_in = FastaReader.new(NA_FILE)
-  >> na_in.each { | record | p record }
-  => true
+  >> fastarec = nil
+  >> na_in.each { | rec | fastarec = rec if rec.id =~ /-Arabidopsis_thaliana-126/ }
+
+Open a writer and write the record
 
   >> na_out = FastaWriter.new("na.fa")
-  >> aa_out = FastaWriter.new("aa.fa")
+  >> na_out.write fastarec
+  >> na_out.close
 
+Cleanup 
+
+  >> File.unlink("na.fa")
 
 =end
 

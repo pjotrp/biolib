@@ -13,19 +13,26 @@ class FastaReader
   end
 
   def each
-    tag = @curr_line
-    tag =~ /^>/
-    descr = $'.strip
-    descr =~ /#{@regex}/
-    id = $1
-    seq = ""
+    # rewind file
+    @f.seek 0
     begin
-      line = @f.gets
-      break if line =~ /^>/
-      seq += line.strip 
-    end while !@f.eof 
-    @curr_line = line
-    yield FastaRecord.new(id, descr, seq)
+      tag = @curr_line
+      tag =~ /^>/
+      descr = $'.strip
+      descr =~ /#{@regex}/
+      id = $1
+      seq = ""
+      begin
+        line = @f.gets
+        break if line =~ /^>/
+        seq += line.strip 
+      end while !@f.eof 
+      @curr_line = line
+      yield FastaRecord.new(id, descr, seq)
+    end while !@f.eof
   end
 
+  def close
+    @f.close
+  end
 end
