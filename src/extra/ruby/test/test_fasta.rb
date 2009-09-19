@@ -57,6 +57,22 @@ making up the tag. Here we grab the first relevant number
   >> fastarec.id
   => "126"
 
+In the first examples the FastaReader parses the whole file on demand. When
+we use the :index option an indexer is built up at the same time (or the 
+first time an indexing function is used). So
+
+  >> na_in = FastaReader.new(NA_FILE, :regex => '(\d+)\s', :index => true)
+  >> na_in.get("123").id
+  => "123"
+
+Fetching more information from the FASTA file does not parse the whole file
+again
+
+  >> na_in.get("121").id
+  => "121"
+  >> na_in.get("121").seq
+  => "xxx"
+
 =end
 
 

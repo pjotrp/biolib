@@ -1,14 +1,16 @@
 # FastaReader
 #
 
+require 'db/fasta/indexer'
+
 class FastaReader
+
+  include Indexer
 
   def initialize fn, opts={:regex => '(\S+)'}
     @f = File.open(fn)
     @regex = opts[:regex]
-    if opts[:index]
-      # indexer
-    end
+    indexer_use opts[:index]
     @curr_line = @f.gets
   end
 
