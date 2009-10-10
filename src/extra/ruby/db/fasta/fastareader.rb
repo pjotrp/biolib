@@ -46,14 +46,18 @@ class FastaReader
     parse_each { | id, descr, seq | yield FastaRecord.new(id, descr, seq) }
   end
 
+  # Return a record by its +id+, nil when not found
   def get id
     if @indexer and !@fread_once
       # force indexer
       # $stderr.print "Force indexer"
       parse_each { | x, y, z | nil }
     end
-    fpos = indexer_get(id)
-    get_rec(fpos)
+    if fpos = indexer_get(id)
+      get_rec(fpos)
+    else
+      nil
+    end
   end
 
   def get_rec fpos

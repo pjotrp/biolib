@@ -18,9 +18,10 @@ module Indexer
     @indexer[key] = fpos
   end
 
+  # Get the key, return nil when not found
   def indexer_get key
     raise "Trying to use 'get' when there is no index" if @indexer == nil
-    raise "Indexer key #{key} not found!" if !@indexer[key]
+    # raise "Indexer key #{key} not found!" if !@indexer[key]
     @indexer[key] 
   end
 
