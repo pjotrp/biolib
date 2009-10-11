@@ -16,6 +16,7 @@ class FastaPairedRecord
     @na = na
     @aa = aa
     raise "ID error NA #{na.id} not matching AA #{aa.id}" if na.id != aa.id
+    raise "Sequence size mismatch for #{na.id}" if na.seq.size != aa.seq.size*3
   end
 
   def id

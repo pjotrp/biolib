@@ -7,10 +7,11 @@ class FastaReader
 
   include Indexer
 
-  def initialize fn, opts={:regex => '(\S+)'}
+  def initialize fn, opts
     @f = File.open(fn)
     @fread_once = false
     @regex = opts[:regex]
+    @regex = '^(\S+)' if @regex == nil
     indexer_use opts[:index]
   end
 
@@ -76,11 +77,14 @@ class FastaReader
   def digest_tag tag
     if tag =~ /^>/
       descr = $'.strip
-      descr =~ /#{@regex}/
-      id = $1
-      return id, descr
+      if descr =~ /#{@regex}/
+        id = $1
+        return id, descr
+      end
+      p descr
+      p @regex
     end
-    raise "Can not digest #{tag}"
+    raise "Can not digest '#{tag}' using '"+@regex+"'"
   end
 
   def close
