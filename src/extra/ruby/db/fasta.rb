@@ -9,3 +9,5 @@
 require 'db/fasta/fastarecord'
 require 'db/fasta/fastareader'
 require 'db/fasta/fastawriter'
+require 'db/fasta/fastapairedreader'
+require 'db/fasta/fastapairedwriter'
