@@ -74,11 +74,13 @@ class FastaReader
   end
   
   def digest_tag tag
-    tag =~ /^>/
-    descr = $'.strip
-    descr =~ /#{@regex}/
-    id = $1
-    return id, descr
+    if tag =~ /^>/
+      descr = $'.strip
+      descr =~ /#{@regex}/
+      id = $1
+      return id, descr
+    end
+    raise "Can not digest #{tag}"
   end
 
   def close
