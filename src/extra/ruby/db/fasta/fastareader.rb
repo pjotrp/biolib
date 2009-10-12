@@ -7,7 +7,7 @@ class FastaReader
 
   include Indexer
 
-  def initialize fn, opts
+  def initialize fn, opts = {}
     @f = File.open(fn)
     @fread_once = false
     @regex = opts[:regex]
