@@ -1,2 +1,0 @@
-require 'db/blast/blastclust'
-
