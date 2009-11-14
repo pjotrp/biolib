@@ -7,3 +7,9 @@
 [submodule "tools/rubydoctest"]
 	path = tools/rubydoctest
 	url = git://github.com/pjotrp/rubydoctest.git
+[submodule "contrib/libsequence-1.6.6"]
+	path = contrib/libsequence-1.6.6
+	url = git://github.com/pjotrp/libsequence.git
+[submodule "contrib/boost"]
+	path = contrib/boost
+	url = git://gitorious.org/boost/svn.git

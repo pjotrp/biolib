@@ -20,3 +20,7 @@ endif (BLD_STADEN)
 if (BLD_RQTL)
   add_subdirectory (rqtl/contrib/biolib)
 endif (BLD_RQTL)
+
+if (BLD_LIBSEQUENCE)
+  add_subdirectory (libsequence-1.6.6/src)
+endif (BLD_LIBSEQUENCE)
