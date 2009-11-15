@@ -1,0 +1,3 @@
+${CONTRIB_PATH}/ajax/ajseq.c
+${CONTRIB_PATH}/ajax/ajtranslate.c
+${CONTRIB_PATH}/ajax/ajfiledata.c

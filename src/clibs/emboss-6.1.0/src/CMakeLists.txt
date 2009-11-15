@@ -1,0 +1,38 @@
+# Module CMake file - builds library in ./contrib
+
+cmake_minimum_required(VERSION 2.6)
+
+PROJECT(Biolib_emboss)
+SET (M_NAME emboss)
+SET (M_VERSION 6.1.0)
+
+IF(NOT BUILD_LIBS)
+  SET (MAP_ROOT ../../../..)
+  SET (CMAKE_MODULE_PATH ${MAP_ROOT}/tools/cmake-support/modules)
+ENDIF()
+
+FIND_PACKAGE(Map)
+
+SET(CONTRIB_PATH ${MAP_ROOT}/contrib/EMBOSS-6.1.0)
+
+MESSAGE("CONTRIB_PATH=${CONTRIB_PATH}")
+
+SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../build)
+
+INCLUDE_DIRECTORIES(.)
+INCLUDE_DIRECTORIES(${CONTRIB_PATH})
+INCLUDE_DIRECTORIES(${BOOST_PATH})
+
+BUILD_CLIB()
+
+FILE(STRINGS files.txt CONTRIB_FILES)
+
+ADD_LIBRARY(${LIBNAME} SHARED
+  ${CONTRIB_FILES}
+)
+
+# ---- The following may be required for OSX
+# TARGET_LINK_LIBRARIES(${LIBNAME} ${ZLIB_NAME})
+
+INSTALL_CLIB()
+
