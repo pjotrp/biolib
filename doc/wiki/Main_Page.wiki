@@ -2,9 +2,9 @@
   <siteinfo>
     <sitename>BioLib</sitename>
     <base>http://biolib.open-bio.org/wiki/Main_Page</base>
-    <generator>MediaWiki 1.13.5</generator>
+    <generator>MediaWiki 1.15.1</generator>
     <case>first-letter</case>
-      <namespaces>
+    <namespaces>
       <namespace key="-2">Media</namespace>
       <namespace key="-1">Special</namespace>
       <namespace key="0" />
@@ -13,8 +13,8 @@
       <namespace key="3">User talk</namespace>
       <namespace key="4">BioLib</namespace>
       <namespace key="5">BioLib talk</namespace>
-      <namespace key="6">Image</namespace>
-      <namespace key="7">Image talk</namespace>
+      <namespace key="6">File</namespace>
+      <namespace key="7">File talk</namespace>
       <namespace key="8">MediaWiki</namespace>
       <namespace key="9">MediaWiki talk</namespace>
       <namespace key="10">Template</namespace>
@@ -29,13 +29,13 @@
     <title>Main Page</title>
     <id>1</id>
     <revision>
-      <id>263</id>
-      <timestamp>2009-05-30T06:46:22Z</timestamp>
+      <id>318</id>
+      <timestamp>2009-11-28T10:22:30Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* NEWS */</comment>
+      <comment>/* CONTRIBUTING */</comment>
       <text xml:space="preserve">= BioLib: libraries for the Bio* languages =
 
 ''BioLib'' brings together a set of opensource C/C++ libraries and makes them available to all Bio* languages: BioPerl,
@@ -49,21 +49,25 @@ current BioLib modules:
 
 * [[BioLib Affymetrix]] reads Affymetrix microarray .CEL and .CDF formats
 * [[BioLib Staden io_lib]] reads/writes sequencer trace files, including SFF, ABI, SCF, ALF and PLN formats
-* [[BioLib RQTL]] mappings
+* [[BioLib R/qtl]] support with OO model for Ruby
 
 and soon to be included BioLib modules:
 
+* [[BioliB Emboss]] the European molecular biology open software suite
 * [[BioLib Bio++]] libraries for sequence analysis, phylogenetics, molecular evolution and population genetics
-* [[BioLib libsequence]] library designed to aid writing applications for genomics and evolutionary genetics 
+* [[BioLib libsequence]] library designed to aid writing applications for genomics and evolutionary genetics
 
 If you have a requirement not listed here: please use the [[Biolib Poll]]!
 
 == NEWS ==
 
-* Xin Shuai and Adam Smith have started mapping libsequence and Bio++ libraries to BioLib. See Xin's project [[User:David]] page and [http://gsoc-biolib-libsequence.blogspot.com/ blog], and Adam's project [https://www.nescent.org/wg_phyloinformatics/PhyloSoC:Mapping_the_Bio%2B%2B_Phylogenetics_toolkit_to_R/BioConductor_and_BioJAVA_using_BioLib page] and [http://gsoc-biopp.blogspot.com/ blog].
+* First EMBOSS mappings for Ruby, Perl and Python - a write up on [[mapping EMBOSS]] (November 2009)
+* [http://emboss.sourceforge.net/ EMBOSS] will pursue Biolib mappings (July 2009)
+* Xin Shuai and Adam Smith have finalized mapping libsequence and Bio++ libraries to BioLib. See Xin's project [[User:David]] page and [http://gsoc-biolib-libsequence.blogspot.com/ blog], and Adam's project [https://www.nescent.org/wg_phyloinformatics/PhyloSoC:Mapping_the_Bio%2B%2B_Phylogenetics_toolkit_to_R/BioConductor_and_BioJAVA_using_BioLib page] and [http://gsoc-biopp.blogspot.com/ blog].
 
 == MILESTONES ==
 
+* BOSC Presentation ([http://thebird.nl/download/biolib-bosc2009.pdf slides] July 2009) 
 * Microsoft Windows support added with Cygwin (May 2009)
 * BioLib is getting a boost from the Google Summer of Code initiative, thanks to [https://www.nescent.org/wg_phyloinformatics/Phyloinformatics_Summer_of_Code_2009 Nescent] (April 2009)
 * GNU Science Library (GSL) support is added to the new [[ASciLib]] (A Science Lib) project (April 2009)
@@ -148,7 +152,8 @@ If you need a C/C++/FORTRAN/R module or library linked against one of the popula
 == CONTRIBUTING ==
 
 All developers writing low-level bioinformatics libraries are
-encouraged to contribute. For a HOWTO read [[Add C Library]]. If you feel you have something that can be
+encouraged to contribute. A write-up on what it took to map some of the EMBOSS functionality can
+be found in [[Mapping EMBOSS]]. For a HOWTO read [[Add C Library]]. If you feel you have something that can be
 shared by other developers sign up to the BioLib mailing list (see below).
 
 Unit testing is a critical part of BioLib. Unit tests are conveniently

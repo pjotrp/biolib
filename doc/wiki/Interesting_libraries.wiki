@@ -2,9 +2,9 @@
   <siteinfo>
     <sitename>BioLib</sitename>
     <base>http://biolib.open-bio.org/wiki/Main_Page</base>
-    <generator>MediaWiki 1.13.5</generator>
+    <generator>MediaWiki 1.15.1</generator>
     <case>first-letter</case>
-      <namespaces>
+    <namespaces>
       <namespace key="-2">Media</namespace>
       <namespace key="-1">Special</namespace>
       <namespace key="0" />
@@ -13,8 +13,8 @@
       <namespace key="3">User talk</namespace>
       <namespace key="4">BioLib</namespace>
       <namespace key="5">BioLib talk</namespace>
-      <namespace key="6">Image</namespace>
-      <namespace key="7">Image talk</namespace>
+      <namespace key="6">File</namespace>
+      <namespace key="7">File talk</namespace>
       <namespace key="8">MediaWiki</namespace>
       <namespace key="9">MediaWiki talk</namespace>
       <namespace key="10">Template</namespace>
