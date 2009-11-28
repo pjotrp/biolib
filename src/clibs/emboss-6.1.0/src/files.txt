@@ -14,7 +14,6 @@ ${CONTRIB_PATH}/ajax/ajfiledata.c
 ${CONTRIB_PATH}/ajax/ajmess.c
 ${CONTRIB_PATH}/ajax/ajseqdb.c
 ${CONTRIB_PATH}/ajax/ajvector.c
-${CONTRIB_PATH}/ajax/ajassert.c
 ${CONTRIB_PATH}/ajax/ajfileio.c
 ${CONTRIB_PATH}/ajax/ajnam.c
 ${CONTRIB_PATH}/ajax/ajseqread.c

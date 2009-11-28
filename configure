@@ -12,6 +12,7 @@
 # In addition libraries can be specified
 
 #   --with-staden     : see the BioLib docs
+#   --with-emboss
 #   --with-affyio
 #   --with-rqtl
 #   --with-libsequence
@@ -64,6 +65,10 @@ if [ -z $library ]; then
 fi
 
 case $library in
+  '--with-emboss')
+	plib="-DEMBOSS_LIB:BOOLEAN=TRUE"
+	shift
+	;;
   '--with-staden')
 	plib="-DSTADEN_LIB:BOOLEAN=TRUE"
 	shift
