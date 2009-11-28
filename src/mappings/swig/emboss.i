@@ -7,6 +7,11 @@
   #include <ajtranslate.h>
 %}
 
+%ignore ajSeqmolSetDdbj;
+%ignore ajSeqmolGetDdbj;
+%ignore ajSeqdivSetDdbj;
+%ignore ajSeqdivGetDdbj;
+
 %include <ajax.h>
 %include <ajarch.h>
 %include <ajseq.h>
