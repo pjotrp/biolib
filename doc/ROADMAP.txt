@@ -1,15 +1,31 @@
 = ROADMAP =
 
+A lot has been achieved with Biolib. Much of the Perl/Ruby/Python
+mapping is automatic and over 5000 scientific functions have been
+mapped from R, Staden, Affyio, R/qtl and EMBOSS C libraries.
+
+Still some stuff is missing, this is the ROADMAP:
+
 == MODULES ==
 
 * Affymetrix microarrays using BioConductor modules
   [+] RMA and quantile normalization using Affy module (RMA branch)
-  [ ] fix error messages through Rlib
+  [ ] add debug and error messages through Rlib
+* Libsequence module
+  [ ] finalize
+* Bio++ module
+  [ ] finalize
+* GSL (GNU Scientific library)
+  [x] Map modules
+      (see ASciLib project http://biolib.open-bio.org/wiki/ASciLib)
+* EMBOSS
+  [x] Proof-of-concept mapping to Perl/Python/Ruby
+      (see http://biolib.open-bio.org/wiki/Mapping_EMBOSS)
+  [ ] Full mapping
 * R/QTL
   [ ] Map module - requires preprocessing of QTL files
+  [ ] Scanone module
   [ ] Add MQM module
-* GSL (GNU Scientific library)
-  [ ] Map module
 * NCBI Tools
   [ ] Proof-of-concept mapping
 
@@ -17,9 +33,9 @@
 
 * Build system
   [ ] Provide recent builds (also on github? mod wiki)
-  [+] Add Python support (staden branch)
+  [x] Add Python support (staden branch)
   [ ] Add JAVA support
   [ ] Add R support
-  [ ] Create BioPerl CORE modules (Chris)
+  [ ] Create BioPerl CORE/CPAN modules (Chris)
   [ ] Automated documentation through SWIG
 
