@@ -1,4 +1,17 @@
+${CONTRIB_PATH}/ajax/graphics/ajgraph.c
+${CONTRIB_PATH}/ajax/graphics/ajhist.c
+${CONTRIB_PATH}/ajax/pcre/pcre_chartables.c
+${CONTRIB_PATH}/ajax/pcre/pcre_info.c
+${CONTRIB_PATH}/ajax/pcre/pcre_compile.c
+${CONTRIB_PATH}/ajax/pcre/pcre_newline.c
+${CONTRIB_PATH}/ajax/pcre/pcre_exec.c
+${CONTRIB_PATH}/ajax/pcre/pcreposix.c
+${CONTRIB_PATH}/ajax/pcre/pcre_fullinfo.c
+${CONTRIB_PATH}/ajax/pcre/pcre_study.c
 ${CONTRIB_PATH}/ajax/pcre/pcre_get.c
+${CONTRIB_PATH}/ajax/pcre/pcre_tables.c
+${CONTRIB_PATH}/ajax/pcre/pcre_globals.c
+${CONTRIB_PATH}/ajax/pcre/pcre_try_flipped.c
 ${CONTRIB_PATH}/ajax/acd/ajacd.c
 ${CONTRIB_PATH}/ajax/core/ajfeat.c
 ${CONTRIB_PATH}/ajax/core/ajmatrices.c
@@ -21,7 +34,6 @@ ${CONTRIB_PATH}/ajax/core/ajbase.c
 ${CONTRIB_PATH}/ajax/core/ajfmt.c
 ${CONTRIB_PATH}/ajax/core/ajnexus.c
 ${CONTRIB_PATH}/ajax/core/ajseqtype.c
-${CONTRIB_PATH}/ajax/pcre/pcre_chartables.c
 ${CONTRIB_PATH}/ajax/core/ajcall.c
 ${CONTRIB_PATH}/ajax/core/ajpat.c
 ${CONTRIB_PATH}/ajax/core/ajseqwrite.c
@@ -35,7 +47,6 @@ ${CONTRIB_PATH}/ajax/core/ajdmx.c
 ${CONTRIB_PATH}/ajax/core/ajindex.c
 ${CONTRIB_PATH}/ajax/core/ajphylo.c
 ${CONTRIB_PATH}/ajax/core/ajsys.c
-${CONTRIB_PATH}/ajax/pcre/pcre_study.c
 ${CONTRIB_PATH}/ajax/core/ajdomain.c
 ${CONTRIB_PATH}/ajax/core/ajjava.c
 ${CONTRIB_PATH}/ajax/core/ajrange.c
