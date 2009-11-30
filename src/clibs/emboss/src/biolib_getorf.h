@@ -6,11 +6,15 @@
   extern "C" {
 #endif
 
-void getorf_FindORFs(const AjPSeq seq, ajint len, const AjPTrn trnTable,
-			    ajuint minsize, ajuint maxsize, AjPSeqout seqout, 
-			    AjBool sense, AjBool circular, ajint find, 
-			    ajint *orf_no, AjBool methionine, ajint around);
+struct ORFstruct {
+  AjPSeq seq;
+  int frame;
+  unsigned int start, stop;
+};
 
+typedef struct ORFstruct ORF;
+
+ORF *biolib_getorf(AjPSeq seq, AjPTrn table, unsigned int minsize);
 
 #ifdef __cplusplus
   }

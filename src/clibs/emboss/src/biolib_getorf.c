@@ -34,8 +34,10 @@ static void getorf_AppORF(ajint find, AjPStr *str,
 			  const char *chrseq, ajint pos,
 			  char aa);
 
-
-
+static void getorf_FindORFs(const AjPSeq seq, ajint len, const AjPTrn trnTable,
+			    ajuint minsize, ajuint maxsize, AjPSeqout seqout, 
+			    AjBool sense, AjBool circular, ajint find, 
+			    ajint *orf_no, AjBool methionine, ajint around);
 
 /* types of control codon */
 #define START 1
@@ -50,14 +52,20 @@ static void getorf_AppORF(ajint find, AjPStr *str,
 #define AROUND_INIT_STOP 5
 #define AROUND_END_STOP  6
 
+/* @func biolib_getorf ********************************************************
+******************************************************************************/
 
-/* @prog getorf ***************************************************************
+ORF *biolib_getorf(AjPSeq seq, AjPTrn table, unsigned int minsize)
+{
+}
+
+/* @func getorf_acd ***********************************************************
 **
 ** Finds and extracts open reading frames (ORFs)
 **
 ******************************************************************************/
 
-int getorf_main(int argc, char **argv)
+int getorf_acd(int argc, char **argv)
 {
 
     AjPSeqall seqall;
