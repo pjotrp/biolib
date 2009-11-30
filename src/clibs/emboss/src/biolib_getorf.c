@@ -34,11 +34,6 @@ static void getorf_AppORF(ajint find, AjPStr *str,
 			  const char *chrseq, ajint pos,
 			  char aa);
 
-static void getorf_FindORFs(const AjPSeq seq, ajint len, const AjPTrn trnTable,
-			    ajuint minsize, ajuint maxsize, AjPSeqout seqout, 
-			    AjBool sense, AjBool circular, ajint find, 
-			    ajint *orf_no, AjBool methionine, ajint around);
-
 
 
 
@@ -193,7 +188,7 @@ int getorf_main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static void getorf_FindORFs(const AjPSeq seq, ajint len, const AjPTrn trnTable,
+void getorf_FindORFs(const AjPSeq seq, ajint len, const AjPTrn trnTable,
 			    ajuint minsize, ajuint maxsize, AjPSeqout seqout, 
 			    AjBool sense, AjBool circular, ajint find, 
 			    ajint *orf_no, AjBool methionine, ajint around)
