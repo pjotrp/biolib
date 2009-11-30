@@ -53,6 +53,8 @@ static void getorf_FindORFs(const AjPSeq seq, ajint len, const AjPTrn trnTable,
 #define AROUND_END_STOP  6
 
 /* @func biolib_getorf ********************************************************
+**
+** Get ORF's reading from START to STOP
 ******************************************************************************/
 
 ORF *biolib_getorf(AjPSeq seq, AjPTrn table, unsigned int minsize)
@@ -65,32 +67,19 @@ ORF *biolib_getorf(AjPSeq seq, AjPTrn table, unsigned int minsize)
 **
 ******************************************************************************/
 
+#ifdef EMBOSS_ACD
 int getorf_acd(int argc, char **argv)
 {
-
-    AjPSeqall seqall;
     AjPSeqout seqout;
+    AjPSeqall seqall;
     AjPStr tablestr;
-    ajint table;
     ajuint minsize;
     ajuint maxsize;
     AjPStr findstr;
-    ajint find;
     AjBool methionine;
     AjBool circular;
     AjBool reverse;
     ajint around;
-
-    AjPSeq seq = NULL;
-    AjPTrn trnTable;
-    AjPStr sseq = NULL;	/* sequence string */
-
-    /* ORF number to append to name of sequence to create unique name */
-    ajint orf_no;
-			   
-
-    AjBool sense;	/* ajTrue = forward sense */
-    ajint len;
 
     embInit("getorf", argc, argv);
     
@@ -104,8 +93,48 @@ int getorf_acd(int argc, char **argv)
     circular   = ajAcdGetBoolean("circular");
     reverse    = ajAcdGetBoolean("reverse");
     around     = ajAcdGetInt("flanking");
-    
-    
+   
+    getorf(seqout, seqall, tablestr, minsize, maxsize, findstr, methionine, circular, reverse, around); 
+   
+    ajSeqoutClose(seqout);
+    ajSeqallDel(&seqall);
+    ajSeqoutDel(&seqout);
+    ajStrDel(&tablestr);
+    ajStrDel(&findstr);
+
+    embExit();
+
+    return 0;
+}
+#endif
+
+
+AjPSeqout get_orf(
+    AjPSeqout seqout,
+    AjPSeqall seqall,
+    AjPStr tablestr,
+    ajuint minsize,
+    ajuint maxsize,
+    AjPStr findstr,
+    AjBool methionine,
+    AjBool circular,
+    AjBool reverse,
+    ajint around
+)
+{
+    ajint table;
+    ajint find;
+    AjPSeq seq = NULL;
+    AjPTrn trnTable;
+    AjPStr sseq = NULL;	/* sequence string */
+
+    /* ORF number to append to name of sequence to create unique name */
+    ajint orf_no;
+			   
+
+    AjBool sense;	/* ajTrue = forward sense */
+    ajint len;
+
     /* initialise the translation table */
     ajStrToInt(tablestr, &table);
     trnTable = ajTrnNewI(table);
@@ -158,24 +187,10 @@ int getorf_acd(int argc, char **argv)
 			    around);
 	}
     }
-    
-    ajSeqoutClose(seqout);
     ajTrnDel(&trnTable);
-
-    ajSeqallDel(&seqall);
     ajSeqDel(&seq);
     ajStrDel(&sseq);
-    ajSeqoutDel(&seqout);
-    ajStrDel(&tablestr);
-    ajStrDel(&findstr);
-
-    embExit();
-
-    return 0;
 }
-
-
-
 
 /* @funcstatic getorf_FindORFs ************************************************
 **
