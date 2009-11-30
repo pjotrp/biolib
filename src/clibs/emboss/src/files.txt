@@ -1,3 +1,4 @@
+biolib_getorf.c
 ${CONTRIB_PATH}/emboss/function/emboss_transeq.c
 ${CONTRIB_PATH}/plplot/plctrl.c
 ${CONTRIB_PATH}/plplot/data.c
