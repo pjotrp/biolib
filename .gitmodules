@@ -13,3 +13,6 @@
 [submodule "contrib/boost"]
 	path = contrib/boost
 	url = git://gitorious.org/boost/svn.git
+[submodule "contrib/EMBOSS"]
+	path = contrib/EMBOSS
+	url = git://github.com/pjotrp/EMBOSS.git
