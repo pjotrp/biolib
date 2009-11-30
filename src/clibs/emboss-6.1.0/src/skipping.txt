@@ -1,5 +1,0 @@
-
-${CONTRIB_PATH}/ajax/pcreposix.c
-${CONTRIB_PATH}/ajax/ajgraph.c
-${CONTRIB_PATH}/ajax/ajhist.c
-${CONTRIB_PATH}/ajax/pcre_printint.c
