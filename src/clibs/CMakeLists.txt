@@ -18,7 +18,7 @@ if (BLD_STADEN)
 endif (BLD_STADEN)
 
 if (BLD_EMBOSS)
-  add_subdirectory (emboss-6.1.0/src)
+  add_subdirectory (emboss/src)
 endif (BLD_EMBOSS)
 
 if (BLD_RQTL)
