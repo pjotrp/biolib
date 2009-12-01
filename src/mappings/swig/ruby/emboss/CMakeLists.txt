@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 ENABLE_TESTING()
 
 SET (M_NAME emboss)
-SET (M_VERSION 6.1.0)
+# SET (M_VERSION 6.1.0)
 SET (INTERFACE ruby_${M_NAME}.i)
 
 IF(NOT BUILD_LIBS)
