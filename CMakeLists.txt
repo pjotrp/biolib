@@ -99,13 +99,10 @@ endif(NOT BUILD_DOCS)
 
 set(BLD_BIOLIB_CORE  TRUE)
 set(BLD_STADEN  TRUE)
-<<<<<<< HEAD:CMakeLists.txt
 set(BLD_RQTL    TRUE) 
-=======
 set(BLD_EMBOSS  TRUE)
 set(BLD_RQTL    FALSE) 
 set(BLD_LIBSEQUENCE FALSE) 
->>>>>>> emboss:CMakeLists.txt
 set(BLD_EXAMPLE TRUE)
 IF(NOT CYGWIN AND NOT APPLE)
   set(BLD_AFFYIO  TRUE)  # still problem finding Rlib

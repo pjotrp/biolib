@@ -27,12 +27,8 @@ endif (BLD_EMBOSS)
 
 if (BLD_RQTL)
   add_subdirectory (rqtl/contrib/biolib)
-<<<<<<< HEAD:src/clibs/CMakeLists.txt
-endif()
-=======
 endif (BLD_RQTL)
 
 if (BLD_LIBSEQUENCE)
   add_subdirectory (libsequence-1.6.6/src)
 endif (BLD_LIBSEQUENCE)
->>>>>>> emboss:src/clibs/CMakeLists.txt
