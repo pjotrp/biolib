@@ -22,6 +22,7 @@
 #   To build specific libraries, for example
 #
 #   cmake -DSTADEN_LIB:BOOLEAN=TRUE
+#   cmake -DEMBOSS_LIB:BOOLEAN=TRUE
 #   cmake -DRQTL_LIB:BOOLEAN=TRUE
 #
 #   Combine with BUILD_RUBY (etc.) to build just one library type.
@@ -98,7 +99,13 @@ endif(NOT BUILD_DOCS)
 
 set(BLD_BIOLIB_CORE  TRUE)
 set(BLD_STADEN  TRUE)
+<<<<<<< HEAD:CMakeLists.txt
 set(BLD_RQTL    TRUE) 
+=======
+set(BLD_EMBOSS  TRUE)
+set(BLD_RQTL    FALSE) 
+set(BLD_LIBSEQUENCE FALSE) 
+>>>>>>> emboss:CMakeLists.txt
 set(BLD_EXAMPLE TRUE)
 IF(NOT CYGWIN AND NOT APPLE)
   set(BLD_AFFYIO  TRUE)  # still problem finding Rlib
@@ -106,6 +113,7 @@ ENDIF(NOT CYGWIN AND NOT APPLE)
 
 if (EXAMPLE_LIB)
   set(BLD_STADEN  FALSE)
+  set(BLD_EMBOSS  FALSE)
   set(BLD_RQTL    FALSE)
   set(BLD_AFFYIO  FALSE)
   set(BLD_EXAMPLE TRUE)
@@ -114,6 +122,7 @@ endif (EXAMPLE_LIB)
 
 if (AFFYIO_LIB)
   set(BLD_STADEN  FALSE)
+  set(BLD_EMBOSS  FALSE)
   set(BLD_RQTL    FALSE)
   set(BLD_AFFYIO  TRUE)
   set(BLD_EXAMPLE FALSE)
@@ -122,24 +131,46 @@ endif (AFFYIO_LIB)
 
 if (STADEN_LIB)
   set(BLD_STADEN  TRUE)
+  set(BLD_EMBOSS  FALSE)
   set(BLD_RQTL    FALSE)
   set(BLD_AFFYIO  FALSE)
   set(BLD_EXAMPLE FALSE)
   set(BLD_BIOLIB_CORE  FALSE)
 endif (STADEN_LIB)
 
+if (EMBOSS_LIB)
+  set(BLD_EMBOSS  TRUE)
+  set(BLD_STADEN  FALSE)
+  set(BLD_RQTL    FALSE)
+  set(BLD_AFFYIO  FALSE)
+  set(BLD_EXAMPLE FALSE)
+  set(BLD_BIOLIB  FALSE)
+endif (EMBOSS_LIB)
+
 if (RQTL_LIB)
   set(BLD_RQTL    TRUE)
   set(BLD_BIOLIB_CORE  TRUE)
   set(BLD_BIOLIB_R     TRUE)
   set(BLD_STADEN  FALSE)
+  set(BLD_EMBOSS  FALSE)
   set(BLD_AFFYIO  FALSE)
   set(BLD_EXAMPLE TRUE)        # contains typemap tests
 endif (RQTL_LIB)
 
+if (LIBSEQUENCE_LIB)
+  set(BLD_LIBSEQUENCE  TRUE)
+  set(BLD_RQTL    FALSE)
+  set(BLD_STADEN  FALSE)
+  set(BLD_EMBOSS  FALSE)
+  set(BLD_AFFYIO  FALSE)
+  set(BLD_EXAMPLE FALSE)
+  set(BLD_BIOLIB  FALSE)
+endif (LIBSEQUENCE_LIB)
+
 if (EXAMPLE_LIB)
   set(BLD_RQTL    FALSE)
   set(BLD_STADEN  FALSE)
+  set(BLD_EMBOSS  FALSE)
   set(BLD_AFFYIO  FALSE)
   set(BLD_EXAMPLE TRUE)
   set(BLD_BIOLIB_CORE  FALSE)
@@ -148,7 +179,9 @@ endif (EXAMPLE_LIB)
 message("  Biolib libraries")
 message(STATUS "Install Affyio ${BLD_AFFYIO}")
 message(STATUS "Install Staden ${BLD_STADEN}")
+message(STATUS "Install EMBOSS ${BLD_EMBOSS}")
 message(STATUS "Install RQTL ${BLD_RQTL}")
+message(STATUS "Install Libsequence ${BLD_LIBSEQUENCE}")
 message(STATUS "Install Example ${BLD_EXAMPLE}")
 
 FIND_PACKAGE(Map)

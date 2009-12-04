@@ -1,0 +1,915 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>BioLib</sitename>
+    <base>http://biolib.open-bio.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.15.1</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">BioLib</namespace>
+      <namespace key="5">BioLib talk</namespace>
+      <namespace key="6">File</namespace>
+      <namespace key="7">File talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Mapping EMBOSS</title>
+    <id>29</id>
+    <revision>
+      <id>317</id>
+      <timestamp>2009-11-28T10:09:28Z</timestamp>
+      <contributor>
+        <username>Pjotrp</username>
+        <id>2</id>
+      </contributor>
+      <text xml:space="preserve">= Porting EMBOSS to Biolib =
+
+&lt;i&gt;by Pjotr Prins, Wageningen University&lt;/i&gt;
+
+EMBOSS is &quot;The European Molecular Biology Open Software Suite&quot;. It
+contains heaps of functionality, and much of it is well written and
+tested code.  It would be great to cover much of that in Biolib.
+
+I needed six reading frame translation from nucleotide to amino acids.
+So, instead of opting for using the Bioruby built-in version I decided
+to have a go at the EMBOSS version. Reason is I expect the EMBOSS
+version to be better at performance, and maybe some additional
+functionality may be of interest once this is cracked.
+
+The EMBOSS source code tree (some 85 Mb) sits in a CVS repository. If
+it all works I will migrate to git in the (near) future. For now I
+just unzipped the source in the Biolib tree at ./contrib/EMBOSS-6.1.0.
+BioLib carries all source code dependencies - i.e. I prevent external
+dependencies where possible. Reason is that bioinformatics is such a
+moving field, and you can't trust older and newer libraries to work
+all the time and link properly. 
+
+== Transeq implementation in EMBOSS ==
+
+After checkout of the tree I find the helpfiles refer to a command
+line utility. This is typical for EMBOSS - all functionality is
+available as command line tools. Great for quick hacks, but depending
+on binaries also increases fragility of deployment and extra cycles
+for starting up binary programs every time. So here I want to link it
+against Ruby.  Peter Rice (at BOSC 2009) had warned me it would not be
+easy as EMBOSS carries some deployment state around and carries
+interface files.
+
+The C code lives in ./emboss/transeq.c. First thing is to run 'ctags
+-R' in the root directory so I can jump around in code easily with my
+favorite editor (vim). First I notice the code is cleanly written,
+and the naming of methods etc. makes sense. Good enough!
+
+Next thing I run into is that EMBOSS uses AJAX/ACD. Nothing like
+Web2.0 AJAX, but a way of passing data around between binaries. See
+
+  http://emboss.sourceforge.net/developers/acd/syntax.html#sect1
+
+it looks a little like YAML, but in typical bioinformatics fashion it
+is different. Maybe it makes more sense later. I suppose it supports a
+higher data abstraction.
+
+transeq.c contains a main() function which first calls a method
+named embInit which parses the input AJAX (or ACD) file. Next these
+values are read into variables (like the sequence), basically the
+same parameters that can be found in the web interface at 
+
+  http://www.ebi.ac.uk/Tools/emboss/transeq/index.html
+
+(click on the transeq link to get the full interface description).
+
+Now, it immediately gets bad. All the functionality is in the main
+function which means I have copy some basic logic into a biolib
+location, unless all the lower level functions make sense enough to
+call from, say, Ruby. Basicall the code in main() says:
+
+
+    while(ajSeqallNext(seqall, &amp;seq))
+    {
+      ajSeqTrim(seq);
+      seqregions = ajRangeCopy(regions);
+      defr = ajRangeDefault(seqregions, seq);
+      /* get regions to translate */
+      if(!defr)
+        ajRangeSeqExtract(seqregions, seq);
+      for(i=0; i&lt;6; i++)
+      {
+        ajDebug(&quot;try frame: %d\n&quot;, i);
+        if(frames[i])
+        {
+          if(i&lt;3)
+            pep = ajTrnSeqOrig(trnTable, seq, i+1);
+          else
+            if(alternate) /* frame -1 uses codons starting at end */
+              pep = ajTrnSeqOrig(trnTable, seq, -i-1);
+            else  /* frame -1 uses frame 1 codons */
+              pep = ajTrnSeqOrig(trnTable, seq, 2-i);
+          if(trim)
+            transeq_Trim(pep);
+          if(clean)
+            transeq_Clean(pep); /* clean after the trim */
+
+          ajSeqoutWriteSeq(seqout, pep);
+          ajSeqDel(&amp;pep);
+       }
+     }
+     ajRangeDel(&amp;seqregions);
+   }
+
+
+What hits me is that both the data and these functions are mostly
+defined in the ./ajax directory. ajTrnSeqOrig is actually doing the
+hard work translating nucleotides. I see that it even supports
+translating dangling bases - which Bioruby's implemenation ignores. 
+Only the trimming and cleaning of stop codons happens in transeq.c
+itself. So basically if we don't trim and clean we can do without
+transeq.c itself. I think I'll try that first.
+
+EMBOSS needs to adapt their code base (a little) to allow for linking
+against interpreted languages (like Ruby, Python and Perl). I
+propose all the main() routines need to be really lightweight. A main
+function should merely call into an ACD translation, followed by the
+function (in this case transeq() hosted in ./emboss/lib/libtranseq.c)
+which would contain the action.  That would allow simple mappings from
+external libraries - and it is not a big job either.
+
+Alternatively one could choose to use ACD proper and redefine the main
+function to something else (transeq_main comes to mind) and call that
+from Biolib. That may be a future way of handling this functionality,
+though I am wary about the added overhead of ACD. Assuming the
+sequences are already in memory, I don't want all parameters handled
+through a file system.
+
+First thing to study is the sequence format. It is defined in a
+(baffling) structure in ajseqdata.h. Have a look yourself!  This is
+the typical design you see when one structure has to handle all tasks
+(and has grown organically over time). What to think of a boolean that
+says a sequence has to be reversed, and another that says whether it
+has been reversed. In the same structure to be shared throughout
+EMBOSS. Argh! There is 'hidden', or assumed, logic here, and therefore
+complications and potential sources of error.
+
+Anyway, we grind our teeth and continue.
+
+Let's try and read one frame first. For this we need to call into
+ajTrnSeqOrig(trnTable, seq, frame). I am happy to see the call:
+
+
+  AjPSeq ajTrnSeqOrig(const AjPTrn trnObj, const AjPSeq seq, ajint frame)
+
+
+it uses const appropriately! Just beats me why it could not have been:
+
+
+  SeqP translate_sequence(const TranslationTable table, const SeqP sequence, int frame)
+
+
+You tell me which one is easier on the eyes. I have my preference,
+for sure.
+
+Lets find a table. The code in ./ajax/ajtranslate.c dates from 1999!
+Cool, we can assume it is well tested. The help shows we can fetch a
+table with 
+
+
+  trnTable = ajTrnNewI(table_number);
+
+
+apparently the code table is read from a file named EGC.x, where x is
+the table_number. These files are in ./emboss/data/EGC.x. OK, mental
+note, we may need to install these so EMBOSS knows where to find them.
+A bit of digging shows the data should be (a) in . (b) in
+./.embossdata (c) ~/ (d) ~/.embossdata (e) environment variable $DATA,
+(e) somewhere in /usr/share, according to ajax/ajfiledata.c. I guess
+my preference would be a system wide place, where biolib installs, and
+I would have to map that to Biolib.
+
+EMBOSS includes 20 translation tables. Nice and complete. Another
+reason to opt for a mapping! 
+
+Now we have a table, we need to get a sequence into a data structure.
+Ideally the sequence should originate from a simple string of
+nucleotides for my purpose, as I parse the indexed FASTA files
+already. In main() the sequence is derived from ACD. Intuitively I
+sniff out ajax/ajseq.c first. This file dates from 1997 and has Peter
+Rice as its author. The function
+
+
+  AjPSeq ajSeqNewNameC(const char* txt, const char* name)
+
+ 
+appears to do what I want. So, now I think we have it together, I can
+find the translation table, create the sequence object and translate
+it. It is not really clear how to handle the output, but that will
+sort itself, I hope.
+
+== Creating an EMBOSS linked library for Biolib ==
+
+Biolib's provides the infrastructure for mapping other languages
+against C/C++ code. Most of this is achieved by a combined use of SWIG
+and CMake. SWIG is a code generator for mappings. CMake is a sensible
+replacement for configure and friends, a make file generator, i.e. a
+rational build system.  git is the advanced source control system that
+holds it all together.  One particular strength of git that Biolib
+uses is the idea of submodules. I.e. source repositories embedded in
+each other.
+
+Anyway, for now I have checked out the EMBOSS source code in
+./contrib. Checking configure.in I see a number of non-standard
+build switches, but nothing that worries me particularly. That is
+positive. Some libraries, notably BOOST and the GSL, have some build
+time magic to optimise compiled code and generate compile time
+header files for that. But unless I miss something, it looks like I
+can just create a CMake replacement.
+
+OK, first step is to create an emboss branch in git, starting from
+the last release_candidate of biolib. Then I create a directory for
+the shared library in ./src/clibs/emboss-6.1.0/src. I copy the
+CMakeLists.txt file from an existing Biolib module
+./src/clibs/libsequence, which has a similer setup to what I plan
+here. In the file I modify the module name and version (which biolib
+uses to locate files) and the contrib path. For the rest the
+CMakeLists.txt file is untouched. A final version can be found in
+github:
+
+  http://github.com/pjotrp/biolib/blob/emboss/src/clibs/emboss-6.1.0/src/CMakeLists.txt
+
+In ./src/clibs/emboss-6.1.0/src/files.txt I am going to add the EMBOSS
+files that need to be compiled into the biolib shared library. E.g.
+${CONTRIB_PATH}/ajax/ajseq.c. A full list is 
+
+ http://github.com/pjotrp/biolib/blob/emboss/src/clibs/emboss-6.1.0/src/files.txt 
+
+Next, see if CMake works:
+
+  cmake .
+  make
+
+and, yes, it compiles ajseq.c and we have created the shared library
+./src/clibs/emboss-6.1.0/build/libbiolib_emboss-0.0.5.so in one go(!)
+There is enough magic in biolib to find the include files. That was
+about 10 minutes of hard work. Note also that the build system does
+not require you to build all of biolib, but only the relevant module.
+
+Next I add a few more .c files, like ajtranslate.c and ajfiledata.c.
+After rerunning cmake, and make, it compiles without a hitch. We'll
+find out later we need more files, but I am happy for now.
+
+== Mapping EMBOSS against Ruby ==
+
+=== Building a Ruby shared library with SWIG ===
+
+Now we have a shared library and we need to use SWIG to create
+mapping files for Ruby. For this we add a directory in biolib's
+./src/mappings/swig/ruby/emboss. This time copy a CMakeLists.txt file
+from ./src/mappings/swig/ruby/stden_io_lib, as libsequence has not
+been mapped to Ruby yet. Again change the module name and version to
+match that of emboss. The final version reads
+
+  http://github.com/pjotrp/biolib/blob/emboss/src/mappings/swig/ruby/emboss/CMakeLists.txt
+
+Running cmake and make it complains we need ruby_emboss.i. This is
+the SWIG interface file. Again copy it from staden_io_lib and rename
+it to match. This file links in a shared SWIG file and reads:
+
+  %module emboss
+  %include ../../emboss.i
+ 
+Now we need to edit ../../emboss.i (which is shared between Ruby,
+Python and Perl mappings) and tell SWIG which files to include for our
+mappings. The first would be ajtranslate.h and ajseq.h. The file reads
+
+  %include &lt;ajseq.h&gt;
+  %include &lt;ajtranslate.h&gt;
+
+Now a make says 
+
+  Error: Unable to find 'ajseq.h' 
+
+this is because SWIG needs more information on where to find make
+files. So we add the path to the CMakeLists.txt file
+
+  SET(EMBOSS_PATH ${MAP_ROOT}/contrib/EMBOSS-${M_VERSION})
+  SET(USE_SWIG_INCLUDEPATH ${EMBOSS_PATH}/ajax)
+
+Next rerun cmake after removing the cache files. CMake uses caching for some
+strange reason - it should at least be optional behaviour. So:
+
+  rm CMakeCache.txt ; cmake . ; make 
+
+Remember to remove the cache every time you change something in CMakeLists.txt
+file! Ok, the build yields an error:
+
+  ../../../../../contrib/EMBOSS-6.1.0/ajax/ajseq.h:340: Error: Syntax error in input(1).
+ 
+which turns out to point to a line containing &quot;__deprecated&quot; and I
+find we need to compile with the __GNUC__ switch. Since SWIG does not
+know about __GNUC__ we need to pass it in. This needs to happen in
+the Biolib build system, but for now I am just going to add it as a
+special switch. First I added to the CMakeLists.txt file:
+
+  add_definitions(-D__GNUC__)
+
+Unfortunately, this was not the right idea. With add_definitions CMake
+adds flags to the C compile step. However, we don't need to tell gcc
+to add this flag (it knows it). No, it is SWIG we need to tell. The
+quick and dirty way turned out to be adding
+
+  SET(CMAKE_SWIG_FLAGS &quot;-c++&quot;)
+
+Hmmm. This may be silly too. I'll have a look at that later. Now
+rerunning cmake (after removing the cache) make gives a heap of errors
+for ruby_embossRUBY_wrap.cxx.  This is good news - we have moved into
+something SWIG has generated.  To capture the errors:
+  
+  make 2&gt; build.log
+
+The first error is:
+
+   error: 'AjOSeqCvt' was not declared in this scope
+
+Hah! We are trying to compile SWIG generated C++ code, but it can't
+find parameters defined by EMBOSS. We need to add the include headers
+into the generated C++ file. This can be achieved by adding the
+headers to ../../emboss.i. Anyting between %{ %} gets prepended to
+the generated C++ source code. emboss.i becomes:
+
+  # EMBOSS methods
+  #
+
+  %{
+    #include &lt;ajax.h&gt;
+    #include &lt;ajseq.h&gt;
+    #include &lt;ajtranslate.h&gt;
+  %}
+
+  %include &lt;ajarch.h&gt;
+  %include &lt;ajseq.h&gt;
+  %include &lt;ajtranslate.h&gt;
+
+OK, it looks funny. There is duplication in there. But the thing is
+that the second half is actually parsed by SWIG. The first half is
+just passed in literally. Another make shows above error disappeared.
+There are a few left, and again we have to add include files. You can
+check the resulting ruby_embossRUBY_wrap.cxx. 
+
+The other thing is that SWIG does not automatically include files for
+parsing (otherwise it would map the whole of glibc). But it needs to
+know a little more, so I add the file ajarch.h that defines
+__deprecated.
+
+The next error is
+
+  error: ajax.h: No such file or directory
+
+so, now swig knows the include paths, gcc does not. We add an extra 
+
+  INCLUDE_DIRECTORIES(${EMBOSS_PATH}/ajax)
+
+and now we are compiling fine, and in SWIG territory as we get the
+gcc error:
+
+  error: invalid conversion from 'const AjOStr*' to 'AjOStr*'
+ 
+in generated line 2410 in ruby_embossRUBY_wrap.cxx. Check the code and
+you see SWIG is trying to cast from a constant. Not great. All errors,
+apart from two invalid array assignments are const casting errors.
+
+Now we can go into two directions. The first is to create our own C
+adapter interface, with a single biolib transeq method in
+biolib_emboss.c (with an added bonus of using nicer function names).
+This would make things really easy with SWIG. However, it does away
+with the power of automatically mapping *all* functions in EMBOSS with
+SWIG.  While I don't really need all that functionality right now, I
+will try and get it to work, just to show that it is possible.
+
+With these cases google is your friend. Search for
+
+  swig error: invalid static_cast
+
+a quick search gives a hint that SWIG ignores undefined datatypes.
+The generated code looks like 
+
+
+    vresult = SWIG_NewPointerObj((new AjPSeq(static_cast&lt; const AjPSeq&amp; &gt;(result))), SWIGTYPE_p_AjPSeq, SWIG_POINTER_OWN |  0 );
+
+
+and you can (perhaps) see why the gcc compiler does not like this. To read the
+C++ casting document may help:
+
+  http://www.acm.org/crossroads/xrds3-1/ovp3-1.html
+
+some more googling and I find there are other issues with above SWIG
+generated code. Hmmm. Next thought, we really don't need C++ generated
+code, as EMBOSS is all C. Let's try building a C file instead by
+adding the following swith to CMakeLists.txt
+
+  set(USE_C_LINKAGE TRUE)
+
+Rebuild with
+
+  rm CMakeCache.txt ; cmake . ; make
+
+and we get different errors :0. Mostly warning and two errors left.
+
+  ruby_embossRUBY_wrap.c:15924: error: incompatible types in assignment
+  ruby_embossRUBY_wrap.c:15991: error: incompatible types in assignment
+
+in the two similar lines
+
+
+   for (; jj &lt; (size_t)16; ++jj) arg1-&gt;Starts[ii][jj] = arg2[ii][jj];
+
+
+simply removing the lines from the C file compiles a successful SWIG
+shared library! We are almost there. The methods containing these
+errors are _wrap_AjOTrn_GC_set() and _wrap_AjOTrn_Starts_set(), both
+setters for the data structure in ajtranslate.h:
+
+
+  typedef struct AjSTrn {
+    AjPStr FileName;
+    AjPStr Title;
+    char GC[16][16][16];
+    char Starts[16][16][16];
+  } AjOTrn;
+
+
+The three dimensional data structure is confusing SWIG. As I don't
+plan to access this structure from Ruby I'll just take out
+ajtranslate.h from emboss.i. The current version reads:
+
+  http://github.com/pjotrp/biolib/blob/emboss/src/mappings/swig/emboss.i
+
+and now it builds into Ruby linkable library:
+
+  Linking C shared module biolib/emboss.so
+  [100%] Built target emboss
+
+=== Writing an integration test for Ruby ===
+
+By convention the Ruby integration tests are in
+./src/mappings/swig/ruby/test. These are automatically called by
+cmake/ctest when building the whole of Biolib. In that directory we
+create test_emboss.rb. And call our three functions: 
+
+
+  trnTable = ajTrnNewI(table_number);
+  AjPSeq ajSeqNewNameC(const char* txt, const char* name)
+  AjPSeq ajTrnSeqOrig(const AjPTrn trnObj, const AjPSeq seq, ajint frame)
+
+ 
+The ruby code:
+
+
+  require 'biolib/emboss'
+  trnTable = Biolib::Emboss.ajTrnNewI(1);
+
+
+The test can be found at
+
+  http://github.com/pjotrp/biolib/blob/emboss/src/mappings/swig/ruby/test/test_emboss.rb
+
+From the Emboss module in ./src/mappings/swig/ruby/emboss run
+
+  ruby ../test/test_emboss.rb 
+
+which returns
+
+  ../test/test_emboss.rb:4: undefined method `ajTrnNewI' for Biolib::Emboss:Module (NoMethodError)
+
+Not surprising, as we removed ajtranslate.h from emboss.i and SWIG
+has not provided a mapping. We add the single line to emboss.i
+
+
+  AjPTrn        ajTrnNewI (ajint trnFileNameInt);
+
+
+and rerun make clean ; make. Now in ruby_embossRUBY_wrap.c we find
+
+
+  _wrap_ajTrnNewI(int argc, VALUE *argv, VALUE self) 
+
+
+which is the Ruby binding. Next the test returns 
+
+  /usr/bin/ruby: symbol lookup error: /home/wrk/izip/git/opensource/biolib/src/clibs/emboss-6.1.0/build/libbiolib_emboss-0.0.5.so: undefined symbol: ajStrNew
+
+which is because ajstr.c is missing from the shared lib build in
+./src/clibs/emboss-6.1.0/src, so we add this to files.txt
+
+  ${CONTRIB_PATH}/ajax/ajstr.c
+
+and run cmake after remove the cache:
+
+  rm CMakeCache.txt ; cmake . ; make clean ; make
+
+a new error pops up
+
+  /home/wrk/izip/git/opensource/biolib/contrib/EMBOSS-6.1.0/ajax/ajstr.c:46: warning: incompatible implicit declaration of built-in function 'bcopy'
+ 
+this turns out to be a workaround to a missing memmove()
+implementation. We are just going to set HAVE_MEMMOVE to 1 in
+CMakeLists.txt by
+
+  add_definitions(-DHAVE_MEMMOVE)
+
+After a few more adding of sources, including ajmath.c, ajmem.c, ajassert.c,
+ajfmt.c, ajsys.h and ajexcept.c to files.txt the test tells us:
+
+  EMBOSS An error in EMBOSS-6.1.0/ajax/ajtranslate.c at line 326:
+  Translation table file 'EGC.1' not found
+
+which is a success! The binding works and Ruby now returns a proper
+EMBOSS error message. The table is not found. When we copy it to the
+local directory the test passes. Good. Now we put the EGC.1 file into
+its formal testing location in ./src/test/data/emboss and we set the
+DATA environment variable in the test script, so it becomes
+
+
+  require 'biolib/emboss'
+  ENV['DATA'] = &quot;../../../../test/data/emboss/&quot;
+  trnTable = Biolib::Emboss.ajTrnNewI(1);
+  ajpseq   = Biolib::Emboss.ajSeqNewNameC(&quot;AGCT&quot;,&quot;Test sequence&quot;)
+  ajpseqt  = Biolib::Emboss.ajTrnSeqOrig(trnTable,ajpseq,1)
+  aa       = Biolib::Emboss.ajSeqGetSeqCopyC(ajpseqt)
+  raise 'Test failed '+aa if aa != 'SX'
+
+
+and we have done it. Not only have we got a translation, but we also
+have a wide list of other mapped functions in one go. A simple count
+
+  grep _wrap_ ruby_embossRUBY_wrap.c |grep -v rb_|wc   
+    410    2866   24040
+
+shows 410 mapped EMBOSS functions against Ruby.
+
+You can check the test is embedded in the Biolib test frame work.
+Simply run
+
+  make test
+
+resulting in
+
+  Start processing tests
+  Test project biolib/src/mappings/swig/ruby/emboss
+    1/  1 Testing TestRubyemboss                   Passed
+  100% tests passed, 0 tests failed out of 1
+
+See the test output with
+
+  cat Testing/Temporary/LastTest.log 
+
+== Performance testing Bioruby vs Biolib ==
+
+The EMBOSS version of translating a C.elegans genome into
+six reading frames is about 30 times faster than the Bioruby one:
+
+Bioruby version:
+
+  22929 records 137574 times translated!
+   real    9m30.952s
+   user    8m42.877s
+   sys     0m32.878s
+
+Biolib version:
+
+  22929 records 137574 times translated!
+   real    0m20.306s
+   user    0m15.997s
+   sys     0m1.344s
+
+This is including IO - which is handled by Ruby. The code is
+
+
+  nt = FastaReader.new(fn)
+  trnTable = Biolib::Emboss.ajTrnNewI(1);
+  nt.each { | rec |
+    (0..iter).each do | repeat |
+      ajpseq   = Biolib::Emboss.ajSeqNewNameC(rec.seq,&quot;Test sequence&quot;)
+      [-3,-2,-1,1,2,3].each do | frame |
+        ajpseqt  = Biolib::Emboss.ajTrnSeqOrig(trnTable,ajpseq,frame)
+        aa       = Biolib::Emboss.ajSeqGetSeqCopyC(ajpseqt)
+        print &quot;&gt; &quot;,rec.id,&quot; &quot;,frame.to_s,&quot;\n&quot;
+        print aa,&quot;\n&quot;
+      end
+    end
+  }
+  $stderr.print nt.size,&quot; records &quot;,nt.size*6*iter,&quot; times translated!&quot;
+
+
+It just shows. For BIGDATA C rules. Biolib allows you to use C
+libraries from Ruby without pain.
+
+== Mapping EMBOSS Perl and Python ==
+
+Now we have done the Ruby mapping we have really done the hard part.
+SWIG generates the binding code, and the inputs for Perl and Python
+are the same. It may be the SWIG generated code for Perl and Python
+behave somewhat different, but in general it should be
+straightforward to add the bindings. Basically this is achieved by
+adapting CMakeLists.txt files.
+
+So, for Perl, create an emboss folder
+./biolib/src/mappings/swig/perl/emboss and, like we did for Ruby,
+copy the CMakeLists.txt file from ../staden_io_lib. And we copy the
+SWIG file from Ruby, so
+
+
+  mkdir src/mappings/swig/perl/emboss
+  cd src/mappings/swig/perl/emboss
+  cp ../staden_io_lib/CMakeLists.txt .
+  cp ../../ruby/emboss/ruby_emboss.i perl_emboss.i
+
+
+in the CMakeLists.txt file we need to change the module name to
+emboss, and the version to match those of the shared library in
+./src/clibs/emboss-6.1.0. It helps to compare with the Ruby version of
+the SWIG build we created above (in src/mappings/swig/ruby/emboss), as
+the layout should really be the same. I do that in a split buffer of
+vim. The final version of the Perl edition reads:
+
+  http://github.com/pjotrp/biolib/blob/emboss/src/mappings/swig/perl/emboss/CMakeLists.txt
+
+now 
+
+  cmake . ; make 
+
+unfortunaly does create errors in Perl's proto.h
+
+  /usr/lib/perl/5.10/CORE/proto.h:509: error: expected declaration specifiers or '...' before 'off64_t'
+
+Googling quickly points out this is has something to do with
+-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 flags that Perl uses. This
+is a bit strange as Biolib CMake should pick up the (build) flags that are
+native to the Perl interpreter used. These flags can be seen with
+
+  perl -V
+
+And yes, it shows
+
+  cc='cc', ccflags ='-D_REENTRANT -D_GNU_SOURCE -DDEBIAN -fno-strict-aliasing -pipe -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64',
+
+When running make with the VERBOSE switch we can study the flags that
+go into the compile phase:
+
+  make VERBOSE=1 &amp;&gt; make.out
+
+which renders
+
+  /usr/bin/gcc  -DMAP_BUILD -DBIOLIB_BUILD -Demboss_EXPORTS -fPIC
+  -I/home/wrk/izip/git/opensource/biolib/src/mappings/swig/perl/emboss/../../../../../contrib/EMBOSS-6.1.0/ajax
+  -I/usr/lib/perl/5.10/CORE
+  -I/home/wrk/izip/git/opensource/biolib/src/mappings/swig/perl/emboss/../../../../../src/clibs/emboss-6.1.0/include
+  -I/home/wrk/izip/git/opensource/biolib/src/mappings/swig/perl/emboss/../../../../../src/clibs/emboss-6.1.0/src
+  -I/home/wrk/izip/git/opensource/biolib/src/mappings/swig/perl/emboss/../../../../../src/clibs/emboss-6.1.0
+  -o CMakeFiles/emboss.dir/perl_embossPERL_wrap.c.o   -c
+  /home/wrk/izip/git/opensource/biolib/src/mappings/swig/perl/emboss/perl_embossPERL_wrap.c
+
+you can how much work Biolib is doing for you. The flags are missing.
+We can add the flags, for a test, directly, compiling by hand. It is
+quickly verified those flags are required for a build. This should
+have just worked, so let's use this opportunity to check the build
+system. Biolib's CMake files live in
+biolib/tools/cmake-support/modules. The Perl module is named
+FindPerlLibs.cmake, see
+
+  http://github.com/pjotrp/cmake-support/tree/master/modules/
+
+(notice the cmake-support has its own git repository). From the file
+one can see the Perl interpreter is queried for internals through
+
+  EXECUTE_PROCESS(COMMAND ${PERL_EXECUTABLE} -MConfig -e &quot;print \$Config{version}&quot; OUTPUT_VARIABLE PVERSION)
+  EXECUTE_PROCESS(COMMAND ${PERL_EXECUTABLE} -MConfig -e &quot;print \$Config{archname}&quot; OUTPUT_VARIABLE PARCH)
+    (...)
+
+but, I don't see GCC switches being picked up. The other important
+file is FindMapSWIG.cmake - which contains no hint either. I guess I
+never implemented this as a recent Debian upgrade must have required
+these switches. A build from the root does not show this problem with
+other modules:
+
+
+  cd biolib
+  ./configure
+  make
+  make test
+
+
+the difference being we are trying to build a C library version,
+rather than C++ (remember, Ruby's module balked on that). So, let's
+disable SET(USE_C_LINKAGE TRUE) in the CMakeLists.txt file. And, yes,
+the compile step moves on to the next error. First I make a note that
+I need to fix passing in the compile time switches for Perl. OK, the
+next bug is
+
+  ./contrib/EMBOSS-6.1.0/ajax/pcre_internal.h:317: error: conflicting
+    declaration 'OP_NOT'
+  /usr/lib/perl/5.10/CORE/opnames.h:114: error: 'OP_NOT' has a
+    previous declaration as 'opcode OP_NOT'
+
+tsssk. This is annoying as both files (and therefore both
+declarations) are included in the build step. Another reason for
+introducing namespaces in the EMBOSS libraries.
+
+SWIG has several tactics for fighting this type of conflict. Important
+are the %ignore and %rename directives. These work at the level of
+generated SWIG bindings. Here that does not work. The third tactic is
+to be precise in what files to include. Which is kinda hard here too.
+The forth tactic is to trick the C compiler by using #define
+statements. This may work here as these definitions are used
+internally. So let's try renaming OP_NOT to EMBOSS_OP_NOT in the
+perl_emboss.i file. And, yes, the conflict is gone! There are a few
+others we need to rename, and perl_emboss.i becomes:
+
+  %module emboss
+  %{
+    #define OP_NOT SWIG_EMBOSS_OP_NOT 
+    #define OP_REF SWIG_EMBOSS_OP_REF
+    #define OP_REVERSE SWIG_EMBOSS_OP_REVERSE
+    #define OP_ONCE SWIG_EMBOSS_OP_ONCE
+  %}
+  %include ../../emboss.i
+
+unfortunately, for the C++ mapping, we find the same type of problem
+as with Ruby:
+
+  /home/wrk/izip/git/opensource/biolib/src/mappings/swig/perl/emboss/perl_embossPERL_wrap.cxx:2238: error: invalid static_cast from type 'AjOStr*' to type 'const AjOStr*&amp;'
+
+now involving the line
+
+  ST(argvi) = SWIG_NewPointerObj((new AjPStr(static_cast&lt; const AjPStr&amp; &gt;(result))), SWIGTYPE_p_AjPStr, SWIG_POINTER_OWN | 0); argvi++ ;
+
+it is logical that you cannot cast to a const. The correct use of
+'const' by EMBOSS in function declaration is biting use here, as SWIG
+needs to convert stuff to proper Perl data structures. So I am going
+to do something really ugly here. I am going to undefine 'const' in
+perl_emboss.i, so it has
+
+    #define const
+
+I know, I know. But you know what. It compiles (I could have done the
+same trick with Ruby). The final version of perl_emboss.i can be
+found here:
+
+  http://github.com/pjotrp/biolib/blob/emboss/src/mappings/swig/perl/emboss/perl_emboss.i
+
+This leaves writing an integration test. This reads like:
+
+
+  BEGIN{unshift(@INC, &quot;../emboss&quot;)};
+  use biolib::emboss;
+  $ENV{'DATA'} = &quot;../../../../test/data/emboss/&quot;;
+  $trnTable = emboss::ajTrnNewI(1);
+  $ajpseq   = emboss::ajSeqNewNameC(&quot;AGCT&quot;,&quot;Test sequence&quot;);
+  $ajpseqt  = emboss::ajTrnSeqOrig($trnTable,$ajpseq,1);
+  $aa       = emboss::ajSeqGetSeqCopyC($ajpseqt);
+  exit ($result != &quot;SX&quot;);
+
+
+and see how this compares to the Ruby version earlier. Goes without
+saying the test works. You can run it with either
+
+  perl ../test/test_emboss.pl
+
+or 
+
+  make test
+
+from the emboss Perl swig module directory.
+
+I followed with the Python module, and after the experience of both
+Ruby and Perl modules, this took only a few minutes. There was one
+error
+ 
+  ImportError: ../emboss/biolib/_emboss.so: undefined symbol: ajSeqmolGetDdbj
+
+The EMBOSS include file says it is a prototype and &quot;These prototypes
+do not have any corresponding .c code&quot;.  You can see, every module has
+its own smallish issues - apparently the Python mapping requires more
+explicit treatment. We'll just add an %ignore ajSeqmolGetDdbj in
+perl_emboss.i for Python.
+
+The final mapping is in 
+
+  http://github.com/pjotrp/biolib/tree/emboss/src/mappings/swig/python/emboss/
+
+and the integration test is in:
+
+  http://github.com/pjotrp/biolib/tree/emboss/src/mappings/swig/python/test/test_emboss.py
+
+and reads
+
+
+  sys.path += ['../emboss']
+  import biolib.emboss as emboss
+  os.environ[&quot;DATA&quot;] = &quot;../../../../test/data/emboss/&quot;
+  trnTable = emboss.ajTrnNewI(1);
+  ajpseq   = emboss.ajSeqNewNameC(&quot;AGCT&quot;,&quot;Test sequence&quot;)
+  ajpseqt  = emboss.ajTrnSeqOrig(trnTable,ajpseq,1)
+  aa       = emboss.ajSeqGetSeqCopyC(ajpseqt)
+
+
+== Finalizing documentation ==
+
+Documentation is (currently) the achilles heel for Biolib. I would
+like to have automatic documentation for these 400 mapped functions
+in the three different languages. A Perl user wants to have Perl
+documentation. A Python user wants to have Python documentation.
+Ideally this would be achieved from a single source base.
+
+SWIG can generate XML output of the methods and parameters. That
+would allow automatic creation of the call interfaces. Meanwhile I 
+would like fetch the comments in the original C files and get them
+included also. Also I would like extra comments to be fetched from a
+Biolib document file. 
+
+That is what I need to do before we go for a full release.
+
+== Conclusion ==
+
+While this is one function only - it was still faster to map with
+Biolib than write from scratch. Now I have well tested and performant
+functionality with 20 translation tables I can use for different
+species, with over 400 functions thrown in. Not a bad deal. And, with
+the Ruby mapping I also have Perl and Python mappings. In the short
+term this may not be so important to a Ruby person, but it is
+important that more people use this code - if only to weed out bugs.
+By adding bindings to other languages your mappings reach a much
+larger audience. The more eyes, the better.
+
+For more complicated code this pays of a lot faster. And, now I have
+done one mapping, it should be trivial to add others.
+
+This (partial) mapping of EMBOSS was not the easiest mapping I have
+done. The architecture of the file layout could be improved to
+facilitate mapping with SWIG. I am going to ask the EMBOSS people to
+collaborate on that point. These mapped functions are deeper functions
+inside the EMBOSS libraries. To create functions that behave like the 
+binary programs we'll have to split out functionality from the main()
+routines.
+
+I also had a look at the Bio::Emboss package for Perl which is a
+native (Perl XS) mapping to EMBOSS, unlike all other Perl, Python and
+Ruby packages which simply call the binary programs. The CPAN test
+suite tells me it is broken. The BioPerl site has it like this:
+XS-based Perl modules that interacts with the EMBOSS packages exist
+which are not directly related to BioPerl (Bio::Emboss). Not much is
+known about them, but they appear to be regularly maintained. Some
+googling does not point me to a supportive mailing list or anything.
+My opinion is that PerlXS is not the way to handle this mapping
+problem - it used to be the only way with Perl, now SWIG is a much
+better idea.
+
+== Comments on EMBOSS ==
+
+=== Splitting out of main ===
+
+The main() routines should contain no logic, other than getting the
+parameters from the command line and calling into library functions.
+The current setup makes it hard to map EMBOSS against interpreted
+languages as first-class methods. My suggestion would be to add
+another layer. So have transeq_main.c and transeq.c, where the former
+contains nothing in terms of real functionality. If EMBOSS gives an
+example I am happy to make changes and send them upstream when
+applicable. Also it is important to allow function calls without use
+of ACD files.
+
+=== Naming of methods ===
+
+The EMBOSS code is well written, as far as I have studied it. It
+conforms to my mantra that 'code should document itself'. However, I
+would suggest a few changes.
+
+First namespaces. Rather than AjSSeqXref - why not drop the Aj in
+favour of a proper name space. All these prepends make the reading of
+code harder. This is a form of obfuscation that is easily prevented.
+And in EMBOSS it seems everything is prepended with Aj or aj.
+
+Next thing is the camel case. I think camel case for typedefs,
+structs and classes is a good idea. But for variable names and method
+names it reads easier to use lower case with separators. I.e. I
+belive the Ruby style reads better than the (unfortunately ubiquous)
+JAVA style. Splitting out the use of camel case makes the code even
+easier to understand.
+
+This point can be argued a long time, and I have done so with others,
+but let me state here I think there is room for improving readability
+of the code, even when applauding the consistency of the naming in the
+code base.</text>
+    </revision>
+  </page>
+</mediawiki>

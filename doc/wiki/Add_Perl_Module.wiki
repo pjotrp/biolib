@@ -1,0 +1,42 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>BioLib</sitename>
+    <base>http://biolib.open-bio.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.15.1</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">BioLib</namespace>
+      <namespace key="5">BioLib talk</namespace>
+      <namespace key="6">File</namespace>
+      <namespace key="7">File talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Add Perl Module</title>
+    <id>24</id>
+    <revision>
+      <id>224</id>
+      <timestamp>2009-05-05T22:19:09Z</timestamp>
+      <contributor>
+        <username>Pjotrp</username>
+        <id>2</id>
+      </contributor>
+      <comment>New page: See [[Add Ruby Module]]</comment>
+      <text xml:space="preserve">See [[Add Ruby Module]]</text>
+    </revision>
+  </page>
+</mediawiki>

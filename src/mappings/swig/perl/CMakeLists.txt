@@ -9,3 +9,11 @@ endif (BLD_AFFYIO)
 if (BLD_STADEN)
   add_subdirectory (staden_io_lib)
 endif (BLD_STADEN)
+
+if (BLD_EMBOSS)
+  add_subdirectory (emboss)
+endif (BLD_EMBOSS)
+
+if (BLD_LIBSEQUENCE)
+  add_subdirectory (libsequence)
+endif (BLD_LIBSEQUENCE)

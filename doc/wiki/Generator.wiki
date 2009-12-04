@@ -1,0 +1,45 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.3/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.3/ http://www.mediawiki.org/xml/export-0.3.xsd" version="0.3" xml:lang="en">
+  <siteinfo>
+    <sitename>BioLib</sitename>
+    <base>http://biolib.open-bio.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.15.1</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2">Media</namespace>
+      <namespace key="-1">Special</namespace>
+      <namespace key="0" />
+      <namespace key="1">Talk</namespace>
+      <namespace key="2">User</namespace>
+      <namespace key="3">User talk</namespace>
+      <namespace key="4">BioLib</namespace>
+      <namespace key="5">BioLib talk</namespace>
+      <namespace key="6">File</namespace>
+      <namespace key="7">File talk</namespace>
+      <namespace key="8">MediaWiki</namespace>
+      <namespace key="9">MediaWiki talk</namespace>
+      <namespace key="10">Template</namespace>
+      <namespace key="11">Template talk</namespace>
+      <namespace key="12">Help</namespace>
+      <namespace key="13">Help talk</namespace>
+      <namespace key="14">Category</namespace>
+      <namespace key="15">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Generator</title>
+    <id>15</id>
+    <revision>
+      <id>112</id>
+      <timestamp>2008-08-20T14:55:47Z</timestamp>
+      <contributor>
+        <username>Pjotrp</username>
+        <id>2</id>
+      </contributor>
+      <text xml:space="preserve">For repetitive tasks it is useful to use macro's and/or generators. BioLib leans on CMake as a macro type build platform and SWIG as a macro language for generating mappings between high level languages and low-level C/C++ libraries. A generator would be useful to create new mappings and build tools based on a C module. For example:
+
+  generate_mapping src/clibs/affyio/src/biolib.h
+
+should be able to generate the CMake files and SWIG wrappers for that particular module as all the required information is available in that one file.</text>
+    </revision>
+  </page>
+</mediawiki>

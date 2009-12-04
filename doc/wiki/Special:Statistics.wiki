@@ -3,104 +3,79 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta name="generator" content="MediaWiki 1.13.5" />
+		<meta http-equiv="Content-Style-Type" content="text/css" />
+		<meta name="generator" content="MediaWiki 1.15.1" />
 		<meta name="robots" content="noindex,nofollow" />
-		<meta name="keywords" content="Special:Statistics,Main Page,SWIG,Supported data types,BioLib best practises,Road map,Interesting libraries,NIX,Add C Library,BioLib Affymetrix,CMake" />
 		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="BioLib (en)" />
-		<link rel="alternate" type="application/rss+xml" title="BioLib RSS Feed" href="http://biolib.open-bio.org/w/index.php?title=Special:RecentChanges&amp;feed=rss" />
-		<link rel="alternate" type="application/atom+xml" title="BioLib Atom Feed" href="http://biolib.open-bio.org/w/index.php?title=Special:RecentChanges&amp;feed=atom" />
+		<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="&amp;lt;opensearch-desc&amp;gt;" />
+		<link rel="alternate" type="application/rss+xml" title="BioLib RSS Feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=rss" />
+		<link rel="alternate" type="application/atom+xml" title="BioLib Atom Feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom" />
 		<title>Statistics - BioLib</title>
-		<style type="text/css" media="screen, projection">/*<![CDATA[*/
-			@import "/w/skins/common/shared.css?164";
-			@import "/w/skins/monobook/main.css?164";
-		/*]]>*/</style>
-		<link rel="stylesheet" type="text/css" media="print" href="/w/skins/common/commonPrint.css?164" />
-		<!--[if lt IE 5.5000]><style type="text/css">@import "/w/skins/monobook/IE50Fixes.css?164";</style><![endif]-->
-		<!--[if IE 5.5000]><style type="text/css">@import "/w/skins/monobook/IE55Fixes.css?164";</style><![endif]-->
-		<!--[if IE 6]><style type="text/css">@import "/w/skins/monobook/IE60Fixes.css?164";</style><![endif]-->
-		<!--[if IE 7]><style type="text/css">@import "/w/skins/monobook/IE70Fixes.css?164";</style><![endif]-->
-		<!--[if lt IE 7]><script type="text/javascript" src="/w/skins/common/IEFixes.js?164"></script>
+		<link rel="stylesheet" href="/w/skins/common/shared.css?207" type="text/css" media="screen" />
+		<link rel="stylesheet" href="/w/skins/common/commonPrint.css?207" type="text/css" media="print" />
+		<link rel="stylesheet" href="/w/skins/monobook/main.css?207" type="text/css" media="screen" />
+		<!--[if lt IE 5.5000]><link rel="stylesheet" href="/w/skins/monobook/IE50Fixes.css?207" type="text/css" media="screen" /><![endif]-->
+		<!--[if IE 5.5000]><link rel="stylesheet" href="/w/skins/monobook/IE55Fixes.css?207" type="text/css" media="screen" /><![endif]-->
+		<!--[if IE 6]><link rel="stylesheet" href="/w/skins/monobook/IE60Fixes.css?207" type="text/css" media="screen" /><![endif]-->
+		<!--[if IE 7]><link rel="stylesheet" href="/w/skins/monobook/IE70Fixes.css?207" type="text/css" media="screen" /><![endif]-->
+		<link rel="stylesheet" href="/w/index.php?title=MediaWiki:Common.css&amp;usemsgcache=yes&amp;ctype=text%2Fcss&amp;smaxage=18000&amp;action=raw&amp;maxage=18000" type="text/css" />
+		<link rel="stylesheet" href="/w/index.php?title=MediaWiki:Print.css&amp;usemsgcache=yes&amp;ctype=text%2Fcss&amp;smaxage=18000&amp;action=raw&amp;maxage=18000" type="text/css" media="print" />
+		<link rel="stylesheet" href="/w/index.php?title=MediaWiki:Monobook.css&amp;usemsgcache=yes&amp;ctype=text%2Fcss&amp;smaxage=18000&amp;action=raw&amp;maxage=18000" type="text/css" />
+		<link rel="stylesheet" href="/w/index.php?title=-&amp;action=raw&amp;maxage=18000&amp;gen=css" type="text/css" />
+		<!--[if lt IE 7]><script type="text/javascript" src="/w/skins/common/IEFixes.js?207"></script>
 		<meta http-equiv="imagetoolbar" content="no" /><![endif]-->
-		
+
 		<script type= "text/javascript">/*<![CDATA[*/
-var skin = "monobook";
-var stylepath = "/w/skins";
-var wgArticlePath = "/wiki/$1";
-var wgScriptPath = "/w";
-var wgScript = "/w/index.php";
-var wgVariantArticlePath = false;
-var wgActionPaths = [];
-var wgServer = "http://biolib.open-bio.org";
-var wgCanonicalNamespace = "Special";
-var wgCanonicalSpecialPageName = "Statistics";
-var wgNamespaceNumber = -1;
-var wgPageName = "Special:Statistics";
-var wgTitle = "Statistics";
-var wgAction = "view";
-var wgArticleId = 0;
-var wgIsArticle = false;
-var wgUserName = null;
-var wgUserGroups = null;
-var wgUserLanguage = "en";
-var wgContentLanguage = "en";
-var wgBreakFrames = false;
-var wgCurRevisionId = 0;
-var wgVersion = "1.13.5";
-var wgEnableAPI = true;
-var wgEnableWriteAPI = false;
-var wgRestrictionEdit = [];
-var wgRestrictionMove = [];
-/*]]>*/</script>
-                
-		<script type="text/javascript" src="/w/skins/common/wikibits.js?164"><!-- wikibits js --></script>
+		var skin = "monobook";
+		var stylepath = "/w/skins";
+		var wgArticlePath = "/wiki/$1";
+		var wgScriptPath = "/w";
+		var wgScript = "/w/index.php";
+		var wgVariantArticlePath = false;
+		var wgActionPaths = {};
+		var wgServer = "http://biolib.open-bio.org";
+		var wgCanonicalNamespace = "Special";
+		var wgCanonicalSpecialPageName = "Statistics";
+		var wgNamespaceNumber = -1;
+		var wgPageName = "Special:Statistics";
+		var wgTitle = "Statistics";
+		var wgAction = "view";
+		var wgArticleId = 0;
+		var wgIsArticle = false;
+		var wgUserName = null;
+		var wgUserGroups = null;
+		var wgUserLanguage = "en";
+		var wgContentLanguage = "en";
+		var wgBreakFrames = false;
+		var wgCurRevisionId = 0;
+		var wgVersion = "1.15.1";
+		var wgEnableAPI = true;
+		var wgEnableWriteAPI = true;
+		var wgSeparatorTransformTable = ["", ""];
+		var wgDigitTransformTable = ["", ""];
+		var wgRestrictionEdit = [];
+		var wgRestrictionMove = [];
+		/*]]>*/</script>
+
+		<script type="text/javascript" src="/w/skins/common/wikibits.js?207"><!-- wikibits js --></script>
 		<!-- Head Scripts -->
-		<script type="text/javascript" src="/w/skins/common/ajax.js?164"></script>
+		<script type="text/javascript" src="/w/skins/common/ajax.js?207"></script>
 		<script type="text/javascript" src="/w/index.php?title=-&amp;action=raw&amp;gen=js&amp;useskin=monobook"><!-- site js --></script>
-		<style type="text/css">/*<![CDATA[*/
-@import "/w/index.php?title=MediaWiki:Common.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
-@import "/w/index.php?title=MediaWiki:Monobook.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
-@import "/w/index.php?title=-&action=raw&gen=css&maxage=18000&useskin=monobook";
-/*]]>*/</style>
 	</head>
-<body class="mediawiki ns--1 ltr page-Special_Statistics">
+<body class="mediawiki ltr ns--1 ns-special page-Special_Statistics skin-monobook">
 	<div id="globalWrapper">
 		<div id="column-content">
 	<div id="content">
 		<a name="top" id="top"></a>
-				<h1 class="firstHeading">Statistics</h1>
+				<h1 id="firstHeading" class="firstHeading">Statistics</h1>
 		<div id="bodyContent">
 			<h3 id="siteSub">From BioLib</h3>
 			<div id="contentSub"></div>
 									<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>			<!-- start content -->
-			<a name="BioLib_statistics"></a><h2> <span class="mw-headline">BioLib statistics</span></h2>
-<p>There are <b>25</b> total pages in the database.
-This includes "talk" pages, pages about BioLib, minimal "stub" pages, redirects, and others that probably do not qualify as content pages.
-Excluding those, there are <b>14</b> pages that are probably legitimate content pages.
-</p><p><b>0</b> files have been uploaded.
-</p><p>There have been a total of <b>4,725</b> page views, and <b>266</b> page edits since BioLib was setup.
-That comes to <b>10.64</b> average edits per page, and <b>17.76</b> views per edit.
-</p><p>The <a href="http://www.mediawiki.org/wiki/Manual:Job_queue" class="external text" title="http://www.mediawiki.org/wiki/Manual:Job_queue" rel="nofollow">job queue</a> length is <b>0</b>.
-</p>
-<a name="User_statistics"></a><h2> <span class="mw-headline">User statistics</span></h2>
-<p>There are <b>6</b> registered <a href="/wiki/Special:ListUsers" title="Special:ListUsers">users</a>, of which <b>3</b> (or <b>50.00%</b>) have <a href="/w/index.php?title=BioLib:Administrators&amp;action=edit&amp;redlink=1" class="new" title="BioLib:Administrators (not yet written)">Sysops</a> rights.
-</p>
-<a name="Most_viewed_pages"></a><h2> <span class="mw-headline">Most viewed pages</span></h2>
-<ul><li> <a href="/wiki/Main_Page" title="Main Page">Main Page</a> (1,727)
-</li><li> <a href="/wiki/BioLib_Affymetrix" title="BioLib Affymetrix">BioLib Affymetrix</a> (494)
-</li><li> <a href="/wiki/Add_C_Library" title="Add C Library">Add C Library</a> (406)
-</li><li> <a href="/wiki/Road_map" title="Road map">Road map</a> (317)
-</li><li> <a href="/wiki/NIX" title="NIX">NIX</a> (305)
-</li><li> <a href="/wiki/Interesting_libraries" title="Interesting libraries">Interesting libraries</a> (237)
-</li><li> <a href="/wiki/SWIG" title="SWIG">SWIG</a> (194)
-</li><li> <a href="/wiki/BioLib_best_practises" title="BioLib best practises">BioLib best practises</a> (161)
-</li><li> <a href="/wiki/Supported_data_types" title="Supported data types">Supported data types</a> (144)
-</li><li> <a href="/wiki/CMake" title="CMake">CMake</a> (111)
-</li></ul>
-<div class="printfooter">
+			<table class="mw-statistics-table"><tr><th colspan="2">Page statistics</th></tr><tr class="mw-statistics-articles"><td>Content pages</td><td class="mw-statistics-numbers">15</td></tr><tr class="mw-statistics-pages"><td>Pages<br /><small class="mw-statistic-desc"> (All pages in the wiki, including talk pages, redirects, etc.)</small></td><td class="mw-statistics-numbers">30</td></tr><tr class="mw-statistics-files"><td>Uploaded files</td><td class="mw-statistics-numbers">0</td></tr><tr><th colspan="2">Edit statistics</th></tr><tr class="mw-statistics-edits"><td>Page edits since BioLib was set up</td><td class="mw-statistics-numbers">323</td></tr><tr class="mw-statistics-edits-average"><td>Average edits per page</td><td class="mw-statistics-numbers">10.77</td></tr><tr class="mw-statistics-jobqueue"><td><a href="http://www.mediawiki.org/wiki/Manual:Job_queue" class="external text" title="http://www.mediawiki.org/wiki/Manual:Job_queue" rel="nofollow">Job queue</a> length</td><td class="mw-statistics-numbers">0</td></tr><tr><th colspan="2">User statistics</th></tr><tr class="mw-statistics-users"><td>Registered <a href="/wiki/Special:ListUsers" title="Special:ListUsers">users</a></td><td class="mw-statistics-numbers">8</td></tr><tr class="mw-statistics-users-active"><td>Active users<br /><small class="mw-statistic-desc"> (Users who have performed an action in the last 7 days)</small></td><td class="mw-statistics-numbers">3</td></tr><tr class="statistics-group-bot statistics-group-zero"><td><a href="/w/index.php?title=BioLib:Bots&amp;action=edit&amp;redlink=1" class="new" title="BioLib:Bots (page does not exist)">Bots</a> <a href="/w/index.php?title=Special:ListUsers&amp;group=bot" title="Special:ListUsers">(list of members)</a></td><td class="mw-statistics-numbers">0</td></tr><tr class="statistics-group-sysop"><td><a href="/w/index.php?title=BioLib:Administrators&amp;action=edit&amp;redlink=1" class="new" title="BioLib:Administrators (page does not exist)">Administrators</a> <a href="/w/index.php?title=Special:ListUsers&amp;group=sysop" title="Special:ListUsers">(list of members)</a></td><td class="mw-statistics-numbers">3</td></tr><tr class="statistics-group-bureaucrat"><td><a href="/w/index.php?title=BioLib:Bureaucrats&amp;action=edit&amp;redlink=1" class="new" title="BioLib:Bureaucrats (page does not exist)">Bureaucrats</a> <a href="/w/index.php?title=Special:ListUsers&amp;group=bureaucrat" title="Special:ListUsers">(list of members)</a></td><td class="mw-statistics-numbers">2</td></tr><tr><th colspan="2">View statistics</th></tr><tr class="mw-statistics-views-total"><td>Views total</td><td class="mw-statistics-numbers">7,746</td></tr><tr class="mw-statistics-views-peredit"><td>Views per edit</td><td class="mw-statistics-numbers">23.98</td></tr><th colspan="2">Most viewed pages</th><tr><td><a href="/wiki/Main_Page" title="Main Page">Main Page</a></td><td class="mw-statistics-numbers">2,721</td></tr><tr><td><a href="/wiki/BioLib_Affymetrix" title="BioLib Affymetrix">BioLib Affymetrix</a></td><td class="mw-statistics-numbers">603</td></tr><tr><td><a href="/wiki/Add_C_Library" title="Add C Library">Add C Library</a></td><td class="mw-statistics-numbers">502</td></tr><tr><td><a href="/wiki/NIX" title="NIX">NIX</a></td><td class="mw-statistics-numbers">461</td></tr><tr><td><a href="/wiki/Road_map" title="Road map">Road map</a></td><td class="mw-statistics-numbers">441</td></tr><tr><td><a href="/wiki/Interesting_libraries" title="Interesting libraries">Interesting libraries</a></td><td class="mw-statistics-numbers">345</td></tr><tr><td><a href="/wiki/SWIG" title="SWIG">SWIG</a></td><td class="mw-statistics-numbers">307</td></tr><tr><td><a href="/wiki/BioLib_best_practises" title="BioLib best practises">BioLib best practises</a></td><td class="mw-statistics-numbers">268</td></tr><tr><td><a href="/wiki/Supported_data_types" title="Supported data types">Supported data types</a></td><td class="mw-statistics-numbers">244</td></tr><tr><td><a href="/wiki/CMake" title="CMake">CMake</a></td><td class="mw-statistics-numbers">207</td></tr></table><div class="printfooter">
 Retrieved from "<a href="http://biolib.open-bio.org/wiki/Special:Statistics">http://biolib.open-bio.org/wiki/Special:Statistics</a>"</div>
 						<!-- end content -->
-			<div class="visualClear"></div>
+						<div class="visualClear"></div>
 		</div>
 	</div>
 		</div>
@@ -110,39 +85,27 @@ Retrieved from "<a href="http://biolib.open-bio.org/wiki/Special:Statistics">htt
 		<div class="pBody">
 			<ul>
 	
-				 <li id="ca-nstab-special" class="selected"><a href="/wiki/Special:Statistics" title="This is a special page, you cannot edit the page itself">Special</a></li>			</ul>
+				 <li id="ca-nstab-special" class="selected"><a href="/wiki/Special:Statistics" title="This is a special page, you cannot edit the page itself">Special page</a></li>			</ul>
 		</div>
 	</div>
 	<div class="portlet" id="p-personal">
 		<h5>Personal tools</h5>
 		<div class="pBody">
 			<ul>
-				<li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Special:Statistics" title="You are encouraged to log in, it is not mandatory however. [o]" accesskey="o">Log in / create account</a></li>
+				<li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Special:Statistics" title="You are encouraged to log in; however, it is not mandatory">Log in / create account</a></li>
 			</ul>
 		</div>
 	</div>
 	<div class="portlet" id="p-logo">
-		<a style="background-image: url(/w/images/logo/biolib1.png);" href="/wiki/Main_Page" title="Visit the Main Page [z]" accesskey="z"></a>
+		<a style="background-image: url(/w/images/logo/biolib1.png);" href="/wiki/Main_Page" title="Visit the main page"></a>
 	</div>
 	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
-	<div class='generated-sidebar portlet' id='p-navigation'>
-		<h5>Navigation</h5>
-		<div class='pBody'>
-			<ul>
-				<li id="n-mainpage-description"><a href="/wiki/Main_Page">Main Page</a></li>
-				<li id="n-portal"><a href="/wiki/BioLib:Community_Portal" title="About the project, what you can do, where to find things">Community portal</a></li>
-				<li id="n-currentevents"><a href="/wiki/BioLib:Current_events" title="Find background information on current events">Current events</a></li>
-				<li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="The list of recent changes in the wiki. [r]" accesskey="r">Recent changes</a></li>
-				<li id="n-randompage"><a href="/wiki/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
-				<li id="n-help"><a href="/wiki/Help:Contents" title="The place to find out.">Help</a></li>
-			</ul>
-		</div>
-	</div>
 	<div id="p-search" class="portlet">
 		<h5><label for="searchInput">Search</label></h5>
 		<div id="searchBody" class="pBody">
-			<form action="/wiki/Special:Search" id="searchform"><div>
-				<input id="searchInput" name="search" type="text" title="Search BioLib [f]" accesskey="f" value="" />
+			<form action="/w/index.php" id="searchform"><div>
+				<input type='hidden' name="title" value="Special:Search"/>
+				<input id="searchInput" name="search" type="text" title="Search BioLib" value="" />
 				<input type='submit' name="go" class="searchButton" id="searchGoButton"	value="Go" title="Go to a page with this exact name if exists" />&nbsp;
 				<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="Search" title="Search the pages for this text" />
 			</div></form>
@@ -152,7 +115,7 @@ Retrieved from "<a href="http://biolib.open-bio.org/wiki/Special:Statistics">htt
 		<h5>Toolbox</h5>
 		<div class="pBody">
 			<ul>
-<li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="List of all special pages [q]" accesskey="q">Special pages</a></li>
+<li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="List of all special pages">Special pages</a></li>
 			</ul>
 		</div>
 	</div>
@@ -161,12 +124,12 @@ Retrieved from "<a href="http://biolib.open-bio.org/wiki/Special:Statistics">htt
 			<div id="footer">
 				<div id="f-poweredbyico"><a href="http://www.mediawiki.org/"><img src="/w/skins/common/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" /></a></div>
 			<ul id="f-list">
-				<li id="privacy"><a href="/wiki/BioLib:Privacy_policy" title="BioLib:Privacy policy">Privacy policy</a></li>
-				<li id="about"><a href="/wiki/BioLib:About" title="BioLib:About">About BioLib</a></li>
-				<li id="disclaimer"><a href="/wiki/BioLib:General_disclaimer" title="BioLib:General disclaimer">Disclaimers</a></li>
+					<li id="privacy"><a href="/wiki/BioLib:Privacy_policy" title="BioLib:Privacy policy">Privacy policy</a></li>
+					<li id="about"><a href="/wiki/BioLib:About" title="BioLib:About">About BioLib</a></li>
+					<li id="disclaimer"><a href="/wiki/BioLib:General_disclaimer" title="BioLib:General disclaimer">Disclaimers</a></li>
 			</ul>
 		</div>
 </div>
 
 		<script type="text/javascript">if (window.runOnloadHook) runOnloadHook();</script>
-<!-- Served in 0.356 secs. --></body></html>
+<!-- Served in 0.416 secs. --></body></html>

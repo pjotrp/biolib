@@ -14,6 +14,10 @@ if (BLD_STADEN)
   add_subdirectory (staden_io_lib)
 endif (BLD_STADEN)
 
+if (BLD_EMBOSS)
+  add_subdirectory (emboss)
+endif (BLD_EMBOSS)
+
 if (BLD_RQTL)
   add_subdirectory (biolib_R)
   add_subdirectory (rqtl)

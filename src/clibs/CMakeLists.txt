@@ -21,6 +21,18 @@ if (BLD_STADEN)
   add_subdirectory (staden_io_lib-1.11.6/io_lib)
 endif()
 
+if (BLD_EMBOSS)
+  add_subdirectory (emboss/src)
+endif (BLD_EMBOSS)
+
 if (BLD_RQTL)
   add_subdirectory (rqtl/contrib/biolib)
+<<<<<<< HEAD:src/clibs/CMakeLists.txt
 endif()
+=======
+endif (BLD_RQTL)
+
+if (BLD_LIBSEQUENCE)
+  add_subdirectory (libsequence-1.6.6/src)
+endif (BLD_LIBSEQUENCE)
+>>>>>>> emboss:src/clibs/CMakeLists.txt
