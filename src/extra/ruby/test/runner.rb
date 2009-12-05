@@ -20,7 +20,7 @@ Dir.chdir(cwd)
 $UNITTEST=true
 
 require 'test/unit'
-require 'test_fasta'
+# require 'test_fasta'
 require 'test_rqtl'
 require 'test_rqtl_mqm'
 
