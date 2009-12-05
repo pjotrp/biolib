@@ -21,31 +21,38 @@ if $UNITTEST
 
 =begin
 
-Here we load the R/qtl Listeria dataset (from a CSV) and verify the resulting
-information matches that of the R version (see RQTL book page 46). In R we
-would do:
+QTL mapping using R/qtl scanone from Ruby
+
+(Copyright (C) 2009 Pjotr Prins, Nematology, Wageningen University and
+Groningen Bioinformatics Center)
+
+We start by loading the R/qtl Listeria dataset (from a CSV file) and verify the
+resulting information matches that of the R version (see Karl Bromans excellent
+R/qtl book page 46). In R the instruction is:
   
   > library(qtl)
   > data(listeria)
   > mr = scanone(listeria,"mr")
 
-Find the special classes for loading QTL input files (part of BioLib 'extra').
+In Ruby we first find the special classes for loading QTL input files (part of
+BioLib 'extra').
 
   >> $: << '..'
   >> require 'qtl/rqtl'
 
-Locate the Listeria input file
+And need to locate the Listeria input file
  
   >> DIR = '../../../test/data/qtl'
   >> LISTERIA  = DIR+'/listeria.csv'
   >> File.exist?(LISTERIA)
   => true
 
-Load the Listeria CSV file into a QTL object
+Parse the Listeria CSV file into a QTL object
 
   >> qtl = QTL.new(LISTERIA)
 
-You can also provide the allowed genotypes:
+You can also provide the allowed genotypes for validation of the input 
+file:
 
   >> validate = QtlValidateGenotypes.new(['A','B'],['A','H','B','D','C'],['-','NA'])
   >> qtl = QTL.new(LISTERIA,validate)
@@ -57,21 +64,21 @@ R/qtl makes it an F2 intercross based on the number of genotypes
   >> d.type
   => :f2
 
-Here we get information from the data object. There are two 'styles'. One is
-standard Ruby's principles of least surprise. The other is the one used by
-R/qtl.
+Now we can fetch information about the data object. There are two 'styles'. One
+follows Ruby's principles of least surprise. The other style is more native
+to R/qtl.
 
-Return the number of individuals
+Return the number of individuals (Ruby style)
 
   >> d.individuals.size
   => 120
 
-The short R/qtl notation - get number of individuals
+The short R/qtl style reads
 
   >> d.nind
   => 120
 
-Number of phenotypes (T264. R/qtl adds sex and pgm automagically)
+Number of phenotypes (phenotype T264. R/qtl adds sex and pgm automagically)
 
   >> d.phenotypenames.size
   => 1
@@ -116,9 +123,9 @@ Find marker by name
   >> d.markers['D1M3'].mid
   => 1
 
-Markers carry an indexed 'mid'. This is really superfluous when genome 
-information is available on marker positions. But it can be useful to speed
-queries up:
+Markers carry an indexed marker ID named 'mid'. This is really superfluous when
+genome information is available on marker positions. But it can be useful to
+speed queries up:
 
 Find marker by index ('mid')
 
@@ -145,7 +152,8 @@ or the equivalent
   >> d.markers.size
   => 133
 
-Now create an ordered map of markers:
+Now create an ordered map of markers and their (estimated) recombination
+rates:
 
   >> map = QtlMap.new(d.markers)
   >> map.size
@@ -528,7 +536,7 @@ Now for the multiple imputation method by Sen and Churchill (2001). In R:
     > out.imp[555,]
     > cX.loc17.5   X 17.5 0.3018425
 
-The Ruby equivalent is:
+The Ruby equivalent is (FIXME: this is not working for some reason)
 
     >> rqtl.expand_markers!(2.5)
     !>> mr = rqtl.scanone_imp(rqtl.sim_geno(8))
