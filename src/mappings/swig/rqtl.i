@@ -9,5 +9,6 @@
   #include <mqmprob.h>
 %}
 
+%include <scanone_mr.h>
 %include <mqmdatatypes.h>
 %include <mqmprob.h>
