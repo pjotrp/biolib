@@ -1,5 +1,3 @@
-# Module CMake file - builds library in ./contrib
-
 cmake_minimum_required(VERSION 2.6)
 
 PROJECT(Biolib_emboss)
