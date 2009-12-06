@@ -21,15 +21,7 @@ if $UNITTEST
 
 =begin
 
-Here we load the R/qtl Listeria dataset (from a CSV) and verify the resulting
-information matches that of the R version (see RQTL book page 46). In R we
-would do:
-  
-  > library(qtl)
-  > data(listeria)
-  > mr = scanone(listeria,"mr")
-
-Find the special classes for loading QTL input files (part of BioLib 'extra').
+Like with the R/qtl scanone example we load the R/qtl Listeria dataset (from a CSV).
 
   >> $: << '..'
   >> require 'qtl/rqtl'
@@ -45,21 +37,17 @@ Load the Listeria CSV file into a QTL object
 
   >> qtl = QTL.new(LISTERIA)
 
-You can also provide the allowed genotypes:
+Alternatively provide the allowed genotypes for validation
 
   >> validate = QtlValidateGenotypes.new(['A','B'],['A','H','B','D','C'],['-','NA'])
   >> qtl = QTL.new(LISTERIA,validate)
 
-Fetch the loaded data and check the type (defaults to F2 at this point)
-R/qtl makes it an F2 intercross based on the number of genotypes
+For the heck of it we make sure it is there
 
-  >> d = qtl.data
-  >> d.type
-  => :f2
+  >> d.individuals.size
+  => 120
 
-Here we get information from the data object. There are two 'styles'. One is
-standard Ruby's principles of least surprise. The other is the one used by
-R/qtl. See test_rqtl.rb for more.
+Now we follow the MQM tutorial in FIXME: location
 
 =end
 
