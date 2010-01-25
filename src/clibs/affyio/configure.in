@@ -16,24 +16,36 @@ dnl Are things (still) the same ?
 dnl (taken from the 'writing R extensions manual')
 
 
-dnl
-dnl tests the zlib.h
-dnl (the test is found in 'acinclude.m4')
-dnl
-
 R_ZLIB
+
 
 AC_CHECK_LIB(pthread, pthread_create)
 
 AC_TRY_LINK_FUNC(pthread_create, [use_pthreads=yes], [use_pthreads=no])
 
 AC_MSG_CHECKING([if we can use pthreads])
-if test "x$use_pthreads" = "xyes"
-then
-    LIBS="$LIBS -lpthread"
-    AC_DEFINE(USE_PTHREADS, 1)
-fi
 AC_MSG_RESULT($use_pthreads)
 
-AC_OUTPUT(src/Makevars)
+AC_MSG_CHECKING([if PTHREAD_STACK_MIN is defined])
+AC_COMPILE_IFELSE([
+	#include <pthread.h>
+	#include <limits.h>
 
+      int main () {size_t stacksize = PTHREAD_STACK_MIN + 0x4000;
+}     	  
+    ],[use_pthread_stack_min=yes], [use_pthread_stack_min=no])
+AC_MSG_RESULT($use_pthread_stack_min)
+
+if test "x$use_pthreads" = "xyes"
+then
+if test "x$use_pthread_stack_min" = "xyes"
+    then
+	LIBS="$LIBS -lpthread"
+    	AC_DEFINE(USE_PTHREADS, 1)
+    fi
+fi
+
+
+
+
+AC_OUTPUT(src/Makevars)
