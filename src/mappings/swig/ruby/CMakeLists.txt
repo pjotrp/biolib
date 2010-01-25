@@ -1,3 +1,7 @@
+if (BLD_BIOLIB_CORE)
+  add_subdirectory (biolib_core)
+endif()
+
 if (BLD_EXAMPLE)
   add_subdirectory (example)
 endif (BLD_EXAMPLE)
@@ -15,5 +19,6 @@ if (BLD_EMBOSS)
 endif (BLD_EMBOSS)
 
 if (BLD_RQTL)
+  add_subdirectory (biolib_R)
   add_subdirectory (rqtl)
 endif (BLD_RQTL)

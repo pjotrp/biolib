@@ -32,6 +32,8 @@
     /* len = RARRAY($input)->len; */
     dptr = (type **)malloc(rows*sizeof(type *));
     base = (type *)malloc(len*sizeof(type));
+    if (RARRAY($input)->len != len)
+      rb_raise(rb_eArgError, "Array size incorrect for type **$1_name");
     for (i=0; i<len; i++)
       base[i] = rb_num2dbl(RARRAY($input)->ptr[i]);
     for (row=0; row<rows; row++)

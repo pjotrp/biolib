@@ -10,9 +10,9 @@ extern "C" {
 
   // #include <biolib_error.h>
 
-  // Redefine the R error function
-  #undef error
-  #define error(args...) biolib_fatal(args)
+  // Redefine the R error function FIXME: Remu?
+  // #undef error
+  // #define error(args...) biolib_fatal(args)
 
   void BioLib_R_Init();
   void BioLib_R_Close();

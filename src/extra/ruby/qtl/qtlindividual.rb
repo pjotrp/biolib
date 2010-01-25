@@ -12,7 +12,7 @@ class QtlIndividual
   end
 
   def set_genotype mid, value, genotypeinfo
-    @genotypes.set(mid,value, genotypeinfo)
+    @genotypes.set(mid, value, genotypeinfo)
   end
 
 end
@@ -30,6 +30,11 @@ class QtlIndividuals < Array
 
   def set_genotype ind, mid, value, validategenotypes=nil
     individual(ind).set_genotype(mid, value, validategenotypes)
+  end
+
+  # Return of index
+  def index
+    Array.new(size) {|i| i} 
   end
 
 end

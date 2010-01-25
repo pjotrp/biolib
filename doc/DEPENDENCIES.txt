@@ -10,7 +10,10 @@ but hopefully helps resolve runtime and build issues. Package names
 are Debian names (for now) with the build time dependency between
 braces.
 
-The following shared libraries:
+Biolib dependes on the following shared libraries for the following
+modules:
 
-affyio: zlib (zlib1g-dev on Debian)
-affyio, affy: Rlib (r-base on Debian)
+zlib:    affyio, staden_io
+         (Debian: apt-get install zlib1g-dev)
+Rlib:    affyio, affy
+         (Debian: apt-get install r-base-core)

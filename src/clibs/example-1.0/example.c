@@ -63,3 +63,60 @@ void array_transform_to_result(int num, double *data, double *result)
     result[i] = data[i]+1.0;
 }
 
+/* 
+ * Transform an input array (version one using build-in sizes)
+ */
+
+void array_transform_to_result1(int num, double *data1, double *result)
+{
+  int i;
+  for (i=0; i<num; i++)
+    result[i] = data1[i]+1.5;
+}
+
+/* 
+ * Transform an input array (version two using an argsize dimension)
+ */
+
+void array_transform_to_result2(int num, double *data2, double *result)
+{
+  int i;
+  for (i=0; i<num; i++)
+    result[i] = data2[i]+2.0;
+}
+
+
+/* 
+ * Transform an input array (version three using an argsize dimension 
+ * for the result only)
+ */
+
+void array_transform_to_result3(int num, double *data, double *result)
+{
+  int i;
+  for (i=0; i<num; i++)
+    result[i] = data[i]+2.5;
+}
+
+/*
+ * Fake scanone_mr
+ */
+
+void scanone_mr(int n_ind, int n_pos, int n_gen, int **Geno,
+                double **Addcov, int n_addcov, double **Intcov,
+                int n_intcov, double *pheno, double *weights,
+                double *result)
+{
+  int i,j;
+  printf("\nEntering scanone_mr!");
+  for (i=0; i<n_ind; i++)
+    for (j=0; j<n_pos; j++)
+      printf("%d,",Geno[j][i]);
+  for (i=0; i<n_pos; i++)
+    result[i] = (double)i;
+  printf(" result1<%f>\n",result[1]);
+  result[0] = Geno[2][1]; // marker3, ind1 = 6
+  result[2] = Geno[1][0]; // marker2, ind0 = 3
+
+}
+

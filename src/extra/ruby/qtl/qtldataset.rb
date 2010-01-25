@@ -3,13 +3,14 @@ require 'qtl/qtlphenotype'
 require 'qtl/qtlgenotype'
 require 'qtl/qtlindividual'
 require 'qtl/qtlchromosome'
+require 'qtl/qtlmap'
 require 'qtl/input/qtlnormalize'
 
 class QtlDataset
 
-  include QtlNormalize
+  include QtlNormalize, Contract
 
-  attr_reader :individuals, :markers, :phenotypenames, :chromosomes, :genotypes
+  attr_reader :individuals, :markers, :phenotypenames, :chromosomes, :genotypes, :map
   attr_reader :addcov, :intcov
 
   def initialize validategenotypes=nil
@@ -50,10 +51,18 @@ class QtlDataset
     0
   end
 
-  # Fetch genotype info by individual/marker(or mid)
-  def genotype ind, name
-    name = @markers[name].mid if name.kind_of?(String)
-    @individuals[ind].genotypes[name].value
+  # Fetch genotype info by individual/marker (QtlMarker, name or mid)
+  def genotype ind, m_id
+    contract("Unknown individual #{ind}") { @individuals[ind] != nil }
+    if m_id.kind_of?(QtlMarker)
+      mid = m_id.mid
+    elsif m_id.kind_of?(String)
+      mid = @markers[m_id].mid
+    else
+      mid = m_id
+    end
+    return 'NA' if mid==nil or @individuals[ind].genotypes[mid]==nil
+    @individuals[ind].genotypes[mid].value
   end
 
   # Fetch phenotype info by individual/pid
@@ -91,7 +100,7 @@ class QtlDataset
 
   # Return the type of the experiment as a string
   def type
-    'F2'
+    :f2
   end
 
   def perc_phenotyped
@@ -117,6 +126,9 @@ class QtlDataset
     (c*1000.0/tot_genotypes).round/10.0
   end
 
+  def expand_markers! step
+    @map = QtlMap.new(@markers).expand(step)
+  end
 end
 
 

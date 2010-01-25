@@ -13,11 +13,18 @@
 #
 #
 
-# require 'test/unit'
+# Use runner from its own directory
+cwd = File.dirname(__FILE__)
+Dir.chdir(cwd)
 
-# require 'test_rqtl'
+$UNITTEST=true
+
+require 'test/unit'
+# require 'test_fasta'
+require 'test_rqtl'
+require 'test_rqtl_mqm'
 
 # --- now run the doctests
 
-Kernel.system('../../../../tools/rubydoctest/bin/rubydoctest test_rqtl.rb')
+# Kernel.system('../../../../tools/rubydoctest/bin/rubydoctest test_rqtl.rb')
 

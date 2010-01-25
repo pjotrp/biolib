@@ -1,0 +1,60 @@
+= R with BIOLIB =
+
+At this point Biolib can link against Rlib.so (the R shared library),
+effectively embedding the R environment into Ruby, Perl, Python etc.
+The R environment requires initialization first - which is handled in
+src/clibs/biolib_R/src/biolib_R_map.c with the BioLib_R_Init() method.
+
+Built-in functions can be called, like getting a random gamma distribution: 
+
+> rgamma(1:1,2)
+[1] 0.2774796
+
+Or a gamma value:
+
+> gamma(.5)
+[1] 1.772454
+
+> log1p(1)
+[1] 0.6931472
+
+which equals:
+
+> log(2)
+[1] 0.6931472
+
+
+This was achieved by including Rmath.h in
+./src/mappings/swig/biolib_R.i, which looks something like:
+
+  %{
+    #include <biolib_R_map.h>
+    #include <R_ext/Memory.h>
+    #include <Rmath.h>
+  %}
+
+  %include <biolib_R_map.h>
+  %include <R_ext/Memory.h>
+  %include <Rmath.h>
+
+The Ruby SWIG mapping is in ./src/mappings/swig/ruby/biolib_R. Next
+some tests were added in ./src/mappings/swig/ruby/test_biolib_R.rb:
+
+Now we can call from Ruby:
+
+  print "factorial(10): "
+  p Biolib::Biolib_R.Rf_gammafn(10+1)
+  print "Gamma:\n"
+  p Biolib::Biolib_R.Rf_rgamma(0.5,2)
+  p Biolib::Biolib_R.Rf_gammafn(0.5)
+  print "Log: "
+  p Biolib::Biolib_R.Rf_log1p(1)
+
+rendering
+
+  factorial(10): 3628800.0
+  Gamma:
+  3.79935141137198e-20
+  1.77245385090552
+
+

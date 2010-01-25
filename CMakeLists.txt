@@ -17,11 +17,15 @@
 #   cmake -DBUILD_PYTHON:BOOLEAN=TRUE .
 #   cmake -DBUILD_PERL:BOOLEAN=TRUE .
 #
+#   each of these will include BUILD_LIBS
+#
 #   To build specific libraries, for example
 #
 #   cmake -DSTADEN_LIB:BOOLEAN=TRUE
 #   cmake -DEMBOSS_LIB:BOOLEAN=TRUE
 #   cmake -DRQTL_LIB:BOOLEAN=TRUE
+#
+#   Combine with BUILD_RUBY (etc.) to build just one library type.
 #
 # See ./INSTALL for more information
 
@@ -30,6 +34,28 @@ cmake_minimum_required(VERSION 2.6)
 project (BIOLIB)
 
 ENABLE_TESTING()
+
+# Testing: 
+#
+#   quicktest:        Run fast 'integration' tests
+#   unittest:         Run unit testing
+#   doctest:          Run doctest testing
+#   regressiontest:   Run all regression tests
+#   test:             Run all tests
+#
+# So:
+#
+#   make unittest
+#   make doctest
+#   etc.
+#
+#
+ADD_CUSTOM_TARGET(regressiontest COMMAND ctest -R TestRegression)
+ADD_CUSTOM_TARGET(unittest COMMAND ctest -R TestUnit)
+ADD_CUSTOM_TARGET(doctest COMMAND ctest -R TestDoc)
+ADD_CUSTOM_TARGET(testall COMMAND ctest)
+ADD_CUSTOM_TARGET(quicktest COMMAND ctest -E "TestRegression\\|TestUnit\\|Slow\\|TestDoc")
+
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/tools/cmake-support/modules/")
 message("CMake modules: ${CMAKE_MODULE_PATH}")
 
@@ -71,14 +97,15 @@ if(NOT BUILD_DOCS)
   endif(NOT BUILD_LIBS)
 endif(NOT BUILD_DOCS)
 
-set(BLD_BIOLIB  TRUE)
+set(BLD_BIOLIB_CORE  TRUE)
 set(BLD_STADEN  TRUE)
+set(BLD_RQTL    TRUE) 
 set(BLD_EMBOSS  TRUE)
 set(BLD_RQTL    FALSE) 
 set(BLD_LIBSEQUENCE FALSE) 
 set(BLD_EXAMPLE TRUE)
 IF(NOT CYGWIN AND NOT APPLE)
-  set(BLD_AFFYIO  TRUE)
+  set(BLD_AFFYIO  TRUE)  # still problem finding Rlib
 ENDIF(NOT CYGWIN AND NOT APPLE)
 
 if (EXAMPLE_LIB)
@@ -87,7 +114,7 @@ if (EXAMPLE_LIB)
   set(BLD_RQTL    FALSE)
   set(BLD_AFFYIO  FALSE)
   set(BLD_EXAMPLE TRUE)
-  set(BLD_BIOLIB  FALSE)
+  set(BLD_BIOLIB_CORE  FALSE)
 endif (EXAMPLE_LIB)
 
 if (AFFYIO_LIB)
@@ -96,7 +123,7 @@ if (AFFYIO_LIB)
   set(BLD_RQTL    FALSE)
   set(BLD_AFFYIO  TRUE)
   set(BLD_EXAMPLE FALSE)
-  set(BLD_BIOLIB  FALSE)
+  set(BLD_BIOLIB_CORE  TRUE)   # requires biolib error handler
 endif (AFFYIO_LIB)
 
 if (STADEN_LIB)
@@ -105,7 +132,7 @@ if (STADEN_LIB)
   set(BLD_RQTL    FALSE)
   set(BLD_AFFYIO  FALSE)
   set(BLD_EXAMPLE FALSE)
-  set(BLD_BIOLIB  FALSE)
+  set(BLD_BIOLIB_CORE  FALSE)
 endif (STADEN_LIB)
 
 if (EMBOSS_LIB)
@@ -119,11 +146,12 @@ endif (EMBOSS_LIB)
 
 if (RQTL_LIB)
   set(BLD_RQTL    TRUE)
+  set(BLD_BIOLIB_CORE  TRUE)
+  set(BLD_BIOLIB_R     TRUE)
   set(BLD_STADEN  FALSE)
   set(BLD_EMBOSS  FALSE)
   set(BLD_AFFYIO  FALSE)
-  set(BLD_EXAMPLE FALSE)
-  set(BLD_BIOLIB  FALSE)
+  set(BLD_EXAMPLE TRUE)        # contains typemap tests
 endif (RQTL_LIB)
 
 if (LIBSEQUENCE_LIB)
@@ -142,7 +170,7 @@ if (EXAMPLE_LIB)
   set(BLD_EMBOSS  FALSE)
   set(BLD_AFFYIO  FALSE)
   set(BLD_EXAMPLE TRUE)
-  set(BLD_BIOLIB  FALSE)
+  set(BLD_BIOLIB_CORE  FALSE)
 endif (EXAMPLE_LIB)
 
 message("  Biolib libraries")

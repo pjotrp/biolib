@@ -2,12 +2,14 @@
 // #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <biolib_error.h>
 #include <biolib_R_map.h>
 
 int R_running = false;
 
 /* 
- * Initialize the R environment so we can use Rlib.so
+ * Initialize the R environment so we can use Rlib.so. 
+ * FIXME: R_HOME is hard coded here.
  */
 
 void BioLib_R_Init() {
@@ -15,6 +17,7 @@ void BioLib_R_Init() {
   int argc = sizeof(argv)/sizeof(argv[0]);
 
   if (!R_running) {
+    biolib_log(LOG_INFO,"Initialize embedded R (library)");
     setenv("R_HOME","/usr/lib/R",1);
     Rf_initEmbeddedR(argc, argv);
     R_running = true;

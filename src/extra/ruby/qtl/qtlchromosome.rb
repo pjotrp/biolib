@@ -1,4 +1,17 @@
+
+module QtlChromosomeTests
+
+  XNAME = 'X'
+
+  def isX? name
+    name == XNAME
+  end
+end
+
+
 class QtlChromosomes
+
+  include QtlChromosomeTests
 
   # Chromosomes are not actually stored separately, this is a helper class. From 
   # an object models perspective this is not logical (chromosomes have markers),
@@ -9,7 +22,7 @@ class QtlChromosomes
   end
 
   def hasX?
-    chromosomes['X'] != nil
+    chromosomes[XNAME] != nil
   end
 
   def size
@@ -17,13 +30,19 @@ class QtlChromosomes
   end
 
   def autosomes
-    res = chromosomes.reject {|k,v| k=='X'}
+    res = chromosomes.reject {|k,v| k==XNAME}
     # size - (hasX? ? 1:0)
     res
   end
 
   def markers
     @markers
+  end
+
+  def each
+    chromosomes.each do | chromosome |
+      yield chromosome
+    end
   end
 
   def chromosomes

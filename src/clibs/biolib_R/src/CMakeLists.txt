@@ -17,6 +17,7 @@ FIND_PACKAGE(Map)
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../build)
 
 INCLUDE_DIRECTORIES(../include)
+INCLUDE_DIRECTORIES(../../biolib_core/include)
 
 BUILD_CLIB()
 SET(LIBNAME biolib_R-${MAP_VERSION})   # override

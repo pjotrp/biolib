@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 2.6)
 
 PROJECT(Biolib_affyio)
 
-SET(LIBNAME biolib_affyio-${MAP_VERSION})
-
 SET (M_NAME affyio)
 SET (M_VERSION 1.8)
 
