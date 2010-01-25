@@ -28,6 +28,10 @@ if [ -d .git ]; then
   if [ ! -e .git/SKIP_SUBMODULE_UPDATE ]; then
     echo "Checking for git submodules"
     git submodule update --init
+		# Run these a few times to work around time outs
+		git submodule update
+		git submodule update
+		git submodule update
 	fi 
 fi
 

@@ -61,7 +61,7 @@ To build all Bio* biolib modules use:
 
         ./install.sh
 
-which executes
+which executes, essentially:
 
         cmake .
         make
