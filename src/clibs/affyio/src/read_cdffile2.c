@@ -28,7 +28,8 @@
  ** Dec 1, 2005 - Some comment cleaning. Added isTextCDFFile,CheckCDFtext
  ** Feb 28, 2006 - replace C++ comments with ANSI comments for older compilers
  ** May 31, 2006 - fix some compiler warnings
- **               
+ ** Jan 15, 2008 - Fix VECTOR_ELT/STRING_ELT issues
+ **  
  **
  *******************************************************************/
 
@@ -38,13 +39,182 @@
 #include "stdlib.h"
 #include "stdio.h"
 
-#define BUFFER_SIZE 1024
-
-#include <read_cdf.h>
-
 #ifdef BIOLIB
   #include <biolib_R_map.h>
 #endif
+
+#define BUFFER_SIZE 1024
+
+
+/*****************************************************************
+ **
+ **
+ ** A structure for holding information in the 
+ ** "CDF" and "Chip" sections (basically header information)
+ **
+ ******************************************************************/
+
+
+
+typedef struct {
+
+  char *version;
+  char *name;
+  int rows,cols;
+  int numberofunits;
+  int maxunit;
+  int NumQCUnits;
+  char *chipreference;
+} cdf_text_header;
+
+
+/*****************************************************************
+ **
+ **
+ ** A structure for holding QC probe information
+ ** Note the "CYCLES" item is ignored and never parsed
+ **
+ ******************************************************************/
+
+
+typedef struct {
+  int x;
+  int y;
+  char *probe;
+  int plen;
+  int atom;
+  int index;
+  int match;
+  int bg;
+} cdf_text_qc_probe;
+
+
+
+
+
+
+
+/*******************************************************************
+ **
+ ** A structure for holding QC units information. These are
+ ** areas of the chip that contain probes that may or may not be useful
+ ** for QC and other purposes. 
+ **
+ **
+ *******************************************************************/
+
+
+
+typedef struct{
+  int type;
+  unsigned int n_probes;
+  int qccontains[8];     /* either 0 or 1 for each of the eight possible fields. a 1 means that field is present.*/
+  cdf_text_qc_probe *qc_probes;
+  
+} cdf_text_qc_unit;
+
+
+/*******************************************************************
+ **
+ ** A structure for holding probe information for unit_blocks_probes 
+ **
+ ** probes are stored within blocks
+ ** 
+ *******************************************************************/
+
+typedef struct{
+  int x;
+  int y;
+  char *probe;
+  char *feat;
+  char *qual;
+  int expos;
+  int pos;
+  char *cbase;
+  char *pbase;
+  char *tbase;
+  int atom;
+  int index;
+  int codonid;
+  int codon;
+  int regiontype;
+  char* region;
+} cdf_text_unit_block_probe;
+
+
+
+
+/*******************************************************************
+ **
+ ** A structure holding Unit_blocks
+ **
+ ** blocks are stored within units.
+ ** blocks contain many probes
+ **
+ *******************************************************************/
+
+typedef struct{
+  char *name;
+  int blocknumber;
+  int num_atoms;
+  int num_cells;
+  int start_position;
+  int stop_position;
+  int direction;
+  cdf_text_unit_block_probe *probes;
+
+} cdf_text_unit_block;
+
+
+
+
+
+
+/*******************************************************************
+ **
+ ** A structure for holding "Units" AKA known as probesets
+ **
+ ** Each unit contains one or more blocks. Each block contains one or
+ ** more probes
+ **
+ *******************************************************************/
+
+
+typedef struct{
+  char *name;
+  int direction;
+  int num_atoms;
+  int num_cells;
+  int unit_number;
+  int unit_type;
+  int numberblocks;
+  int MutationType;
+  cdf_text_unit_block *blocks;
+} cdf_text_unit;
+
+
+
+/*******************************************************************
+ **
+ ** A structure for holding a text CDF file
+ **
+ ** text cdf files consist of 
+ ** basic header information
+ ** qcunits
+ **       - qc probes
+ ** units (aka probesets)
+ **       - blocks
+ **            - probes
+ **
+ **
+ *******************************************************************/
+
+typedef struct{
+  cdf_text_header header;
+  cdf_text_qc_unit *qc_units;
+  cdf_text_unit *units;
+} cdf_text;
+
 
 /**************************************************************
  **
@@ -699,7 +869,7 @@ static void read_cdf_Units(FILE *infile,  cdf_text *mycdf, char* linebuffer){
  *******************************************************************/
 
 
-int read_cdf_text(const char *filename, cdf_text *mycdf){
+static int read_cdf_text(const char *filename, cdf_text *mycdf){
 
   FILE *infile;
 
@@ -751,7 +921,7 @@ int read_cdf_text(const char *filename, cdf_text *mycdf){
 
 
 
-void dealloc_cdf_text(cdf_text *my_cdf){
+static void dealloc_cdf_text(cdf_text *my_cdf){
   int i,j,k;
   
 
@@ -805,7 +975,7 @@ void dealloc_cdf_text(cdf_text *my_cdf){
  **
  ******************************************************************/
 
-int isTextCDFFile(const char *filename){
+static int isTextCDFFile(const char *filename){
 
 
   FILE *infile;
@@ -909,7 +1079,7 @@ SEXP ReadtextCDFFileIntoRList(SEXP filename){
   cdf_text my_cdf;
 
   const char *cur_file_name;
-  cur_file_name = CHAR(VECTOR_ELT(filename,0));
+  cur_file_name = CHAR(STRING_ELT(filename,0));
 
   if(!read_cdf_text(cur_file_name, &my_cdf)){
     error("Problem reading text cdf file %s. Possibly corrupted or truncated?\n",cur_file_name);
@@ -1392,7 +1562,7 @@ SEXP CheckCDFtext(SEXP filename){
   int good;
   const char *cur_file_name;
   
-  cur_file_name = CHAR(VECTOR_ELT(filename,0));
+  cur_file_name = CHAR(STRING_ELT(filename,0));
   
   good = isTextCDFFile(cur_file_name);
   

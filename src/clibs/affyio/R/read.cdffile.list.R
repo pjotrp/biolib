@@ -1,14 +1,11 @@
-####
-####
-#### file: read.cdffile.list.R
-####
-#### aim: reads full CDF file into R list structure.
-####
-#### History
-#### Dec 1, 2005 - Initial version
-
-
-
+###
+### File: read.cdffile.list.R
+###
+### Aim: reads full CDF file into R list structure.
+###
+### History
+### Dec 1, 2005 - Initial version
+###
 
 
 read.cdffile.list <- function (filename, cdf.path = getwd()){
@@ -24,4 +21,3 @@ read.cdffile.list <- function (filename, cdf.path = getwd()){
     stop(paste("File format for",filename,"not recognized."))
   }
 }
-

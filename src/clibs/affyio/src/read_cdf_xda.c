@@ -24,7 +24,8 @@
  **                when there are 0 qcunits or 0 units
  ** Aug 25, 2007 - Move file reading functions to centralized location
  ** Oct 27, 2007 - When building a cdfenv set NON identified values to NA (mostly affects MM for PM only arrays)
- **
+ ** Nov 12, 2008 - Fix crash 
+ ** Jan 15, 2008 - Fix VECTOR_ELT/STRING_ELT issues
  **
  ****************************************************************/
 
@@ -36,15 +37,174 @@
 #include "stdio.h"
 #include "fread_functions.h"
 #include <ctype.h>
-#include <read_cdf.h>
-
-#ifdef BIOLIB
-  #include <biolib_R_map.h>
-#endif
 
 /* #define READ_CDF_DEBUG */
 						  /* #define READ_CDF_DEBUG_SNP */
 #define READ_CDF_NOSNP
+
+
+
+/************************************************************************
+ **
+ ** Structures for holding the CDF file information. Basically 
+ ** header/general information that appears at the start of the CDF file
+ **
+ ************************************************************************/
+
+typedef struct {
+  int magicnumber;
+  int version_number;
+  unsigned short rows,cols;
+  int n_units,n_qc_units;
+  int len_ref_seq;
+  int i;
+  char *ref_seq;
+} cdf_xda_header;
+
+
+/****************************************************************************
+ **
+ ** The following two structures store QC units and QC unit probe information
+ **
+ **  QC information, repeated for each QC unit:
+ ** Type - unsigned short
+ ** Number of probes - integer
+ **
+ ** Probe information, repeated for each probe in the QC unit:
+ ** X coordinate - unsigned short
+ ** Y coordinate - unsigned short
+ ** Probe length - unsigned char
+ ** Perfect match flag - unsigned char
+ ** Background probe flag - unsigned char
+ **
+ ****************************************************************************/
+ 
+
+typedef struct{
+  unsigned short x;
+  unsigned short y;
+  unsigned char probelength;
+  unsigned char pmflag;
+  unsigned char bgprobeflag;
+
+} cdf_qc_probe;
+
+typedef struct{
+  unsigned short type;
+  unsigned int n_probes;
+
+  cdf_qc_probe *qc_probes;
+  
+} cdf_qc_unit;
+
+
+/****************************************************************************
+ **
+ ** The following three structures store information for units (sometimes called
+ ** probesets), blocks (of which there are one or more within a unit) and cells 
+ ** sometimes called probe of which there are one or more within each block
+ ** 
+ **
+ ** Unit information, repeated for each unit:
+ **
+ ** UnitType - unsigned short (1 - expression, 2 - genotyping, 3 - CustomSeq, 3 - tag)
+ ** Direction - unsigned char
+ ** Number of atoms - integer
+ ** Number of blocks - integer (always 1 for expression units)
+ ** Number of cells - integer
+ ** Unit number (probe set number) - integer
+ ** Number of cells per atom - unsigned char
+ ** 
+ **
+ **
+ ** Block information, repeated for each block in the unit:
+ ** 
+ ** Number of atoms - integer
+ ** Number of cells - integer
+ ** Number of cells per atom - unsigned char
+ ** Direction - unsigned char
+ ** The position of the first atom - integer
+ ** <unused integer value> - integer
+ ** The block name - char[64]
+ **
+ **
+ ** 
+ ** Cell information, repeated for each cell in the block:
+ ** 
+ ** Atom number - integer
+ ** X coordinate - unsigned short
+ ** Y coordinate - unsigned short
+ ** Index position (relative to sequence for resequencing units, for expression and mapping units this value is just the atom number) - integer
+ ** Base of probe at substitution position - char
+ ** Base of target at interrogation position - char
+ **
+ **
+ ****************************************************************************/
+ 
+
+typedef struct{
+  int atomnumber;
+  unsigned short x;
+  unsigned short y;
+  int indexpos;
+  char pbase;
+  char tbase;
+} cdf_unit_cell;
+
+
+typedef struct{
+  int natoms;
+  int ncells;
+  unsigned char ncellperatom;
+  unsigned char direction;
+  int firstatom;
+  int unused;         /* in the docs this is called "unused" but by the looks of it it is actually the lastatom */
+  char blockname[64];
+
+  cdf_unit_cell  *unit_cells;
+
+} cdf_unit_block;
+
+
+typedef struct{
+  unsigned short unittype;
+  unsigned char direction;
+  int natoms;
+  int nblocks;
+  int ncells;
+  int unitnumber;
+  unsigned char ncellperatom;
+
+  cdf_unit_block *unit_block;
+  
+} cdf_unit;
+
+
+/****************************************************************************
+ **
+ ** A data structure for holding CDF information read from a xda format cdf file
+ **
+ ** note that this structure reads in everything including things that might not
+ ** be of any subsequent use.
+ **
+ ****************************************************************************/
+
+
+
+typedef struct {
+  
+  cdf_xda_header header;  /* Header information */
+  char **probesetnames;   /* Names of probesets */
+  
+  int *qc_start;          /* These are used for random access */
+  int *units_start;
+  
+  cdf_qc_unit *qc_units;
+  cdf_unit *units;
+
+
+} cdf_xda;
+
 
 
 
@@ -164,7 +324,7 @@ int read_cdf_unit(cdf_unit *my_unit,int filelocation,FILE *instream){
  ** 
  *************************************************************************/
 
-void dealloc_cdf_xda(cdf_xda *my_cdf){
+static void dealloc_cdf_xda(cdf_xda *my_cdf){
 
   int i;
 
@@ -207,7 +367,7 @@ void dealloc_cdf_xda(cdf_xda *my_cdf){
  **
  *************************************************************/
 
-int read_cdf_xda(const char *filename,cdf_xda *my_cdf){
+static int read_cdf_xda(const char *filename,cdf_xda *my_cdf){
 
   FILE *infile;
 
@@ -386,7 +546,7 @@ int read_cdf_xda(const char *filename,cdf_xda *my_cdf){
  *************************************************************/
 
 
-int check_cdf_xda(const char *filename){
+static int check_cdf_xda(const char *filename){
 
   FILE *infile;
 
@@ -487,7 +647,7 @@ SEXP CheckCDFXDA(SEXP filename){
   int good;
   const char *cur_file_name;
   
-  cur_file_name = CHAR(VECTOR_ELT(filename,0));
+  cur_file_name = CHAR(STRING_ELT(filename,0));
   
   good = check_cdf_xda(cur_file_name);
   
@@ -530,7 +690,7 @@ SEXP ReadCDFFile(SEXP filename){
   /* int nrows, ncols; */
 
  
-  cur_file_name = CHAR(VECTOR_ELT(filename,0));
+  cur_file_name = CHAR(STRING_ELT(filename,0));
 
   if (!read_cdf_xda(cur_file_name,&my_cdf)){
     error("Problem reading binary cdf file %s. Possibly corrupted or truncated?\n",cur_file_name);
@@ -584,7 +744,7 @@ SEXP ReadCDFFile(SEXP filename){
 	
 	curlocs = NUMERIC_POINTER(AS_NUMERIC(CurLocs));
 	
-        for (k=0; k < cur_cells*2; k++){
+        for (k=0; k < cur_atoms*2; k++){
 	  curlocs[k] = R_NaN;
 	}
 
@@ -875,7 +1035,7 @@ SEXP ReadCDFFileIntoRList(SEXP filename,SEXP fullstructure){
 
   cdf_xda my_cdf;
   const char *cur_file_name;
-  cur_file_name = CHAR(VECTOR_ELT(filename,0));
+  cur_file_name = CHAR(STRING_ELT(filename,0));
 
   /* Read in the xda style CDF file into memory */
   if (!read_cdf_xda(cur_file_name,&my_cdf)){

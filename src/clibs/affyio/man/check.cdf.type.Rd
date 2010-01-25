@@ -10,12 +10,12 @@
   \item{filename}{fullpath to a cdf file}
 }
 \value{Returns a string which is currently one of:
-  \itemize{
+
     \item{text}{the cdf file is of the text format}
     \item{xda}{the cdf file is of the binary format used in GCOS}
     \item{unknown}{the parser can not handle this format or does not
       recognize this file as a CDF file}
-    }
+
   }
 
 \author{B. M. Bolstad <bmb@bmbolstad.com>}

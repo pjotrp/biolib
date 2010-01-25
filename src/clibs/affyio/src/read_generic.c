@@ -23,6 +23,8 @@
  ** Jan 28, 2008 - fix read_generic_data_group/gzread_generic_data_group. Change bitwise OR (|) to logical OR (||)
  ** Feb 11, 2008 - add #include for inttypes.h in situations that stdint.h might not exist
  ** Feb 13, 2008 - add decode_MIME_value_toASCII which takes any MIME and attempts to convert to a string
+ ** Jul 29, 2008 - fix preprocessor directive error for WORDS_BIGENDIAN systems 
+ ** Jan 15, 2008 - Fix VECTOR_ELT/STRING_ELT issues
  **
  *************************************************************/
 
@@ -30,8 +32,6 @@
 #include <Rdefines.h>
 #include <Rmath.h>
 #include <Rinternals.h>
-
-#define HAVE_STDINT_H
 
 #ifdef HAVE_STDINT_H
 #include <stdint.h>
@@ -233,7 +233,7 @@ static wchar_t *decode_TEXT(ASTRING value){
   contents = (uint16_t *)temp.value;
   
   for (i=0; i < len; i++){
-#ifndef WORD_BIGENDIAN 
+#ifndef WORDS_BIGENDIAN 
     contents[i]=(((contents[i]>>8)&0xff) | ((contents[i]&0xff)<<8));
 #endif
     return_value[i] = contents[i];
@@ -250,7 +250,7 @@ static int8_t decode_INT8_t(ASTRING value){
   
   memcpy(&contents,value.value, sizeof(int8_t));
 
-  //#ifndef WORD_BIGENDIAN 
+  //#ifndef WORDS_BIGENDIAN 
   //  contents=(((contents[i]>>8)&0xff) | ((contents[i]&0xff)<<8));//
   //#endif 
 
@@ -266,7 +266,7 @@ static uint8_t decode_UINT8_t(ASTRING value){
   
   memcpy(&contents,value.value, sizeof(uint8_t));
 
-  //#ifndef WORD_BIGENDIAN 
+  //#ifndef WORDS_BIGENDIAN 
   //contents=(((contents[i]>>8)&0xff) | ((contents[i]&0xff)<<8));
   //#endif 
   return contents;
@@ -280,7 +280,7 @@ static int16_t decode_INT16_t(ASTRING value){
   
   memcpy(&contents,value.value, sizeof(int16_t));
 
-#ifndef WORD_BIGENDIAN 
+#ifndef WORDS_BIGENDIAN 
   contents=(((contents>>8)&0xff) | ((contents&0xff)<<8));
 #endif 
 
@@ -296,7 +296,7 @@ static uint16_t decode_UINT16_t(ASTRING value){
   
   memcpy(&contents,value.value, sizeof(uint16_t));
 
-#ifndef WORD_BIGENDIAN 
+#ifndef WORDS_BIGENDIAN 
   contents=(((contents>>8)&0xff) | ((contents&0xff)<<8));
 #endif 
   return contents;
@@ -312,7 +312,7 @@ static int32_t decode_INT32_t(ASTRING value){
   
   memcpy(&contents,value.value, sizeof(int32_t));
 
-#ifndef WORD_BIGENDIAN 
+#ifndef WORDS_BIGENDIAN 
   contents=(((contents>>24)&0xff) | ((contents&0xff)<<24) |
 		((contents>>8)&0xff00) | ((contents&0xff00)<<8));  
 #endif 
@@ -328,7 +328,7 @@ static int32_t decode_UINT32_t(ASTRING value){
   
   memcpy(&contents,value.value, sizeof(uint32_t));
 
-#ifndef WORD_BIGENDIAN 
+#ifndef WORDS_BIGENDIAN 
   contents=(((contents>>24)&0xff) | ((contents&0xff)<<24) |
 		((contents>>8)&0xff00) | ((contents&0xff00)<<8));  
 #endif 
@@ -346,7 +346,7 @@ static float decode_float32(ASTRING value){
 
   memcpy(&contents,value.value, sizeof(uint32_t));
 
-#ifndef WORD_BIGENDIAN 
+#ifndef WORDS_BIGENDIAN 
   contents=(((contents>>24)&0xff) | ((contents&0xff)<<24) |
 	    ((contents>>8)&0xff00) | ((contents&0xff00)<<8));  
 #endif 
@@ -1346,7 +1346,7 @@ SEXP Read_Generic(SEXP filename){
 
   generic_data_set my_data_set;
 
-  const char *cur_file_name = CHAR(VECTOR_ELT(filename,0));
+  const char *cur_file_name = CHAR(STRING_ELT(filename,0));
 
   /* Pass through all the header information */
   
@@ -1402,7 +1402,7 @@ SEXP gzRead_Generic(SEXP filename){
 
   generic_data_set my_data_set;
 
-  const char *cur_file_name = CHAR(VECTOR_ELT(filename,0));
+  const char *cur_file_name = CHAR(STRING_ELT(filename,0));
 
   /* Pass through all the header information */
   

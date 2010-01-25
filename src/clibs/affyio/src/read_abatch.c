@@ -19,7 +19,7 @@
  **
  ** aim: read in from 1st to nth chips of CEL data
  **
- ** Copyright (C) 2003-2007    B. M. Bolstad
+ ** Copyright (C) 2003-2008    B. M. Bolstad
  **
  ** Created on Jun 13, 2003
  **
@@ -144,6 +144,11 @@
  ** Oct 28, 2007 - add pthread based multi-threaded read_probematrix this is based on a submission by Paul Gordon (U Calgary)
  ** Feb 18, 2008 - R_read_cel_file now can be told to read only the mean intensities (rather than also the SD and npixels)
  ** Mar  6, 2008 - Add additional CEL file corruption checking.
+ ** Oct 16, 2008 - Fix issue with stack exhaustion
+ ** Oct 28, 2008 - Increase stack space allocated (prevents a crash)
+ ** Jan 15, 2008 - Fix VECTOR_ELT/STRING_ELT issues
+ ** Jun 3, 2009 - CEL corruption not detected in read.probematrix
+ ** Nov 10, 2009 Pthread on solaris fix
  ** 
  *************************************************************/
 
@@ -171,6 +176,9 @@
 
 #if USE_PTHREADS
 #include <pthread.h>
+#include <limits.h>
+#include <unistd.h>
+
 pthread_mutex_t mutex_R;
 int n_probesets;
 int *n_probes = NULL;
@@ -196,6 +204,41 @@ struct thread_data{
 #endif 
 
 #define BUF_SIZE 1024
+
+
+/******************************************************************
+ **
+ ** A "C" level object designed to hold information for a
+ ** single CEL file
+ **
+ ** These should be created using the function
+ **
+ ** read_cel_file()
+ **
+ **
+ **
+ *****************************************************************/
+
+typedef struct{
+  detailed_header_info header;
+  
+  /** these are for storing the intensities, the sds and the number of pixels **/
+  double *intensities;
+  double *stddev;
+  double *npixels;
+
+  /** these are for storing information in the masks and outliers section **/
+  
+  int nmasks;
+  int noutliers;
+
+  short *masks_x, *masks_y;
+  short *outliers_x, *outliers_y;
+
+} CEL;
+
+
+
 
 
 
@@ -1235,6 +1278,7 @@ static void get_detailed_header_info(const char *filename, detailed_header_info 
   
   fclose(currentFile);
 
+  header_info->ScanDate = Calloc(2, char);
 }
 
 
@@ -2023,7 +2067,8 @@ static void gz_get_detailed_header_info(const char *filename, detailed_header_in
   strcpy(header_info->AlgorithmParameters,get_token(cur_tokenset,1));
   
   gzclose(currentFile);
-
+ 
+  header_info->ScanDate = Calloc(2, char);
 }
 
 
@@ -2685,7 +2730,8 @@ static void binary_get_detailed_header_info(const char *filename, detailed_heade
       error("Cel file %s does not seem to be have cdf information",filename);
     }
   }
-  
+   
+  header_info->ScanDate = Calloc(2, char);
 
   delete_tokens(my_tokenset);
   delete_binary_header(my_header);
@@ -3435,6 +3481,8 @@ static void gzbinary_get_detailed_header_info(const char *filename, detailed_hea
   }
   
 
+  header_info->ScanDate = Calloc(2, char);
+
   delete_tokens(my_tokenset);
   delete_binary_header(my_header);
   Free(header_copy);
@@ -4107,10 +4155,10 @@ SEXP ReadHeaderDetailed(SEXP filename){
   const char *cur_file_name;
   detailed_header_info header_info;
 
-  PROTECT(HEADER = allocVector(VECSXP,9)); /* return as a list */
+  PROTECT(HEADER = allocVector(VECSXP,10)); /* return as a list */
 
 
-  cur_file_name = CHAR(VECTOR_ELT(filename,0));
+  cur_file_name = CHAR(STRING_ELT(filename,0));
  
 
   if (isTextCelFile(cur_file_name)){
@@ -4189,7 +4237,12 @@ SEXP ReadHeaderDetailed(SEXP filename){
   SET_STRING_ELT(tmp_sexp,0,mkChar(header_info.AlgorithmParameters));
   SET_VECTOR_ELT(HEADER,8,tmp_sexp);
   UNPROTECT(1);
-
+  
+  PROTECT(tmp_sexp = allocVector(STRSXP,1));
+  SET_STRING_ELT(tmp_sexp,0,mkChar(header_info.ScanDate));
+  SET_VECTOR_ELT(HEADER,9,tmp_sexp);
+  UNPROTECT(1);
+  
   Free(header_info.Algorithm);
   Free(header_info.AlgorithmParameters);
   Free(header_info.DatHeader);
@@ -4229,16 +4282,24 @@ void readfile(SEXP filenames, double *CurintensityMatrix, double *pmMatrix, doub
       error("Compress option not supported on your platform\n");
 #endif
     } else if (isBinaryCelFile(cur_file_name)){
-      read_binarycel_file_intensities(cur_file_name,CurintensityMatrix, 0, ref_dim_1*ref_dim_2, n_files,ref_dim_1);
+       if(read_binarycel_file_intensities(cur_file_name,CurintensityMatrix, 0, ref_dim_1*ref_dim_2, n_files,ref_dim_1) !=0){
+	error("The CEL file %s was corrupted. Data not read.\n",cur_file_name);
+       }
       storeIntensities(CurintensityMatrix,pmMatrix,mmMatrix,i,ref_dim_1*ref_dim_2, n_files,num_probes,cdfInfo,which_flag);
     } else if (isgzBinaryCelFile(cur_file_name)){
-      gzread_binarycel_file_intensities(cur_file_name,CurintensityMatrix, 0, ref_dim_1*ref_dim_2, n_files,ref_dim_1);
+      if(gzread_binarycel_file_intensities(cur_file_name,CurintensityMatrix, 0, ref_dim_1*ref_dim_2, n_files,ref_dim_1) !=0){
+	error("The CEL file %s was corrupted. Data not read.\n",cur_file_name);
+      }
       storeIntensities(CurintensityMatrix,pmMatrix,mmMatrix,i,ref_dim_1*ref_dim_2, n_files,num_probes,cdfInfo,which_flag);
     } else if (isGenericCelFile(cur_file_name)){
-      read_genericcel_file_intensities(cur_file_name,CurintensityMatrix, 0, ref_dim_1*ref_dim_2, n_files,ref_dim_1);
+      if(read_genericcel_file_intensities(cur_file_name,CurintensityMatrix, 0, ref_dim_1*ref_dim_2, n_files,ref_dim_1) !=0){
+	error("The CEL file %s was corrupted. Data not read.\n",cur_file_name);
+      }
       storeIntensities(CurintensityMatrix,pmMatrix,mmMatrix,i,ref_dim_1*ref_dim_2, n_files,num_probes,cdfInfo,which_flag);
     }  else if (isgzGenericCelFile(cur_file_name)){
-      gzread_genericcel_file_intensities(cur_file_name,CurintensityMatrix, 0, ref_dim_1*ref_dim_2, n_files,ref_dim_1);
+      if(gzread_genericcel_file_intensities(cur_file_name,CurintensityMatrix, 0, ref_dim_1*ref_dim_2, n_files,ref_dim_1)!=0){
+	error("The CEL file %s was corrupted. Data not read.\n",cur_file_name);
+      }
       storeIntensities(CurintensityMatrix,pmMatrix,mmMatrix,i,ref_dim_1*ref_dim_2, n_files,num_probes,cdfInfo,which_flag);
     } else {
 #if defined HAVE_ZLIB
@@ -4384,6 +4445,8 @@ SEXP read_probeintensities(SEXP filenames,  SEXP rm_mask, SEXP rm_outliers, SEXP
   pthread_attr_t attr;
   struct thread_data *args;
   void *status;
+  size_t stacksize = PTHREAD_STACK_MIN + 0x40000;
+
 #endif
 
   if (strcmp(CHAR(STRING_ELT(which,0)),"pm") == 0){
@@ -4446,6 +4509,7 @@ SEXP read_probeintensities(SEXP filenames,  SEXP rm_mask, SEXP rm_outliers, SEXP
   /* Initialize and set thread detached attribute */
   pthread_attr_init(&attr);
   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+  pthread_attr_setstacksize (&attr, stacksize);
 
   /* this code works out how many threads to use and allocates ranges of files to each thread */
   /* The aim is to try to be as fair as possible in dividing up the matrix */
@@ -5255,7 +5319,7 @@ SEXP R_read_cel_file(SEXP filename, SEXP intensities_mean_only){
 
   int read_intensities_only;
 
-  const char *cur_file_name = CHAR(VECTOR_ELT(filename,0));
+  const char *cur_file_name = CHAR(STRING_ELT(filename,0));
 
 
   read_intensities_only = INTEGER_POINTER(intensities_mean_only)[0];

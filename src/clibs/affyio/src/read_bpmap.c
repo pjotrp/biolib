@@ -15,7 +15,8 @@
  ** June 12, 2006 - fix naming vector length issue.
  ** June 12, 2007 - much wailing and grinding of teeth, but finally a fix for reading version number right.
  ** Aug 25, 2007 - Move file reading functions to centralized location
- ** Mar 14, 2008 - Fix reading of version number for big endian platforms
+ ** Mar 14, 2008 - Fix reading of version number for big endian platforms 
+ ** Jan 15, 2008 - Fix VECTOR_ELT/STRING_ELT issues
  **
  *******************************************************************/
 
@@ -839,7 +840,7 @@ SEXP ReadBPMAPFileIntoRList(SEXP filename){
 
 
   const char *cur_file_name;
-  cur_file_name = CHAR(VECTOR_ELT(filename,0));
+  cur_file_name = CHAR(STRING_ELT(filename,0));
   
 
 

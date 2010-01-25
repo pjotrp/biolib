@@ -1,9 +1,9 @@
 ###
-### file: read.celfile.R
+### File: read.celfile.R
 ###
-### aim: read entire contents of a single given specified CEL file into
+### Aim: read entire contents of a single given specified CEL file into
 ###      an R data structure.
-
+###
 
 
 read.celfile <- function(filename,intensity.means.only=FALSE){
