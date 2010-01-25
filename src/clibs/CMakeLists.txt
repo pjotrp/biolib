@@ -18,7 +18,7 @@ if (BLD_AFFYIO)
 endif()
 
 if (BLD_STADEN)
-  add_subdirectory (staden_io_lib-1.11.6/io_lib)
+  add_subdirectory (staden_io_lib/src)
 endif()
 
 if (BLD_EMBOSS)
