@@ -97,16 +97,19 @@ if(NOT BUILD_DOCS)
   endif(NOT BUILD_LIBS)
 endif(NOT BUILD_DOCS)
 
+# For release 1.0 the following modules are default:
 set(BLD_BIOLIB_CORE  TRUE)
 set(BLD_STADEN  TRUE)
-set(BLD_RQTL    TRUE) 
 set(BLD_EMBOSS  TRUE)
+set(BLD_EXAMPLE TRUE)
+
+# These modules are optional
 set(BLD_RQTL    FALSE) 
 set(BLD_LIBSEQUENCE FALSE) 
-set(BLD_EXAMPLE TRUE)
-IF(NOT CYGWIN AND NOT APPLE)
+
+IF(NOT CYGWIN)
   set(BLD_AFFYIO  TRUE)  # still problem finding Rlib
-ENDIF(NOT CYGWIN AND NOT APPLE)
+ENDIF()
 
 if (EXAMPLE_LIB)
   set(BLD_STADEN  FALSE)
@@ -124,6 +127,7 @@ if (AFFYIO_LIB)
   set(BLD_AFFYIO  TRUE)
   set(BLD_EXAMPLE FALSE)
   set(BLD_BIOLIB_CORE  TRUE)   # requires biolib error handler
+  set(BLD_BIOLIB_R     TRUE)   # R dependency for error messages
 endif (AFFYIO_LIB)
 
 if (STADEN_LIB)
