@@ -1,4 +1,4 @@
-BioLib R mapping functions
+BioLib mapping functions
 
 Note: EMBOSS redefines the assert function - for DEBUG mode you'll need to 
 include 
