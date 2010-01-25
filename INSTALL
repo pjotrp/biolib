@@ -76,11 +76,6 @@ or,
 
         ruby -I ./src/mappings/swig/ruby/example/ src/mappings/swig/ruby/test/test_example.rb
 
-biolib installs its shared C libraries by default in /usr/lib - as
-defined in ./cmake_modules/FindBioLib.cmake. To have your programs find the
-shared libraries you may have to add '/usr/lib' to ld.so.conf or add
-it the LD_LIBRARY_PATH.
-
 To change the default installation path use, for example:
 
         cmake -DCMAKE_INSTALL_PREFIX=/opt/biolib .
@@ -89,12 +84,11 @@ To change the default installation path use, for example:
 
 which puts the shared libraries in /opt/biolib/lib.
 
-Ruby libraries get installed in the Ruby module path.
+To have your programs find the shared libraries you may have to add '/usr/lib'
+to ld.so.conf or add it the LD_LIBRARY_PATH.
 
-To install libraries for Python or Perl you'll need to copy the appropriate
-modules directly, at this point. Support for Ruby gems, Python eggs and Perl
-CPAN will be implemented (at some point). 
-
+The language specific libraries get copied into the language directories, 
+as modules.
 
 ** RUBY
 
