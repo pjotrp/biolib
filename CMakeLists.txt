@@ -99,13 +99,14 @@ endif(NOT BUILD_DOCS)
 
 # For release 1.0 the following modules are default:
 set(BLD_BIOLIB_CORE  TRUE)
-set(BLD_STADEN  TRUE)
-set(BLD_EMBOSS  TRUE)
-set(BLD_EXAMPLE TRUE)
+set(BLD_BIOLIB_R     TRUE)
+set(BLD_STADEN       TRUE)
+set(BLD_EMBOSS       TRUE)
+set(BLD_EXAMPLE      TRUE)
 
 # These modules are optional
-set(BLD_RQTL    FALSE) 
-set(BLD_LIBSEQUENCE FALSE) 
+set(BLD_RQTL         FALSE) 
+set(BLD_LIBSEQUENCE  FALSE) 
 
 IF(NOT CYGWIN)
   set(BLD_AFFYIO  TRUE)  # still problem finding Rlib
@@ -178,6 +179,7 @@ if (EXAMPLE_LIB)
 endif (EXAMPLE_LIB)
 
 message("  Biolib libraries")
+message(STATUS "Install Biolib_R ${BLD_BIOLIB_R}")
 message(STATUS "Install Affyio ${BLD_AFFYIO}")
 message(STATUS "Install Staden ${BLD_STADEN}")
 message(STATUS "Install EMBOSS ${BLD_EMBOSS}")
