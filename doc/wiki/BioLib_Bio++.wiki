@@ -26,57 +26,20 @@
     </namespaces>
   </siteinfo>
   <page>
-    <title>Add Ruby Module</title>
-    <id>12</id>
+    <title>BioLib Bio++</title>
+    <id>21</id>
     <revision>
-      <id>147</id>
-      <timestamp>2009-02-05T19:11:23Z</timestamp>
+      <id>219</id>
+      <timestamp>2009-05-04T07:24:49Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* Adding a Ruby module to BioLib */</comment>
-      <text xml:space="preserve">= Adding a Ruby module to BioLib =
+      <comment>New page:  Mapping the Bio++ Phylogenetics toolkit to R/BioConductor and BioJAVA using BioLib  [https://www.nescent.org/wg/phyloinformatics/index.php?title=Phyloinformatics_Summer_of_Code_2009#Mappi...</comment>
+      <text xml:space="preserve">
+Mapping the Bio++ Phylogenetics toolkit to R/BioConductor and BioJAVA using BioLib
 
-After adding a C library (for instructions see [[Add C Library]]) a
-CMake command file has to be written for the Ruby module that creates
-a shared library out of the C library, calls SWIG to generate
-bindings, and (optionally) handles installing and testing. Create a
-module in:
-
-  ./src/mappings/swig/ruby/package/
-
-An example can be found in:
-
-  ./src/mappings/swig/ruby/affyio/
-
-One SWIG file needs to be written which names the module and includes
-the main swig definition. For example ruby_affyio.i has:
-
-  %module biolib_ruby_affyio
-  %include ../../affyio.i
-
-Create a CMakeLists.txt file (see also [[CMake]]). For example:
-
-  SET (M_NAME affyio)
-  SET (M_VERSION 1.8)
-  SET (INTERFACE ruby_${M_NAME}.i)
-  SET (USE_RLIB TRUE)
-  FIND_PACKAGE(BioLibRuby)
-  ADD_TEST(TestRubyAffyio ${RUBY_EXECUTABLE} -I../${M_NAME} ./../test/test_${M_NAME}.rb)
-  INSTALL(TARGETS ${M_MODULE}
-    LIBRARY DESTINATION ${RUBY_LIB_PATH}
-  )
-
-(see the BioLib source code for a recent edition).
-
-And when the CMakeLists.txt file is complete and correct you should be
-able to execute:
-
-  cmake .
-  make 
-  make test
-  make install</text>
+[https://www.nescent.org/wg/phyloinformatics/index.php?title=Phyloinformatics_Summer_of_Code_2009#Mapping_the_Bio.2B.2B_Phylogenetics_toolkit_to_R.2FBioConductor_and_BioJAVA_using_BioLib  Google Summer of Code Project]</text>
     </revision>
   </page>
 </mediawiki>

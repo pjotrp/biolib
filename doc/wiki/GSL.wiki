@@ -26,57 +26,24 @@
     </namespaces>
   </siteinfo>
   <page>
-    <title>Add Ruby Module</title>
-    <id>12</id>
+    <title>GSL</title>
+    <id>20</id>
     <revision>
-      <id>147</id>
-      <timestamp>2009-02-05T19:11:23Z</timestamp>
+      <id>212</id>
+      <timestamp>2009-04-11T15:17:55Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* Adding a Ruby module to BioLib */</comment>
-      <text xml:space="preserve">= Adding a Ruby module to BioLib =
+      <text xml:space="preserve">The GNU Science library has been mapped against Ruby and Perl with [[ASciLib]] - some 1800 functions!
 
-After adding a C library (for instructions see [[Add C Library]]) a
-CMake command file has to be written for the Ruby module that creates
-a shared library out of the C library, calls SWIG to generate
-bindings, and (optionally) handles installing and testing. Create a
-module in:
+Check the current list of mapped GSL [http://github.com/pjotrp/ascilib/blob/master/src/mappings/swig/gsl_common.i modules].
 
-  ./src/mappings/swig/ruby/package/
+Here is a quick [http://github.com/pjotrp/ascilib/blob/master/src/mappings/swig/perl/test/test_gsl.pl Perl example].
 
-An example can be found in:
+Here is a quick [http://github.com/pjotrp/ascilib/blob/master/src/mappings/swig/ruby/test/test_gsl.rb Ruby example].
 
-  ./src/mappings/swig/ruby/affyio/
-
-One SWIG file needs to be written which names the module and includes
-the main swig definition. For example ruby_affyio.i has:
-
-  %module biolib_ruby_affyio
-  %include ../../affyio.i
-
-Create a CMakeLists.txt file (see also [[CMake]]). For example:
-
-  SET (M_NAME affyio)
-  SET (M_VERSION 1.8)
-  SET (INTERFACE ruby_${M_NAME}.i)
-  SET (USE_RLIB TRUE)
-  FIND_PACKAGE(BioLibRuby)
-  ADD_TEST(TestRubyAffyio ${RUBY_EXECUTABLE} -I../${M_NAME} ./../test/test_${M_NAME}.rb)
-  INSTALL(TARGETS ${M_MODULE}
-    LIBRARY DESTINATION ${RUBY_LIB_PATH}
-  )
-
-(see the BioLib source code for a recent edition).
-
-And when the CMakeLists.txt file is complete and correct you should be
-able to execute:
-
-  cmake .
-  make 
-  make test
-  make install</text>
+Note that the initial mapping is derived from Jonathan Leto's Math::GSL - which is included into ASciLib as a git submodule.</text>
     </revision>
   </page>
 </mediawiki>

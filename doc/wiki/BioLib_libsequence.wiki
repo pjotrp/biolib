@@ -26,57 +26,19 @@
     </namespaces>
   </siteinfo>
   <page>
-    <title>Add Ruby Module</title>
-    <id>12</id>
+    <title>BioLib libsequence</title>
+    <id>22</id>
     <revision>
-      <id>147</id>
-      <timestamp>2009-02-05T19:11:23Z</timestamp>
+      <id>220</id>
+      <timestamp>2009-05-04T07:26:13Z</timestamp>
       <contributor>
         <username>Pjotrp</username>
         <id>2</id>
       </contributor>
-      <comment>/* Adding a Ruby module to BioLib */</comment>
-      <text xml:space="preserve">= Adding a Ruby module to BioLib =
+      <comment>New page: A BioLib mapping for the libsequence population genetic libraries  [https://www.nescent.org/wg_phyloinformatics/Phyloinformatics_Summer_of_Code_2009#A_BioLib_mapping_for_the_libsequence_po...</comment>
+      <text xml:space="preserve">A BioLib mapping for the libsequence population genetic libraries
 
-After adding a C library (for instructions see [[Add C Library]]) a
-CMake command file has to be written for the Ruby module that creates
-a shared library out of the C library, calls SWIG to generate
-bindings, and (optionally) handles installing and testing. Create a
-module in:
-
-  ./src/mappings/swig/ruby/package/
-
-An example can be found in:
-
-  ./src/mappings/swig/ruby/affyio/
-
-One SWIG file needs to be written which names the module and includes
-the main swig definition. For example ruby_affyio.i has:
-
-  %module biolib_ruby_affyio
-  %include ../../affyio.i
-
-Create a CMakeLists.txt file (see also [[CMake]]). For example:
-
-  SET (M_NAME affyio)
-  SET (M_VERSION 1.8)
-  SET (INTERFACE ruby_${M_NAME}.i)
-  SET (USE_RLIB TRUE)
-  FIND_PACKAGE(BioLibRuby)
-  ADD_TEST(TestRubyAffyio ${RUBY_EXECUTABLE} -I../${M_NAME} ./../test/test_${M_NAME}.rb)
-  INSTALL(TARGETS ${M_MODULE}
-    LIBRARY DESTINATION ${RUBY_LIB_PATH}
-  )
-
-(see the BioLib source code for a recent edition).
-
-And when the CMakeLists.txt file is complete and correct you should be
-able to execute:
-
-  cmake .
-  make 
-  make test
-  make install</text>
+[https://www.nescent.org/wg_phyloinformatics/Phyloinformatics_Summer_of_Code_2009#A_BioLib_mapping_for_the_libsequence_population_genetic_libraries Google Summer of Code Project page]</text>
     </revision>
   </page>
 </mediawiki>
