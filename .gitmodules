@@ -16,3 +16,6 @@
 [submodule "contrib/EMBOSS"]
 	path = contrib/EMBOSS
 	url = git://github.com/pjotrp/EMBOSS.git
+[submodule "contrib/staden_io_lib"]
+	path = contrib/staden_io_lib
+	url = http://github.com/pjotrp/biolib_staden_io_lib.git
