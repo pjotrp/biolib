@@ -921,7 +921,7 @@ int read_cdf_text(const char *filename, cdf_text *mycdf){
 
 
 
-static void dealloc_cdf_text(cdf_text *my_cdf){
+void dealloc_cdf_text(cdf_text *my_cdf){
   int i,j,k;
   
 
