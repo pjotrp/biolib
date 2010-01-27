@@ -324,7 +324,7 @@ int read_cdf_unit(cdf_unit *my_unit,int filelocation,FILE *instream){
  ** 
  *************************************************************************/
 
-static void dealloc_cdf_xda(cdf_xda *my_cdf){
+void dealloc_cdf_xda(cdf_xda *my_cdf){
 
   int i;
 
@@ -367,7 +367,7 @@ static void dealloc_cdf_xda(cdf_xda *my_cdf){
  **
  *************************************************************/
 
-static int read_cdf_xda(const char *filename,cdf_xda *my_cdf){
+int read_cdf_xda(const char *filename,cdf_xda *my_cdf){
 
   FILE *infile;
 
