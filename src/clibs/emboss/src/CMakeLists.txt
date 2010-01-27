@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.6)
 
 PROJECT(Biolib_emboss)
 SET (M_NAME emboss)
-# SET (M_VERSION 6.1.0)
 
 IF(NOT BUILD_LIBS)
   SET (MAP_ROOT ../../../..)
@@ -39,9 +38,6 @@ FILE(STRINGS files.txt CONTRIB_FILES)
 ADD_LIBRARY(${LIBNAME} SHARED
   ${CONTRIB_FILES}
 )
-
-# ---- The following may be required for OSX
-# TARGET_LINK_LIBRARIES(${LIBNAME} ${ZLIB_NAME})
 
 INSTALL_CLIB()
 
