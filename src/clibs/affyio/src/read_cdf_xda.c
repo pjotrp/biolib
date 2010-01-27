@@ -546,7 +546,7 @@ static int read_cdf_xda(const char *filename,cdf_xda *my_cdf){
  *************************************************************/
 
 
-static int check_cdf_xda(const char *filename){
+int check_cdf_xda(const char *filename){
 
   FILE *infile;
 

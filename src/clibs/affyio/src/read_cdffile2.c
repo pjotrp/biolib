@@ -869,7 +869,7 @@ static void read_cdf_Units(FILE *infile,  cdf_text *mycdf, char* linebuffer){
  *******************************************************************/
 
 
-static int read_cdf_text(const char *filename, cdf_text *mycdf){
+int read_cdf_text(const char *filename, cdf_text *mycdf){
 
   FILE *infile;
 
@@ -975,7 +975,7 @@ static void dealloc_cdf_text(cdf_text *my_cdf){
  **
  ******************************************************************/
 
-static int isTextCDFFile(const char *filename){
+int isTextCDFFile(const char *filename){
 
 
   FILE *infile;
