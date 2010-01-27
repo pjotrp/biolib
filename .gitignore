@@ -36,4 +36,5 @@ src/mappings/swig/python/*/*py
 *.dll
 *.a
 doc/wiki/*
+doc/apidoc/
 *.Rcheck
