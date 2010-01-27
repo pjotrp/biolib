@@ -100,6 +100,7 @@ endif(NOT BUILD_DOCS)
 # For release 1.0 the following modules are default:
 set(BLD_BIOLIB_CORE  TRUE)
 set(BLD_BIOLIB_R     TRUE)
+set(BLD_AFFYIO       TRUE)
 set(BLD_STADEN       TRUE)
 set(BLD_EMBOSS       TRUE)
 set(BLD_EXAMPLE      TRUE)

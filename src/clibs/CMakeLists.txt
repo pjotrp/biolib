@@ -13,7 +13,7 @@ if(BLD_EXAMPLE)
 endif()
 
 if (BLD_AFFYIO)
-  add_subdirectory (affyio-1.8/src)
+  add_subdirectory (affyio/src)
   add_subdirectory (biolib_microarray/src)
 endif()
 
