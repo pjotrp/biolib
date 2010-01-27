@@ -5,7 +5,6 @@
   #include <biolib_R_map.h>
 #endif
 
-
 #include "read_abatch.h"
 
 int isGenericCelFile(const char *filename);

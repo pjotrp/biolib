@@ -25,7 +25,6 @@ typedef struct {
   char *chipreference;
 } cdf_text_header;
 
-
 /*****************************************************************
  **
  **
