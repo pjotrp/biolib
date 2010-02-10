@@ -48,6 +48,8 @@ $result = staden_io_lib::mfread_reading($infp,$procsrffn,$staden_io_lib::TT_ANY)
 print("\nNBases=",$result->{NBases});
 print("\nbase=",staden_io_libc::Read_base_get($result));
 
+# So it retains the $infp. However, it does not recognise the EOF
+
 # close the file
 staden_io_lib::mfclose($infp);
 
