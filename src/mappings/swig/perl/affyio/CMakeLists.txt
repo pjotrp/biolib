@@ -29,8 +29,8 @@ INSTALL_PERL_BINDINGS()
 ADD_CUSTOM_TARGET(perldoc
   COMMENT "Generating Perl documentation for ${M_NAME}"
   COMMAND ${SWIG_EXECUTABLE} -I${MAP_ROOT}/src/clibs/affyio/src/ -o build/${M_NAME}.xml -xml ${INTERFACE}
-  COMMAND ${MAP_ROOT}/tools/swig2doc/bin/swig2doc build/${M_NAME}.xml
-  COMMAND pod2html output/perl/${M_NAME}.pod > output/perl/${M_NAME}.html
+  COMMAND ${MAP_ROOT}/tools/swig2doc/bin/swig2doc build/${M_NAME}.xml ${MAP_ROOT}/build/doc/xml/apidoc/biolib__affyio_8h.xml  ${MAP_ROOT}/build/doc/xml/apidoc/biolib__affyio_8c.xml
+  COMMAND pod2html output/perl/${M_NAME}.pod > build/${M_NAME}.html
 )
 
 
