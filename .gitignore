@@ -3,6 +3,7 @@
 .hgignore
 tags
 build
+output
 CMakeFiles
 CMakeCache.txt
 Makefile

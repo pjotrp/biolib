@@ -25,3 +25,12 @@ FIND_PACKAGE(MapPerl REQUIRED)
 BUILD_PERL_BINDINGS()
 TEST_PERL_BINDINGS()
 INSTALL_PERL_BINDINGS()
+
+ADD_CUSTOM_TARGET(perldoc
+  COMMENT "Generating Perl documentation for ${M_NAME}"
+  COMMAND ${SWIG_EXECUTABLE} -I${MAP_ROOT}/src/clibs/affyio/src/ -o build/${M_NAME}.xml -xml ${INTERFACE}
+  COMMAND ${MAP_ROOT}/tools/swig2doc/bin/swig2doc build/${M_NAME}.xml
+  COMMAND pod2html output/perl/${M_NAME}.pod > output/perl/${M_NAME}.html
+)
+
+
