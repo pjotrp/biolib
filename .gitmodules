@@ -19,3 +19,6 @@
 [submodule "contrib/staden_io_lib"]
 	path = contrib/staden_io_lib
 	url = http://github.com/pjotrp/biolib_staden_io_lib.git
+[submodule "tools/swig2doc"]
+	path = tools/swig2doc
+	url = http://github.com/pjotrp/swig2doc.git
