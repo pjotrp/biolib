@@ -459,9 +459,7 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = doc/doxygen/mainpage.txt src/clibs/affyio/src 
-
-# src/clibs/staden_io_lib/io_lib/Read.h src/clibs/staden_io_lib/io_lib/Read.c src/clibs/staden_io_lib/io_lib/read_alloc.c
+INPUT                  = doc/doxygen/mainpage.txt src/clibs/affyio/src contrib/staden_io_lib/io_lib/Read.h contrib/staden_io_lib/io_lib/Read.c contrib/staden_io_lib/io_lib/read_alloc.c
 
 
 
