@@ -14,6 +14,7 @@ IF(NOT BUILD_LIBS)
   SET (CMAKE_MODULE_PATH ${MAP_ROOT}/tools/cmake-support/modules)
 ENDIF(NOT BUILD_LIBS)
 # SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY biolib)
+SET(DOXY_XML_FILES "${MAP_ROOT}/build/doc/xml/apidoc/biolib__affyio_8h.xml  ${MAP_ROOT}/build/doc/xml/apidoc/biolib__affyio_8c.xml")
 
 SET (USE_ZLIB TRUE)
 SET (USE_RLIB TRUE)
