@@ -7,5 +7,6 @@ if [ ! -e install_manifest.txt ]; then
   exit 1
 fi
 
-xargs rm -v < install_manifest.txt
+for x in `cat install_manifest.txt` ; do rm -v $x ; done
+# xargs rm -v < install_manifest.txt
 
