@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 ENABLE_TESTING()
 
 SET (M_NAME staden_io_lib)
-SET (M_VERSION 1.11.6)
+# SET (M_VERSION 1.11.6)
 SET (INTERFACE ruby_${M_NAME}.i)
 
 IF(NOT BUILD_LIBS)

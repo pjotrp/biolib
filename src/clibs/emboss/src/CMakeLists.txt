@@ -39,9 +39,26 @@ ADD_LIBRARY(${LIBNAME} SHARED
   ${CONTRIB_FILES}
 )
 
+FILE(READ files.txt _list)
+STRING(REGEX REPLACE ";" "\\\\;" _list "${_list}")
+STRING(REGEX REPLACE "\n" ";" _list "${_list}")
+
 INSTALL_CLIB()
 
 ADD_CUSTOM_TARGET(apidoc
   COMMAND ${CMAKE_COMMAND} -E echo_append "Building API Documentation for ${M_NAME}..."
   COMMAND ${CMAKE_COMMAND} -E make_directory "${MAP_ROOT}/build/transform2swig/${M_NAME}"
 )
+
+foreach(_file ${_list})
+  get_filename_component(target ${_file} NAME_WE)
+  set(dest "${MAP_ROOT}/build/transform2swig/${M_NAME}")
+  STRING(CONFIGURE ${_file} _nfile)
+
+  # message ("${CMAKE_COMMAND} -E copy_if_different <${_nfile}> ${dest}")
+  add_custom_target(${target}
+    ${CMAKE_COMMAND} -E copy_if_different ${_nfile} ${dest}
+  )
+  add_dependencies(apidoc ${target})
+endforeach(_file) 
+
