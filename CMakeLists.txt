@@ -9,7 +9,6 @@
 #   Build the libraries without language interfaces:
 #
 #   cmake -DBUILD_LIBS:BOOLEAN=TRUE .
-#   cmake -DBUILD_DOCS:BOOLEAN=TRUE .
 #
 #   Build the Ruby/Python/Perl interface and libraries:
 #
@@ -203,9 +202,7 @@ SET(DEFAULT_BUILD_SHARED_LIBS ON)
 SET(BUILD_SHARED_LIBS ${DEFAULT_BUILD_SHARED_LIBS} CACHE BOOL "Building shared or static libraries")
 
 # Documentation
-if (BUILD_DOCS)
-  INCLUDE (APIDoc)
-endif (BUILD_DOCS)
+INCLUDE (APIDoc)
 
 # Turn off chatty makefiles by default.  To make them chatty again,
 # call make with VERBOSE=1 like this:

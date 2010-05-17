@@ -41,3 +41,7 @@ ADD_LIBRARY(${LIBNAME} SHARED
 
 INSTALL_CLIB()
 
+ADD_CUSTOM_TARGET(apidoc
+  COMMAND ${CMAKE_COMMAND} -E echo_append "Building API Documentation for ${M_NAME}..."
+  COMMAND ${CMAKE_COMMAND} -E make_directory "${MAP_ROOT}/build/transform2swig/${M_NAME}"
+)

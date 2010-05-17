@@ -33,3 +33,7 @@ ADD_LIBRARY(${LIBNAME} SHARED
 BUILD_CLIB()
 
 INSTALL_CLIB()
+
+ADD_CUSTOM_TARGET(apidoc
+  COMMAND ${CMAKE_COMMAND} -E echo_append "Building API Documentation for Affyio..."
+)
