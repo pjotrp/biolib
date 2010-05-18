@@ -50,14 +50,19 @@ ADD_CUSTOM_TARGET(apidoc
   COMMAND ${CMAKE_COMMAND} -E make_directory "${MAP_ROOT}/build/transform2swig/${M_NAME}"
 )
 
+include(APIDoc)
 foreach(_file ${_list})
-  get_filename_component(target ${_file} NAME_WE)
-  set(dest "${MAP_ROOT}/build/transform2swig/${M_NAME}")
+  # get_filename_component(target ${_file} NAME_WE)
+  get_filename_component(target ${_file} NAME)
+  set(_destdir "${MAP_ROOT}/build/transform2swig/${M_NAME}")
   STRING(CONFIGURE ${_file} _nfile)
-
-  # message ("${CMAKE_COMMAND} -E copy_if_different <${_nfile}> ${dest}")
-  add_custom_target(${target}
-    ${CMAKE_COMMAND} -E copy_if_different ${_nfile} ${dest}
+  SET(_dfile ${_destdir} / ${target})
+  # MESSAGE( ${_dfile} : ${transform2doxy} " -d ${_destdir} ${_nfile}" )
+  add_custom_target(${target} 
+    COMMENT "Transforming ${_nfile}"
+    SOURCES ${_dfile}
+    DEPENDS ${_nfile}
+    COMMAND ${transform2doxy} --quiet -d ${_destdir} ${_nfile}
   )
   add_dependencies(apidoc ${target})
 endforeach(_file) 
