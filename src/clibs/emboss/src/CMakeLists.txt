@@ -46,7 +46,10 @@ STRING(REGEX REPLACE "\n" ";" _list "${_list}")
 INSTALL_CLIB()
 
 ADD_CUSTOM_TARGET(apidoc
+  WORKING_DIRECTORY ${MAP_ROOT}
   COMMAND ${CMAKE_COMMAND} -E echo_append "Building API Documentation for ${M_NAME}..."
+  COMMAND ${CMAKE_COMMAND} -E make_directory "build/doc/doxygen/${M_NAME}"
+  COMMAND ${DOXYGEN_EXECUTABLE} "doc/doxygen/${M_NAME}.conf"
 )
 
 ADD_CUSTOM_TARGET(transform2doxy
