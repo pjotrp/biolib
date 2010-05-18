@@ -45,8 +45,12 @@ STRING(REGEX REPLACE "\n" ";" _list "${_list}")
 
 INSTALL_CLIB()
 
-ADD_CUSTOM_TARGET(transform2doxy
+ADD_CUSTOM_TARGET(apidoc
   COMMAND ${CMAKE_COMMAND} -E echo_append "Building API Documentation for ${M_NAME}..."
+)
+
+ADD_CUSTOM_TARGET(transform2doxy
+  COMMAND ${CMAKE_COMMAND} -E echo_append "Transforming C source to doxygen ${M_NAME}..."
 )
 
 include(APIDoc)
