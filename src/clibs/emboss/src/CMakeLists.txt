@@ -45,16 +45,15 @@ STRING(REGEX REPLACE "\n" ";" _list "${_list}")
 
 INSTALL_CLIB()
 
-ADD_CUSTOM_TARGET(apidoc
+ADD_CUSTOM_TARGET(transform2doxy
   COMMAND ${CMAKE_COMMAND} -E echo_append "Building API Documentation for ${M_NAME}..."
-  COMMAND ${CMAKE_COMMAND} -E make_directory "${MAP_ROOT}/build/transform2swig/${M_NAME}"
 )
 
 include(APIDoc)
 foreach(_file ${_list})
   # get_filename_component(target ${_file} NAME_WE)
   get_filename_component(target ${_file} NAME)
-  set(_destdir "${MAP_ROOT}/build/transform2swig/${M_NAME}")
+  set(_destdir "${MAP_ROOT}/build/transform2doxy/${M_NAME}")
   STRING(CONFIGURE ${_file} _nfile)
   SET(_dfile ${_destdir} / ${target})
   # MESSAGE( ${_dfile} : ${transform2doxy} " -d ${_destdir} ${_nfile}" )
@@ -62,8 +61,9 @@ foreach(_file ${_list})
     COMMENT "Transforming ${_nfile}"
     SOURCES ${_dfile}
     DEPENDS ${_nfile}
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${MAP_ROOT}/build/transform2doxy/${M_NAME}"
     COMMAND ${transform2doxy} --quiet -d ${_destdir} ${_nfile}
   )
-  add_dependencies(apidoc ${target})
+  add_dependencies(transform2doxy ${target})
 endforeach(_file) 
 
