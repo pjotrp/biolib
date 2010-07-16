@@ -22,3 +22,6 @@
 [submodule "tools/swig2doc"]
 	path = tools/swig2doc
 	url = http://github.com/pjotrp/swig2doc.git
+[submodule "contrib/samtools"]
+	path = contrib/samtools
+	url = http://github.com/pjotrp/samtools.git
