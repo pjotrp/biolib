@@ -18,14 +18,12 @@ ${CONTRIB_SRC_PATH}/bam_stat.c
 ${CONTRIB_SRC_PATH}/bamtk.c
 ${CONTRIB_SRC_PATH}/bam_tview.c
 ${CONTRIB_SRC_PATH}/bgzf.c
-${CONTRIB_SRC_PATH}/bgzip.c
 ${CONTRIB_SRC_PATH}/faidx.c
 ${CONTRIB_SRC_PATH}/glf.c
 ${CONTRIB_SRC_PATH}/kaln.c
 ${CONTRIB_SRC_PATH}/knetfile.c
 ${CONTRIB_SRC_PATH}/kstring.c
 ${CONTRIB_SRC_PATH}/razf.c
-${CONTRIB_SRC_PATH}/razip.c
 ${CONTRIB_SRC_PATH}/sam.c
 ${CONTRIB_SRC_PATH}/sam_header.c
 ${CONTRIB_SRC_PATH}/sam_view.c
