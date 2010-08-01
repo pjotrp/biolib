@@ -1,3 +1,3 @@
 %module samtools
 
-%include ../../samtool.i
+%include ../../samtools.i
