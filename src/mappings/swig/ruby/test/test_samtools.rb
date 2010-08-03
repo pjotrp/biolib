@@ -9,7 +9,8 @@ samgz = datadir+'/ex3.sam'
 raise 'Error can not find '+samgz if !File.exist?(samgz)
 
 fh = Biolib::Samtools.samopen(samgz,"r",nil)
-# num = Biolib::Samtools.samread(fh,bam)
+# num,bam = Biolib::Samtools.samread(fh)
+num,bam = Biolib::Samtools.samread(fh)
 Biolib::Samtools.samclose(fh)
 
 exit 0
