@@ -17,6 +17,10 @@ if (BLD_AFFYIO)
   add_subdirectory (biolib_microarray/src)
 endif()
 
+if (BLD_SAMTOOLS)
+  add_subdirectory (samtools/src)
+endif()
+
 if (BLD_STADEN)
   add_subdirectory (staden_io_lib/src)
 endif()

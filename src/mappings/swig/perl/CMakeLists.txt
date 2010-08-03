@@ -10,6 +10,10 @@ if (BLD_STADEN)
   add_subdirectory (staden_io_lib)
 endif (BLD_STADEN)
 
+if (BLD_SAMTOOLS)
+  add_subdirectory (samtools)
+endif (BLD_SAMTOOLS)
+
 if (BLD_EMBOSS)
   add_subdirectory (emboss)
 endif (BLD_EMBOSS)

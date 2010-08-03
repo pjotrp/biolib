@@ -14,6 +14,11 @@ if (BLD_EMBOSS)
   add_subdirectory (emboss)
 endif (BLD_EMBOSS)
 
+
+if (BLD_SAMTOOLS)
+  add_subdirectory (samtools)
+endif (BLD_SAMTOOLS)
+
 # if (BLD_RQTL)
 #   add_subdirectory (rqtl)
 # endif (BLD_RQTL)

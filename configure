@@ -13,6 +13,7 @@
 
 #   --with-staden     : see the BioLib docs
 #   --with-emboss
+#   --with-samtools
 #   --with-affyio
 #   --with-rqtl
 #   --with-libsequence
@@ -71,6 +72,10 @@ fi
 case $library in
   '--with-emboss')
 	plib="-DEMBOSS_LIB:BOOLEAN=TRUE"
+	shift
+	;;
+  '--with-samtools')
+	plib="-DSAMTOOLS_LIB:BOOLEAN=TRUE"
 	shift
 	;;
   '--with-staden')
