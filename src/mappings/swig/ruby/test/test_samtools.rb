@@ -1,16 +1,38 @@
 
-print "PATH=",ENV['PATH'],"\n"
-p $:
+# print "PATH=",ENV['PATH'],"\n"
+# p $:
 
 require 'biolib/samtools'
 
 datadir = '../../../../test/data/samtools'
-samgz = datadir+'/ex3.sam'
-raise 'Error can not find '+samgz if !File.exist?(samgz)
+fn = datadir+'/ex3.sam'
+raise 'Error can not find '+fn if !File.exist?(fn)
 
-fh = Biolib::Samtools.samopen(samgz,"r",nil)
-# num,bam = Biolib::Samtools.samread(fh)
-num,bam = Biolib::Samtools.samread(fh)
+fh = Biolib::Samtools.samopen(fn,"r",nil)
+bam = Biolib::Samtools.new_bam()
+num = Biolib::Samtools.samread(fh,bam)
+print "\n>>> num=",num
+print "\n>>> bam.data_len=",bam.data_len
+print "\n>>> bam.m_data=",bam.m_data
+print "\n>>>",bam.data,"\n"
+p bambam.data
+num = Biolib::Samtools.samread(fh,bam)
+print "\n>>> num=",num
+print "\n>>> bam.data_len=",bam.data_len
+print "\n>>> bam.m_data=",bam.m_data
+print "\n>>>",bam.data,"\n"
+num = Biolib::Samtools.samread(fh,bam)
+print "\n>>> num=",num
+print "\n>>> bam.data_len=",bam.data_len
+print "\n>>> bam.m_data=",bam.m_data
+print "\n>>>",bam.data,"\n"
+num = Biolib::Samtools.samread(fh,bam)
+print "\n>>> num=",num
+print "\n>>> bam.data_len=",bam.data_len
+print "\n>>> bam.m_data=",bam.m_data
+print "\n>>>",bam.data,"\n"
+num = Biolib::Samtools.samread(fh,bam)
+print "\n>>> num=",num
 Biolib::Samtools.samclose(fh)
 
 exit 0
