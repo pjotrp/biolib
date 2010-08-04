@@ -8,6 +8,11 @@
   bam1_t *new_bam() {
     return ((bam1_t*)calloc(1, sizeof(bam1_t)));
   }
+
+  char *bam1_t_datalist_get(bam1_t *b) {
+    (char *)*b->data;
+  }
+  
 %}
 
 %include typemaps.i
@@ -26,8 +31,6 @@
 
 */
 
-bam1_t *new_bam();
-
 // int samread(samfile_t *fp, bam1_t *b);
 // bam1_t samread2(samfile_t *fp, bam1_t *b);
 
@@ -35,6 +38,9 @@ bam1_t *new_bam();
 
 %include <bam.h>
 %include <sam.h> 
+
+bam1_t *new_bam();
+char *bam1_t_datalist_get(bam1_t *b);
 
 
 
