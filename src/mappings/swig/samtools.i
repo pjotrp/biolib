@@ -9,38 +9,28 @@
     return ((bam1_t*)calloc(1, sizeof(bam1_t)));
   }
 
-  char *bam1_t_datalist_get(bam1_t *b) {
-    (char *)*b->data;
+  void bam1_t_datalist_get(char *datalist, bam1_t *b) {
+    datalist = (char *)b->data;
   }
-  
+
 %}
-
-%include typemaps.i
-
-/*
-%typemap(argout, fragment="output_helper") bam1_t *b {
-  // happy
-  VALUE bam1 = SWIG_NewPointerObj((bam1_t *)memcpy((bam1_t *)malloc(sizeof(bam1_t)),arg2,sizeof(bam1_t)), SWIGTYPE_p_bam1_t, SWIG_POINTER_OWN |  0 );
-
-  // $result = output_helper($result, bam1);
-  $result = bam1;
-}
-%typemap(in,numinputs=0) bam1_t *b(bam1_t bam1temp) {
-  $1 = &bam1temp;
-}
-
-*/
-
-// int samread(samfile_t *fp, bam1_t *b);
-// bam1_t samread2(samfile_t *fp, bam1_t *b);
-
-// %ignore samread;
 
 %include <bam.h>
 %include <sam.h> 
 
+%apply char *OUTPUT { char *datalist };
+%typemap(argout) (char *datalist, bam1_t *b) {
+  int asize = $2->data_len;
+  // $result = rb_ary_new();
+  // for (i=0; i<asize; i++)
+  //   rb_ary_push($result,INT2CHAR($1[i]));
+  $result = rb_str_new($1,asize);
+}
+
+
+
 bam1_t *new_bam();
-char *bam1_t_datalist_get(bam1_t *b);
+void bam1_t_datalist_get(char *datalist, bam1_t *b);
 
 
 

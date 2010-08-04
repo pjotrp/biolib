@@ -14,9 +14,8 @@ num = Biolib::Samtools.samread(fh,bam)
 print "\n>>> num=",num
 print "\n>>> bam.data_len=",bam.data_len
 print "\n>>> bam.m_data=",bam.m_data
-print "\n>>>",bam.data,"\n"
+print "\n>>>",bam.data_len,':',bam.data,"\n"
 data = Biolib::Samtools.bam1_t_datalist_get(bam)
-p [data[0],data[1],data]
 num = Biolib::Samtools.samread(fh,bam)
 print "\n>>> num=",num
 print "\n>>> bam.data_len=",bam.data_len
