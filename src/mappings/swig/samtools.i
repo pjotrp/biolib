@@ -6,17 +6,20 @@
   #include <sam.h>
 %}
 
+%include typemaps.i
 
+%typemap(argout) bam1_t *b {
+  // happy
+}
+%typemap(in,numinputs=0) bam1_t *b(bam1_t bam1temp) {
+    $1 = &bam1temp;
+}
 
-/*
-int samread(samfile_t *fp, bam1_t *OUTPUT);
-%ignore samread;
-*/
-%include <bam.h>
-%include "typemaps.i"
-%apply bam1_t *OUTPUT { bam1_t *b };
 int samread(samfile_t *fp, bam1_t *b);
-/* %include <sam.h> */
+
+%ignore samread;
+%include <bam.h>
+%include <sam.h> 
 
 
 
