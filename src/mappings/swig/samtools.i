@@ -17,6 +17,14 @@
 
 %}
 
+%ignore bam_strmap_init;
+%ignore bam_strmap_put;
+%ignore bam_strmap_get;
+%ignore bam_strmap_dup;
+%ignore bam_strmap_destroy;
+%ignore bam_nt16_nt4_table;
+%ignore sam_header_parse_rg;
+
 %include <stdint.i>
 %include <bam.h>
 %include <sam.h> 
@@ -24,7 +32,9 @@
 %apply char *OUTPUT { char *datalist };
 %typemap(argout) (char *datalist, bam1_t *b) {
   int asize = $2->data_len;
-  $result = rb_str_new($2->data,asize);
+  // $result = rb_str_new($2->data,asize);
+  char *carray = $2->data;
+  $result = SWIG_FromCharPtrAndSize(carray, asize);
 }
 
 bam1_t *new_bam();
