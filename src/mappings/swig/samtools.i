@@ -1,5 +1,3 @@
-
-
 %{
   // include the following block literally into mapping file
   #include <bam.h>
@@ -7,6 +5,10 @@
 
   bam1_t *new_bam() {
     return bam_init1();
+  }
+
+  void free_bam(bam1_t *bbuf) {
+    bam_destroy1(bbuf);
   }
 
   void bam1_t_datalist_get(char *datalist, bam1_t *b) {
@@ -26,6 +28,7 @@
 }
 
 bam1_t *new_bam();
+void free_bam(bam1_t *bbuf);
 void bam1_t_datalist_get(char *datalist, bam1_t *b);
 
 

@@ -24,6 +24,8 @@ begin
   print "\n> bam.m_data=",bam.m_data
   print "\n>",bam.data_len
   p [data]
+  # cleanup bam record
+  Biolib::Samtools.free_bam(bam)
 end while true
 Biolib::Samtools.samclose(fh)
 
