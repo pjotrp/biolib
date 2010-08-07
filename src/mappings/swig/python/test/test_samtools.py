@@ -32,4 +32,5 @@ while (bytesread >= 0):
   # cleanup bam record
   samtools.free_bam(bam)
 
+samtools.samclose(fh)
 sys.exit(0)

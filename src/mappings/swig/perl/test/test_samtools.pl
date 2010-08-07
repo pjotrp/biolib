@@ -1,9 +1,9 @@
 use biolib::samtools;
 
-$datadir = '../../../../test/data/trace';
+$datadir = '../../../../test/data/samtools';
 
-$samgz = "$datadir/ex1.sam.gz";
+$samfn = "$datadir/ex3.sam";
 
-$result = samtools::samopen($samgz,"r",undef);
+$result = samtools::samopen($samfn,"r",undef);
 
 exit 0;

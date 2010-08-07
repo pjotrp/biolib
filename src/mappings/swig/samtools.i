@@ -1,4 +1,7 @@
 %{
+  #include <stdint.h>
+  typedef __off64_t off64_t;
+
   // include the following block literally into mapping file
   #include <bam.h>
   #include <sam.h>
@@ -33,7 +36,7 @@
 %typemap(argout) (char *datalist, bam1_t *b) {
   int asize = $2->data_len;
   // $result = rb_str_new($2->data,asize);
-  char *carray = $2->data;
+  char *carray = (char *)$2->data;
   $result = SWIG_FromCharPtrAndSize(carray, asize);
 }
 
