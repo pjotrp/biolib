@@ -37,7 +37,8 @@
   int asize = $2->data_len;
   // $result = rb_str_new($2->data,asize);
   char *carray = (char *)$2->data;
-  $result = SWIG_FromCharPtrAndSize(carray, asize);
+  // $result = SWIG_FromCharPtrAndSize(carray, asize);
+  %set_output(SWIG_FromCharPtrAndSize(carray, asize));
 }
 
 bam1_t *new_bam();
