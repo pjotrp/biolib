@@ -6,22 +6,16 @@
   #include <bam.h>
   #include <sam.h>
 
-  bam1_t *bl_bam_init1() {
-    return bam_init1();
-  }
+  // Rename defines and static functions
+  bam1_t *bl_bam_init1() { return bam_init1(); }
+  void bl_bam_destroy1(bam1_t *bbuf) { bam_destroy1(bbuf); }
+  bam1_t *bl_bam_copy1(bam1_t *bdst, const bam1_t *bsrc) { return bam_copy1(bdst,bsrc); }
+  bam1_t *bl_bam_dup1(const bam1_t *src) { return bam_dup1(src); }
 
-  void bl_bam_destroy1(bam1_t *bbuf) {
-    bam_destroy1(bbuf);
-  }
-
-  bam1_t *bl_bam_copy1(bam1_t *bdst, const bam1_t *bsrc) {
-    return bam_copy1(bdst,bsrc);
-  }
-
+  // Special functions
   void bam1_t_datalist_get(char *datalist, bam1_t *b) {
     datalist = (char *)b->data;
   }
-
 
 %}
 
@@ -46,9 +40,15 @@
 
 #undef bam_init1
 #undef bam_destroy1
+#undef bam_copy1
+#undef bam_dup1
 %rename(bam_init1) bl_bam_init1;
 %rename(bam_destroy1) bl_bam_destroy1;
+%rename(bam_copy1) bl_bam_copy1;
+%rename(bam_dup1) bl_bam_dup1;
 
 bam1_t *bl_bam_init1();
 void bl_bam_destroy1(bam1_t *bbuf);
+bam1_t *bl_bam_copy1(bam1_t *bdst, const bam1_t *bsrc);
+bam1_t *bl_bam_dup1(const bam1_t *src);
 void bam1_t_datalist_get(char *datalist, bam1_t *b);

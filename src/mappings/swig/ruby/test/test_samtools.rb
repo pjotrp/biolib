@@ -9,9 +9,10 @@ datadir = '../../../../test/data/samtools'
 fn = datadir+'/ex3.sam'
 raise 'Error can not find '+fn if !File.exist?(fn)
 
-savebam1 = Biolib::Samtools.bam_init1()
+savebam1 = nil # Biolib::Samtools.bam_init1()
 
 fh = Biolib::Samtools.samopen(fn,"r",nil)
+bamheader = Biolib::Samtools.bam_header_read(fh.x.bam)
 count = 0
 begin
   count += 1
@@ -27,20 +28,17 @@ begin
   print "\n> bam.m_data=",bam.m_data
   print "\n>",bam.data_len
   p [data]
-  Biolib::Samtools.bam_copy1(savebam1,bam) if count == 2
+  savebam1 = Biolib::Samtools.bam_dup1(bam) if count == 2
   # cleanup bam record
   Biolib::Samtools.bam_destroy1(bam)
 end while true
-Biolib::Samtools.samclose(fh)
 # Write single record to BAM file
-tempname=Tempfile.new('biolib_bamout')
-fn = tempname.path
-print "Writing #{fn}\n"
-fh2 = Biolib::Samtools.samopen(fn,"bw",nil)
-byteswritten = Biolib::Samtools.samwrite(fh,savebam1)
+p bamheader
+fh2 = Biolib::Samtools.samopen("bam_test.ex","wb",bamheader)
+byteswritten = Biolib::Samtools.samwrite(fh2,savebam1)
 p byteswritten
 Biolib::Samtools.samclose(fh2)
-print "Done writing #{fn}\n"
+Biolib::Samtools.samclose(fh)
 Biolib::Samtools.bam_destroy1(savebam1)
 
 exit 0
