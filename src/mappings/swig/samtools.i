@@ -6,17 +6,22 @@
   #include <bam.h>
   #include <sam.h>
 
-  bam1_t *new_bam() {
+  bam1_t *bl_bam_init1() {
     return bam_init1();
   }
 
-  void free_bam(bam1_t *bbuf) {
+  void bl_bam_destroy1(bam1_t *bbuf) {
     bam_destroy1(bbuf);
+  }
+
+  bam1_t *bl_bam_copy1(bam1_t *bdst, const bam1_t *bsrc) {
+    return bam_copy1(bdst,bsrc);
   }
 
   void bam1_t_datalist_get(char *datalist, bam1_t *b) {
     datalist = (char *)b->data;
   }
+
 
 %}
 
@@ -35,15 +40,15 @@
 %apply char *OUTPUT { char *datalist };
 %typemap(argout) (char *datalist, bam1_t *b) {
   int asize = $2->data_len;
-  // $result = rb_str_new($2->data,asize);
   char *carray = (char *)$2->data;
-  // $result = SWIG_FromCharPtrAndSize(carray, asize);
   %set_output(SWIG_FromCharPtrAndSize(carray, asize));
 }
 
-bam1_t *new_bam();
-void free_bam(bam1_t *bbuf);
+#undef bam_init1
+#undef bam_destroy1
+%rename(bam_init1) bl_bam_init1;
+%rename(bam_destroy1) bl_bam_destroy1;
+
+bam1_t *bl_bam_init1();
+void bl_bam_destroy1(bam1_t *bbuf);
 void bam1_t_datalist_get(char *datalist, bam1_t *b);
-
-
-
