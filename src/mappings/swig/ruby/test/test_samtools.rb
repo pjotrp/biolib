@@ -6,6 +6,7 @@ require 'biolib/samtools'
 require 'tempfile'
 
 datadir = '../../../../test/data/samtools'
+
 fn = datadir+'/ex3.sam'
 raise 'Error can not find '+fn if !File.exist?(fn)
 

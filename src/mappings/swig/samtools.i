@@ -5,6 +5,7 @@
   // include the following block literally into mapping file
   #include <bam.h>
   #include <sam.h>
+  #include <faidx.h>
 
   // Rename defines and static functions
   bam1_t *bl_bam_init1() { return bam_init1(); }
@@ -30,6 +31,7 @@
 %include <stdint.i>
 %include <bam.h>
 %include <sam.h> 
+%include <faidx.h> 
 
 %apply char *OUTPUT { char *datalist };
 %typemap(argout) (char *datalist, bam1_t *b) {
