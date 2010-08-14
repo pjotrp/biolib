@@ -17,6 +17,9 @@
   void bam1_t_datalist_get(char *datalist, bam1_t *b) {
     datalist = (char *)b->data;
   }
+  samfile_t *samopen_listfn(const char *fn, const char *mode, const char *listfn) {
+    return samopen(fn,mode,listfn);
+  }
 
 %}
 
@@ -54,3 +57,4 @@ void bl_bam_destroy1(bam1_t *bbuf);
 bam1_t *bl_bam_copy1(bam1_t *bdst, const bam1_t *bsrc);
 bam1_t *bl_bam_dup1(const bam1_t *src);
 void bam1_t_datalist_get(char *datalist, bam1_t *b);
+samfile_t *samopen_listfn(const char *fn, const char *mode, const char *listfn);
