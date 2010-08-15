@@ -26,13 +26,11 @@ print "targets=",bamheader.n_targets,"\n"
 fh2 = Biolib::Samtools.samopen(bamfn,"wb",bamheader)  
 bytesread=0
 while bytesread >= 0
-  print "r"
   bambuf = Biolib::Samtools.bam_init1()
   bytesread = Biolib::Samtools.samread(fh1,bambuf)
   print bytesread,"\n"
   break if bytesread < 0
-  print "w"
-  bytesread = Biolib::Samtools.samwrite(fh2,bambuf)
+  byteswritten = Biolib::Samtools.samwrite(fh2,bambuf)
   Biolib::Samtools.bam_destroy1(bambuf)
 end
 Biolib::Samtools.samclose(fh1)
