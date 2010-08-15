@@ -9,7 +9,7 @@ $count = 0;
 $bytesread = 0;
 while ($bytesread >= 0) {
   $count += 1;
-  $bam = samtools::new_bam();
+  $bam = samtools::bam_init1();
   $bytesread = samtools::samread($fh,$bam);
   $data = samtools::bam1_t_datalist_get($bam);
 
@@ -22,7 +22,7 @@ while ($bytesread >= 0) {
   # print "\n>",bam.data_len
   print "\n<",$data,">\n";
   # cleanup bam record
-  samtools::free_bam($bam);
+  samtools::bam_destroy1($bam);
 }
 samtools::samclose($fh);
 exit 0;
