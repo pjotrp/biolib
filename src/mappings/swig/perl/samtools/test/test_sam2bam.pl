@@ -18,7 +18,7 @@ if ($f1==undef or $f1->{header}->{n_targets} == 0) {
 }
 $bamheader = $fh1->{header};
 print("targets=",$bamheader->{n_targets},"\n");
-$f2 = samtools::samopen($bamfn,"wb",$bamheader);
+$fh2 = samtools::samopen($bamfn,"wb",$bamheader);
 
 $bytesread = 0;
 while ($bytesread >= 0) {
