@@ -1,6 +1,6 @@
 %{
   #include <stdint.h>
-  typedef __off64_t off64_t;
+  // typedef __off64_t off64_t;
 
   // include the following block literally into mapping file
   #include <bam.h>
