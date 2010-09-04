@@ -4,6 +4,8 @@ Listed below are common errors seen when building BioLib. Problems
 specific to a language are in documents PERL.txt, RUBY.txt etc. in
 ./doc or ./tools/cmake-support/doc.
 
+See also \file{tools/cmake-support/doc/TROUBLESHOOTING.txt}!
+
 See also ./doc/REPORTINGBUGS.txt if you want to send a problem
 upstream.
 
