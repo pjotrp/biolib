@@ -18,7 +18,8 @@ task :default => [:build, :test, :install]
 task :build do
   # Dir.chdir('../..') do
     install_path = File.expand_path(File.dirname(__FILE__))
-    sh "cmake -DBUILD_RUBY:BOOLEAN=TRUE -DCMAKE_INSTALL_PREFIX=/usr ."
+    # sh "cmake -DBUILD_RUBY:BOOLEAN=TRUE -DCMAKE_INSTALL_PREFIX=/usr ."
+		sh "./configure --with-ruby"
     sh "make"
   # end
 end
