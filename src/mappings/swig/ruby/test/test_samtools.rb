@@ -35,10 +35,10 @@ begin
 end while true
 # Write single record to BAM file
 p bamheader
-fh2 = Biolib::Samtools.samopen("bam_test.ex","wb",bamheader)
-byteswritten = Biolib::Samtools.samwrite(fh2,savebam1)
-p byteswritten
-Biolib::Samtools.samclose(fh2)
+# fh2 = Biolib::Samtools.samopen("bam_test.ex","wb",bamheader)
+# byteswritten = Biolib::Samtools.samwrite(fh2,savebam1)
+# p byteswritten
+# Biolib::Samtools.samclose(fh2)
 Biolib::Samtools.samclose(fh)
 Biolib::Samtools.bam_destroy1(savebam1)
 
