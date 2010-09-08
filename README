@@ -1,6 +1,6 @@
 = BIOLIB =
 
-Biolib is an OpenBio initiative to provide shared libraries for the major Bio*
+Biolib is an OBF initiative to provide shared libraries for the major Bio*
 languages - so as to share one code base for Perl, Ruby, Python, JAVA and R.
 The basic idea is to provide infrastructure that allows sharing code rather
 than reinventing the wheel every time between different language
@@ -20,5 +20,4 @@ For dependencies see ./doc/DEPENDENCIES.txt
 If you wish to contribute subscribe to the mailing list.
 
 Pjotr Prins
-
 

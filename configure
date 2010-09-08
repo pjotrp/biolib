@@ -8,6 +8,7 @@
 #   --with-perl       : build biolib for Perl (default)
 #   --with-ruby       : build biolib for Ruby
 #   --with-python     : build biolib for Python
+#   --with-libs       : build libraries only
 #
 # In addition libraries can be specified
 
@@ -56,6 +57,10 @@ case $language in
 	;;
   '--with-python')
 	plang="-DBUILD_PYTHON:BOOLEAN=TRUE"
+	shift
+	;;
+  '--with-libs')
+	plang="-DBUILD_LIBS:BOOLEAN=TRUE"
 	shift
 	;;
   *)
